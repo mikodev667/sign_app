@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrustMe MVP</title>
+</head>
+<body>
+
+<nav>
+    <a href="{% url 'documents:template_list' %}">Templates</a> |
+    <a href="{% url 'documents:template_upload' %}">Upload template</a> |
+    <a href="{% url 'documents:document_list' %}">Documents</a> |
+    <a href="{% url 'documents:document_create' %}">Create document</a>
+</nav>
+
+<hr>
+
+{% if messages %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

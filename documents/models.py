@@ -24,8 +24,17 @@ class DocumentTemplate(models.Model):
     title = models.CharField(max_length=255)
 
     body_template = models.TextField(
+        blank=True,
         help_text="Use variables like {{ client_name }}, {{ amount }}"
     )
+
+    template_file = models.FileField(
+        upload_to="document_templates/docx/",
+        blank=True,
+        null=True
+    )
+
+    variables = models.JSONField(default=list, blank=True)
 
     status = models.CharField(
         max_length=20,
@@ -88,6 +97,12 @@ class Document(models.Model):
         null=True
     )
 
+    rendered_docx_file = models.FileField(
+        upload_to="documents/docx/",
+        blank=True,
+        null=True
+    )
+
     content_hash = models.CharField(
         max_length=64,
         blank=True,
@@ -108,6 +123,10 @@ class Document(models.Model):
 
     def calculate_content_hash(self):
         source = self.rendered_html or ""
+
+        for value in self.field_values.all().order_by("field_name"):
+            source += f"{value.field_name}:{value.field_value};"
+
         return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
     def update_content_hash(self, save=True):

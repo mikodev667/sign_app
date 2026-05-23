@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Fill Document</h1>
+
+<h3>{{ document.title }}</h3>
+<p>Template: {{ document.template.title }}</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    {% for field in fields %}
+        <div>
+            <label>{{ field.field_name }}</label>
+            <input
+                type="text"
+                name="field_{{ field.id }}"
+                value="{{ field.field_value }}"
+            >
+        </div>
+    {% empty %}
+        <p>No variables found in this template.</p>
+    {% endfor %}
+
+    <button type="submit">Save and render DOCX</button>
+</form>
+{% endblock %}

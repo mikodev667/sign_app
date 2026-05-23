@@ -1,7 +1,7 @@
 from django.contrib import admin
-
+from .services.docx_template_service import DocxTemplateService
 from .models import DocumentTemplate, Document, DocumentFieldValue
-
+from .services.document_docx_render_service import DocumentDocxRenderService
 
 class DocumentFieldValueInline(admin.TabularInline):
     model = DocumentFieldValue
@@ -13,15 +13,83 @@ class DocumentTemplateAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "organization", "created_by", "status", "created_at")
     search_fields = ("title", "organization__name", "body_template")
     list_filter = ("status", "created_at")
+    readonly_fields = ("variables", "created_at", "updated_at")
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        if obj.template_file:
+            obj.variables = DocxTemplateService.extract_variables(
+                obj.template_file.path
+            )
+            obj.save(update_fields=["variables", "updated_at"])
 
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "organization", "template", "status", "created_by", "created_at", "signed_at")
-    search_fields = ("title", "organization__name", "template__title", "content_hash")
+    list_display = (
+        "id",
+        "title",
+        "organization",
+        "template",
+        "status",
+        "created_by",
+        "created_at",
+        "signed_at"
+    )
+
+    search_fields = (
+        "title",
+        "organization__name",
+        "template__title",
+        "content_hash"
+    )
+
     list_filter = ("status", "created_at", "signed_at")
-    readonly_fields = ("content_hash", "created_at", "updated_at", "signed_at")
+
+    readonly_fields = (
+        "content_hash",
+        "created_at",
+        "updated_at",
+        "signed_at",
+        "rendered_docx_file",
+    )
+
     inlines = [DocumentFieldValueInline]
+
+    actions = ["render_docx_documents"]
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        template_variables = obj.template.variables or []
+
+        for variable in template_variables:
+            DocumentFieldValue.objects.get_or_create(
+                document=obj,
+                field_name=variable,
+                defaults={"field_value": ""}
+            )
+
+    @admin.action(description="Render selected DOCX documents")
+    def render_docx_documents(self, request, queryset):
+        success_count = 0
+
+        for document in queryset:
+            try:
+                DocumentDocxRenderService.render(document)
+                success_count += 1
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Error rendering document #{document.id}: {e}",
+                    level="error"
+                )
+
+        self.message_user(
+            request,
+            f"Successfully rendered {success_count} document(s)."
+        )
 
 
 @admin.register(DocumentFieldValue)

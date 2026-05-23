@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Documents</h1>
+
+<a href="{% url 'documents:document_create' %}">Create document</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Template</th>
+            <th>Status</th>
+            <th>DOCX</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+            <tr>
+                <td>{{ document.title }}</td>
+                <td>{{ document.template.title }}</td>
+                <td>{{ document.status }}</td>
+                <td>
+                    {% if document.rendered_docx_file %}
+                        <a href="{{ document.rendered_docx_file.url }}">Download</a>
+                    {% else %}
+                        Not rendered
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No documents yet.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
