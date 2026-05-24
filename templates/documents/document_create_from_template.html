@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: #eef5f5;
+        font-family: Arial, sans-serif;
+    }
+
+    .create-page {
+        max-width: 720px;
+        margin: 60px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 14px;
+        border: 1px solid #dce7e7;
+    }
+
+    .create-page h1 {
+        margin-top: 0;
+        color: #2f4545;
+    }
+
+    .template-info {
+        padding: 14px;
+        background: #f5fbfb;
+        border: 1px solid #dce7e7;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #dce7e7;
+        border-radius: 8px;
+        margin-top: 6px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 8px;
+        background: #1e9bd7;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+</style>
+
+<div class="create-page">
+    <h1>Create document</h1>
+
+    <div class="template-info">
+        <b>Template:</b> {{ template.title }}<br>
+        <b>Organization:</b> {{ template.organization }}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Create and fill document</button>
+    </form>
+</div>
+{% endblock %}

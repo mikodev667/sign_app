@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        background: #eef5f5;
+        font-family: Arial, sans-serif;
+        color: #2f4545;
+    }
+
+    .editor-page {
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        background: #ffffff;
+        border-bottom: 1px solid #dce7e7;
+    }
+
+    .top-bar h1 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .top-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .btn-primary {
+        background: #1e9bd7;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #e7f1f1;
+        color: #2f4545;
+    }
+
+    .btn-danger {
+        background: #ffeded;
+        color: #b42318;
+    }
+
+    .document-panel,
+    .fields-panel {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #dce7e7;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 14px 18px;
+        background: #dbeaf5;
+        color: #1264d8;
+        font-weight: 700;
+        border-bottom: 1px solid #dce7e7;
+    }
+
+    .document-scroll {
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+        padding: 26px;
+    }
+
+    #docxEditor {
+        width: 850px;
+        min-height: 1100px;
+        margin: 0 auto;
+        padding: 55px;
+        background: white;
+        border: 1px solid #e1e7e7;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+        font-family: "Times New Roman", serif;
+        font-size: 16px;
+        line-height: 1.55;
+        outline: none;
+    }
+
+    .fields-panel {
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+    }
+
+    .fields-content {
+        padding: 16px;
+    }
+
+    .group-card {
+        background: #ffffff;
+        border: 1px solid #dce7e7;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        overflow: hidden;
+    }
+
+    .group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        background: #f7fbfb;
+        border-bottom: 1px solid #e4eeee;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+    .group-body {
+        padding: 14px;
+    }
+
+    .field-row {
+        padding: 12px;
+        border: 1px solid #e4eeee;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: #fbfefe;
+    }
+
+    .field-row label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #6d8585;
+        margin-bottom: 5px;
+    }
+
+    .field-row input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid #dce7e7;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .field-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .small-btn {
+        border: none;
+        border-radius: 7px;
+        padding: 7px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .schema-actions {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .schema-actions input {
+        padding: 11px;
+        border: 1px solid #dce7e7;
+        border-radius: 8px;
+    }
+
+    .variable-chip {
+        display: inline-block;
+        background: #e8f3ff;
+        color: #1264d8;
+        padding: 3px 7px;
+        border-radius: 6px;
+        font-family: Consolas, monospace;
+        font-size: 12px;
+    }
+</style>
+
+<form method="post" onsubmit="saveTemplateBeforeSubmit()">
+    {% csrf_token %}
+
+    <input type="hidden" name="body_template" id="bodyTemplateInput">
+    <input type="hidden" name="field_schema" id="fieldSchemaInput">
+
+    <div class="top-bar">
+        <div>
+            <h1>Edit template</h1>
+            <div>{{ template.title }}</div>
+        </div>
+
+        <div class="top-actions">
+            <a class="btn btn-secondary" href="{% url 'documents:template_list' %}">
+                Back
+            </a>
+            <button class="btn btn-primary" type="submit">
+                Save template
+            </button>
+        </div>
+    </div>
+
+    <div class="editor-page">
+        <div class="document-panel">
+            <div class="panel-header">
+                Document preview
+            </div>
+
+            <div class="document-scroll">
+                <div id="docxEditor" contenteditable="true">{{ editor_html|safe }}</div>
+            </div>
+        </div>
+
+        <div class="fields-panel">
+            <div class="panel-header">
+                Fields constructor
+            </div>
+
+            <div class="fields-content">
+                <div class="schema-actions">
+                    <input id="newGroupTitle" type="text" placeholder="Group title, example: Данные стороны 1">
+                    <button class="btn btn-secondary" type="button" onclick="addGroup()">
+                        Add group
+                    </button>
+                </div>
+
+                <div id="groupsContainer"></div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    let fieldSchema = JSON.parse('{{ field_schema_json|escapejs }}');
+
+    function normalizeKey(text) {
+        return text
+            .toLowerCase()
+            .trim()
+            .replaceAll(" ", "_")
+            .replace(/[^a-zA-Z0-9_]/g, "");
+    }
+
+    function renderGroups() {
+        const container = document.getElementById("groupsContainer");
+        container.innerHTML = "";
+
+        fieldSchema.forEach((group, groupIndex) => {
+            const groupCard = document.createElement("div");
+            groupCard.className = "group-card";
+
+            groupCard.innerHTML = `
+                <div class="group-header">
+                    <span>${group.title || "Untitled group"}</span>
+                    <button class="small-btn btn-danger" type="button" onclick="removeGroup(${groupIndex})">
+                        Delete
+                    </button>
+                </div>
+
+                <div class="group-body">
+                    <div class="schema-actions">
+                        <input id="fieldLabel_${groupIndex}" type="text" placeholder="Field label, example: ФИО Стороны 1">
+                        <input id="fieldKey_${groupIndex}" type="text" placeholder="Variable key, example: party1_full_name">
+                        <button class="btn btn-secondary" type="button" onclick="addField(${groupIndex})">
+                            Add field
+                        </button>
+                    </div>
+
+                    <div id="fields_${groupIndex}"></div>
+                </div>
+            `;
+
+            container.appendChild(groupCard);
+
+            const fieldsContainer = document.getElementById(`fields_${groupIndex}`);
+
+            group.fields.forEach((field, fieldIndex) => {
+                const fieldRow = document.createElement("div");
+                fieldRow.className = "field-row";
+
+                const variablePreview = "{% templatetag openvariable %} " + (field.key || "variable") + " {% templatetag closevariable %}";
+
+                fieldRow.innerHTML = `
+                    <label>Field label</label>
+                    <input value="${field.label || ""}" onchange="updateFieldLabel(${groupIndex}, ${fieldIndex}, this.value)">
+
+                    <label>Variable</label>
+                    <input value="${field.key || ""}" onchange="updateFieldKey(${groupIndex}, ${fieldIndex}, this.value)">
+
+                    <div style="margin-bottom: 8px;">
+                        <span class="variable-chip">${variablePreview}</span>
+                    </div>
+
+                    <div class="field-actions">
+                        <button class="small-btn btn-secondary" type="button" onclick="insertVariable('${field.key}')">
+                            Insert into document
+                        </button>
+                        <button class="small-btn btn-danger" type="button" onclick="removeField(${groupIndex}, ${fieldIndex})">
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+                fieldsContainer.appendChild(fieldRow);
+            });
+        });
+    }
+
+    function addGroup() {
+        const input = document.getElementById("newGroupTitle");
+        const title = input.value.trim();
+
+        if (!title) {
+            alert("Enter group title");
+            return;
+        }
+
+        fieldSchema.push({
+            title: title,
+            fields: []
+        });
+
+        input.value = "";
+        renderGroups();
+    }
+
+    function removeGroup(groupIndex) {
+        fieldSchema.splice(groupIndex, 1);
+        renderGroups();
+    }
+
+    function addField(groupIndex) {
+        const labelInput = document.getElementById(`fieldLabel_${groupIndex}`);
+        const keyInput = document.getElementById(`fieldKey_${groupIndex}`);
+
+        const label = labelInput.value.trim();
+        let key = keyInput.value.trim();
+
+        if (!label) {
+            alert("Enter field label");
+            return;
+        }
+
+        if (!key) {
+            key = normalizeKey(label);
+        }
+
+        if (!key) {
+            alert("Enter valid variable key");
+            return;
+        }
+
+        fieldSchema[groupIndex].fields.push({
+            label: label,
+            key: key,
+            placeholder: label
+        });
+
+        labelInput.value = "";
+        keyInput.value = "";
+
+        renderGroups();
+    }
+
+    function removeField(groupIndex, fieldIndex) {
+        fieldSchema[groupIndex].fields.splice(fieldIndex, 1);
+        renderGroups();
+    }
+
+    function updateFieldLabel(groupIndex, fieldIndex, value) {
+        fieldSchema[groupIndex].fields[fieldIndex].label = value;
+    }
+
+    function updateFieldKey(groupIndex, fieldIndex, value) {
+        fieldSchema[groupIndex].fields[fieldIndex].key = normalizeKey(value);
+        renderGroups();
+    }
+
+    function insertVariable(variableKey) {
+        if (!variableKey) {
+            alert("Variable key is empty");
+            return;
+        }
+
+        const editor = document.getElementById("docxEditor");
+        editor.focus();
+
+        const variableText = "{{ " + variableKey + " }}";
+        document.execCommand("insertText", false, variableText);
+    }
+
+    function saveTemplateBeforeSubmit() {
+        const editor = document.getElementById("docxEditor");
+
+        document.getElementById("bodyTemplateInput").value = editor.innerHTML;
+        document.getElementById("fieldSchemaInput").value = JSON.stringify(fieldSchema);
+    }
+
+    renderGroups();
+</script>
+{% endblock %}

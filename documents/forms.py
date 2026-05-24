@@ -19,3 +19,9 @@ class DocumentFieldValueForm(forms.ModelForm):
     class Meta:
         model = DocumentFieldValue
         fields = ["field_value"]
+
+
+class DocumentFromTemplateForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ["title"]

@@ -1,27 +1,300 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Fill Document</h1>
+<style>
+    body {
+        margin: 0;
+        background: #eef5f5;
+        font-family: Arial, sans-serif;
+        color: #2f4545;
+    }
 
-<h3>{{ document.title }}</h3>
-<p>Template: {{ document.template.title }}</p>
+    .fill-page {
+        display: grid;
+        grid-template-columns: 1fr 430px;
+        gap: 20px;
+        padding: 20px;
+    }
 
-<form method="post">
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        background: #ffffff;
+        border-bottom: 1px solid #dce7e7;
+    }
+
+    .top-bar h1 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .top-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: #1e9bd7;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #e7f1f1;
+        color: #2f4545;
+    }
+
+    .document-panel,
+    .fields-panel {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #dce7e7;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 14px 18px;
+        background: #dbeaf5;
+        color: #1264d8;
+        font-weight: 700;
+        border-bottom: 1px solid #dce7e7;
+    }
+
+    .document-scroll {
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+        padding: 26px;
+    }
+
+    #documentPreview {
+        width: 850px;
+        min-height: 1100px;
+        margin: 0 auto;
+        padding: 55px;
+        background: white;
+        border: 1px solid #e1e7e7;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+        font-family: "Times New Roman", serif;
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    .fields-panel {
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+    }
+
+    .fields-content {
+        padding: 16px;
+    }
+
+    .group-card {
+        background: #ffffff;
+        border: 1px solid #dce7e7;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        overflow: hidden;
+    }
+
+    .group-header {
+        padding: 13px 15px;
+        background: #f7fbfb;
+        border-bottom: 1px solid #e4eeee;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 13px;
+    }
+
+    .group-body {
+        padding: 14px;
+    }
+
+    .field-block {
+        margin-bottom: 14px;
+    }
+
+    .field-block label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #6d8585;
+        margin-bottom: 6px;
+    }
+
+    .field-block input,
+    .field-block textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #dce7e7;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .field-block textarea {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    .variable-value {
+        background: #e8f3ff;
+        color: #1264d8;
+        padding: 2px 5px;
+        border-radius: 5px;
+        font-weight: 700;
+    }
+
+    .empty-value {
+        color: #1264d8;
+        background: #eef6ff;
+        padding: 2px 5px;
+        border-radius: 5px;
+        font-family: Consolas, monospace;
+    }
+</style>
+
+<form method="post" onsubmit="saveBeforeSubmit()">
     {% csrf_token %}
 
-    {% for field in fields %}
+    <div class="top-bar">
         <div>
-            <label>{{ field.field_name }}</label>
-            <input
-                type="text"
-                name="field_{{ field.id }}"
-                value="{{ field.field_value }}"
-            >
+            <h1>Fill document</h1>
+            <div>{{ document.title }}</div>
         </div>
-    {% empty %}
-        <p>No variables found in this template.</p>
-    {% endfor %}
 
-    <button type="submit">Save and render DOCX</button>
+        <div class="top-actions">
+            <a class="btn btn-secondary" href="{% url 'documents:document_list' %}">
+                Back
+            </a>
+
+            <button class="btn btn-primary" type="submit">
+                Save and render
+            </button>
+        </div>
+    </div>
+
+    <div class="fill-page">
+        <div class="document-panel">
+            <div class="panel-header">
+                Document preview
+            </div>
+
+            <div class="document-scroll">
+                <div id="documentPreview">
+                    {{ document.template.body_template|safe }}
+                </div>
+            </div>
+        </div>
+
+        <div class="fields-panel">
+            <div class="panel-header">
+                Document fields
+            </div>
+
+            <div class="fields-content">
+                {% for group in document.template.field_schema %}
+                    <div class="group-card">
+                        <div class="group-header">
+                            {{ group.title }}
+                        </div>
+
+                        <div class="group-body">
+                            {% for schema_field in group.fields %}
+                                {% for field in fields %}
+                                    {% if field.field_name == schema_field.key %}
+                                        <div class="field-block">
+                                            <label>{{ schema_field.label }}</label>
+
+                                            <input
+                                                type="text"
+                                                name="field_{{ field.id }}"
+                                                value="{{ field.field_value }}"
+                                                data-variable="{{ field.field_name }}"
+                                                placeholder="{{ schema_field.placeholder }}"
+                                                oninput="updatePreviewVariable(this)"
+                                            >
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No fields schema found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </form>
+
+<script>
+    const initialTemplateHtml = document.getElementById("documentPreview").innerHTML;
+
+    function escapeHtml(value) {
+        return value
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function collectValues() {
+        const inputs = document.querySelectorAll("[data-variable]");
+        const values = {};
+
+        inputs.forEach(input => {
+            values[input.dataset.variable] = input.value;
+        });
+
+        return values;
+    }
+
+    function renderPreview() {
+    let html = initialTemplateHtml;
+    const values = collectValues();
+
+    Object.keys(values).forEach(key => {
+        const value = values[key];
+        const regex = new RegExp("\\{\\{\\s*" + key + "\\s*\\}\\}", "g");
+
+        if (value) {
+            html = html.replace(
+                regex,
+                `<span class="variable-value">${escapeHtml(value)}</span>`
+            );
+        } else {
+            const emptyVariableText = "{% templatetag openvariable %} " + key + " {% templatetag closevariable %}";
+
+            html = html.replace(
+                regex,
+                `<span class="empty-value">${emptyVariableText}</span>`
+            );
+        }
+    });
+
+    document.getElementById("documentPreview").innerHTML = html;
+}
+
+    function updatePreviewVariable(input) {
+        renderPreview();
+    }
+
+    function saveBeforeSubmit() {
+        renderPreview();
+    }
+
+    renderPreview();
+</script>
 {% endblock %}

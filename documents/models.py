@@ -36,6 +36,12 @@ class DocumentTemplate(models.Model):
 
     variables = models.JSONField(default=list, blank=True)
 
+    field_schema = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Groups and fields for document form editor"
+    )
+
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
