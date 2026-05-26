@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\user\Desktop\signature_project\venv
+set VIRTUAL_ENV=C:\Users\Yesimkhanov.Miras\Desktop\sign_app\sign_app\venv
 
 if not defined PROMPT set PROMPT=$P$G
 

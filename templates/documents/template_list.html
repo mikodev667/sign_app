@@ -1,40 +1,88 @@
 {% extends "base.html" %}
 
+{% block title %}DOCX Templates | TrustMe MVP{% endblock %}
+
 {% block content %}
-<h1>DOCX Templates</h1>
 
-<a href="{% url 'documents:template_upload' %}">Upload new template</a>
+<div class="page-header page-header--with-action">
+    <div>
+        <h1 class="page-title">DOCX Templates</h1>
+        <p class="page-subtitle">
+            Manage uploaded document templates and create documents from them.
+        </p>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Variables</th>
-            <th>Created</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in templates %}
+    <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
+        Upload new template
+    </a>
+</div>
+
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ item.title }}</td>
-                <td>{{ item.variables|join:", " }}</td>
-                <td>{{ item.created_at }}</td>
-                <td>
-                    <a href="{% url 'documents:template_edit' item.id %}">
-                        Edit
-                    </a>
-                    |<a href="{% url 'documents:document_create_from_template' item.id %}">
-                        Create document
-                    </a>
+                <th>Title</th>
+                <th>Variables</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="4">No templates yet.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <tbody>
+            {% for item in templates %}
+                <tr>
+                    <td>
+                        <strong>{{ item.title }}</strong>
+                    </td>
+
+                    <td>
+                        {% if item.variables %}
+                            <div class="variable-list">
+                                {% for variable in item.variables %}
+                                    <span class="variable-chip">
+                                        {{ variable }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <span class="text-muted">No variables</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="text-muted">
+                            {{ item.created_at|date:"d.m.Y H:i" }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="table-actions">
+                            <a href="{% url 'documents:template_edit' item.id %}" class="table-link">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'documents:document_create_from_template' item.id %}" class="table-link">
+                                Create document
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-state">
+                            <h3>No templates yet</h3>
+                            <p>Upload your first DOCX template with variables.</p>
+
+                            <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
+                                Upload template
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}

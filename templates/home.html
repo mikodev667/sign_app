@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}TrustMe MVP | Online Document Signing{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-badge">
+            Online document signing platform
+        </div>
+
+        <h1 class="hero-title">
+            Prepare, send and sign documents online
+        </h1>
+
+        <p class="hero-text">
+            TrustMe MVP helps organizations upload DOCX templates, generate documents,
+            add signers and manage the signing process through secure online links.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
+                Create document
+            </a>
+
+            <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
+                View templates
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-panel">
+        <div class="hero-panel__header">
+            <span class="hero-panel__dot"></span>
+            Signing workflow
+        </div>
+
+        <div class="workflow-list">
+            <div class="workflow-item">
+                <span class="workflow-number">1</span>
+                <div>
+                    <strong>Upload DOCX template</strong>
+                    <p>
+                        Add variables like {% verbatim %}{{ full_name }}{% endverbatim %}
+                        and {% verbatim %}{{ date }}{% endverbatim %}.
+                    </p>
+                </div>
+            </div>
+
+            <div class="workflow-item">
+                <span class="workflow-number">2</span>
+                <div>
+                    <strong>Create document</strong>
+                    <p>Generate a document from the selected template.</p>
+                </div>
+            </div>
+
+            <div class="workflow-item">
+                <span class="workflow-number">3</span>
+                <div>
+                    <strong>Add signers</strong>
+                    <p>Specify signer name, IIN, phone number and order.</p>
+                </div>
+            </div>
+
+            <div class="workflow-item">
+                <span class="workflow-number">4</span>
+                <div>
+                    <strong>Send secure link</strong>
+                    <p>The signer opens the link and confirms the document.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">DOCX</div>
+        <h3>Template-based documents</h3>
+        <p>
+            Upload reusable DOCX templates and automatically fill document fields.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">SMS</div>
+        <h3>Secure signer links</h3>
+        <p>
+            Send each signer a personal secure link for document review and confirmation.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">LOG</div>
+        <h3>Signing history</h3>
+        <p>
+            Track document status, signer actions and signing progress.
+        </p>
+    </div>
+</section>
+
+<section class="dashboard-preview">
+    <div class="dashboard-preview__content">
+        <h2>Start with templates and documents</h2>
+        <p>
+            The MVP currently focuses on document templates, generated documents and the basic signing workflow.
+            Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage.
+        </p>
+    </div>
+
+    <div class="dashboard-preview__actions">
+        <a href="{% url 'documents:template_upload' %}" class="btn btn-outline">
+            Upload template
+        </a>
+
+        <a href="{% url 'documents:document_list' %}" class="btn btn-primary">
+            Open documents
+        </a>
+    </div>
+</section>
+
+{% endblock %}

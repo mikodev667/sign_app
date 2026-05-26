@@ -1,38 +1,76 @@
 {% extends "base.html" %}
 
+{% block title %}Documents | TrustMe MVP{% endblock %}
+
 {% block content %}
-<h1>Documents</h1>
 
-<a href="{% url 'documents:document_create' %}">Create document</a>
+<div class="page-header page-header--with-action">
+    <div>
+        <h1 class="page-title">Documents</h1>
+        <p class="page-subtitle">
+            Manage generated documents and prepare them for online signing.
+        </p>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Template</th>
-            <th>Status</th>
-            <th>DOCX</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for document in documents %}
+    <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
+        Create document
+    </a>
+</div>
+
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ document.title }}</td>
-                <td>{{ document.template.title }}</td>
-                <td>{{ document.status }}</td>
-                <td>
-                    {% if document.rendered_docx_file %}
-                        <a href="{{ document.rendered_docx_file.url }}">Download</a>
-                    {% else %}
-                        Not rendered
-                    {% endif %}
-                </td>
+                <th>Title</th>
+                <th>Template</th>
+                <th>Status</th>
+                <th>DOCX</th>
             </tr>
-        {% empty %}
-            <tr>
-                <td colspan="4">No documents yet.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            {% for document in documents %}
+                <tr>
+                    <td>
+                        <strong>{{ document.title }}</strong>
+                    </td>
+
+                    <td>
+                        {{ document.template.title }}
+                    </td>
+
+                    <td>
+                        <span class="badge badge-muted">
+                            {{ document.status }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {% if document.rendered_docx_file %}
+                            <a href="{{ document.rendered_docx_file.url }}" class="table-link">
+                                Download
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Not rendered</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">
+                        <div class="empty-state">
+                            <h3>No documents yet</h3>
+                            <p>Create your first document from a template.</p>
+
+                            <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
+                                Create document
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}

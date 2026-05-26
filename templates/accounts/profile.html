@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | TrustMe MVP{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Profile</h1>
+    <p class="page-subtitle">
+        Manage your account and access your document signing workspace.
+    </p>
+</div>
+
+<div class="profile-layout">
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {{ user.username|first|upper }}
+        </div>
+
+        <div class="profile-main-info">
+            <h2>{{ user.username }}</h2>
+
+            {% if user.email %}
+                <p>{{ user.email }}</p>
+            {% else %}
+                <p class="text-muted">No email added</p>
+            {% endif %}
+        </div>
+
+        <div class="profile-meta">
+            <div class="profile-meta__item">
+                <span>Username</span>
+                <strong>{{ user.username }}</strong>
+            </div>
+
+            <div class="profile-meta__item">
+                <span>Email</span>
+                <strong>
+                    {% if user.email %}
+                        {{ user.email }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="profile-meta__item">
+                <span>Date joined</span>
+                <strong>{{ user.date_joined|date:"d.m.Y H:i" }}</strong>
+            </div>
+
+            <div class="profile-meta__item">
+                <span>Last login</span>
+                <strong>
+                    {% if user.last_login %}
+                        {{ user.last_login|date:"d.m.Y H:i" }}
+                    {% else %}
+                        Never
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-actions-card">
+        <h3>Workspace actions</h3>
+        <p>
+            Quickly open your templates, documents or create a new document for signing.
+        </p>
+
+        <div class="profile-actions">
+            <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
+                Create document
+            </a>
+
+            <a href="{% url 'documents:document_list' %}" class="btn btn-outline">
+                View documents
+            </a>
+
+            <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
+                View templates
+            </a>
+
+            <a href="{% url 'documents:template_upload' %}" class="btn btn-outline">
+                Upload template
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Login | TrustMe MVP{% endblock %}
+
+{% block content %}
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Sign in</h1>
+            <p class="auth-subtitle">
+                Access your document signing workspace.
+            </p>
+        </div>
+
+        <form method="post" class="app-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors form-errors--global">
+                    {% for error in form.non_field_errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="form-errors">
+                            {% for error in field.errors %}
+                                <div class="form-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary auth-submit">
+                Sign in
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <span>Don’t have an account?</span>
+            <a href="{% url 'accounts:register' %}" class="table-link">
+                Create account
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

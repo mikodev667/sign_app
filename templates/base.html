@@ -1,28 +1,90 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TrustMe MVP</title>
+    <title>{% block title %}Sign-App{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-<nav>
-    <a href="{% url 'documents:template_list' %}">Templates</a> |
-    <a href="{% url 'documents:template_upload' %}">Upload template</a> |
-    <a href="{% url 'documents:document_list' %}">Documents</a> |
-    <a href="{% url 'documents:document_create' %}">Create document</a>
-</nav>
+<header class="app-header">
+    <div class="container app-header__inner">
+        <a href="{% url 'documents:document_list' %}" class="app-logo">
+            Sign-App
+        </a>
 
-<hr>
+        <nav class="app-nav">
+            <a href="{% url 'home' %}" class="app-nav__link">
+                Home
+            </a>
 
-{% if messages %}
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
-{% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'documents:template_list' %}" class="app-nav__link">
+                    Templates
+                </a>
 
-{% block content %}
-{% endblock %}
+                <a href="{% url 'documents:template_upload' %}" class="app-nav__link">
+                    Upload template
+                </a>
+
+                <a href="{% url 'documents:document_list' %}" class="app-nav__link">
+                    Documents
+                </a>
+
+                <a href="{% url 'documents:document_create' %}" class="app-nav__link app-nav__link--primary">
+                    Create document
+                </a>
+
+                <a href="{% url 'accounts:profile' %}" class="app-nav__link">
+                    Profile
+                </a>
+
+                <form method="post" action="{% url 'accounts:logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="app-nav__link logout-button">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="app-nav__link">
+                    Login
+                </a>
+
+                <a href="{% url 'accounts:register' %}" class="app-nav__link app-nav__link--primary">
+                    Register
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main class="app-main">
+    <div class="container">
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message--{{ message.tags|default:'info' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+</main>
+
+{% block extra_js %}{% endblock %}
 
 </body>
 </html>
