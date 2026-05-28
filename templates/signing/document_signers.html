@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Document signers" %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header page-header--with-action">
+    <div>
+        <h1 class="page-title">{% trans "Document signers" %}</h1>
+        <p class="page-subtitle">
+            {{ document.title }}
+        </p>
+    </div>
+
+    <a href="{% url 'documents:document_list' %}" class="btn btn-secondary">
+        {% trans "Back to documents" %}
+    </a>
+</div>
+
+<div class="card form-card">
+    <h2>{% trans "Add signer" %}</h2>
+
+    {% if document.status == "draft" %}
+        <form method="post" class="app-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.full_name.id_for_label }}">
+                    {% trans "Full name" %}
+                </label>
+                {{ form.full_name }}
+                {{ form.full_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.iin.id_for_label }}">
+                    {% trans "IIN" %}
+                </label>
+                {{ form.iin }}
+                {{ form.iin.errors }}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.phone.id_for_label }}">
+                    {% trans "Phone" %}
+                </label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.signing_order.id_for_label }}">
+                    {% trans "Signing order" %}
+                </label>
+                {{ form.signing_order }}
+                {{ form.signing_order.errors }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                {% trans "Add signer" %}
+            </button>
+        </form>
+    {% else %}
+        <p class="text-muted">
+            {% trans "Signers can be edited only while document is draft." %}
+        </p>
+    {% endif %}
+</div>
+
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Order" %}</th>
+                <th>{% trans "Full name" %}</th>
+                <th>{% trans "IIN" %}</th>
+                <th>{% trans "Phone" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "SMS link" %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for signer in signers %}
+                <tr>
+                    <td>{{ signer.signing_order }}</td>
+                    <td><strong>{{ signer.full_name }}</strong></td>
+                    <td>{{ signer.iin }}</td>
+                    <td>{{ signer.phone }}</td>
+                    <td>
+                        <span class="badge badge-muted">
+                            {{ signer.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if signer.status != "signed" %}
+                            <form method="post" action="{% url 'signing:create_signer_access_link' signer.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary">
+                                    {% trans "Create SMS link" %}
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="text-muted">{% trans "Already signed" %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <h3>{% trans "No signers yet" %}</h3>
+                            <p>{% trans "Add at least one signer for this document." %}</p>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

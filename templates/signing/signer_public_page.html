@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign document" %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">{% trans "Document signing" %}</h1>
+    <p class="page-subtitle">
+        {% trans "Review the document before signing." %}
+    </p>
+</div>
+
+<div class="card">
+    <h2>{{ document.title }}</h2>
+
+    <p>
+        <strong>{% trans "Signer" %}:</strong>
+        {{ signer.full_name }}
+    </p>
+
+    <p>
+        <strong>{% trans "IIN" %}:</strong>
+        {{ signer.iin }}
+    </p>
+
+    <p>
+        <strong>{% trans "Status" %}:</strong>
+        {{ signer.get_status_display }}
+    </p>
+
+    <hr>
+
+    <h3>{% trans "Document" %}</h3>
+
+    {% if document.rendered_pdf_file %}
+        <p>
+            <a href="{{ document.rendered_pdf_file.url }}" target="_blank" class="btn btn-secondary">
+                {% trans "Open PDF" %}
+            </a>
+        </p>
+    {% endif %}
+
+    {% if document.rendered_docx_file %}
+        <p>
+            <a href="{{ document.rendered_docx_file.url }}" target="_blank" class="btn btn-secondary">
+                {% trans "Download DOCX" %}
+            </a>
+        </p>
+    {% endif %}
+
+    {% if not document.rendered_pdf_file and not document.rendered_docx_file %}
+        <p class="text-muted">
+            {% trans "Document file is not rendered yet." %}
+        </p>
+    {% endif %}
+</div>
+
+{% if latest_session %}
+    <div class="card">
+        <h3>{% trans "eGov Mobile session" %}</h3>
+
+        <p>
+            <strong>{% trans "Session status" %}:</strong>
+            {{ latest_session.get_status_display }}
+        </p>
+
+        {% if latest_session.deep_link %}
+            <p>
+                <a href="{{ latest_session.deep_link }}" class="btn btn-primary">
+                    {% trans "Open eGov Mobile" %}
+                </a>
+            </p>
+        {% endif %}
+
+        {% if latest_session.qr_payload %}
+            <div class="form-group">
+                <label class="form-label">
+                    {% trans "QR payload" %}
+                </label>
+                <textarea class="form-control" rows="4" readonly>{{ latest_session.qr_payload }}</textarea>
+            </div>
+        {% endif %}
+
+        {% if latest_session.raw_response.api_1_url %}
+            <div class="form-group">
+                <label class="form-label">
+                    API №1 URL
+                </label>
+                <input class="form-control" value="{{ latest_session.raw_response.api_1_url }}" readonly>
+            </div>
+        {% endif %}
+
+        {% if signer.status != "signed" %}
+            <hr>
+
+            <form method="post" action="{% url 'signing:mock_complete_egov_signing' token %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">
+                    Mock complete signing
+                </button>
+            </form>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if latest_sms_session and signer.status != "signed" %}
+    <div class="card">
+        <h3>{% trans "SMS confirmation" %}</h3>
+
+        <p class="text-muted">
+            {% trans "Enter the code sent to your phone number." %}
+        </p>
+
+        <form method="post" action="{% url 'signing:complete_sms_signing' token %}" class="app-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label" for="otp">
+                    {% trans "SMS code" %}
+                </label>
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    class="form-control"
+                    maxlength="6"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                {% trans "Confirm and sign" %}
+            </button>
+        </form>
+    </div>
+{% endif %}
+
+<div class="card">
+    {% if signer.status == "signed" %}
+        <p>
+            {% trans "This document has already been signed." %}
+        </p>
+    {% else %}
+        <h3>{% trans "Choose signing method" %}</h3>
+
+        <form method="post" action="{% url 'signing:start_egov_signing' token %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">
+                {% trans "Sign with eGov Mobile" %}
+            </button>
+        </form>
+
+        <hr>
+
+        <form method="post" action="{% url 'signing:start_sms_signing' token %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">
+                {% trans "Sign by SMS code" %}
+            </button>
+        </form>
+    {% endif %}
+</div>
+
+{% endblock %}

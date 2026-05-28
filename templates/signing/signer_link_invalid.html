@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Invalid signing link" %}{% endblock %}
+
+{% block content %}
+
+<div class="empty-state">
+    <h1>{% trans "Invalid or expired signing link" %}</h1>
+
+    <p>
+        {% trans "The signing link is invalid, expired, or has been disabled." %}
+    </p>
+</div>
+
+{% endblock %}

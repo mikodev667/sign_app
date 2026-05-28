@@ -72,6 +72,7 @@ class SigningSession(models.Model):
     class Provider(models.TextChoices):
         EGOV_MOBILE = "egov_mobile", "eGov Mobile"
         MOCK = "mock", "Mock"
+        SMS = "sms", "SMS confirmation"
 
     class Status(models.TextChoices):
         CREATED = "created", "Created"

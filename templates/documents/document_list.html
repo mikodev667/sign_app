@@ -26,6 +26,7 @@
                 <th>{% trans "Template" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "DOCX" %}</th>
+                <th>{% trans "Signing" %}</th>
             </tr>
         </thead>
 
@@ -55,10 +56,15 @@
                             <span class="text-muted">{% trans "Not rendered" %}</span>
                         {% endif %}
                     </td>
+                    <td>
+                        <a href="{% url 'signing:document_signers' document.pk %}" class="table-link">
+                            {% trans "Signers" %}
+                        </a>
+                    </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <div class="empty-state">
                             <h3>{% trans "No documents yet" %}</h3>
                             <p>{% trans "Create your first document from a template." %}</p>
