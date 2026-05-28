@@ -1,0 +1,328 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Templates"
+msgstr "Шаблоны"
+
+msgid "Upload template"
+msgstr "Загрузить шаблон"
+
+msgid "Documents"
+msgstr "Документы"
+
+msgid "Create document"
+msgstr "Создать документ"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Login"
+msgstr "Войти"
+
+msgid "Register"
+msgstr "Регистрация"
+
+msgid "Sign-App | Online Document Signing"
+msgstr "Sign-App | Онлайн-подписание документов"
+
+msgid "Online document signing platform"
+msgstr "Платформа онлайн-подписания документов"
+
+msgid "Prepare, send and sign documents online"
+msgstr "Подготавливайте, отправляйте и подписывайте документы онлайн"
+
+msgid "Sign-App helps organizations upload DOCX templates, generate documents, add signers and manage the signing process through secure online links."
+msgstr "Sign-App помогает организациям загружать DOCX-шаблоны, создавать документы, добавлять подписантов и управлять процессом подписания через защищённые онлайн-ссылки."
+
+msgid "View templates"
+msgstr "Посмотреть шаблоны"
+
+msgid "Create account"
+msgstr "Создать аккаунт"
+
+msgid "Sign in"
+msgstr "Войти"
+
+msgid "Signing workflow"
+msgstr "Процесс подписания"
+
+msgid "Upload DOCX template"
+msgstr "Загрузить DOCX-шаблон"
+
+msgid "Add variables like"
+msgstr "Добавьте переменные, например"
+
+msgid "and"
+msgstr "и"
+
+msgid "Generate a document from the selected template."
+msgstr "Создайте документ на основе выбранного шаблона."
+
+msgid "Add signers"
+msgstr "Добавьте подписантов"
+
+msgid "Specify signer name, IIN, phone number and signing order."
+msgstr "Укажите имя подписанта, ИИН, номер телефона и порядок подписания."
+
+msgid "Send secure link"
+msgstr "Отправьте защищённую ссылку"
+
+msgid "The signer opens the link, reviews the document and confirms signing."
+msgstr "Подписант открывает ссылку, просматривает документ и подтверждает подписание."
+
+msgid "Template-based documents"
+msgstr "Документы на основе шаблонов"
+
+msgid "Upload reusable DOCX templates and automatically fill document fields."
+msgstr "Загружайте многоразовые DOCX-шаблоны и автоматически заполняйте поля документа."
+
+msgid "Secure signer links"
+msgstr "Защищённые ссылки для подписантов"
+
+msgid "Send each signer a personal secure link for document review and confirmation."
+msgstr "Отправляйте каждому подписанту персональную защищённую ссылку для просмотра и подтверждения документа."
+
+msgid "Signing history"
+msgstr "История подписания"
+
+msgid "Track document status, signer actions and signing progress."
+msgstr "Отслеживайте статус документа, действия подписантов и прогресс подписания."
+
+msgid "Start with templates and documents"
+msgstr "Начните с шаблонов и документов"
+
+msgid "The MVP currently focuses on document templates, generated documents and the basic signing workflow. Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage."
+msgstr "Текущий MVP сосредоточен на шаблонах документов, созданных документах и базовом процессе подписания. Позже можно добавить подписание через eGov Mobile, SMS-подтверждение, организации, журнал аудита и защищённое хранение файлов."
+
+msgid "Open documents"
+msgstr "Открыть документы"
+
+msgid "Login | Sign-App"
+msgstr "Вход | Sign-App"
+
+msgid "Access your document signing workspace."
+msgstr "Войдите в рабочее пространство для подписания документов."
+
+msgid "Don’t have an account?"
+msgstr "Нет аккаунта?"
+
+msgid "Profile | Sign-App"
+msgstr "Профиль | Sign-App"
+
+msgid "Manage your account and access your document signing workspace."
+msgstr "Управляйте аккаунтом и рабочим пространством для подписания документов."
+
+msgid "No email added"
+msgstr "Email не добавлен"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Not specified"
+msgstr "Не указано"
+
+msgid "Date joined"
+msgstr "Дата регистрации"
+
+msgid "Last login"
+msgstr "Последний вход"
+
+msgid "Never"
+msgstr "Никогда"
+
+msgid "Workspace actions"
+msgstr "Действия в рабочей области"
+
+msgid "Quickly open your templates, documents or create a new document for signing."
+msgstr "Быстро откройте шаблоны, документы или создайте новый документ для подписания."
+
+msgid "View documents"
+msgstr "Посмотреть документы"
+
+msgid "Register | Sign-App"
+msgstr "Регистрация | Sign-App"
+
+msgid "Create your workspace account to upload templates and manage documents."
+msgstr "Создайте аккаунт, чтобы загружать шаблоны и управлять документами."
+
+msgid "Already have an account?"
+msgstr "Уже есть аккаунт?"
+
+msgid "Create Document | Sign-App"
+msgstr "Создание документа | Sign-App"
+
+msgid "Create Document"
+msgstr "Создание документа"
+
+msgid "Create a new document from an uploaded template and prepare it for signing."
+msgstr "Создайте новый документ на основе загруженного шаблона и подготовьте его к подписанию."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Create Document From Template | Sign-App"
+msgstr "Создание документа из шаблона | Sign-App"
+
+msgid "Create a new document from the selected DOCX template."
+msgstr "Создайте новый документ на основе выбранного DOCX-шаблона."
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "Organization"
+msgstr "Организация"
+
+msgid "Create and fill document"
+msgstr "Создать и заполнить документ"
+
+msgid "Fill document"
+msgstr "Заполнение документа"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Save and render"
+msgstr "Сохранить и сформировать"
+
+msgid "Document preview"
+msgstr "Предпросмотр документа"
+
+msgid "Document fields"
+msgstr "Поля документа"
+
+msgid "No fields schema found."
+msgstr "Схема полей не найдена."
+
+msgid "Documents | Sign-App"
+msgstr "Документы | Sign-App"
+
+msgid "Manage generated documents and prepare them for online signing."
+msgstr "Управляйте созданными документами и подготавливайте их к онлайн-подписанию."
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "DOCX"
+msgstr "DOCX"
+
+msgid "Download"
+msgstr "Скачать"
+
+msgid "Not rendered"
+msgstr "Не сформирован"
+
+msgid "No documents yet"
+msgstr "Документов пока нет"
+
+msgid "Create your first document from a template."
+msgstr "Создайте первый документ на основе шаблона."
+
+msgid "Edit template"
+msgstr "Редактирование шаблона"
+
+msgid "Save template"
+msgstr "Сохранить шаблон"
+
+msgid "Fields constructor"
+msgstr "Конструктор полей"
+
+msgid "Group title, example: Party 1 data"
+msgstr "Название группы, например: Данные стороны 1"
+
+msgid "Add group"
+msgstr "Добавить группу"
+
+msgid "Untitled group"
+msgstr "Группа без названия"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Field label"
+msgstr "Название поля"
+
+msgid "Variable"
+msgstr "Переменная"
+
+msgid "Insert into document"
+msgstr "Вставить в документ"
+
+msgid "Field label, example: Full name of Party 1"
+msgstr "Название поля, например: ФИО стороны 1"
+
+msgid "Variable key, example: party1_full_name"
+msgstr "Ключ переменной, например: party1_full_name"
+
+msgid "Add field"
+msgstr "Добавить поле"
+
+msgid "Enter group title"
+msgstr "Введите название группы"
+
+msgid "Enter field label"
+msgstr "Введите название поля"
+
+msgid "Enter valid variable key"
+msgstr "Введите корректный ключ переменной"
+
+msgid "Variable key is empty"
+msgstr "Ключ переменной пустой"
+
+msgid "DOCX Templates | Sign-App"
+msgstr "DOCX-шаблоны | Sign-App"
+
+msgid "DOCX Templates"
+msgstr "DOCX-шаблоны"
+
+msgid "Manage uploaded document templates and create documents from them."
+msgstr "Управляйте загруженными шаблонами документов и создавайте документы на их основе."
+
+msgid "Upload new template"
+msgstr "Загрузить новый шаблон"
+
+msgid "Variables"
+msgstr "Переменные"
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "Action"
+msgstr "Действие"
+
+msgid "No variables"
+msgstr "Нет переменных"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "No templates yet"
+msgstr "Шаблонов пока нет"
+
+msgid "Upload your first DOCX template with variables."
+msgstr "Загрузите первый DOCX-шаблон с переменными."
+
+msgid "Upload DOCX Template | Sign-App"
+msgstr "Загрузка DOCX-шаблона | Sign-App"
+
+msgid "Upload DOCX Template"
+msgstr "Загрузка DOCX-шаблона"
+
+msgid "Upload a DOCX file with variables like"
+msgstr "Загрузите DOCX-файл с переменными, например"
+
+msgid "or"
+msgstr "или"

@@ -1,0 +1,328 @@
+msgid ""
+msgstr ""
+"Language: kk\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Home"
+msgstr "Басты бет"
+
+msgid "Templates"
+msgstr "Үлгілер"
+
+msgid "Upload template"
+msgstr "Үлгіні жүктеу"
+
+msgid "Documents"
+msgstr "Құжаттар"
+
+msgid "Create document"
+msgstr "Құжат жасау"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Logout"
+msgstr "Шығу"
+
+msgid "Login"
+msgstr "Кіру"
+
+msgid "Register"
+msgstr "Тіркелу"
+
+msgid "Sign-App | Online Document Signing"
+msgstr "Sign-App | Құжаттарға онлайн қол қою"
+
+msgid "Online document signing platform"
+msgstr "Құжаттарға онлайн қол қою платформасы"
+
+msgid "Prepare, send and sign documents online"
+msgstr "Құжаттарды онлайн дайындаңыз, жіберіңіз және қол қойыңыз"
+
+msgid "Sign-App helps organizations upload DOCX templates, generate documents, add signers and manage the signing process through secure online links."
+msgstr "Sign-App ұйымдарға DOCX үлгілерін жүктеуге, құжаттарды жасауға, қол қоюшыларды қосуға және қорғалған онлайн сілтемелер арқылы қол қою процесін басқаруға көмектеседі."
+
+msgid "View templates"
+msgstr "Үлгілерді көру"
+
+msgid "Create account"
+msgstr "Аккаунт жасау"
+
+msgid "Sign in"
+msgstr "Кіру"
+
+msgid "Signing workflow"
+msgstr "Қол қою процесі"
+
+msgid "Upload DOCX template"
+msgstr "DOCX үлгісін жүктеу"
+
+msgid "Add variables like"
+msgstr "Мынадай айнымалыларды қосыңыз:"
+
+msgid "and"
+msgstr "және"
+
+msgid "Generate a document from the selected template."
+msgstr "Таңдалған үлгі негізінде құжат жасаңыз."
+
+msgid "Add signers"
+msgstr "Қол қоюшыларды қосу"
+
+msgid "Specify signer name, IIN, phone number and signing order."
+msgstr "Қол қоюшының атын, ЖСН нөмірін, телефон нөмірін және қол қою ретін көрсетіңіз."
+
+msgid "Send secure link"
+msgstr "Қорғалған сілтемені жіберу"
+
+msgid "The signer opens the link, reviews the document and confirms signing."
+msgstr "Қол қоюшы сілтемені ашып, құжатты қарап, қол қоюды растайды."
+
+msgid "Template-based documents"
+msgstr "Үлгі негізіндегі құжаттар"
+
+msgid "Upload reusable DOCX templates and automatically fill document fields."
+msgstr "Қайта қолданылатын DOCX үлгілерін жүктеп, құжат өрістерін автоматты түрде толтырыңыз."
+
+msgid "Secure signer links"
+msgstr "Қол қоюшыларға арналған қорғалған сілтемелер"
+
+msgid "Send each signer a personal secure link for document review and confirmation."
+msgstr "Әр қол қоюшыға құжатты қарау және растау үшін жеке қорғалған сілтеме жіберіңіз."
+
+msgid "Signing history"
+msgstr "Қол қою тарихы"
+
+msgid "Track document status, signer actions and signing progress."
+msgstr "Құжат мәртебесін, қол қоюшылардың әрекеттерін және қол қою барысын бақылаңыз."
+
+msgid "Start with templates and documents"
+msgstr "Үлгілер мен құжаттардан бастаңыз"
+
+msgid "The MVP currently focuses on document templates, generated documents and the basic signing workflow. Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage."
+msgstr "Қазіргі MVP құжат үлгілеріне, жасалған құжаттарға және негізгі қол қою процесіне бағытталған. Кейін eGov Mobile арқылы қол қоюды, SMS растауды, ұйымдарды, аудит журналын және қорғалған файл сақтау жүйесін қосуға болады."
+
+msgid "Open documents"
+msgstr "Құжаттарды ашу"
+
+msgid "Login | Sign-App"
+msgstr "Кіру | Sign-App"
+
+msgid "Access your document signing workspace."
+msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+msgid "Don’t have an account?"
+msgstr "Аккаунтыңыз жоқ па?"
+
+msgid "Profile | Sign-App"
+msgstr "Профиль | Sign-App"
+
+msgid "Manage your account and access your document signing workspace."
+msgstr "Аккаунтыңызды және құжаттарға қол қою жұмыс кеңістігін басқарыңыз."
+
+msgid "No email added"
+msgstr "Email қосылмаған"
+
+msgid "Username"
+msgstr "Пайдаланушы аты"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Not specified"
+msgstr "Көрсетілмеген"
+
+msgid "Date joined"
+msgstr "Тіркелген күні"
+
+msgid "Last login"
+msgstr "Соңғы кіру"
+
+msgid "Never"
+msgstr "Ешқашан"
+
+msgid "Workspace actions"
+msgstr "Жұмыс кеңістігіндегі әрекеттер"
+
+msgid "Quickly open your templates, documents or create a new document for signing."
+msgstr "Үлгілерді, құжаттарды жылдам ашыңыз немесе қол қою үшін жаңа құжат жасаңыз."
+
+msgid "View documents"
+msgstr "Құжаттарды көру"
+
+msgid "Register | Sign-App"
+msgstr "Тіркелу | Sign-App"
+
+msgid "Create your workspace account to upload templates and manage documents."
+msgstr "Үлгілерді жүктеу және құжаттарды басқару үшін аккаунт жасаңыз."
+
+msgid "Already have an account?"
+msgstr "Аккаунтыңыз бар ма?"
+
+msgid "Create Document | Sign-App"
+msgstr "Құжат жасау | Sign-App"
+
+msgid "Create Document"
+msgstr "Құжат жасау"
+
+msgid "Create a new document from an uploaded template and prepare it for signing."
+msgstr "Жүктелген үлгі негізінде жаңа құжат жасап, оны қол қоюға дайындаңыз."
+
+msgid "Cancel"
+msgstr "Бас тарту"
+
+msgid "Create Document From Template | Sign-App"
+msgstr "Үлгіден құжат жасау | Sign-App"
+
+msgid "Create a new document from the selected DOCX template."
+msgstr "Таңдалған DOCX үлгісі негізінде жаңа құжат жасаңыз."
+
+msgid "Template"
+msgstr "Үлгі"
+
+msgid "Organization"
+msgstr "Ұйым"
+
+msgid "Create and fill document"
+msgstr "Құжатты жасау және толтыру"
+
+msgid "Fill document"
+msgstr "Құжатты толтыру"
+
+msgid "Back"
+msgstr "Артқа"
+
+msgid "Save and render"
+msgstr "Сақтау және қалыптастыру"
+
+msgid "Document preview"
+msgstr "Құжатты алдын ала қарау"
+
+msgid "Document fields"
+msgstr "Құжат өрістері"
+
+msgid "No fields schema found."
+msgstr "Өрістер схемасы табылмады."
+
+msgid "Documents | Sign-App"
+msgstr "Құжаттар | Sign-App"
+
+msgid "Manage generated documents and prepare them for online signing."
+msgstr "Жасалған құжаттарды басқарып, оларды онлайн қол қоюға дайындаңыз."
+
+msgid "Title"
+msgstr "Атауы"
+
+msgid "Status"
+msgstr "Мәртебе"
+
+msgid "DOCX"
+msgstr "DOCX"
+
+msgid "Download"
+msgstr "Жүктеу"
+
+msgid "Not rendered"
+msgstr "Қалыптастырылмаған"
+
+msgid "No documents yet"
+msgstr "Әзірге құжаттар жоқ"
+
+msgid "Create your first document from a template."
+msgstr "Алғашқы құжатты үлгі негізінде жасаңыз."
+
+msgid "Edit template"
+msgstr "Үлгіні өңдеу"
+
+msgid "Save template"
+msgstr "Үлгіні сақтау"
+
+msgid "Fields constructor"
+msgstr "Өрістер конструкторы"
+
+msgid "Group title, example: Party 1 data"
+msgstr "Топ атауы, мысалы: 1-тарап деректері"
+
+msgid "Add group"
+msgstr "Топ қосу"
+
+msgid "Untitled group"
+msgstr "Атаусыз топ"
+
+msgid "Delete"
+msgstr "Жою"
+
+msgid "Field label"
+msgstr "Өріс атауы"
+
+msgid "Variable"
+msgstr "Айнымалы"
+
+msgid "Insert into document"
+msgstr "Құжатқа енгізу"
+
+msgid "Field label, example: Full name of Party 1"
+msgstr "Өріс атауы, мысалы: 1-тараптың толық аты-жөні"
+
+msgid "Variable key, example: party1_full_name"
+msgstr "Айнымалы кілті, мысалы: party1_full_name"
+
+msgid "Add field"
+msgstr "Өріс қосу"
+
+msgid "Enter group title"
+msgstr "Топ атауын енгізіңіз"
+
+msgid "Enter field label"
+msgstr "Өріс атауын енгізіңіз"
+
+msgid "Enter valid variable key"
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+msgid "Variable key is empty"
+msgstr "Айнымалы кілті бос"
+
+msgid "DOCX Templates | Sign-App"
+msgstr "DOCX үлгілері | Sign-App"
+
+msgid "DOCX Templates"
+msgstr "DOCX үлгілері"
+
+msgid "Manage uploaded document templates and create documents from them."
+msgstr "Жүктелген құжат үлгілерін басқарып, олардың негізінде құжаттар жасаңыз."
+
+msgid "Upload new template"
+msgstr "Жаңа үлгіні жүктеу"
+
+msgid "Variables"
+msgstr "Айнымалылар"
+
+msgid "Created"
+msgstr "Құрылған уақыты"
+
+msgid "Action"
+msgstr "Әрекет"
+
+msgid "No variables"
+msgstr "Айнымалылар жоқ"
+
+msgid "Edit"
+msgstr "Өңдеу"
+
+msgid "No templates yet"
+msgstr "Әзірге үлгілер жоқ"
+
+msgid "Upload your first DOCX template with variables."
+msgstr "Айнымалылары бар алғашқы DOCX үлгісін жүктеңіз."
+
+msgid "Upload DOCX Template | Sign-App"
+msgstr "DOCX үлгісін жүктеу | Sign-App"
+
+msgid "Upload DOCX Template"
+msgstr "DOCX үлгісін жүктеу"
+
+msgid "Upload a DOCX file with variables like"
+msgstr "Мынадай айнымалылары бар DOCX файлын жүктеңіз:"
+
+msgid "or"
+msgstr "немесе"

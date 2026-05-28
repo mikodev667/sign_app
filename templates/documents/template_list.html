@@ -1,19 +1,20 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}DOCX Templates | TrustMe MVP{% endblock %}
+{% block title %}{% trans "DOCX Templates | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header page-header--with-action">
     <div>
-        <h1 class="page-title">DOCX Templates</h1>
+        <h1 class="page-title">{% trans "DOCX Templates" %}</h1>
         <p class="page-subtitle">
-            Manage uploaded document templates and create documents from them.
+            {% trans "Manage uploaded document templates and create documents from them." %}
         </p>
     </div>
 
     <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
-        Upload new template
+        {% trans "Upload new template" %}
     </a>
 </div>
 
@@ -21,10 +22,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Variables</th>
-                <th>Created</th>
-                <th>Action</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Variables" %}</th>
+                <th>{% trans "Created" %}</th>
+                <th>{% trans "Action" %}</th>
             </tr>
         </thead>
 
@@ -45,7 +46,7 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            <span class="text-muted">No variables</span>
+                            <span class="text-muted">{% trans "No variables" %}</span>
                         {% endif %}
                     </td>
 
@@ -58,11 +59,11 @@
                     <td>
                         <div class="table-actions">
                             <a href="{% url 'documents:template_edit' item.id %}" class="table-link">
-                                Edit
+                                {% trans "Edit" %}
                             </a>
 
                             <a href="{% url 'documents:document_create_from_template' item.id %}" class="table-link">
-                                Create document
+                                {% trans "Create document" %}
                             </a>
                         </div>
                     </td>
@@ -71,11 +72,11 @@
                 <tr>
                     <td colspan="4">
                         <div class="empty-state">
-                            <h3>No templates yet</h3>
-                            <p>Upload your first DOCX template with variables.</p>
+                            <h3>{% trans "No templates yet" %}</h3>
+                            <p>{% trans "Upload your first DOCX template with variables." %}</p>
 
                             <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
-                                Upload template
+                                {% trans "Upload template" %}
                             </a>
                         </div>
                     </td>

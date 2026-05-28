@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <style>
@@ -169,17 +170,17 @@
 
     <div class="top-bar">
         <div>
-            <h1>Fill document</h1>
+            <h1>{% trans "Fill document" %}</h1>
             <div>{{ document.title }}</div>
         </div>
 
         <div class="top-actions">
             <a class="btn btn-secondary" href="{% url 'documents:document_list' %}">
-                Back
+                {% trans "Back" %}
             </a>
 
             <button class="btn btn-primary" type="submit">
-                Save and render
+                {% trans "Save and render" %}
             </button>
         </div>
     </div>
@@ -187,7 +188,7 @@
     <div class="fill-page">
         <div class="document-panel">
             <div class="panel-header">
-                Document preview
+                {% trans "Document preview" %}
             </div>
 
             <div class="document-scroll">
@@ -199,7 +200,7 @@
 
         <div class="fields-panel">
             <div class="panel-header">
-                Document fields
+                {% trans "Document fields" %}
             </div>
 
             <div class="fields-content">
@@ -231,7 +232,7 @@
                         </div>
                     </div>
                 {% empty %}
-                    <p>No fields schema found.</p>
+                    <p>{% trans "No fields schema found." %}</p>
                 {% endfor %}
             </div>
         </div>
@@ -262,30 +263,30 @@
     }
 
     function renderPreview() {
-    let html = initialTemplateHtml;
-    const values = collectValues();
+        let html = initialTemplateHtml;
+        const values = collectValues();
 
-    Object.keys(values).forEach(key => {
-        const value = values[key];
-        const regex = new RegExp("\\{\\{\\s*" + key + "\\s*\\}\\}", "g");
+        Object.keys(values).forEach(key => {
+            const value = values[key];
+            const regex = new RegExp("\\{\\{\\s*" + key + "\\s*\\}\\}", "g");
 
-        if (value) {
-            html = html.replace(
-                regex,
-                `<span class="variable-value">${escapeHtml(value)}</span>`
-            );
-        } else {
-            const emptyVariableText = "{% templatetag openvariable %} " + key + " {% templatetag closevariable %}";
+            if (value) {
+                html = html.replace(
+                    regex,
+                    `<span class="variable-value">${escapeHtml(value)}</span>`
+                );
+            } else {
+                const emptyVariableText = "{% templatetag openvariable %} " + key + " {% templatetag closevariable %}";
 
-            html = html.replace(
-                regex,
-                `<span class="empty-value">${emptyVariableText}</span>`
-            );
-        }
-    });
+                html = html.replace(
+                    regex,
+                    `<span class="empty-value">${emptyVariableText}</span>`
+                );
+            }
+        });
 
-    document.getElementById("documentPreview").innerHTML = html;
-}
+        document.getElementById("documentPreview").innerHTML = html;
+    }
 
     function updatePreviewVariable(input) {
         renderPreview();

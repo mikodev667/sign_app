@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Create Document | TrustMe MVP{% endblock %}
+{% block title %}{% trans "Create Document | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1 class="page-title">Create Document</h1>
+    <h1 class="page-title">{% trans "Create Document" %}</h1>
     <p class="page-subtitle">
-        Create a new document from an uploaded template and prepare it for signing.
+        {% trans "Create a new document from an uploaded template and prepare it for signing." %}
     </p>
 </div>
 
@@ -49,11 +50,11 @@
 
         <div class="form-actions">
             <a href="{% url 'documents:document_list' %}" class="btn btn-outline">
-                Cancel
+                {% trans "Cancel" %}
             </a>
 
             <button type="submit" class="btn btn-primary">
-                Create document
+                {% trans "Create document" %}
             </button>
         </div>
     </form>

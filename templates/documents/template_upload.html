@@ -1,14 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Upload DOCX Template | TrustMe MVP{% endblock %}
+{% block title %}{% trans "Upload DOCX Template | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1 class="page-title">Upload DOCX Template</h1>
+    <h1 class="page-title">{% trans "Upload DOCX Template" %}</h1>
     <p class="page-subtitle">
-        Upload a DOCX file with variables like
-        {% verbatim %}{{ full_name }}, {{ date }} or {{ contract_number }}{% endverbatim %}.
+        {% trans "Upload a DOCX file with variables like" %}
+        {% verbatim %}{{ full_name }}, {{ date }}{% endverbatim %}
+        {% trans "or" %}
+        {% verbatim %}{{ contract_number }}{% endverbatim %}.
     </p>
 </div>
 
@@ -50,11 +53,11 @@
 
         <div class="form-actions">
             <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
-                Cancel
+                {% trans "Cancel" %}
             </a>
 
             <button type="submit" class="btn btn-primary">
-                Upload template
+                {% trans "Upload template" %}
             </button>
         </div>
     </form>

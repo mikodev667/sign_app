@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Profile | TrustMe MVP{% endblock %}
+{% block title %}{% trans "Profile | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
-    <h1 class="page-title">Profile</h1>
+    <h1 class="page-title">{% trans "Profile" %}</h1>
     <p class="page-subtitle">
-        Manage your account and access your document signing workspace.
+        {% trans "Manage your account and access your document signing workspace." %}
     </p>
 </div>
 
@@ -23,39 +24,39 @@
             {% if user.email %}
                 <p>{{ user.email }}</p>
             {% else %}
-                <p class="text-muted">No email added</p>
+                <p class="text-muted">{% trans "No email added" %}</p>
             {% endif %}
         </div>
 
         <div class="profile-meta">
             <div class="profile-meta__item">
-                <span>Username</span>
+                <span>{% trans "Username" %}</span>
                 <strong>{{ user.username }}</strong>
             </div>
 
             <div class="profile-meta__item">
-                <span>Email</span>
+                <span>{% trans "Email" %}</span>
                 <strong>
                     {% if user.email %}
                         {{ user.email }}
                     {% else %}
-                        Not specified
+                        {% trans "Not specified" %}
                     {% endif %}
                 </strong>
             </div>
 
             <div class="profile-meta__item">
-                <span>Date joined</span>
+                <span>{% trans "Date joined" %}</span>
                 <strong>{{ user.date_joined|date:"d.m.Y H:i" }}</strong>
             </div>
 
             <div class="profile-meta__item">
-                <span>Last login</span>
+                <span>{% trans "Last login" %}</span>
                 <strong>
                     {% if user.last_login %}
                         {{ user.last_login|date:"d.m.Y H:i" }}
                     {% else %}
-                        Never
+                        {% trans "Never" %}
                     {% endif %}
                 </strong>
             </div>
@@ -63,26 +64,26 @@
     </div>
 
     <div class="profile-actions-card">
-        <h3>Workspace actions</h3>
+        <h3>{% trans "Workspace actions" %}</h3>
         <p>
-            Quickly open your templates, documents or create a new document for signing.
+            {% trans "Quickly open your templates, documents or create a new document for signing." %}
         </p>
 
         <div class="profile-actions">
             <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-                Create document
+                {% trans "Create document" %}
             </a>
 
             <a href="{% url 'documents:document_list' %}" class="btn btn-outline">
-                View documents
+                {% trans "View documents" %}
             </a>
 
             <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
-                View templates
+                {% trans "View templates" %}
             </a>
 
             <a href="{% url 'documents:template_upload' %}" class="btn btn-outline">
-                Upload template
+                {% trans "Upload template" %}
             </a>
         </div>
     </div>

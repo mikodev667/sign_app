@@ -1,68 +1,75 @@
 {% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Create Document From Template | Sign-App" %}{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        background: #eef5f5;
-        font-family: Arial, sans-serif;
-    }
 
-    .create-page {
-        max-width: 720px;
-        margin: 60px auto;
-        background: white;
-        padding: 30px;
-        border-radius: 14px;
-        border: 1px solid #dce7e7;
-    }
+<div class="page-header">
+    <h1 class="page-title">{% trans "Create document" %}</h1>
+    <p class="page-subtitle">
+        {% trans "Create a new document from the selected DOCX template." %}
+    </p>
+</div>
 
-    .create-page h1 {
-        margin-top: 0;
-        color: #2f4545;
-    }
+<div class="card form-card">
+    <div class="template-info-box">
+        <div class="template-info-row">
+            <span>{% trans "Template" %}</span>
+            <strong>{{ template.title }}</strong>
+        </div>
 
-    .template-info {
-        padding: 14px;
-        background: #f5fbfb;
-        border: 1px solid #dce7e7;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-
-    input {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        border: 1px solid #dce7e7;
-        border-radius: 8px;
-        margin-top: 6px;
-    }
-
-    button {
-        margin-top: 20px;
-        padding: 12px 18px;
-        border: none;
-        border-radius: 8px;
-        background: #1e9bd7;
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
-    }
-</style>
-
-<div class="create-page">
-    <h1>Create document</h1>
-
-    <div class="template-info">
-        <b>Template:</b> {{ template.title }}<br>
-        <b>Organization:</b> {{ template.organization }}
+        <div class="template-info-row">
+            <span>{% trans "Organization" %}</span>
+            <strong>{{ template.organization }}</strong>
+        </div>
     </div>
 
-    <form method="post">
+    <form method="post" class="app-form">
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <button type="submit">Create and fill document</button>
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.help_text %}
+                    <div class="form-help">
+                        {{ field.help_text }}
+                    </div>
+                {% endif %}
+
+                {% if field.errors %}
+                    <div class="form-errors">
+                        {% for error in field.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors form-errors--global">
+                {% for error in form.non_field_errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
+                {% trans "Cancel" %}
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                {% trans "Create and fill document" %}
+            </button>
+        </div>
     </form>
 </div>
+
 {% endblock %}

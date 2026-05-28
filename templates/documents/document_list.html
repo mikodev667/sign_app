@@ -1,19 +1,20 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Documents | TrustMe MVP{% endblock %}
+{% block title %}{% trans "Documents | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="page-header page-header--with-action">
     <div>
-        <h1 class="page-title">Documents</h1>
+        <h1 class="page-title">{% trans "Documents" %}</h1>
         <p class="page-subtitle">
-            Manage generated documents and prepare them for online signing.
+            {% trans "Manage generated documents and prepare them for online signing." %}
         </p>
     </div>
 
     <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-        Create document
+        {% trans "Create document" %}
     </a>
 </div>
 
@@ -21,10 +22,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Template</th>
-                <th>Status</th>
-                <th>DOCX</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Template" %}</th>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "DOCX" %}</th>
             </tr>
         </thead>
 
@@ -48,10 +49,10 @@
                     <td>
                         {% if document.rendered_docx_file %}
                             <a href="{{ document.rendered_docx_file.url }}" class="table-link">
-                                Download
+                                {% trans "Download" %}
                             </a>
                         {% else %}
-                            <span class="text-muted">Not rendered</span>
+                            <span class="text-muted">{% trans "Not rendered" %}</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -59,11 +60,11 @@
                 <tr>
                     <td colspan="4">
                         <div class="empty-state">
-                            <h3>No documents yet</h3>
-                            <p>Create your first document from a template.</p>
+                            <h3>{% trans "No documents yet" %}</h3>
+                            <p>{% trans "Create your first document from a template." %}</p>
 
                             <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-                                Create document
+                                {% trans "Create document" %}
                             </a>
                         </div>
                     </td>

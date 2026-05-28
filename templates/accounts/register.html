@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Register | TrustMe MVP{% endblock %}
+{% block title %}{% trans "Register | Sign-App" %}{% endblock %}
 
 {% block content %}
 
 <div class="auth-page">
     <div class="auth-card">
         <div class="auth-header">
-            <h1 class="auth-title">Create account</h1>
+            <h1 class="auth-title">{% trans "Create account" %}</h1>
             <p class="auth-subtitle">
-                Create your workspace account to upload templates and manage documents.
+                {% trans "Create your workspace account to upload templates and manage documents." %}
             </p>
         </div>
 
@@ -49,14 +50,14 @@
             {% endfor %}
 
             <button type="submit" class="btn btn-primary auth-submit">
-                Create account
+                {% trans "Create account" %}
             </button>
         </form>
 
         <div class="auth-footer">
-            <span>Already have an account?</span>
+            <span>{% trans "Already have an account?" %}</span>
             <a href="{% url 'accounts:login' %}" class="table-link">
-                Sign in
+                {% trans "Sign in" %}
             </a>
         </div>
     </div>
