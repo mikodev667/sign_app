@@ -30,6 +30,11 @@
         {{ signer.get_status_display }}
     </p>
 
+    <p>
+        <strong>{% trans "Signing method" %}:</strong>
+        {{ signer.get_signing_method_display }}
+    </p>
+
     <hr>
 
     <h3>{% trans "Document" %}</h3>
@@ -57,7 +62,7 @@
     {% endif %}
 </div>
 
-{% if latest_session %}
+{% if latest_session and latest_session.provider == "egov_mobile" %}
     <div class="card">
         <h3>{% trans "eGov Mobile session" %}</h3>
 
@@ -105,6 +110,38 @@
     </div>
 {% endif %}
 
+<div class="card">
+    {% if signer.status == "signed" %}
+        <p>
+            {% trans "This document has already been signed." %}
+        </p>
+    {% else %}
+        <h3>{% trans "Signing method" %}</h3>
+
+        {% if signer.signing_method == "egov_mobile" %}
+            <form method="post" action="{% url 'signing:start_egov_signing' token %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Sign with eGov Mobile" %}
+                </button>
+            </form>
+        {% elif signer.signing_method == "sms" %}
+            {% if latest_sms_session %}
+                <p class="text-muted">
+                    {% trans "SMS code has been sent to your phone number." %}
+                </p>
+            {% else %}
+                <form method="post" action="{% url 'signing:start_sms_signing' token %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">
+                        {% trans "Send SMS code" %}
+                    </button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+
 {% if latest_sms_session and signer.status != "signed" %}
     <div class="card">
         <h3>{% trans "SMS confirmation" %}</h3>
@@ -136,31 +173,5 @@
         </form>
     </div>
 {% endif %}
-
-<div class="card">
-    {% if signer.status == "signed" %}
-        <p>
-            {% trans "This document has already been signed." %}
-        </p>
-    {% else %}
-        <h3>{% trans "Choose signing method" %}</h3>
-
-        <form method="post" action="{% url 'signing:start_egov_signing' token %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">
-                {% trans "Sign with eGov Mobile" %}
-            </button>
-        </form>
-
-        <hr>
-
-        <form method="post" action="{% url 'signing:start_sms_signing' token %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-secondary">
-                {% trans "Sign by SMS code" %}
-            </button>
-        </form>
-    {% endif %}
-</div>
 
 {% endblock %}

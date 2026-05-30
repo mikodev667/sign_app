@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from documents.models import Document
 from signing.models import Signer, SigningSession, Signature
-
+from signing.services.sms_gateway_service import SmsGatewayService
 
 class SmsSigningService:
     OTP_TTL_MINUTES = 10
@@ -20,7 +20,7 @@ class SmsSigningService:
         return hashlib.sha256(otp.encode("utf-8")).hexdigest()
 
     @classmethod
-    def create_session(cls, *, signer: Signer) -> tuple[SigningSession, str]:
+    def create_session(cls, *, signer: Signer) -> SigningSession:
         if signer.status == Signer.Status.SIGNED:
             raise ValueError("This document has already been signed.")
 
@@ -38,14 +38,31 @@ class SmsSigningService:
                 "otp_ttl_minutes": cls.OTP_TTL_MINUTES,
             },
             raw_response={
-                "message": "SMS OTP generated in local test mode.",
+                "message": "SMS OTP generated.",
             },
         )
+
+        sms_text = (
+            f"TrustMe: Код подтверждения подписи документа "
+            f"'{signer.document.title}': {otp}. "
+            f"Никому не сообщайте этот код."
+        )
+
+        sms_result = SmsGatewayService.send_sms(
+            phone=signer.phone,
+            text=sms_text,
+        )
+
+        session.raw_response = {
+            **(session.raw_response or {}),
+            "sms_result": sms_result,
+        }
+        session.save(update_fields=["raw_response", "updated_at"])
 
         signer.status = Signer.Status.SIGNING_STARTED
         signer.save(update_fields=["status", "updated_at"])
 
-        return session, otp
+        return session
 
     @classmethod
     def verify_otp(cls, *, session: SigningSession, otp: str) -> bool:
@@ -65,7 +82,7 @@ class SmsSigningService:
         return cls.hash_otp(otp) == expected_hash
 
     @classmethod
-    def complete_session(cls, *, session: SigningSession, otp: str) -> Signature:
+    def complete_session(cls, *, session: SigningSession, otp: str, ip_address: str = "", user_agent: str = "",) -> Signature:
         signer = session.signer
         document = signer.document
 
@@ -103,6 +120,8 @@ class SmsSigningService:
                 "iin": signer.iin,
                 "document_id": document.id,
                 "signer_id": signer.id,
+                "ip_address": ip_address,
+                "user_agent": user_agent,
             },
         )
 

@@ -63,6 +63,14 @@
                 {{ form.signing_order.errors }}
             </div>
 
+            <div class="form-group">
+                <label class="form-label" for="{{ form.signing_method.id_for_label }}">
+                    {% trans "Signing method" %}
+                </label>
+                {{ form.signing_method }}
+                {{ form.signing_method.errors }}
+            </div>
+
             <button type="submit" class="btn btn-primary">
                 {% trans "Add signer" %}
             </button>
@@ -82,6 +90,7 @@
                 <th>{% trans "Full name" %}</th>
                 <th>{% trans "IIN" %}</th>
                 <th>{% trans "Phone" %}</th>
+                <th>{% trans "Method" %}</th>
                 <th>{% trans "Status" %}</th>
                 <th>{% trans "SMS link" %}</th>
             </tr>
@@ -94,6 +103,7 @@
                     <td><strong>{{ signer.full_name }}</strong></td>
                     <td>{{ signer.iin }}</td>
                     <td>{{ signer.phone }}</td>
+                    <td>{{ signer.get_signing_method_display }}</td>
                     <td>
                         <span class="badge badge-muted">
                             {{ signer.get_status_display }}
@@ -114,7 +124,7 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">
                             <h3>{% trans "No signers yet" %}</h3>
                             <p>{% trans "Add at least one signer for this document." %}</p>

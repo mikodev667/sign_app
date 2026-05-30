@@ -35,13 +35,14 @@ class SignerService:
     @classmethod
     @transaction.atomic
     def add_signer(
-        cls,
-        *,
-        document: Document,
-        full_name: str,
-        iin: str,
-        phone: str,
-        signing_order: int = 1,
+            cls,
+            *,
+            document: Document,
+            full_name: str,
+            iin: str,
+            phone: str,
+            signing_order: int = 1,
+            signing_method: str = Signer.SigningMethod.EGOV_MOBILE,
     ) -> Signer:
         cls.ensure_document_can_be_edited(document)
 
@@ -55,6 +56,9 @@ class SignerService:
         cls.validate_iin(iin)
         cls.validate_phone(phone)
         cls.validate_signing_order(signing_order)
+
+        if signing_method not in Signer.SigningMethod.values:
+            raise ValueError("Invalid signing method.")
 
         existing_signer = Signer.objects.filter(
             document=document,
@@ -70,6 +74,7 @@ class SignerService:
             iin=iin,
             phone=phone,
             signing_order=signing_order,
+            signing_method=signing_method,
             status=Signer.Status.PENDING,
         )
 
@@ -92,6 +97,10 @@ class SignerService:
                 iin=item.get("iin", ""),
                 phone=item.get("phone", ""),
                 signing_order=int(item.get("signing_order", 1)),
+                signing_method=item.get(
+                    "signing_method",
+                    Signer.SigningMethod.EGOV_MOBILE,
+                ),
             )
 
             created_signers.append(signer)

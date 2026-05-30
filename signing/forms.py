@@ -6,7 +6,7 @@ from signing.models import Signer
 class SignerForm(forms.ModelForm):
     class Meta:
         model = Signer
-        fields = ["full_name", "iin", "phone", "signing_order"]
+        fields = ["full_name", "iin", "phone", "signing_order", "signing_method"]
 
         widgets = {
             "full_name": forms.TextInput(attrs={
@@ -25,5 +25,8 @@ class SignerForm(forms.ModelForm):
             "signing_order": forms.NumberInput(attrs={
                 "class": "form-control",
                 "min": "1",
+            }),
+            "signing_method": forms.Select(attrs={
+                "class": "form-control",
             }),
         }

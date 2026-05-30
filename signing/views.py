@@ -6,15 +6,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
-
 from documents.models import Document
 from signing.forms import SignerForm
-from signing.models import Signer, SigningSession
 from signing.services.access_token_service import SignerAccessTokenService
 from signing.services.egov_mobile_service import EgovMobileSigningService
 from signing.services.signer_service import SignerService
-
 from signing.services.sms_signing_service import SmsSigningService
+from signing.services.sms_gateway_service import SmsGatewayService, SmsGatewayError
+from signing.models import Signer, SigningSession, Signature, SigningAuditLog
+from signing.services.audit_log_service import SigningAuditLogService
 
 @login_required
 def document_signers(request, document_pk):
@@ -35,6 +35,7 @@ def document_signers(request, document_pk):
                     iin=form.cleaned_data["iin"],
                     phone=form.cleaned_data["phone"],
                     signing_order=form.cleaned_data["signing_order"],
+                    signing_method=form.cleaned_data["signing_method"],
                 )
 
                 if document.status == Document.Status.DRAFT:
@@ -75,9 +76,39 @@ def create_signer_access_link(request, signer_pk):
     relative_url = f"/signing/s/{created_token.raw_token}/"
     absolute_url = request.build_absolute_uri(relative_url)
 
+    sms_text = (
+        f"TrustMe: Вам отправлен документ на подпись: "
+        f"{signer.document.title}. "
+        f"Ссылка: {absolute_url}"
+    )
+
+    try:
+        SmsGatewayService.send_sms(
+            phone=signer.phone,
+            text=sms_text,
+        )
+    except SmsGatewayError as exc:
+        messages.error(
+            request,
+            f"Signing link was created, but SMS was not sent: {exc}",
+        )
+        return redirect("signing:document_signers", document_pk=signer.document_id)
+
+    SigningAuditLogService.log(
+        document=signer.document,
+        signer=signer,
+        event=SigningAuditLog.Event.INVITATION_SMS_SENT,
+        request=request,
+        metadata={
+            "access_token_id": created_token.access_token.id,
+            "sms_provider": "mobizon",
+            "phone": signer.phone,
+        },
+    )
+
     messages.success(
         request,
-        f"Signing link created. For SMS testing, copy this link: {absolute_url}",
+        "Signing invitation SMS was sent successfully.",
     )
 
     return redirect("signing:document_signers", document_pk=signer.document_id)
@@ -95,6 +126,16 @@ def signer_public_page(request, token):
     if not access_token.used_at:
         access_token.used_at = timezone.now()
         access_token.save(update_fields=["used_at"])
+
+    SigningAuditLogService.log(
+        document=document,
+        signer=signer,
+        event=SigningAuditLog.Event.LINK_OPENED,
+        request=request,
+        metadata={
+            "access_token_id": access_token.id,
+        },
+    )
 
     if signer.status in [Signer.Status.PENDING, Signer.Status.SMS_SENT]:
         signer.status = Signer.Status.OPENED
@@ -291,20 +332,32 @@ def start_sms_signing(request, token):
         return redirect("signing:signer_public_page", token=token)
 
     try:
-        session, otp = SmsSigningService.create_session(signer=signer)
+        session = SmsSigningService.create_session(signer=signer)
     except ValueError as exc:
         messages.error(request, str(exc))
         return redirect("signing:signer_public_page", token=token)
+    except SmsGatewayError as exc:
+        messages.error(request, f"SMS code was not sent: {exc}")
+        return redirect("signing:signer_public_page", token=token)
 
-    # В тестовой версии показываем код в сообщении.
-    # После подключения реального SMS-провайдера это уберем.
+    SigningAuditLogService.log(
+        document=signer.document,
+        signer=signer,
+        signing_session=session,
+        event=SigningAuditLog.Event.SMS_CODE_SENT,
+        request=request,
+        metadata={
+            "sms_provider": "mobizon",
+            "phone": signer.phone,
+        },
+    )
+
     messages.success(
         request,
-        f"SMS code generated. Test code: {otp}"
+        "SMS confirmation code was sent to your phone."
     )
 
     return redirect("signing:signer_public_page", token=token)
-
 
 @require_POST
 def complete_sms_signing(request, token):
@@ -333,13 +386,28 @@ def complete_sms_signing(request, token):
         return redirect("signing:signer_public_page", token=token)
 
     try:
-        SmsSigningService.complete_session(
+        signature = SmsSigningService.complete_session(
             session=session,
             otp=otp,
+            ip_address=request.META.get("REMOTE_ADDR", ""),
+            user_agent=request.META.get("HTTP_USER_AGENT", ""),
         )
     except ValueError as exc:
         messages.error(request, str(exc))
         return redirect("signing:signer_public_page", token=token)
+
+    SigningAuditLogService.log(
+        document=signer.document,
+        signer=signer,
+        signing_session=session,
+        event=SigningAuditLog.Event.DOCUMENT_SIGNED,
+        request=request,
+        signed_content_hash=signature.signed_content_hash,
+        metadata={
+            "provider": "sms",
+            "signature_id": signature.id,
+        },
+    )
 
     messages.success(request, "Document signed successfully by SMS confirmation.")
     return redirect("signing:signer_public_page", token=token)

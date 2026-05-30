@@ -12,6 +12,18 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+#настройки mobizon
+SMS_BACKEND = os.getenv("SMS_BACKEND", "console")
+SMS_TIMEOUT_SECONDS = int(os.getenv("SMS_TIMEOUT_SECONDS", "10"))
+
+MOBIZON_API_URL = os.getenv("MOBIZON_API_URL", "https://api.mobizon.kz/service")
+MOBIZON_API_KEY = os.getenv("MOBIZON_API_KEY", "")
+MOBIZON_SENDER = os.getenv("MOBIZON_SENDER", "")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

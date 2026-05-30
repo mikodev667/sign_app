@@ -12,6 +12,10 @@ class Signer(models.Model):
         FAILED = "failed", "Failed"
         EXPIRED = "expired", "Expired"
 
+    class SigningMethod(models.TextChoices):
+        EGOV_MOBILE = "egov_mobile", "eGov Mobile"
+        SMS = "sms", "SMS confirmation"
+
     document = models.ForeignKey(
         "documents.Document",
         on_delete=models.CASCADE,
@@ -23,6 +27,12 @@ class Signer(models.Model):
     phone = models.CharField(max_length=30)
 
     signing_order = models.PositiveIntegerField(default=1)
+
+    signing_method = models.CharField(
+        max_length=32,
+        choices=SigningMethod.choices,
+        default=SigningMethod.EGOV_MOBILE,
+    )
 
     status = models.CharField(
         max_length=30,
@@ -174,3 +184,68 @@ class Signature(models.Model):
 
     def __str__(self):
         return f"Signature for {self.signer}"
+
+class SigningAuditLog(models.Model):
+    class Event(models.TextChoices):
+        SIGNER_ADDED = "signer_added", "Signer added"
+        ACCESS_LINK_CREATED = "access_link_created", "Access link created"
+        INVITATION_SMS_SENT = "invitation_sms_sent", "Invitation SMS sent"
+        LINK_OPENED = "link_opened", "Link opened"
+        EGOV_SESSION_STARTED = "egov_session_started", "eGov Mobile session started"
+        SMS_CODE_SENT = "sms_code_sent", "SMS code sent"
+        SMS_CODE_FAILED = "sms_code_failed", "SMS code failed"
+        SMS_CODE_CONFIRMED = "sms_code_confirmed", "SMS code confirmed"
+        DOCUMENT_SIGNED = "document_signed", "Document signed"
+        SIGNING_FAILED = "signing_failed", "Signing failed"
+
+    document = models.ForeignKey(
+        "documents.Document",
+        on_delete=models.CASCADE,
+        related_name="signing_audit_logs",
+    )
+
+    signer = models.ForeignKey(
+        "signing.Signer",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="signing_audit_logs",
+    )
+
+    signing_session = models.ForeignKey(
+        "signing.SigningSession",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="signing_audit_logs",
+    )
+
+    event = models.CharField(
+        max_length=64,
+        choices=Event.choices,
+    )
+
+    signing_method = models.CharField(
+        max_length=32,
+        blank=True,
+    )
+
+    phone = models.CharField(max_length=32, blank=True)
+    iin = models.CharField(max_length=12, blank=True)
+    full_name = models.CharField(max_length=255, blank=True)
+
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True)
+
+    document_hash = models.CharField(max_length=128, blank=True)
+    signed_content_hash = models.CharField(max_length=128, blank=True)
+
+    metadata = models.JSONField(default=dict, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"{self.event} — document={self.document_id} — {self.created_at}"
