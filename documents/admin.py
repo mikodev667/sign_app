@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .services.docx_template_service import DocxTemplateService
-from .models import DocumentTemplate, Document, DocumentFieldValue
+from .models import DocumentTemplate, Document, DocumentFieldValue, TemplateParty, TemplatePartyField
 from .services.document_docx_render_service import DocumentDocxRenderService
 
 class DocumentFieldValueInline(admin.TabularInline):
@@ -24,6 +24,36 @@ class DocumentTemplateAdmin(admin.ModelAdmin):
             )
             obj.save(update_fields=["variables", "updated_at"])
 
+class TemplatePartyFieldInline(admin.TabularInline):
+    model = TemplatePartyField
+    extra = 1
+
+
+class TemplatePartyInline(admin.TabularInline):
+    model = TemplateParty
+    extra = 1
+    
+@admin.register(TemplateParty)
+class TemplatePartyAdmin(admin.ModelAdmin):
+    list_display = ("title", "template", "variable_prefix", "signing_order", "is_signer")
+    list_filter = ("template", "is_signer")
+    search_fields = ("title", "variable_prefix")
+    inlines = [TemplatePartyFieldInline]
+
+
+@admin.register(TemplatePartyField)
+class TemplatePartyFieldAdmin(admin.ModelAdmin):
+    list_display = (
+        "label",
+        "party",
+        "variable_name",
+        "field_type",
+        "is_required",
+        "is_system",
+        "order",
+    )
+    list_filter = ("field_type", "is_required", "is_system")
+    search_fields = ("label", "variable_name")
 
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):

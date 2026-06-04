@@ -134,7 +134,8 @@
     }
 
     .field-block input,
-    .field-block textarea {
+    .field-block textarea,
+    .field-block select {
         width: 100%;
         box-sizing: border-box;
         padding: 12px;
@@ -204,6 +205,62 @@
             </div>
 
             <div class="fields-content">
+
+                {% for party in parties %}
+                    <div class="group-card">
+                        <div class="group-header">
+                            {{ party.title }}
+                        </div>
+
+                        <div class="group-body">
+                            {% for party_field in party.fields.all %}
+                                {% with full_key=party.variable_prefix|add:"_"|add:party_field.variable_name %}
+                                    {% for field in fields %}
+                                        {% if field.field_name == full_key %}
+                                            <div class="field-block">
+                                                <label>
+                                                    {{ party_field.label }}
+
+                                                    {% if party_field.is_required %}
+                                                        <span style="color: #b42318;">*</span>
+                                                    {% endif %}
+                                                </label>
+
+                                                {% if party_field.field_type == "signing_method" %}
+                                                    <select
+                                                        name="field_{{ field.id }}"
+                                                        data-variable="{{ field.field_name }}"
+                                                        onchange="updatePreviewVariable(this)"
+                                                        {% if party_field.is_required %}required{% endif %}
+                                                    >
+                                                        <option value="egov_mobile" {% if field.field_value == "egov_mobile" %}selected{% endif %}>
+                                                            eGov Mobile
+                                                        </option>
+
+                                                        <option value="sms" {% if field.field_value == "sms" %}selected{% endif %}>
+                                                            SMS confirmation
+                                                        </option>
+                                                    </select>
+                                                {% else %}
+                                                    <input
+                                                        type="text"
+                                                        name="field_{{ field.id }}"
+                                                        value="{{ field.field_value }}"
+                                                        data-variable="{{ field.field_name }}"
+                                                        placeholder="{{ party_field.label }}"
+                                                        oninput="updatePreviewVariable(this)"
+                                                        {% if party_field.is_required %}required{% endif %}
+                                                    >
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
                 {% for group in document.template.field_schema %}
                     <div class="group-card">
                         <div class="group-header">
@@ -232,7 +289,9 @@
                         </div>
                     </div>
                 {% empty %}
-                    <p>{% trans "No fields schema found." %}</p>
+                    {% if not parties %}
+                        <p>{% trans "No fields schema found." %}</p>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

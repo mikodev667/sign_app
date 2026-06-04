@@ -1,5 +1,3 @@
-from .forms import DocumentTemplateUploadForm, DocumentCreateForm
-from .models import DocumentTemplate, Document, DocumentFieldValue
 from .services.docx_template_service import DocxTemplateService
 from .services.document_docx_render_service import DocumentDocxRenderService
 import json
@@ -7,11 +5,25 @@ import re
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import DocumentTemplate
 from .services.docx_preview_service import DocxPreviewService
 from django.utils.html import escape
+from signing.models import Signer
+from django.db import transaction
+from .forms import (
+    DocumentTemplateUploadForm,
+    DocumentCreateForm,
+    DocumentFromTemplateForm,
+    TemplatePartyForm,
+    TemplatePartyFieldForm,
+)
 
-from .forms import DocumentFromTemplateForm
+from .models import (
+    DocumentTemplate,
+    Document,
+    DocumentFieldValue,
+    TemplateParty,
+    TemplatePartyField,
+)
 
 @login_required
 def template_list(request):
@@ -89,6 +101,37 @@ def document_create(request):
     })
 
 
+def create_signers_from_template_parties(document, values):
+    for party in document.template.parties.prefetch_related("fields").all():
+        if not party.is_signer:
+            continue
+
+        prefix = party.variable_prefix
+
+        full_name = values.get(f"{prefix}_full_name", "").strip()
+        iin = values.get(f"{prefix}_iin_bin", "").strip()
+        phone = values.get(f"{prefix}_phone", "").strip()
+        signing_method = values.get(f"{prefix}_signing_method", "").strip()
+
+        if not signing_method:
+            signing_method = Signer.SigningMethod.EGOV_MOBILE
+
+        if not full_name or not iin or not phone:
+            continue
+
+        Signer.objects.update_or_create(
+            document=document,
+            template_party=party,
+            defaults={
+                "role_title": party.title,
+                "full_name": full_name,
+                "iin": iin,
+                "phone": phone,
+                "signing_method": signing_method,
+                "signing_order": party.signing_order,
+            }
+        )
+
 @login_required
 def document_fill(request, pk):
     document = get_object_or_404(
@@ -98,6 +141,7 @@ def document_fill(request, pk):
     )
 
     fields = document.field_values.all().order_by("field_name")
+    parties = document.template.parties.prefetch_related("fields").all()
 
     if request.method == "POST":
         values = {}
@@ -126,7 +170,8 @@ def document_fill(request, pk):
 
     return render(request, "documents/document_fill.html", {
         "document": document,
-        "fields": fields
+        "fields": fields,
+        "parties": parties,
     })
 
 
@@ -200,10 +245,15 @@ def template_edit(request, pk):
     else:
         editor_html = ""
 
+    parties = template.parties.prefetch_related("fields").all()
+
     return render(request, "documents/template_edit.html", {
         "template": template,
         "editor_html": editor_html,
         "field_schema_json": json.dumps(template.field_schema or [], ensure_ascii=False),
+        "parties": parties,
+        "party_form": TemplatePartyForm(),
+        "party_field_form": TemplatePartyFieldForm(),
     })
 
 
@@ -239,6 +289,16 @@ def document_create_from_template(request, template_pk):
                             defaults={"field_value": ""}
                         )
 
+            for party in template.parties.prefetch_related("fields").all():
+                for field in party.fields.all():
+                    field_key = f"{party.variable_prefix}_{field.variable_name}"
+
+                    DocumentFieldValue.objects.get_or_create(
+                        document=document,
+                        field_name=field_key,
+                        defaults={"field_value": field.default_value or ""}
+                    )
+
             messages.success(request, "Document created. Fill the fields.")
             return redirect("documents:document_fill", pk=document.pk)
     else:
@@ -250,3 +310,107 @@ def document_create_from_template(request, template_pk):
         "form": form,
         "template": template,
     })
+
+
+@login_required
+def template_party_create(request, template_pk):
+    template = get_object_or_404(
+        DocumentTemplate,
+        pk=template_pk,
+        created_by=request.user
+    )
+
+    if request.method == "POST":
+        form = TemplatePartyForm(request.POST)
+
+        if form.is_valid():
+            party = form.save(commit=False)
+            party.template = template
+            party.save()
+
+            messages.success(request, "Special party group created.")
+        else:
+            messages.error(request, "Could not create special party group.")
+
+    return redirect("documents:template_edit", pk=template.pk)
+
+
+@login_required
+def template_party_field_create(request, template_pk, party_pk):
+    template = get_object_or_404(
+        DocumentTemplate,
+        pk=template_pk,
+        created_by=request.user
+    )
+
+    party = get_object_or_404(
+        TemplateParty,
+        pk=party_pk,
+        template=template
+    )
+
+    if request.method == "POST":
+        form = TemplatePartyFieldForm(request.POST)
+
+        if form.is_valid():
+            field = form.save(commit=False)
+            field.party = party
+            field.is_system = False
+            field.save()
+
+            messages.success(request, "Party field created.")
+        else:
+            messages.error(request, "Could not create party field.")
+
+    return redirect("documents:template_edit", pk=template.pk)
+
+
+@login_required
+def template_party_delete(request, template_pk, party_pk):
+    template = get_object_or_404(
+        DocumentTemplate,
+        pk=template_pk,
+        created_by=request.user
+    )
+
+    party = get_object_or_404(
+        TemplateParty,
+        pk=party_pk,
+        template=template
+    )
+
+    if request.method == "POST":
+        party.delete()
+        messages.success(request, "Special party group deleted.")
+
+    return redirect("documents:template_edit", pk=template.pk)
+
+
+@login_required
+def template_party_field_delete(request, template_pk, party_pk, field_pk):
+    template = get_object_or_404(
+        DocumentTemplate,
+        pk=template_pk,
+        created_by=request.user
+    )
+
+    party = get_object_or_404(
+        TemplateParty,
+        pk=party_pk,
+        template=template
+    )
+
+    field = get_object_or_404(
+        TemplatePartyField,
+        pk=field_pk,
+        party=party
+    )
+
+    if request.method == "POST":
+        if field.is_system:
+            messages.error(request, "System fields cannot be deleted.")
+        else:
+            field.delete()
+            messages.success(request, "Party field deleted.")
+
+    return redirect("documents:template_edit", pk=template.pk)

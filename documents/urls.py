@@ -15,4 +15,27 @@ urlpatterns = [
 
     path("templates/<int:pk>/edit/", views.template_edit, name="template_edit"),
     path("templates/<int:template_pk>/documents/create/", views.document_create_from_template, name="document_create_from_template"),
+    path(
+        "templates/<int:template_pk>/parties/create/",
+        views.template_party_create,
+        name="template_party_create"
+    ),
+
+    path(
+        "templates/<int:template_pk>/parties/<int:party_pk>/fields/create/",
+        views.template_party_field_create,
+        name="template_party_field_create"
+    ),
+
+    path(
+        "templates/<int:template_pk>/parties/<int:party_pk>/delete/",
+        views.template_party_delete,
+        name="template_party_delete"
+    ),
+
+    path(
+        "templates/<int:template_pk>/parties/<int:party_pk>/fields/<int:field_pk>/delete/",
+        views.template_party_field_delete,
+        name="template_party_field_delete"
+    ),
 ]

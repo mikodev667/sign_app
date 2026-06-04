@@ -159,3 +159,90 @@ class DocumentFieldValue(models.Model):
 
     def __str__(self):
         return f"{self.document} - {self.field_name}"
+
+
+class TemplateParty(models.Model):
+    class PartyType(models.TextChoices):
+        INDIVIDUAL = "individual", "Individual"
+        COMPANY = "company", "Company"
+
+    template = models.ForeignKey(
+        DocumentTemplate,
+        on_delete=models.CASCADE,
+        related_name="parties"
+    )
+
+    title = models.CharField(max_length=255)
+    variable_prefix = models.SlugField(max_length=100)
+
+    party_type = models.CharField(
+        max_length=30,
+        choices=PartyType.choices,
+        default=PartyType.INDIVIDUAL
+    )
+
+    signing_order = models.PositiveIntegerField(default=1)
+
+    is_signer = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["signing_order", "id"]
+        unique_together = ("template", "variable_prefix")
+
+    def __str__(self):
+        return f"{self.template.title} — {self.title}"
+
+class TemplatePartyField(models.Model):
+    class FieldType(models.TextChoices):
+        TEXT = "text", "Text"
+        PHONE = "phone", "Phone"
+        IIN_BIN = "iin_bin", "IIN / BIN"
+        SIGNING_METHOD = "signing_method", "Signing method"
+        EMAIL = "email", "Email"
+        DATE = "date", "Date"
+        NUMBER = "number", "Number"
+
+    class SystemField(models.TextChoices):
+        FULL_NAME = "full_name", "Full name"
+        IIN_BIN = "iin_bin", "IIN / BIN"
+        PHONE = "phone", "Phone"
+        SIGNING_METHOD = "signing_method", "Signing method"
+
+    party = models.ForeignKey(
+        TemplateParty,
+        on_delete=models.CASCADE,
+        related_name="fields"
+    )
+
+    label = models.CharField(max_length=255)
+
+    variable_name = models.SlugField(
+        max_length=100,
+        help_text="Example: full_name, iin_bin, phone, address, iban"
+    )
+
+    field_type = models.CharField(
+        max_length=30,
+        choices=FieldType.choices,
+        default=FieldType.TEXT
+    )
+
+    is_required = models.BooleanField(default=True)
+
+    is_system = models.BooleanField(
+        default=False,
+        help_text="System fields are required for signing logic"
+    )
+
+    order = models.PositiveIntegerField(default=1)
+
+    default_value = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        unique_together = ("party", "variable_name")
+
+    def __str__(self):
+        return f"{self.party.title} — {self.label}"

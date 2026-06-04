@@ -44,6 +44,19 @@ class Signer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     signed_at = models.DateTimeField(blank=True, null=True)
 
+    template_party = models.ForeignKey(
+        "documents.TemplateParty",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="signers",
+    )
+
+    role_title = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+
     class Meta:
         verbose_name = "Signer"
         verbose_name_plural = "Signers"

@@ -229,10 +229,113 @@
             </div>
 
             <div class="fields-content">
+
+                <div class="group-card">
+                    <div class="group-header">
+                        {% trans "Special signer groups" %}
+                    </div>
+
+                    <div class="group-body">
+                        <form method="post" action="{% url 'documents:template_party_create' template.pk %}">
+                            {% csrf_token %}
+
+                            <div class="schema-actions">
+                                {{ party_form.title }}
+                                {{ party_form.variable_prefix }}
+                                {{ party_form.party_type }}
+                                {{ party_form.signing_order }}
+
+                                <label>
+                                    {{ party_form.is_signer }}
+                                    {% trans "Create signer from this group" %}
+                                </label>
+
+                                <button class="btn btn-secondary" type="submit">
+                                    {% trans "Add special group" %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                {% for party in parties %}
+                    <div class="group-card">
+                        <div class="group-header">
+                            <span>
+                                {{ party.title }}
+                                <span class="variable-chip">{{ party.variable_prefix }}</span>
+                            </span>
+
+                            <form method="post" action="{% url 'documents:template_party_delete' template.pk party.pk %}">
+                                {% csrf_token %}
+                                <button class="small-btn btn-danger" type="submit">
+                                    {% trans "Delete" %}
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="group-body">
+                            {% for field in party.fields.all %}
+                                <div class="field-row">
+                                    <label>{{ field.label }}</label>
+
+                                    <div style="margin-bottom: 8px;">
+                                        <span class="variable-chip">
+                                            {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }} {% templatetag closevariable %}
+                                        </span>
+                                    </div>
+
+                                    <div class="field-actions">
+                                        <button
+                                            class="small-btn btn-secondary"
+                                            type="button"
+                                            onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}')"
+                                        >
+                                            {% trans "Insert into document" %}
+                                        </button>
+
+                                        {% if not field.is_system %}
+                                            <form method="post" action="{% url 'documents:template_party_field_delete' template.pk party.pk field.pk %}">
+                                                {% csrf_token %}
+                                                <button class="small-btn btn-danger" type="submit">
+                                                    {% trans "Delete" %}
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <form method="post" action="{% url 'documents:template_party_field_create' template.pk party.pk %}">
+                                {% csrf_token %}
+
+                                <div class="schema-actions">
+                                    {{ party_field_form.label }}
+                                    {{ party_field_form.variable_name }}
+                                    {{ party_field_form.field_type }}
+                                    {{ party_field_form.default_value }}
+                                    {{ party_field_form.order }}
+
+                                    <label>
+                                        {{ party_field_form.is_required }}
+                                        {% trans "Required" %}
+                                    </label>
+
+                                    <button class="btn btn-secondary" type="submit">
+                                        {% trans "Add field to special group" %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <hr>
+
                 <div class="schema-actions">
-                    <input id="newGroupTitle" type="text" placeholder="{% trans 'Group title, example: Party 1 data' %}">
+                    <input id="newGroupTitle" type="text" placeholder="{% trans 'Group title, example: Contract data' %}">
                     <button class="btn btn-secondary" type="button" onclick="addGroup()">
-                        {% trans "Add group" %}
+                        {% trans "Add normal group" %}
                     </button>
                 </div>
 
