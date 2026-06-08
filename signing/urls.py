@@ -67,4 +67,15 @@ urlpatterns = [
         views.signature_confirmation,
         name="signature_confirmation",
     ),
+    #ecp confirmation
+    path(
+        "s/<str:token>/ecp/payload/",
+        views.ecp_signing_payload,
+        name="ecp_signing_payload",
+    ),
+    path(
+        "s/<str:token>/ecp/complete/",
+        views.ecp_signing_complete,
+        name="ecp_signing_complete",
+    ),
 ]

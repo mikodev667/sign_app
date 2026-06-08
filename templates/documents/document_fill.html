@@ -240,6 +240,10 @@
                                                         <option value="sms" {% if field.field_value == "sms" %}selected{% endif %}>
                                                             SMS confirmation
                                                         </option>
+
+                                                        <option value="ecp" {% if field.field_value == "ecp" %}selected{% endif %}>
+                                                            ЭЦП
+                                                        </option>
                                                     </select>
                                                 {% else %}
                                                     <input

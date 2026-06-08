@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Sign document" %}{% endblock %}
 
@@ -92,6 +93,29 @@
                 <strong>{% trans "Signed content hash" %}:</strong>
                 <span style="word-break: break-all;">{{ signature.signed_content_hash }}</span>
             </p>
+
+            <p>
+                <strong>{% trans "Provider" %}:</strong>
+                {{ signature.provider }}
+            </p>
+
+            {% if signature.certificate_iin %}
+                <p>
+                    <strong>{% trans "Certificate IIN" %}:</strong>
+                    {{ signature.certificate_iin }}
+                </p>
+            {% endif %}
+
+            {% if signature.is_valid %}
+                <p class="text-success">
+                    {% trans "Signature is valid." %}
+                </p>
+            {% elif signature.validation_error %}
+                <p class="text-muted">
+                    <strong>{% trans "Validation note" %}:</strong>
+                    {{ signature.validation_error }}
+                </p>
+            {% endif %}
 
             <a href="{% url 'signing:signature_confirmation' signature.pk %}" class="btn btn-primary">
                 {% trans "View confirmation sheet" %}
@@ -209,6 +233,32 @@
                 </form>
             {% endif %}
 
+        {% elif signer.signing_method == "ecp" %}
+
+            <p class="text-muted">
+                {% trans "To sign this document using ECP, make sure NCALayer is installed and running on your computer." %}
+            </p>
+
+            <p class="text-muted">
+                {% trans "After clicking the button, choose your ECP key and confirm signing in NCALayer." %}
+            </p>
+
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <button
+                type="button"
+                id="ecp-sign-button"
+                class="btn btn-primary"
+                onclick="signDocumentWithEcp(
+                    '{% url 'signing:ecp_signing_payload' token %}',
+                    '{% url 'signing:ecp_signing_complete' token %}'
+                )"
+            >
+                {% trans "Sign with ECP" %}
+            </button>
+
+            <p id="ecp-status" class="text-muted" style="margin-top: 12px;"></p>
+
         {% endif %}
     </div>
 
@@ -246,6 +296,10 @@
         </div>
     {% endif %}
 
+{% endif %}
+
+{% if signer.signing_method == "ecp" and signer.status != "signed" %}
+    <script src="{% static 'js/ncalayer_ecp_signing.js' %}"></script>
 {% endif %}
 
 {% endblock %}

@@ -19,6 +19,7 @@ class Signer(models.Model):
     class SigningMethod(models.TextChoices):
         EGOV_MOBILE = "egov_mobile", "eGov Mobile"
         SMS = "sms", "SMS confirmation"
+        ECP = "ecp", "ЭЦП"
 
     document = models.ForeignKey(
         "documents.Document",
@@ -148,6 +149,7 @@ class SigningSession(models.Model):
         EGOV_MOBILE = "egov_mobile", "eGov Mobile"
         MOCK = "mock", "Mock"
         SMS = "sms", "SMS confirmation"
+        ECP = "ecp", "ЭЦП"
 
     class Status(models.TextChoices):
         CREATED = "created", "Created"
@@ -361,6 +363,11 @@ class SigningAuditLog(models.Model):
         LINK_OPENED = "link_opened", "Link opened"
 
         EGOV_SESSION_STARTED = "egov_session_started", "eGov Mobile session started"
+
+        ECP_SIGNING_STARTED = "ecp_signing_started", "ECP signing started"
+        ECP_SIGNATURE_RECEIVED = "ecp_signature_received", "ECP signature received"
+        ECP_SIGNATURE_VALIDATED = "ecp_signature_validated", "ECP signature validated"
+        ECP_SIGNATURE_INVALID = "ecp_signature_invalid", "ECP signature invalid"
 
         SMS_CONSENT_ACCEPTED = "sms_consent_accepted", "SMS consent accepted"
         SMS_CODE_REQUESTED = "sms_code_requested", "SMS code requested"

@@ -1,11 +1,11 @@
 import json
+import base64
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST, require_http_methods
 from documents.models import Document
 from signing.forms import SignerForm
 from signing.services.access_token_service import SignerAccessTokenService
@@ -15,6 +15,8 @@ from signing.services.sms_signing_service import SmsSigningService
 from signing.services.sms_gateway_service import SmsGatewayService, SmsGatewayError
 from signing.models import Signer, SigningSession, Signature, SigningAuditLog
 from signing.services.audit_log_service import SigningAuditLogService
+from signing.services.ecp_signing_service import EcpSigningService
+from django.views.decorators.http import require_POST, require_GET
 
 @login_required
 def document_signers(request, document_pk):
@@ -431,3 +433,140 @@ def signature_confirmation(request, signature_pk):
         "signer": signature.signer,
         "signing_session": signature.signing_session,
     })
+
+
+@require_GET
+def ecp_signing_payload(request, token):
+    access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
+
+    if not access_token:
+        return JsonResponse(
+            {"ok": False, "error": "Invalid or expired signing link."},
+            status=404,
+        )
+
+    signer = access_token.signer
+
+    if signer.status == Signer.Status.SIGNED:
+        return JsonResponse(
+            {"ok": False, "error": "Signer already signed."},
+            status=400,
+        )
+
+    if signer.signing_method != Signer.SigningMethod.ECP:
+        return JsonResponse(
+            {"ok": False, "error": "Signer is not configured for ECP signing."},
+            status=400,
+        )
+
+    document = signer.document
+
+    if not document.content_hash:
+        return JsonResponse(
+            {"ok": False, "error": "Document hash is missing."},
+            status=400,
+        )
+
+    payload = {
+        "document_id": document.id,
+        "signer_id": signer.id,
+        "signer_iin": signer.iin,
+        "document_hash": document.content_hash,
+        "title": document.title,
+    }
+
+    payload_json = json.dumps(payload, ensure_ascii=False, sort_keys=True)
+    payload_base64 = base64.b64encode(payload_json.encode("utf-8")).decode("ascii")
+
+    SigningAuditLogService.log(
+        document=document,
+        signer=signer,
+        event=SigningAuditLog.Event.ECP_SIGNING_STARTED,
+        request=request,
+        signing_method=Signer.SigningMethod.ECP,
+        document_hash=document.content_hash,
+        metadata={
+            "payload": payload,
+        },
+    )
+
+    return JsonResponse(
+        {
+            "ok": True,
+            "payload_base64": payload_base64,
+            "document_hash": document.content_hash,
+            "signer_iin": signer.iin,
+        }
+    )
+
+
+@require_POST
+def ecp_signing_complete(request, token):
+    access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
+
+    if not access_token:
+        return JsonResponse(
+            {"ok": False, "error": "Invalid or expired signing link."},
+            status=404,
+        )
+
+    signer = access_token.signer
+
+    if signer.status == Signer.Status.SIGNED:
+        return JsonResponse(
+            {"ok": False, "error": "Signer already signed."},
+            status=400,
+        )
+
+    if signer.signing_method != Signer.SigningMethod.ECP:
+        return JsonResponse(
+            {"ok": False, "error": "Signer is not configured for ECP signing."},
+            status=400,
+        )
+
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+    except json.JSONDecodeError:
+        return JsonResponse(
+            {"ok": False, "error": "Invalid JSON."},
+            status=400,
+        )
+
+    cms_signature = body.get("cms_signature", "")
+    certificate_subject = body.get("certificate_subject", "")
+    certificate_serial_number = body.get("certificate_serial_number", "")
+
+    if not cms_signature:
+        return JsonResponse(
+            {"ok": False, "error": "CMS signature is required."},
+            status=400,
+        )
+
+    ip_address = SigningAuditLogService.get_client_ip(request)
+    user_agent = SigningAuditLogService.get_user_agent(request)
+
+    try:
+        signature = EcpSigningService.complete_signing(
+            signer=signer,
+            cms_signature=cms_signature,
+            signed_payload=body,
+            certificate_subject=certificate_subject,
+            certificate_serial_number=certificate_serial_number,
+            ip_address=ip_address,
+            user_agent=user_agent,
+        )
+    except ValueError as exc:
+        return JsonResponse(
+            {"ok": False, "error": str(exc)},
+            status=400,
+        )
+
+    return JsonResponse(
+        {
+            "ok": True,
+            "signature_id": signature.id,
+            "redirect_url": request.build_absolute_uri(
+                f"/signing/signature/{signature.pk}/confirmation/"
+            ),
+        }
+    )
