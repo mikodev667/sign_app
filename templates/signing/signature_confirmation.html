@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Signing confirmation" %}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">{% trans "Signing confirmation sheet" %}</h1>
+    <p class="page-subtitle">
+        {% trans "This page confirms that the document was signed electronically." %}
+    </p>
+</div>
+
+<div class="card">
+    <h2>{% trans "Document" %}</h2>
+
+    <p>
+        <strong>{% trans "Title" %}:</strong>
+        {{ document.title }}
+    </p>
+
+    <p>
+        <strong>{% trans "Document ID" %}:</strong>
+        {{ document.id }}
+    </p>
+
+    <p>
+        <strong>{% trans "Document hash" %}:</strong>
+        <span style="word-break: break-all;">{{ document.content_hash }}</span>
+    </p>
+
+    <p>
+        <strong>{% trans "Signed content hash" %}:</strong>
+        <span style="word-break: break-all;">{{ signature.signed_content_hash }}</span>
+    </p>
+</div>
+
+<div class="card">
+    <h2>{% trans "Signer" %}</h2>
+
+    <p>
+        <strong>{% trans "Full name" %}:</strong>
+        {{ signer.full_name }}
+    </p>
+
+    <p>
+        <strong>{% trans "IIN" %}:</strong>
+        {{ signer.iin }}
+    </p>
+
+    <p>
+        <strong>{% trans "Phone" %}:</strong>
+        {{ signer.phone }}
+    </p>
+
+    <p>
+        <strong>{% trans "Signing method" %}:</strong>
+        {{ signer.get_signing_method_display }}
+    </p>
+
+    <p>
+        <strong>{% trans "Signed at" %}:</strong>
+        {{ signature.signed_at }}
+    </p>
+</div>
+
+<div class="card">
+    <h2>{% trans "SMS confirmation" %}</h2>
+
+    <p>
+        <strong>{% trans "Provider" %}:</strong>
+        {{ signature.provider }}
+    </p>
+
+    <p>
+        <strong>{% trans "Session ID" %}:</strong>
+        {{ signing_session.id }}
+    </p>
+
+    <p>
+        <strong>{% trans "Session status" %}:</strong>
+        {{ signing_session.get_status_display }}
+    </p>
+
+    <p>
+        <strong>{% trans "Certificate serial" %}:</strong>
+        {{ signature.certificate_serial }}
+    </p>
+
+    <p>
+        <strong>{% trans "Signature valid" %}:</strong>
+        {% if signature.is_valid %}
+            {% trans "Yes" %}
+        {% else %}
+            {% trans "No" %}
+        {% endif %}
+    </p>
+</div>
+
+<div class="card">
+    <h2>{% trans "Consent text" %}</h2>
+
+    <p>
+        {{ signature.consent_text }}
+    </p>
+</div>
+
+<div class="card">
+    <h2>{% trans "Technical confirmation" %}</h2>
+
+    <pre style="white-space: pre-wrap;">{{ signature.confirmation_text }}</pre>
+</div>
+
+<div class="card">
+    <h2>{% trans "Technical data" %}</h2>
+
+    <p>
+        <strong>{% trans "IP address" %}:</strong>
+        {{ signature.ip_address }}
+    </p>
+
+    <p>
+        <strong>{% trans "User agent" %}:</strong>
+        {{ signature.user_agent }}
+    </p>
+
+    <p>
+        <strong>{% trans "Created at" %}:</strong>
+        {{ signature.created_at }}
+    </p>
+</div>
+
+{% endblock %}

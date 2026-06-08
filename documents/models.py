@@ -2,6 +2,7 @@ import hashlib
 
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 class DocumentTemplate(models.Model):
@@ -12,26 +13,26 @@ class DocumentTemplate(models.Model):
     organization = models.ForeignKey(
         "organizations.Organization",
         on_delete=models.CASCADE,
-        related_name="document_templates"
+        related_name="document_templates",
     )
 
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
-        related_name="created_document_templates"
+        related_name="created_document_templates",
     )
 
     title = models.CharField(max_length=255)
 
     body_template = models.TextField(
         blank=True,
-        help_text="Use variables like {{ client_name }}, {{ amount }}"
+        help_text="Use variables like {{ client_name }}, {{ amount }}",
     )
 
     template_file = models.FileField(
         upload_to="document_templates/docx/",
         blank=True,
-        null=True
+        null=True,
     )
 
     variables = models.JSONField(default=list, blank=True)
@@ -39,13 +40,13 @@ class DocumentTemplate(models.Model):
     field_schema = models.JSONField(
         default=list,
         blank=True,
-        help_text="Groups and fields for document form editor"
+        help_text="Groups and fields for document form editor",
     )
 
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
-        default=Status.ACTIVE
+        default=Status.ACTIVE,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -72,19 +73,19 @@ class Document(models.Model):
     organization = models.ForeignKey(
         "organizations.Organization",
         on_delete=models.CASCADE,
-        related_name="documents"
+        related_name="documents",
     )
 
     template = models.ForeignKey(
         DocumentTemplate,
         on_delete=models.PROTECT,
-        related_name="documents"
+        related_name="documents",
     )
 
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
-        related_name="created_documents"
+        related_name="created_documents",
     )
 
     title = models.CharField(max_length=255)
@@ -92,7 +93,8 @@ class Document(models.Model):
     status = models.CharField(
         max_length=30,
         choices=Status.choices,
-        default=Status.DRAFT
+        default=Status.DRAFT,
+        db_index=True,
     )
 
     rendered_html = models.TextField(blank=True)
@@ -100,19 +102,27 @@ class Document(models.Model):
     rendered_pdf_file = models.FileField(
         upload_to="documents/pdf/",
         blank=True,
-        null=True
+        null=True,
     )
 
     rendered_docx_file = models.FileField(
         upload_to="documents/docx/",
         blank=True,
-        null=True
+        null=True,
     )
 
     content_hash = models.CharField(
         max_length=64,
         blank=True,
-        db_index=True
+        db_index=True,
+        help_text="SHA-256 hash of the final document content",
+    )
+
+    locked_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Document becomes locked after signer invitation",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -127,25 +137,114 @@ class Document(models.Model):
     def __str__(self):
         return self.title
 
+    def is_locked(self):
+        """
+        Документ нельзя редактировать, если он уже заблокирован
+        или вышел из статуса draft.
+        """
+        return self.locked_at is not None or self.status != self.Status.DRAFT
+
+    def can_be_edited(self):
+        """
+        Используем это во views/forms перед любым изменением документа.
+        """
+        return not self.is_locked()
+
     def calculate_content_hash(self):
-        source = self.rendered_html or ""
+        """
+        Считаем SHA-256 хеш финального содержимого документа.
+
+        Приоритет:
+        1. PDF-файл, если он есть.
+        2. DOCX-файл, если он есть.
+        3. rendered_html + значения полей.
+        """
+
+        sha256 = hashlib.sha256()
+
+        file_field = None
+
+        if self.rendered_pdf_file:
+            file_field = self.rendered_pdf_file
+        elif self.rendered_docx_file:
+            file_field = self.rendered_docx_file
+
+        if file_field:
+            file_field.open("rb")
+            try:
+                for chunk in file_field.chunks():
+                    sha256.update(chunk)
+            finally:
+                file_field.close()
+
+            return sha256.hexdigest()
+
+        source_parts = [
+            f"document_id:{self.id}",
+            f"title:{self.title}",
+            f"template_id:{self.template_id}",
+            f"rendered_html:{self.rendered_html or ''}",
+        ]
 
         for value in self.field_values.all().order_by("field_name"):
-            source += f"{value.field_name}:{value.field_value};"
+            source_parts.append(
+                f"{value.field_name}:{value.field_value}"
+            )
+
+        source = "|".join(source_parts)
 
         return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
     def update_content_hash(self, save=True):
+        """
+        Обновляет content_hash.
+
+        Важно:
+        Этот метод нельзя вызывать для изменения документа после блокировки.
+        Но в момент самой блокировки или подписания использовать можно.
+        """
         self.content_hash = self.calculate_content_hash()
+
         if save:
             self.save(update_fields=["content_hash", "updated_at"])
+
+        return self.content_hash
+
+    def lock_for_signing(self, save=True):
+        """
+        Блокирует документ после приглашения подписанта.
+
+        После этого документ нельзя редактировать.
+        Также фиксируем content_hash на момент отправки на подписание.
+        """
+
+        if not self.content_hash:
+            self.content_hash = self.calculate_content_hash()
+
+        if not self.locked_at:
+            self.locked_at = timezone.now()
+
+        if self.status == self.Status.DRAFT:
+            self.status = self.Status.WAITING_FOR_SIGNERS
+
+        if save:
+            self.save(
+                update_fields=[
+                    "content_hash",
+                    "locked_at",
+                    "status",
+                    "updated_at",
+                ]
+            )
+
+        return self
 
 
 class DocumentFieldValue(models.Model):
     document = models.ForeignKey(
         Document,
         on_delete=models.CASCADE,
-        related_name="field_values"
+        related_name="field_values",
     )
 
     field_name = models.CharField(max_length=100)
@@ -169,7 +268,7 @@ class TemplateParty(models.Model):
     template = models.ForeignKey(
         DocumentTemplate,
         on_delete=models.CASCADE,
-        related_name="parties"
+        related_name="parties",
     )
 
     title = models.CharField(max_length=255)
@@ -178,7 +277,7 @@ class TemplateParty(models.Model):
     party_type = models.CharField(
         max_length=30,
         choices=PartyType.choices,
-        default=PartyType.INDIVIDUAL
+        default=PartyType.INDIVIDUAL,
     )
 
     signing_order = models.PositiveIntegerField(default=1)
@@ -193,6 +292,7 @@ class TemplateParty(models.Model):
 
     def __str__(self):
         return f"{self.template.title} — {self.title}"
+
 
 class TemplatePartyField(models.Model):
     class FieldType(models.TextChoices):
@@ -213,27 +313,27 @@ class TemplatePartyField(models.Model):
     party = models.ForeignKey(
         TemplateParty,
         on_delete=models.CASCADE,
-        related_name="fields"
+        related_name="fields",
     )
 
     label = models.CharField(max_length=255)
 
     variable_name = models.SlugField(
         max_length=100,
-        help_text="Example: full_name, iin_bin, phone, address, iban"
+        help_text="Example: full_name, iin_bin, phone, address, iban",
     )
 
     field_type = models.CharField(
         max_length=30,
         choices=FieldType.choices,
-        default=FieldType.TEXT
+        default=FieldType.TEXT,
     )
 
     is_required = models.BooleanField(default=True)
 
     is_system = models.BooleanField(
         default=False,
-        help_text="System fields are required for signing logic"
+        help_text="System fields are required for signing logic",
     )
 
     order = models.PositiveIntegerField(default=1)

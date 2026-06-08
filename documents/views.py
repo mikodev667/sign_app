@@ -9,6 +9,7 @@ from .services.docx_preview_service import DocxPreviewService
 from django.utils.html import escape
 from signing.models import Signer
 from django.db import transaction
+from signing.services.signer_service import SignerService
 from .forms import (
     DocumentTemplateUploadForm,
     DocumentCreateForm,
@@ -24,6 +25,16 @@ from .models import (
     TemplateParty,
     TemplatePartyField,
 )
+
+def ensure_document_editable_or_redirect(request, document):
+    if hasattr(document, "can_be_edited") and not document.can_be_edited():
+        messages.error(
+            request,
+            "Document cannot be edited after signer invitation."
+        )
+        return redirect("documents:document_list")
+
+    return None
 
 @login_required
 def template_list(request):
@@ -101,7 +112,7 @@ def document_create(request):
     })
 
 
-def create_signers_from_template_parties(document, values):
+def create_signers_from_template_parties(document, values, request=None):
     for party in document.template.parties.prefetch_related("fields").all():
         if not party.is_signer:
             continue
@@ -119,18 +130,39 @@ def create_signers_from_template_parties(document, values):
         if not full_name or not iin or not phone:
             continue
 
-        Signer.objects.update_or_create(
+        existing_signer = Signer.objects.filter(
             document=document,
             template_party=party,
-            defaults={
-                "role_title": party.title,
-                "full_name": full_name,
-                "iin": iin,
-                "phone": phone,
-                "signing_method": signing_method,
-                "signing_order": party.signing_order,
-            }
-        )
+        ).first()
+
+        if existing_signer:
+            existing_signer.full_name = full_name
+            existing_signer.iin = iin
+            existing_signer.phone = SignerService.normalize_phone(phone)
+            existing_signer.signing_method = signing_method
+            existing_signer.signing_order = party.signing_order
+            existing_signer.role_title = party.title
+            existing_signer.save(update_fields=[
+                "full_name",
+                "iin",
+                "phone",
+                "signing_method",
+                "signing_order",
+                "role_title",
+                "updated_at",
+            ])
+        else:
+            SignerService.add_signer(
+                document=document,
+                full_name=full_name,
+                iin=iin,
+                phone=phone,
+                signing_order=party.signing_order,
+                signing_method=signing_method,
+                template_party=party,
+                role_title=party.title,
+                request=request,
+            )
 
 @login_required
 def document_fill(request, pk):
@@ -139,6 +171,10 @@ def document_fill(request, pk):
         pk=pk,
         created_by=request.user
     )
+
+    locked_redirect = ensure_document_editable_or_redirect(request, document)
+    if locked_redirect:
+        return locked_redirect
 
     fields = document.field_values.all().order_by("field_name")
     parties = document.template.parties.prefetch_related("fields").all()
@@ -152,6 +188,8 @@ def document_fill(request, pk):
             field.save(update_fields=["field_value"])
             values[field.field_name] = value
 
+        create_signers_from_template_parties(document, values, request=request)
+
         rendered_html = document.template.body_template or ""
 
         for key, value in values.items():
@@ -162,18 +200,25 @@ def document_fill(request, pk):
             )
 
         document.rendered_html = rendered_html
+        document.status = Document.Status.DRAFT
         document.update_content_hash(save=False)
-        document.save(update_fields=["rendered_html", "content_hash", "updated_at"])
+        document.save(update_fields=[
+            "rendered_html",
+            "status",
+            "content_hash",
+            "updated_at",
+        ])
 
-        messages.success(request, "Document fields saved.")
-        return redirect("documents:document_render_docx", pk=document.pk)
+        DocumentDocxRenderService.render(document)
+
+        messages.success(request, "Document prepared. Invite signers.")
+        return redirect("signing:document_signers", document.pk)
 
     return render(request, "documents/document_fill.html", {
         "document": document,
         "fields": fields,
         "parties": parties,
     })
-
 
 @login_required
 def document_render_docx(request, pk):
@@ -183,7 +228,13 @@ def document_render_docx(request, pk):
         created_by=request.user
     )
 
+    locked_redirect = ensure_document_editable_or_redirect(request, document)
+    if locked_redirect:
+        return locked_redirect
+
     DocumentDocxRenderService.render(document)
+
+    document.update_content_hash(save=True)
 
     messages.success(request, "DOCX document rendered successfully.")
     return redirect("documents:document_list")
@@ -324,16 +375,29 @@ def template_party_create(request, template_pk):
         form = TemplatePartyForm(request.POST)
 
         if form.is_valid():
+            variable_prefix = form.cleaned_data["variable_prefix"].strip()
+
+            exists = TemplateParty.objects.filter(
+                template=template,
+                variable_prefix=variable_prefix
+            ).exists()
+
+            if exists:
+                messages.error(
+                    request,
+                    f"Party with prefix '{variable_prefix}' already exists."
+                )
+                return redirect("documents:template_edit", pk=template.pk)
+
             party = form.save(commit=False)
             party.template = template
             party.save()
 
-            messages.success(request, "Special party group created.")
+            messages.success(request, "Document party created.")
         else:
-            messages.error(request, "Could not create special party group.")
+            messages.error(request, "Could not create document party.")
 
     return redirect("documents:template_edit", pk=template.pk)
-
 
 @login_required
 def template_party_field_create(request, template_pk, party_pk):
@@ -353,6 +417,20 @@ def template_party_field_create(request, template_pk, party_pk):
         form = TemplatePartyFieldForm(request.POST)
 
         if form.is_valid():
+            variable_name = form.cleaned_data["variable_name"].strip()
+
+            exists = TemplatePartyField.objects.filter(
+                party=party,
+                variable_name=variable_name
+            ).exists()
+
+            if exists:
+                messages.error(
+                    request,
+                    f"Field '{variable_name}' already exists in this party."
+                )
+                return redirect("documents:template_edit", pk=template.pk)
+
             field = form.save(commit=False)
             field.party = party
             field.is_system = False
@@ -363,7 +441,6 @@ def template_party_field_create(request, template_pk, party_pk):
             messages.error(request, "Could not create party field.")
 
     return redirect("documents:template_edit", pk=template.pk)
-
 
 @login_required
 def template_party_delete(request, template_pk, party_pk):

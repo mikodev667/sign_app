@@ -42,6 +42,8 @@
         padding: 10px 14px;
         cursor: pointer;
         font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
     }
 
     .btn-primary {
@@ -104,6 +106,18 @@
         padding: 16px;
     }
 
+    .constructor-section {
+        margin-bottom: 18px;
+    }
+
+    .constructor-title {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #6d8585;
+        margin: 0 0 10px;
+    }
+
     .group-card {
         background: #ffffff;
         border: 1px solid #dce7e7;
@@ -116,12 +130,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 10px;
         padding: 12px 14px;
         background: #f7fbfb;
         border-bottom: 1px solid #e4eeee;
         font-weight: 700;
         text-transform: uppercase;
         font-size: 13px;
+    }
+
+    .group-header-title {
+        display: grid;
+        gap: 5px;
     }
 
     .group-body {
@@ -144,18 +164,23 @@
         margin-bottom: 5px;
     }
 
-    .field-row input {
+    .field-row input,
+    .schema-actions input,
+    .schema-actions select {
         width: 100%;
         box-sizing: border-box;
         padding: 10px;
         border: 1px solid #dce7e7;
         border-radius: 8px;
         margin-bottom: 8px;
+        background: #ffffff;
     }
 
     .field-actions {
         display: flex;
+        flex-wrap: wrap;
         gap: 8px;
+        align-items: center;
     }
 
     .small-btn {
@@ -169,14 +194,22 @@
 
     .schema-actions {
         display: grid;
-        gap: 10px;
+        gap: 8px;
         margin-bottom: 16px;
     }
 
-    .schema-actions input {
-        padding: 11px;
-        border: 1px solid #dce7e7;
-        border-radius: 8px;
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #6d8585;
+    }
+
+    .checkbox-row input {
+        width: auto;
+        margin: 0;
     }
 
     .variable-chip {
@@ -187,71 +220,115 @@
         border-radius: 6px;
         font-family: Consolas, monospace;
         font-size: 12px;
+        text-transform: none;
+    }
+
+    .muted-help {
+        font-size: 12px;
+        color: #6d8585;
+        margin: 0 0 12px;
+        line-height: 1.4;
+    }
+
+    .divider {
+        border: none;
+        border-top: 1px solid #e4eeee;
+        margin: 16px 0;
     }
 </style>
 
-<form method="post" onsubmit="saveTemplateBeforeSubmit()">
+<form id="templateSaveForm" method="post" onsubmit="saveTemplateBeforeSubmit()">
     {% csrf_token %}
-
     <input type="hidden" name="body_template" id="bodyTemplateInput">
     <input type="hidden" name="field_schema" id="fieldSchemaInput">
+</form>
 
-    <div class="top-bar">
-        <div>
-            <h1>{% trans "Edit template" %}</h1>
-            <div>{{ template.title }}</div>
+<div class="top-bar">
+    <div>
+        <h1>{% trans "Edit template" %}</h1>
+        <div>{{ template.title }}</div>
+    </div>
+
+    <div class="top-actions">
+        <a class="btn btn-secondary" href="{% url 'documents:template_list' %}">
+            {% trans "Back" %}
+        </a>
+
+        <button class="btn btn-primary" type="submit" form="templateSaveForm">
+            {% trans "Save template" %}
+        </button>
+    </div>
+</div>
+
+<div class="editor-page">
+    <div class="document-panel">
+        <div class="panel-header">
+            {% trans "Document preview" %}
         </div>
 
-        <div class="top-actions">
-            <a class="btn btn-secondary" href="{% url 'documents:template_list' %}">
-                {% trans "Back" %}
-            </a>
-            <button class="btn btn-primary" type="submit">
-                {% trans "Save template" %}
-            </button>
+        <div class="document-scroll">
+            <div id="docxEditor" contenteditable="true">{{ editor_html|safe }}</div>
         </div>
     </div>
 
-    <div class="editor-page">
-        <div class="document-panel">
-            <div class="panel-header">
-                {% trans "Document preview" %}
-            </div>
-
-            <div class="document-scroll">
-                <div id="docxEditor" contenteditable="true">{{ editor_html|safe }}</div>
-            </div>
+    <div class="fields-panel">
+        <div class="panel-header">
+            {% trans "Fields constructor" %}
         </div>
 
-        <div class="fields-panel">
-            <div class="panel-header">
-                {% trans "Fields constructor" %}
-            </div>
+        <div class="fields-content">
 
-            <div class="fields-content">
+            <div class="constructor-section">
+                <h3 class="constructor-title">{% trans "Document parties" %}</h3>
 
                 <div class="group-card">
                     <div class="group-header">
-                        {% trans "Special signer groups" %}
+                        {% trans "Add signer party" %}
                     </div>
 
                     <div class="group-body">
+                        <p class="muted-help">
+                            {% trans "A document party automatically creates signer fields and variables for the document." %}
+                        </p>
+
                         <form method="post" action="{% url 'documents:template_party_create' template.pk %}">
                             {% csrf_token %}
 
                             <div class="schema-actions">
-                                {{ party_form.title }}
-                                {{ party_form.variable_prefix }}
-                                {{ party_form.party_type }}
-                                {{ party_form.signing_order }}
+                                <input
+                                    type="text"
+                                    name="title"
+                                    placeholder="{% trans 'Party title, example: Customer' %}"
+                                    required
+                                >
 
-                                <label>
-                                    {{ party_form.is_signer }}
-                                    {% trans "Create signer from this group" %}
+                                <input
+                                    type="text"
+                                    name="variable_prefix"
+                                    placeholder="{% trans 'Variable prefix, example: customer' %}"
+                                    required
+                                >
+
+                                <select name="party_type">
+                                    <option value="individual">{% trans "Individual" %}</option>
+                                    <option value="company">{% trans "Company" %}</option>
+                                </select>
+
+                                <input
+                                    type="number"
+                                    name="signing_order"
+                                    value="1"
+                                    min="1"
+                                    placeholder="{% trans 'Signing order' %}"
+                                >
+
+                                <label class="checkbox-row">
+                                    <input type="checkbox" name="is_signer" checked>
+                                    {% trans "Create signer from this party" %}
                                 </label>
 
                                 <button class="btn btn-secondary" type="submit">
-                                    {% trans "Add special group" %}
+                                    {% trans "Add party" %}
                                 </button>
                             </div>
                         </form>
@@ -261,10 +338,15 @@
                 {% for party in parties %}
                     <div class="group-card">
                         <div class="group-header">
-                            <span>
-                                {{ party.title }}
-                                <span class="variable-chip">{{ party.variable_prefix }}</span>
-                            </span>
+                            <div class="group-header-title">
+                                <span>{{ party.title }}</span>
+                                <span>
+                                    <span class="variable-chip">{{ party.variable_prefix }}</span>
+                                    {% if party.is_signer %}
+                                        <span class="variable-chip">signer</span>
+                                    {% endif %}
+                                </span>
+                            </div>
 
                             <form method="post" action="{% url 'documents:template_party_delete' template.pk party.pk %}">
                                 {% csrf_token %}
@@ -277,7 +359,12 @@
                         <div class="group-body">
                             {% for field in party.fields.all %}
                                 <div class="field-row">
-                                    <label>{{ field.label }}</label>
+                                    <label>
+                                        {{ field.label }}
+                                        {% if field.is_system %}
+                                            <span class="variable-chip">system</span>
+                                        {% endif %}
+                                    </label>
 
                                     <div style="margin-bottom: 8px;">
                                         <span class="variable-chip">
@@ -291,7 +378,7 @@
                                             type="button"
                                             onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}')"
                                         >
-                                            {% trans "Insert into document" %}
+                                            {% trans "Insert" %}
                                         </button>
 
                                         {% if not field.is_system %}
@@ -304,33 +391,79 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                            {% empty %}
+                                <p class="muted-help">{% trans "No fields in this party yet." %}</p>
                             {% endfor %}
+
+                            <hr class="divider">
 
                             <form method="post" action="{% url 'documents:template_party_field_create' template.pk party.pk %}">
                                 {% csrf_token %}
 
                                 <div class="schema-actions">
-                                    {{ party_field_form.label }}
-                                    {{ party_field_form.variable_name }}
-                                    {{ party_field_form.field_type }}
-                                    {{ party_field_form.default_value }}
-                                    {{ party_field_form.order }}
+                                    <input
+                                        type="text"
+                                        name="label"
+                                        placeholder="{% trans 'Field label, example: Address' %}"
+                                        required
+                                    >
 
-                                    <label>
-                                        {{ party_field_form.is_required }}
+                                    <input
+                                        type="text"
+                                        name="variable_name"
+                                        placeholder="{% trans 'Variable name, example: address' %}"
+                                        required
+                                    >
+
+                                    <select name="field_type">
+                                        <option value="text">{% trans "Text" %}</option>
+                                        <option value="phone">{% trans "Phone" %}</option>
+                                        <option value="iin_bin">{% trans "IIN / BIN" %}</option>
+                                        <option value="signing_method">{% trans "Signing method" %}</option>
+                                        <option value="email">{% trans "Email" %}</option>
+                                        <option value="date">{% trans "Date" %}</option>
+                                        <option value="number">{% trans "Number" %}</option>
+                                    </select>
+
+                                    <input
+                                        type="text"
+                                        name="default_value"
+                                        placeholder="{% trans 'Default value, optional' %}"
+                                    >
+
+                                    <input
+                                        type="number"
+                                        name="order"
+                                        value="5"
+                                        min="1"
+                                        placeholder="{% trans 'Order' %}"
+                                    >
+
+                                    <label class="checkbox-row">
+                                        <input type="checkbox" name="is_required" checked>
                                         {% trans "Required" %}
                                     </label>
 
                                     <button class="btn btn-secondary" type="submit">
-                                        {% trans "Add field to special group" %}
+                                        {% trans "Add custom field" %}
                                     </button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="group-card">
+                        <div class="group-body">
+                            <p class="muted-help">
+                                {% trans "No document parties yet. Create Customer, Contractor, Director, or another signer party." %}
+                            </p>
+                        </div>
+                    </div>
                 {% endfor %}
+            </div>
 
-                <hr>
+            <div class="constructor-section">
+                <h3 class="constructor-title">{% trans "Normal fields" %}</h3>
 
                 <div class="schema-actions">
                     <input id="newGroupTitle" type="text" placeholder="{% trans 'Group title, example: Contract data' %}">
@@ -341,9 +474,10 @@
 
                 <div id="groupsContainer"></div>
             </div>
+
         </div>
     </div>
-</form>
+</div>
 
 <script>
     let fieldSchema = JSON.parse('{{ field_schema_json|escapejs }}');
@@ -352,9 +486,9 @@
     const textDelete = "{% trans 'Delete' %}";
     const textFieldLabel = "{% trans 'Field label' %}";
     const textVariable = "{% trans 'Variable' %}";
-    const textInsertIntoDocument = "{% trans 'Insert into document' %}";
-    const textFieldLabelPlaceholder = "{% trans 'Field label, example: Full name of Party 1' %}";
-    const textVariableKeyPlaceholder = "{% trans 'Variable key, example: party1_full_name' %}";
+    const textInsertIntoDocument = "{% trans 'Insert' %}";
+    const textFieldLabelPlaceholder = "{% trans 'Field label, example: Contract number' %}";
+    const textVariableKeyPlaceholder = "{% trans 'Variable key, example: contract_number' %}";
     const textAddField = "{% trans 'Add field' %}";
     const textEnterGroupTitle = "{% trans 'Enter group title' %}";
     const textEnterFieldLabel = "{% trans 'Enter field label' %}";

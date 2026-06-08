@@ -26,6 +26,11 @@
     </p>
 
     <p>
+        <strong>{% trans "Phone" %}:</strong>
+        {{ signer.phone }}
+    </p>
+
+    <p>
         <strong>{% trans "Status" %}:</strong>
         {{ signer.get_status_display }}
     </p>
@@ -34,6 +39,13 @@
         <strong>{% trans "Signing method" %}:</strong>
         {{ signer.get_signing_method_display }}
     </p>
+
+    {% if document.content_hash %}
+        <p>
+            <strong>{% trans "Document hash" %}:</strong>
+            <span style="word-break: break-all;">{{ document.content_hash }}</span>
+        </p>
+    {% endif %}
 
     <hr>
 
@@ -62,42 +74,67 @@
     {% endif %}
 </div>
 
-{% if latest_session and latest_session.provider == "egov_mobile" %}
+{% if signer.status == "signed" %}
     <div class="card">
-        <h3>{% trans "eGov Mobile session" %}</h3>
+        <h3>{% trans "Document already signed" %}</h3>
 
         <p>
-            <strong>{% trans "Session status" %}:</strong>
-            {{ latest_session.get_status_display }}
+            {% trans "This document has already been signed." %}
         </p>
 
-        {% if latest_session.deep_link %}
+        {% if signature %}
             <p>
-                <a href="{{ latest_session.deep_link }}" class="btn btn-primary">
-                    {% trans "Open eGov Mobile" %}
-                </a>
+                <strong>{% trans "Signed at" %}:</strong>
+                {{ signature.signed_at }}
             </p>
-        {% endif %}
 
-        {% if latest_session.qr_payload %}
-            <div class="form-group">
-                <label class="form-label">
-                    {% trans "QR payload" %}
-                </label>
-                <textarea class="form-control" rows="4" readonly>{{ latest_session.qr_payload }}</textarea>
-            </div>
-        {% endif %}
+            <p>
+                <strong>{% trans "Signed content hash" %}:</strong>
+                <span style="word-break: break-all;">{{ signature.signed_content_hash }}</span>
+            </p>
 
-        {% if latest_session.raw_response.api_1_url %}
-            <div class="form-group">
-                <label class="form-label">
-                    API №1 URL
-                </label>
-                <input class="form-control" value="{{ latest_session.raw_response.api_1_url }}" readonly>
-            </div>
+            <a href="{% url 'signing:signature_confirmation' signature.pk %}" class="btn btn-primary">
+                {% trans "View confirmation sheet" %}
+            </a>
         {% endif %}
+    </div>
+{% else %}
 
-        {% if signer.status != "signed" %}
+    {% if latest_session and latest_session.provider == "egov_mobile" %}
+        <div class="card">
+            <h3>{% trans "eGov Mobile session" %}</h3>
+
+            <p>
+                <strong>{% trans "Session status" %}:</strong>
+                {{ latest_session.get_status_display }}
+            </p>
+
+            {% if latest_session.deep_link %}
+                <p>
+                    <a href="{{ latest_session.deep_link }}" class="btn btn-primary">
+                        {% trans "Open eGov Mobile" %}
+                    </a>
+                </p>
+            {% endif %}
+
+            {% if latest_session.qr_payload %}
+                <div class="form-group">
+                    <label class="form-label">
+                        {% trans "QR payload" %}
+                    </label>
+                    <textarea class="form-control" rows="4" readonly>{{ latest_session.qr_payload }}</textarea>
+                </div>
+            {% endif %}
+
+            {% if latest_session.raw_response.api_1_url %}
+                <div class="form-group">
+                    <label class="form-label">
+                        API №1 URL
+                    </label>
+                    <input class="form-control" value="{{ latest_session.raw_response.api_1_url }}" readonly>
+                </div>
+            {% endif %}
+
             <hr>
 
             <form method="post" action="{% url 'signing:mock_complete_egov_signing' token %}">
@@ -106,16 +143,10 @@
                     Mock complete signing
                 </button>
             </form>
-        {% endif %}
-    </div>
-{% endif %}
+        </div>
+    {% endif %}
 
-<div class="card">
-    {% if signer.status == "signed" %}
-        <p>
-            {% trans "This document has already been signed." %}
-        </p>
-    {% else %}
+    <div class="card">
         <h3>{% trans "Signing method" %}</h3>
 
         {% if signer.signing_method == "egov_mobile" %}
@@ -125,53 +156,96 @@
                     {% trans "Sign with eGov Mobile" %}
                 </button>
             </form>
+
         {% elif signer.signing_method == "sms" %}
+
             {% if latest_sms_session %}
                 <p class="text-muted">
                     {% trans "SMS code has been sent to your phone number." %}
                 </p>
+
+                <p>
+                    <strong>{% trans "Session status" %}:</strong>
+                    {{ latest_sms_session.get_status_display }}
+                </p>
+
+                {% if latest_sms_session.expires_at %}
+                    <p>
+                        <strong>{% trans "Code expires at" %}:</strong>
+                        {{ latest_sms_session.expires_at }}
+                    </p>
+                {% endif %}
+
+                <p>
+                    <strong>{% trans "Attempts" %}:</strong>
+                    {{ latest_sms_session.attempts_count }} / {{ latest_sms_session.max_attempts }}
+                </p>
+
+                {% if latest_sms_session.cooldown_until %}
+                    <p class="text-muted">
+                        {% trans "If the code is incorrect, wait before trying again." %}
+                    </p>
+                {% endif %}
             {% else %}
-                <form method="post" action="{% url 'signing:start_sms_signing' token %}">
+                <p class="text-muted">
+                    {% trans "To sign this document by SMS, first confirm your consent and request a verification code." %}
+                </p>
+
+                <form method="post" action="{% url 'signing:start_sms_signing' token %}" class="app-form">
                     {% csrf_token %}
+
+                    <div class="form-group">
+                        <label class="form-label" style="display: flex; gap: 8px; align-items: flex-start;">
+                            <input type="checkbox" name="consent" required>
+                            <span>
+                                {% trans "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code." %}
+                            </span>
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-secondary">
                         {% trans "Send SMS code" %}
                     </button>
                 </form>
             {% endif %}
+
         {% endif %}
-    {% endif %}
-</div>
-
-{% if latest_sms_session and signer.status != "signed" %}
-    <div class="card">
-        <h3>{% trans "SMS confirmation" %}</h3>
-
-        <p class="text-muted">
-            {% trans "Enter the code sent to your phone number." %}
-        </p>
-
-        <form method="post" action="{% url 'signing:complete_sms_signing' token %}" class="app-form">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label class="form-label" for="otp">
-                    {% trans "SMS code" %}
-                </label>
-                <input
-                    type="text"
-                    id="otp"
-                    name="otp"
-                    class="form-control"
-                    maxlength="6"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                {% trans "Confirm and sign" %}
-            </button>
-        </form>
     </div>
+
+    {% if latest_sms_session and latest_sms_session.provider == "sms" %}
+        <div class="card">
+            <h3>{% trans "SMS confirmation" %}</h3>
+
+            <p class="text-muted">
+                {% trans "Enter the code sent to your phone number." %}
+            </p>
+
+            <form method="post" action="{% url 'signing:complete_sms_signing' token %}" class="app-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="form-label" for="otp">
+                        {% trans "SMS code" %}
+                    </label>
+                    <input
+                        type="text"
+                        id="otp"
+                        name="otp"
+                        class="form-control"
+                        maxlength="6"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Confirm and sign" %}
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
 {% endif %}
 
 {% endblock %}

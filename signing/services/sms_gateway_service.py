@@ -16,6 +16,22 @@ class SmsGatewayService:
     def send_sms(cls, *, phone: str, text: str) -> dict:
         backend = getattr(settings, "SMS_BACKEND", "console")
 
+        phone = cls._normalize_phone(phone)
+
+        if not phone:
+            raise SmsGatewayError("Recipient phone is empty.")
+
+        if not cls._is_valid_kz_phone(phone):
+            raise SmsGatewayError(f"Invalid Kazakhstan phone number: {phone}")
+
+        if not text or not text.strip():
+            raise SmsGatewayError("SMS text is empty.")
+
+        text = text.strip()
+
+        if len(text) > 500:
+            raise SmsGatewayError("SMS text is too long.")
+
         if backend == "console":
             return cls._send_console(phone=phone, text=text)
 
@@ -36,18 +52,43 @@ class SmsGatewayService:
         return {
             "ok": True,
             "backend": "console",
-            "phone": phone,
-            "text": text,
+            "recipient": phone,
+            "provider_message_id": None,
+            "provider_response": {
+                "message": "SMS printed to console.",
+                "text": text,
+            },
         }
 
     @classmethod
     def _normalize_phone(cls, phone: str) -> str:
+        """
+        Приводим номер к формату 7XXXXXXXXXX.
+
+        Примеры:
+        +7 777 123 45 67 -> 77771234567
+        8 777 123 45 67  -> 77771234567
+        77771234567       -> 77771234567
+        """
+
         cleaned = re.sub(r"\D", "", phone or "")
 
         if cleaned.startswith("8") and len(cleaned) == 11:
             cleaned = "7" + cleaned[1:]
 
+        if cleaned.startswith("7") and len(cleaned) == 11:
+            return cleaned
+
         return cleaned
+
+    @classmethod
+    def _is_valid_kz_phone(cls, phone: str) -> bool:
+        """
+        Базовая проверка для Казахстана:
+        номер должен быть 11 цифр и начинаться с 7.
+        """
+
+        return bool(re.fullmatch(r"7\d{10}", phone or ""))
 
     @classmethod
     def _send_mobizon(cls, *, phone: str, text: str) -> dict:
@@ -63,16 +104,11 @@ class SmsGatewayService:
         if not api_key:
             raise SmsGatewayError("MOBIZON_API_KEY is not configured.")
 
-        recipient = cls._normalize_phone(phone)
-
-        if not recipient:
-            raise SmsGatewayError("Recipient phone is empty.")
-
         endpoint = f"{api_url.rstrip('/')}/message/sendsmsmessage"
 
         payload = {
             "apiKey": api_key,
-            "recipient": recipient,
+            "recipient": phone,
             "text": text,
             "output": "json",
         }
@@ -87,26 +123,45 @@ class SmsGatewayService:
                 timeout=timeout,
             )
         except requests.RequestException as exc:
+            logger.exception("Mobizon request failed.")
             raise SmsGatewayError(f"Mobizon request failed: {exc}") from exc
 
         try:
             response_data = response.json()
         except ValueError as exc:
+            logger.error(
+                "Mobizon returned non-JSON response. status=%s body=%s",
+                response.status_code,
+                response.text,
+            )
             raise SmsGatewayError(
                 f"Mobizon returned non-JSON response: {response.text}"
             ) from exc
 
         if response.status_code >= 400:
+            logger.error(
+                "Mobizon HTTP error. status=%s response=%s",
+                response.status_code,
+                response_data,
+            )
             raise SmsGatewayError(
                 f"Mobizon HTTP {response.status_code}: {response_data}"
             )
 
         if response_data.get("code") != 0:
+            logger.error("Mobizon rejected SMS: %s", response_data)
             raise SmsGatewayError(f"Mobizon rejected SMS: {response_data}")
+
+        provider_message_id = None
+
+        data = response_data.get("data")
+        if isinstance(data, dict):
+            provider_message_id = data.get("messageId") or data.get("id")
 
         return {
             "ok": True,
             "backend": "mobizon",
-            "recipient": recipient,
+            "recipient": phone,
+            "provider_message_id": provider_message_id,
             "provider_response": response_data,
         }

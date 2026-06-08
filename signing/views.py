@@ -36,11 +36,8 @@ def document_signers(request, document_pk):
                     phone=form.cleaned_data["phone"],
                     signing_order=form.cleaned_data["signing_order"],
                     signing_method=form.cleaned_data["signing_method"],
+                    request=request,
                 )
-
-                if document.status == Document.Status.DRAFT:
-                    document.status = Document.Status.WAITING_FOR_SIGNERS
-                    document.save(update_fields=["status", "updated_at"])
 
                 messages.success(request, "Signer added successfully.")
                 return redirect("signing:document_signers", document_pk=document.pk)
@@ -68,10 +65,14 @@ def create_signer_access_link(request, signer_pk):
         document__created_by=request.user,
     )
 
-    created_token = SignerAccessTokenService.create_token(signer=signer)
-
-    signer.status = Signer.Status.SMS_SENT
-    signer.save(update_fields=["status", "updated_at"])
+    try:
+        created_token = SignerAccessTokenService.create_token(
+            signer=signer,
+            request=request,
+        )
+    except ValueError as exc:
+        messages.error(request, str(exc))
+        return redirect("signing:document_signers", document_pk=signer.document_id)
 
     relative_url = f"/signing/s/{created_token.raw_token}/"
     absolute_url = request.build_absolute_uri(relative_url)
@@ -83,7 +84,7 @@ def create_signer_access_link(request, signer_pk):
     )
 
     try:
-        SmsGatewayService.send_sms(
+        sms_result = SmsGatewayService.send_sms(
             phone=signer.phone,
             text=sms_text,
         )
@@ -99,9 +100,10 @@ def create_signer_access_link(request, signer_pk):
         signer=signer,
         event=SigningAuditLog.Event.INVITATION_SMS_SENT,
         request=request,
+        document_hash=signer.document.content_hash,
         metadata={
             "access_token_id": created_token.access_token.id,
-            "sms_provider": "mobizon",
+            "sms_result": sms_result,
             "phone": signer.phone,
         },
     )
@@ -112,7 +114,6 @@ def create_signer_access_link(request, signer_pk):
     )
 
     return redirect("signing:document_signers", document_pk=signer.document_id)
-
 
 def signer_public_page(request, token):
     access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
@@ -150,12 +151,15 @@ def signer_public_page(request, token):
         .first()
     )
 
+    signature = getattr(signer, "signature", None)
+
     return render(request, "signing/signer_public_page.html", {
         "token": token,
         "signer": signer,
         "document": document,
         "latest_session": latest_session,
         "latest_sms_session": latest_sms_session,
+        "signature": signature,
     })
 
 
@@ -331,26 +335,24 @@ def start_sms_signing(request, token):
         messages.info(request, "This document has already been signed.")
         return redirect("signing:signer_public_page", token=token)
 
+    consent_accepted = request.POST.get("consent") == "on"
+
+    ip_address = SigningAuditLogService.get_client_ip(request)
+    user_agent = SigningAuditLogService.get_user_agent(request)
+
     try:
-        session = SmsSigningService.create_session(signer=signer)
+        SmsSigningService.create_session(
+            signer=signer,
+            consent_accepted=consent_accepted,
+            ip_address=ip_address,
+            user_agent=user_agent,
+        )
     except ValueError as exc:
         messages.error(request, str(exc))
         return redirect("signing:signer_public_page", token=token)
     except SmsGatewayError as exc:
         messages.error(request, f"SMS code was not sent: {exc}")
         return redirect("signing:signer_public_page", token=token)
-
-    SigningAuditLogService.log(
-        document=signer.document,
-        signer=signer,
-        signing_session=session,
-        event=SigningAuditLog.Event.SMS_CODE_SENT,
-        request=request,
-        metadata={
-            "sms_provider": "mobizon",
-            "phone": signer.phone,
-        },
-    )
 
     messages.success(
         request,
@@ -370,13 +372,24 @@ def complete_sms_signing(request, token):
 
     session = (
         signer.signing_sessions
-        .filter(provider=SigningSession.Provider.SMS)
+        .filter(
+            provider=SigningSession.Provider.SMS,
+        )
+        .exclude(
+            status__in=[
+                SigningSession.Status.SIGNED,
+                SigningSession.Status.USED,
+                SigningSession.Status.EXPIRED,
+                SigningSession.Status.CANCELED,
+                SigningSession.Status.FAILED,
+            ]
+        )
         .order_by("-created_at")
         .first()
     )
 
     if not session:
-        messages.error(request, "No SMS signing session found.")
+        messages.error(request, "No active SMS signing session found.")
         return redirect("signing:signer_public_page", token=token)
 
     otp = request.POST.get("otp", "").strip()
@@ -385,29 +398,36 @@ def complete_sms_signing(request, token):
         messages.error(request, "SMS code is required.")
         return redirect("signing:signer_public_page", token=token)
 
+    ip_address = SigningAuditLogService.get_client_ip(request)
+    user_agent = SigningAuditLogService.get_user_agent(request)
+
     try:
         signature = SmsSigningService.complete_session(
             session=session,
             otp=otp,
-            ip_address=request.META.get("REMOTE_ADDR", ""),
-            user_agent=request.META.get("HTTP_USER_AGENT", ""),
+            ip_address=ip_address,
+            user_agent=user_agent,
         )
     except ValueError as exc:
         messages.error(request, str(exc))
         return redirect("signing:signer_public_page", token=token)
 
-    SigningAuditLogService.log(
-        document=signer.document,
-        signer=signer,
-        signing_session=session,
-        event=SigningAuditLog.Event.DOCUMENT_SIGNED,
-        request=request,
-        signed_content_hash=signature.signed_content_hash,
-        metadata={
-            "provider": "sms",
-            "signature_id": signature.id,
-        },
+    messages.success(request, "Document signed successfully by SMS confirmation.")
+    return redirect("signing:signature_confirmation", signature_pk=signature.pk)
+
+def signature_confirmation(request, signature_pk):
+    signature = get_object_or_404(
+        Signature.objects.select_related(
+            "document",
+            "signer",
+            "signing_session",
+        ),
+        pk=signature_pk,
     )
 
-    messages.success(request, "Document signed successfully by SMS confirmation.")
-    return redirect("signing:signer_public_page", token=token)
+    return render(request, "signing/signature_confirmation.html", {
+        "signature": signature,
+        "document": signature.document,
+        "signer": signature.signer,
+        "signing_session": signature.signing_session,
+    })
