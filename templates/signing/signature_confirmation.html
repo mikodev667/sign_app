@@ -66,64 +66,123 @@
 </div>
 
 <div class="card">
-    <h2>{% trans "SMS confirmation" %}</h2>
+    {% if signature.provider == "sms" %}
+        <h2>{% trans "SMS confirmation" %}</h2>
+    {% elif signature.provider == "ecp" %}
+        <h2>{% trans "ECP confirmation" %}</h2>
+    {% elif signature.provider == "egov_mobile" %}
+        <h2>{% trans "eGov Mobile confirmation" %}</h2>
+    {% else %}
+        <h2>{% trans "Electronic signing confirmation" %}</h2>
+    {% endif %}
 
     <p>
         <strong>{% trans "Provider" %}:</strong>
         {{ signature.provider }}
     </p>
 
-    <p>
-        <strong>{% trans "Session ID" %}:</strong>
-        {{ signing_session.id }}
-    </p>
+    {% if signing_session %}
+        <p>
+            <strong>{% trans "Session ID" %}:</strong>
+            {{ signing_session.id }}
+        </p>
 
-    <p>
-        <strong>{% trans "Session status" %}:</strong>
-        {{ signing_session.get_status_display }}
-    </p>
+        <p>
+            <strong>{% trans "Session status" %}:</strong>
+            {{ signing_session.get_status_display }}
+        </p>
+    {% endif %}
 
-    <p>
-        <strong>{% trans "Certificate serial" %}:</strong>
-        {{ signature.certificate_serial }}
-    </p>
+    {% if signature.certificate_iin %}
+        <p>
+            <strong>{% trans "Certificate IIN" %}:</strong>
+            {{ signature.certificate_iin }}
+        </p>
+    {% endif %}
 
-    <p>
-        <strong>{% trans "Signature valid" %}:</strong>
-        {% if signature.is_valid %}
+    {% if signature.certificate_subject %}
+        <p>
+            <strong>{% trans "Certificate subject" %}:</strong>
+            <span style="word-break: break-all;">{{ signature.certificate_subject }}</span>
+        </p>
+    {% endif %}
+
+    {% if signature.certificate_serial %}
+        <p>
+            <strong>{% trans "Certificate serial" %}:</strong>
+            {{ signature.certificate_serial }}
+        </p>
+    {% endif %}
+
+    {% if signature.is_valid %}
+        <p>
+            <strong>{% trans "Signature valid" %}:</strong>
             {% trans "Yes" %}
-        {% else %}
-            {% trans "No" %}
+        </p>
+    {% elif signature.provider == "ecp" %}
+        <p>
+            <strong>{% trans "Signature saved" %}:</strong>
+            {% trans "Yes" %}
+        </p>
+
+        <p>
+            <strong>{% trans "Backend validation" %}:</strong>
+            {% trans "Not implemented yet" %}
+        </p>
+
+        {% if signature.validation_error %}
+            <p class="text-muted">
+                {{ signature.validation_error }}
+            </p>
         {% endif %}
-    </p>
+    {% else %}
+        <p>
+            <strong>{% trans "Signature valid" %}:</strong>
+            {% trans "No" %}
+        </p>
+
+        {% if signature.validation_error %}
+            <p class="text-muted">
+                {{ signature.validation_error }}
+            </p>
+        {% endif %}
+    {% endif %}
 </div>
 
-<div class="card">
-    <h2>{% trans "Consent text" %}</h2>
+{% if signature.consent_text %}
+    <div class="card">
+        <h2>{% trans "Consent text" %}</h2>
 
-    <p>
-        {{ signature.consent_text }}
-    </p>
-</div>
+        <p>
+            {{ signature.consent_text }}
+        </p>
+    </div>
+{% endif %}
 
-<div class="card">
-    <h2>{% trans "Technical confirmation" %}</h2>
+{% if signature.confirmation_text %}
+    <div class="card">
+        <h2>{% trans "Technical confirmation" %}</h2>
 
-    <pre style="white-space: pre-wrap;">{{ signature.confirmation_text }}</pre>
-</div>
+        <pre style="white-space: pre-wrap;">{{ signature.confirmation_text }}</pre>
+    </div>
+{% endif %}
 
 <div class="card">
     <h2>{% trans "Technical data" %}</h2>
 
-    <p>
-        <strong>{% trans "IP address" %}:</strong>
-        {{ signature.ip_address }}
-    </p>
+    {% if signature.ip_address %}
+        <p>
+            <strong>{% trans "IP address" %}:</strong>
+            {{ signature.ip_address }}
+        </p>
+    {% endif %}
 
-    <p>
-        <strong>{% trans "User agent" %}:</strong>
-        {{ signature.user_agent }}
-    </p>
+    {% if signature.user_agent %}
+        <p>
+            <strong>{% trans "User agent" %}:</strong>
+            {{ signature.user_agent }}
+        </p>
+    {% endif %}
 
     <p>
         <strong>{% trans "Created at" %}:</strong>

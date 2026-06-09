@@ -483,9 +483,9 @@ def ecp_signing_payload(request, token):
         signer=signer,
         event=SigningAuditLog.Event.ECP_SIGNING_STARTED,
         request=request,
-        signing_method=Signer.SigningMethod.ECP,
         document_hash=document.content_hash,
         metadata={
+            "signing_method": Signer.SigningMethod.ECP,
             "payload": payload,
         },
     )

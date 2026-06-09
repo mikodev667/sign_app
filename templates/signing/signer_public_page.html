@@ -299,7 +299,7 @@
 {% endif %}
 
 {% if signer.signing_method == "ecp" and signer.status != "signed" %}
-    <script src="{% static 'js/ncalayer_ecp_signing.js' %}"></script>
+    <script src="{% static 'js/ncalayer_ecp_signing.js' %}?v=7"></script>
 {% endif %}
 
 {% endblock %}
