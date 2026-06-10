@@ -1,256 +1,580 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: QolQoyu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-10 00:00+0000\n"
+"PO-Revision-Date: 2026-06-10 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Kazakh\n"
 "Language: kk\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
-msgid "Home"
-msgstr "Басты бет"
+msgid "Digital document signing"
+msgstr "Құжаттарға цифрлық қол қою"
 
-msgid "Templates"
-msgstr "Үлгілер"
+msgid "QolQoyu means “to sign”"
+msgstr "QolQoyu «қол қою» дегенді білдіреді"
 
-msgid "Upload template"
-msgstr "Үлгіні жүктеу"
+msgid "Digital signing without confusion."
+msgstr "Түсінікті цифрлық қол қою."
 
-msgid "Documents"
-msgstr "Құжаттар"
+msgid "Create documents, invite signers and track every signature step in one secure workspace."
+msgstr "Құжаттар жасаңыз, қол қоюшыларды шақырыңыз және әр қол қою кезеңін бір қауіпсіз жұмыс кеңістігінде бақылаңыз."
 
 msgid "Create document"
 msgstr "Құжат жасау"
 
-msgid "Profile"
-msgstr "Профиль"
+msgid "Open templates"
+msgstr "Шаблондарды ашу"
 
-msgid "Logout"
-msgstr "Шығу"
+msgid "Start now"
+msgstr "Қазір бастау"
 
 msgid "Login"
 msgstr "Кіру"
 
-msgid "Register"
-msgstr "Тіркелу"
+msgid "signing flow"
+msgstr "қол қою процесі"
 
-msgid "Sign-App | Online Document Signing"
-msgstr "Sign-App | Құжаттарға онлайн қол қою"
+msgid "validation ready"
+msgstr "валидация дайын"
 
-msgid "Online document signing platform"
-msgstr "Құжаттарға онлайн қол қою платформасы"
+msgid "document integrity"
+msgstr "құжат тұтастығы"
 
-msgid "Prepare, send and sign documents online"
-msgstr "Құжаттарды онлайн дайындаңыз, жіберіңіз және қол қойыңыз"
+msgid "Document"
+msgstr "Құжат"
 
-msgid "Sign-App helps organizations upload DOCX templates, generate documents, add signers and manage the signing process through secure online links."
-msgstr "Sign-App ұйымдарға DOCX үлгілерін жүктеуге, құжаттарды жасауға, қол қоюшыларды қосуға және қорғалған онлайн сілтемелер арқылы қол қою процесін басқаруға көмектеседі."
+msgid "Service agreement"
+msgstr "Қызмет көрсету шарты"
 
-msgid "View templates"
-msgstr "Үлгілерді көру"
+msgid "Waiting for signers"
+msgstr "Қол қоюшыларды күтуде"
 
-msgid "Create account"
-msgstr "Аккаунт жасау"
+msgid "Signed"
+msgstr "Қол қойылды"
 
-msgid "Sign in"
-msgstr "Кіру"
+msgid "Customer verified"
+msgstr "Клиент расталды"
 
-msgid "Signing workflow"
-msgstr "Қол қою процесі"
+msgid "Hash fixed"
+msgstr "Хэш бекітілді"
 
-msgid "Upload DOCX template"
-msgstr "DOCX үлгісін жүктеу"
+msgid "No silent edits"
+msgstr "Жасырын өзгерістер жоқ"
 
-msgid "Add variables like"
-msgstr "Мынадай айнымалыларды қосыңыз:"
+msgid "Template selected"
+msgstr "Шаблон таңдалды"
 
-msgid "and"
-msgstr "және"
+msgid "SMS code confirmed"
+msgstr "SMS коды расталды"
 
-msgid "Generate a document from the selected template."
-msgstr "Таңдалған үлгі негізінде құжат жасаңыз."
+msgid "Audit log updated"
+msgstr "Аудит журналы жаңартылды"
 
-msgid "Add signers"
-msgstr "Қол қоюшыларды қосу"
+msgid "Workspace"
+msgstr "Жұмыс кеңістігі"
 
-msgid "Specify signer name, IIN, phone number and signing order."
-msgstr "Қол қоюшының атын, ЖСН нөмірін, телефон нөмірін және қол қою ретін көрсетіңіз."
+msgid "Everything around the document is connected."
+msgstr "Құжатқа қатысты барлық нәрсе өзара байланысқан."
 
-msgid "Send secure link"
-msgstr "Қорғалған сілтемені жіберу"
+msgid "QolQoyu is not only a signature button. It controls templates, signers, document state, signing method and audit history."
+msgstr "QolQoyu — тек қол қою батырмасы емес. Жүйе шаблондарды, қол қоюшыларды, құжат күйін, қол қою әдісін және аудит тарихын басқарады."
 
-msgid "The signer opens the link, reviews the document and confirms signing."
-msgstr "Қол қоюшы сілтемені ашып, құжатты қарап, қол қоюды растайды."
+msgid "Templates"
+msgstr "Шаблондар"
 
-msgid "Template-based documents"
-msgstr "Үлгі негізіндегі құжаттар"
+msgid "Reusable document templates"
+msgstr "Қайта қолданылатын құжат шаблондары"
 
-msgid "Upload reusable DOCX templates and automatically fill document fields."
-msgstr "Қайта қолданылатын DOCX үлгілерін жүктеп, құжат өрістерін автоматты түрде толтырыңыз."
+msgid "Prepare variables once and generate clean documents without rewriting the same contract again."
+msgstr "Айнымалыларды бір рет дайындап, бір шартты қайта жазбай-ақ дайын құжаттар жасаңыз."
 
-msgid "Secure signer links"
-msgstr "Қол қоюшыларға арналған қорғалған сілтемелер"
+msgid "Signing"
+msgstr "Қол қою"
 
-msgid "Send each signer a personal secure link for document review and confirmation."
-msgstr "Әр қол қоюшыға құжатты қарау және растау үшін жеке қорғалған сілтеме жіберіңіз."
+msgid "SMS and ECP flows"
+msgstr "SMS және ЭЦҚ арқылы қол қою"
 
-msgid "Signing history"
-msgstr "Қол қою тарихы"
+msgid "Support different signing scenarios depending on the signer and document type."
+msgstr "Қол қоюшыға және құжат түріне байланысты әртүрлі қол қою сценарийлерін қолдаңыз."
 
-msgid "Track document status, signer actions and signing progress."
-msgstr "Құжат мәртебесін, қол қоюшылардың әрекеттерін және қол қою барысын бақылаңыз."
+msgid "Integrity"
+msgstr "Тұтастық"
 
-msgid "Start with templates and documents"
-msgstr "Үлгілер мен құжаттардан бастаңыз"
+msgid "Document hash control"
+msgstr "Құжат хэшін бақылау"
 
-msgid "The MVP currently focuses on document templates, generated documents and the basic signing workflow. Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage."
-msgstr "Қазіргі MVP құжат үлгілеріне, жасалған құжаттарға және негізгі қол қою процесіне бағытталған. Кейін eGov Mobile арқылы қол қоюды, SMS растауды, ұйымдарды, аудит журналын және қорғалған файл сақтау жүйесін қосуға болады."
+msgid "The system can fix the file hash at signing time to detect changes later."
+msgstr "Жүйе кейін өзгерістерді анықтау үшін қол қою кезінде файл хэшін бекіте алады."
 
-msgid "Open documents"
-msgstr "Құжаттарды ашу"
+msgid "Audit"
+msgstr "Аудит"
 
-msgid "Login | Sign-App"
-msgstr "Кіру | Sign-App"
+msgid "Every action is visible"
+msgstr "Әр әрекет көрінеді"
 
-msgid "Access your document signing workspace."
-msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+msgid "Signing events, attempts, confirmation and status changes are stored in the audit trail."
+msgstr "Қол қою оқиғалары, әрекеттер, растаулар және мәртебе өзгерістері аудит журналында сақталады."
 
-msgid "Don’t have an account?"
-msgstr "Аккаунтыңыз жоқ па?"
+msgid "Documents"
+msgstr "Құжаттар"
 
-msgid "Profile | Sign-App"
-msgstr "Профиль | Sign-App"
+msgid "One place for agreements"
+msgstr "Келісімдерге арналған бір орын"
 
-msgid "Manage your account and access your document signing workspace."
-msgstr "Аккаунтыңызды және құжаттарға қол қою жұмыс кеңістігін басқарыңыз."
+msgid "Flow"
+msgstr "Процесс"
 
-msgid "No email added"
-msgstr "Email қосылмаған"
+msgid "From template to signed document."
+msgstr "Шаблоннан қол қойылған құжатқа дейін."
 
-msgid "Username"
-msgstr "Пайдаланушы аты"
+msgid "The signing process is built as a clear sequence, so users always understand what is happening."
+msgstr "Қол қою процесі нақты ретпен құрылған, сондықтан пайдаланушылар не болып жатқанын әрдайым түсінеді."
 
-msgid "Email"
-msgstr "Email"
+msgid "Create template"
+msgstr "Шаблон жасау"
 
-msgid "Not specified"
-msgstr "Көрсетілмеген"
-
-msgid "Date joined"
-msgstr "Тіркелген күні"
-
-msgid "Last login"
-msgstr "Соңғы кіру"
-
-msgid "Never"
-msgstr "Ешқашан"
-
-msgid "Workspace actions"
-msgstr "Жұмыс кеңістігіндегі әрекеттер"
-
-msgid "Quickly open your templates, documents or create a new document for signing."
-msgstr "Үлгілерді, құжаттарды жылдам ашыңыз немесе қол қою үшін жаңа құжат жасаңыз."
-
-msgid "View documents"
-msgstr "Құжаттарды көру"
-
-msgid "Register | Sign-App"
-msgstr "Тіркелу | Sign-App"
-
-msgid "Create your workspace account to upload templates and manage documents."
-msgstr "Үлгілерді жүктеу және құжаттарды басқару үшін аккаунт жасаңыз."
-
-msgid "Already have an account?"
-msgstr "Аккаунтыңыз бар ма?"
-
-msgid "Create Document | Sign-App"
-msgstr "Құжат жасау | Sign-App"
-
-msgid "Create Document"
-msgstr "Құжат жасау"
-
-msgid "Create a new document from an uploaded template and prepare it for signing."
-msgstr "Жүктелген үлгі негізінде жаңа құжат жасап, оны қол қоюға дайындаңыз."
-
-msgid "Cancel"
-msgstr "Бас тарту"
-
-msgid "Create Document From Template | Sign-App"
-msgstr "Үлгіден құжат жасау | Sign-App"
-
-msgid "Create a new document from the selected DOCX template."
-msgstr "Таңдалған DOCX үлгісі негізінде жаңа құжат жасаңыз."
-
-msgid "Template"
-msgstr "Үлгі"
-
-msgid "Organization"
-msgstr "Ұйым"
-
-msgid "Create and fill document"
-msgstr "Құжатты жасау және толтыру"
+msgid "Upload or prepare a reusable document structure with variables."
+msgstr "Айнымалылары бар қайта қолданылатын құжат құрылымын жүктеңіз немесе дайындаңыз."
 
 msgid "Fill document"
 msgstr "Құжатты толтыру"
 
-msgid "Back"
-msgstr "Артқа"
+msgid "Enter values, signer data and signing method before sending."
+msgstr "Жібермес бұрын мәндерді, қол қоюшы деректерін және қол қою әдісін енгізіңіз."
 
-msgid "Save and render"
-msgstr "Сақтау және қалыптастыру"
+msgid "Invite signers"
+msgstr "Қол қоюшыларды шақыру"
 
-msgid "Document preview"
-msgstr "Құжатты алдын ала қарау"
+msgid "Send secure access links and control signing order."
+msgstr "Қауіпсіз кіру сілтемелерін жіберіп, қол қою ретін бақылаңыз."
 
-msgid "Document fields"
-msgstr "Құжат өрістері"
+msgid "Store proof"
+msgstr "Растауды сақтау"
 
-msgid "No fields schema found."
-msgstr "Өрістер схемасы табылмады."
+msgid "Keep the signature, hash, confirmation text and audit log."
+msgstr "Қолтаңбаны, хэшті, растау мәтінін және аудит журналын сақтаңыз."
 
-msgid "Documents | Sign-App"
-msgstr "Құжаттар | Sign-App"
+msgid "Ready"
+msgstr "Дайын"
 
-msgid "Manage generated documents and prepare them for online signing."
-msgstr "Жасалған құжаттарды басқарып, оларды онлайн қол қоюға дайындаңыз."
+msgid "Prepare your first document for signing."
+msgstr "Бірінші құжатыңызды қол қоюға дайындаңыз."
 
-msgid "Title"
-msgstr "Атауы"
+msgid "Start with a template, create a document, add signers and test the full signing route."
+msgstr "Шаблоннан бастаңыз, құжат жасаңыз, қол қоюшыларды қосыңыз және толық қол қою бағытын тексеріңіз."
 
-msgid "Status"
-msgstr "Мәртебе"
+msgid "Upload template"
+msgstr "Шаблон жүктеу"
 
-msgid "DOCX"
-msgstr "DOCX"
+msgid "View documents"
+msgstr "Құжаттарды көру"
 
-msgid "Download"
-msgstr "Жүктеу"
+msgid "Create account"
+msgstr "Аккаунт жасау"
+
+msgid "Document signing workspace"
+msgstr "Құжаттарға қол қою жұмыс кеңістігі"
+
+msgid "Business documents"
+msgstr "Іскерлік құжаттар"
+
+msgid "Documents | QolQoyu"
+msgstr "Құжаттар | QolQoyu"
+
+msgid "Document workspace"
+msgstr "Құжаттар жұмыс кеңістігі"
+
+msgid "Manage generated documents, download rendered files and prepare every agreement for online signing."
+msgstr "Жасалған құжаттарды басқарыңыз, дайын файлдарды жүктеп алыңыз және әр келісімді онлайн қол қоюға дайындаңыз."
+
+msgid "Total documents"
+msgstr "Барлық құжаттар"
+
+msgid "Created in workspace"
+msgstr "Жұмыс кеңістігінде жасалған"
+
+msgid "Signing flow"
+msgstr "Қол қою процесі"
+
+msgid "Available methods"
+msgstr "Қолжетімді әдістер"
+
+msgid "Document control"
+msgstr "Құжатты бақылау"
+
+msgid "Generated documents"
+msgstr "Жасалған құжаттар"
+
+msgid "Open signing settings, download files or continue preparing documents."
+msgstr "Қол қою баптауларын ашыңыз, файлдарды жүктеп алыңыз немесе құжаттарды дайындауды жалғастырыңыз."
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "Download DOCX"
+msgstr "DOCX жүктеу"
 
 msgid "Not rendered"
 msgstr "Қалыптастырылмаған"
 
+msgid "Signers"
+msgstr "Қол қоюшылар"
+
+msgid "Start here"
+msgstr "Осы жерден бастаңыз"
+
 msgid "No documents yet"
 msgstr "Әзірге құжаттар жоқ"
 
-msgid "Create your first document from a template."
-msgstr "Алғашқы құжатты үлгі негізінде жасаңыз."
+msgid "Create your first document from a template and prepare it for online signing."
+msgstr "Алғашқы құжатыңызды шаблоннан жасап, оны онлайн қол қоюға дайындаңыз."
 
-msgid "Edit template"
-msgstr "Үлгіні өңдеу"
+msgid "DOCX Templates | QolQoyu"
+msgstr "DOCX шаблондары | QolQoyu"
 
-msgid "Save template"
-msgstr "Үлгіні сақтау"
+msgid "Template studio"
+msgstr "Шаблондар студиясы"
 
-msgid "Fields constructor"
-msgstr "Өрістер конструкторы"
+msgid "DOCX Templates"
+msgstr "DOCX шаблондары"
 
-msgid "Group title, example: Party 1 data"
-msgstr "Топ атауы, мысалы: 1-тарап деректері"
+msgid "Build reusable DOCX structures, manage variables and create ready-to-sign documents faster."
+msgstr "Қайта қолданылатын DOCX құрылымдарын жасаңыз, айнымалыларды басқарыңыз және қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
 
-msgid "Add group"
-msgstr "Топ қосу"
+msgid "Reusable templates"
+msgstr "Қайта қолданылатын шаблондар"
 
-msgid "Untitled group"
-msgstr "Атаусыз топ"
+msgid "Variables, parties and document generation in one place."
+msgstr "Айнымалылар, тараптар және құжат генерациясы бір жерде."
+
+msgid "Upload new template"
+msgstr "Жаңа шаблон жүктеу"
+
+msgid "Total templates"
+msgstr "Барлық шаблондар"
+
+msgid "Uploaded DOCX structures available for document generation."
+msgstr "Құжат генерациясына қолжетімді жүктелген DOCX құрылымдары."
+
+msgid "Variables"
+msgstr "Айнымалылар"
+
+msgid "Use variables to personalize documents."
+msgstr "Құжаттарды жекелендіру үшін айнымалыларды пайдаланыңыз."
+
+msgid "Generation"
+msgstr "Генерация"
+
+msgid "Create documents directly from templates."
+msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
+
+msgid "Template library"
+msgstr "Шаблондар кітапханасы"
+
+msgid "Edit structure, review variables or create a document from a selected template."
+msgstr "Құрылымды өңдеңіз, айнымалыларды қараңыз немесе таңдалған шаблоннан құжат жасаңыз."
+
+msgid "Created"
+msgstr "Жасалған"
+
+msgid "No variables added yet"
+msgstr "Айнымалылар әлі қосылмаған"
+
+msgid "Edit"
+msgstr "Өңдеу"
+
+msgid "Upload DOCX"
+msgstr "DOCX жүктеу"
+
+msgid "No templates yet"
+msgstr "Әзірге шаблондар жоқ"
+
+msgid "Upload your first DOCX template with variables and start generating documents from it."
+msgstr "Айнымалылары бар алғашқы DOCX шаблоныңызды жүктеп, одан құжаттар жасауды бастаңыз."
+
+msgid "Create Document | QolQoyu"
+msgstr "Құжат жасау | QolQoyu"
+
+msgid "New document"
+msgstr "Жаңа құжат"
+
+msgid "Create Document"
+msgstr "Құжат жасау"
+
+msgid "Select a template, enter document details and prepare a clean file for the signing process."
+msgstr "Шаблонды таңдаңыз, құжат деректерін енгізіңіз және қол қою процесіне дайын файл дайындаңыз."
+
+msgid "Status"
+msgstr "Мәртебе"
+
+msgid "Draft"
+msgstr "Черновик"
+
+msgid "Document setup"
+msgstr "Құжатты баптау"
+
+msgid "This step creates the base document before signers are invited."
+msgstr "Бұл қадамда қол қоюшылар шақырылмас бұрын негізгі құжат жасалады."
+
+msgid "Choose template"
+msgstr "Шаблон таңдау"
+
+msgid "Use an uploaded DOCX template as the document base."
+msgstr "Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз."
+
+msgid "Fill details"
+msgstr "Деректерді толтыру"
+
+msgid "Enter title and required document information."
+msgstr "Атауын және қажетті құжат ақпаратын енгізіңіз."
+
+msgid "Prepare signing"
+msgstr "Қол қоюды дайындау"
+
+msgid "After creation, you can add signers and signing methods."
+msgstr "Құжат жасалғаннан кейін қол қоюшыларды және қол қою әдістерін қоса аласыз."
+
+msgid "Tip"
+msgstr "Кеңес"
+
+msgid "Use clear document names so it is easier to track them later in the signing workspace."
+msgstr "Құжаттарды кейін қол қою жұмыс кеңістігінде оңай бақылау үшін түсінікті атауларды пайдаланыңыз."
+
+msgid "Form"
+msgstr "Форма"
+
+msgid "Document information"
+msgstr "Құжат туралы ақпарат"
+
+msgid "Cancel"
+msgstr "Болдырмау"
+
+msgid "Upload DOCX Template | QolQoyu"
+msgstr "DOCX шаблонын жүктеу | QolQoyu"
+
+msgid "DOCX upload"
+msgstr "DOCX жүктеу"
+
+msgid "Upload DOCX Template"
+msgstr "DOCX шаблонын жүктеу"
+
+msgid "Upload a DOCX file with variables and turn it into a reusable document template."
+msgstr "Айнымалылары бар DOCX файлын жүктеп, оны қайта қолданылатын құжат шаблонына айналдырыңыз."
+
+msgid "Before uploading"
+msgstr "Жүктемес бұрын"
+
+msgid "Make sure your DOCX template is prepared correctly."
+msgstr "DOCX шаблоныңыз дұрыс дайындалғанына көз жеткізіңіз."
+
+msgid "Use DOCX format"
+msgstr "DOCX форматын пайдаланыңыз"
+
+msgid "Only DOCX files should be uploaded as templates."
+msgstr "Шаблон ретінде тек DOCX файлдарын жүктеу керек."
+
+msgid "Add variables"
+msgstr "Айнымалылар қосыңыз"
+
+msgid "Use variables like"
+msgstr "Мынадай айнымалыларды пайдаланыңыз:"
+
+msgid "inside the document."
+msgstr "құжаттың ішінде."
+
+msgid "Keep names clear"
+msgstr "Атауларды түсінікті етіңіз"
+
+msgid "Use readable variable names so the document can be filled easily."
+msgstr "Құжатты оңай толтыру үшін айнымалыларға түсінікті атаулар беріңіз."
+
+msgid "Example"
+msgstr "Мысал"
+
+msgid "Upload form"
+msgstr "Жүктеу формасы"
+
+msgid "Template file"
+msgstr "Шаблон файлы"
+
+msgid "Fill document | QolQoyu"
+msgstr "Құжатты толтыру | QolQoyu"
+
+msgid "Fill"
+msgstr "Толтыру"
+
+msgid "Back"
+msgstr "Артқа"
+
+msgid "Confirm and invite parties"
+msgstr "Растау және тараптарды шақыру"
+
+msgid "Document preview"
+msgstr "Құжатты алдын ала қарау"
+
+msgid "Live filled document"
+msgstr "Нақты уақытта толтырылған құжат"
+
+msgid "Fields"
+msgstr "Өрістер"
+
+msgid "Parties"
+msgstr "Тараптар"
+
+msgid "Search fields"
+msgstr "Өрістерді іздеу"
+
+msgid "SMS confirmation"
+msgstr "SMS арқылы растау"
+
+msgid "Custom"
+msgstr "Жеке"
+
+msgid "No fields schema found"
+msgstr "Өрістер схемасы табылмады"
+
+msgid "This document template does not contain fillable fields yet."
+msgstr "Бұл құжат шаблонында әзірге толтырылатын өрістер жоқ."
+
+msgid "Edit template | QolQoyu"
+msgstr "Шаблонды өңдеу | QolQoyu"
+
+msgid "Template editor"
+msgstr "Шаблон редакторы"
+
+msgid "Save"
+msgstr "Сақтау"
+
+msgid "Variable library"
+msgstr "Айнымалылар кітапханасы"
+
+msgid "Search variables"
+msgstr "Айнымалыларды іздеу"
+
+msgid "System fields"
+msgstr "Жүйелік өрістер"
+
+msgid "No fields yet."
+msgstr "Әзірге өрістер жоқ."
+
+msgid "No parties yet. Create a party from the properties panel."
+msgstr "Әзірге тараптар жоқ. Тарапты қасиеттер панелінен жасаңыз."
+
+msgid "Normal fields"
+msgstr "Қарапайым өрістер"
+
+msgid "Normal groups will appear here after you create them on the right."
+msgstr "Қарапайым топтар оларды оң жақта жасағаннан кейін осында пайда болады."
+
+msgid "Centered A4 paper"
+msgstr "Ортасында орналасқан A4 парағы"
+
+msgid "Settings"
+msgstr "Баптаулар"
+
+msgid "Add new party"
+msgstr "Жаңа тарап қосу"
+
+msgid "Party title, example: Customer"
+msgstr "Тарап атауы, мысалы: Тапсырыс беруші"
+
+msgid "Variable prefix, example: customer"
+msgstr "Айнымалы префиксі, мысалы: customer"
+
+msgid "Individual"
+msgstr "Жеке тұлға"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Signing order"
+msgstr "Қол қою реті"
+
+msgid "Create signer from this party"
+msgstr "Осы тараптан қол қоюшы жасау"
+
+msgid "Add party"
+msgstr "Тарап қосу"
+
+msgid "Current fields"
+msgstr "Ағымдағы өрістер"
 
 msgid "Delete"
 msgstr "Жою"
+
+msgid "signer"
+msgstr "қол қоюшы"
+
+msgid "system"
+msgstr "жүйелік"
+
+msgid "Delete field"
+msgstr "Өрісті жою"
+
+msgid "No fields in this party yet."
+msgstr "Бұл тарапта әзірге өрістер жоқ."
+
+msgid "Add field to"
+msgstr "Өріс қосу:"
+
+msgid "Field label, example: Address"
+msgstr "Өріс атауы, мысалы: Мекенжай"
+
+msgid "Variable name, example: address"
+msgstr "Айнымалы атауы, мысалы: address"
+
+msgid "Text"
+msgstr "Мәтін"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "IIN / BIN"
+msgstr "ЖСН / БСН"
+
+msgid "Signing method"
+msgstr "Қол қою әдісі"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Date"
+msgstr "Күні"
+
+msgid "Number"
+msgstr "Сан"
+
+msgid "Default value, optional"
+msgstr "Әдепкі мән, міндетті емес"
+
+msgid "Order"
+msgstr "Реті"
+
+msgid "Required"
+msgstr "Міндетті"
+
+msgid "Add custom field"
+msgstr "Пайдаланушы өрісін қосу"
+
+msgid "No parties yet"
+msgstr "Әзірге тараптар жоқ"
+
+msgid "Create Customer, Contractor, Director, or another signer party."
+msgstr "Тапсырыс беруші, Орындаушы, Директор немесе басқа қол қоюшы тарапты жасаңыз."
+
+msgid "Group title, example: Contract data"
+msgstr "Топ атауы, мысалы: Шарт деректері"
+
+msgid "Add normal group"
+msgstr "Қарапайым топ қосу"
+
+msgid "Untitled group"
+msgstr "Атаусыз топ"
 
 msgid "Field label"
 msgstr "Өріс атауы"
@@ -258,14 +582,14 @@ msgstr "Өріс атауы"
 msgid "Variable"
 msgstr "Айнымалы"
 
-msgid "Insert into document"
-msgstr "Құжатқа енгізу"
+msgid "Insert"
+msgstr "Кірістіру"
 
-msgid "Field label, example: Full name of Party 1"
-msgstr "Өріс атауы, мысалы: 1-тараптың толық аты-жөні"
+msgid "Field label, example: Contract number"
+msgstr "Өріс атауы, мысалы: Шарт нөмірі"
 
-msgid "Variable key, example: party1_full_name"
-msgstr "Айнымалы кілті, мысалы: party1_full_name"
+msgid "Variable key, example: contract_number"
+msgstr "Айнымалы кілті, мысалы: contract_number"
 
 msgid "Add field"
 msgstr "Өріс қосу"
@@ -282,47 +606,425 @@ msgstr "Дұрыс айнымалы кілтін енгізіңіз"
 msgid "Variable key is empty"
 msgstr "Айнымалы кілті бос"
 
-msgid "DOCX Templates | Sign-App"
-msgstr "DOCX үлгілері | Sign-App"
+msgid "Sign document | QolQoyu"
+msgstr "Құжатқа қол қою | QolQoyu"
 
-msgid "DOCX Templates"
-msgstr "DOCX үлгілері"
+msgid "Secure signing"
+msgstr "Қауіпсіз қол қою"
 
-msgid "Manage uploaded document templates and create documents from them."
-msgstr "Жүктелген құжат үлгілерін басқарып, олардың негізінде құжаттар жасаңыз."
+msgid "Document signing"
+msgstr "Құжатқа қол қою"
 
-msgid "Upload new template"
-msgstr "Жаңа үлгіні жүктеу"
+msgid "Review the document, check your details and complete signing using the selected method."
+msgstr "Құжатты қарап шығыңыз, деректеріңізді тексеріңіз және таңдалған әдіспен қол қоюды аяқтаңыз."
 
-msgid "Variables"
-msgstr "Айнымалылар"
+msgid "Signing status"
+msgstr "Қол қою мәртебесі"
 
-msgid "Created"
-msgstr "Құрылған уақыты"
+msgid "Open PDF"
+msgstr "PDF ашу"
 
-msgid "Action"
-msgstr "Әрекет"
+msgid "Please make sure the document content is correct before confirming the signature."
+msgstr "Қолтаңбаны растау алдында құжат мазмұны дұрыс екеніне көз жеткізіңіз."
 
-msgid "No variables"
-msgstr "Айнымалылар жоқ"
+msgid "Document file is not rendered yet."
+msgstr "Құжат файлы әлі қалыптастырылмаған."
 
-msgid "Edit"
-msgstr "Өңдеу"
+msgid "Document hash"
+msgstr "Құжат хэші"
 
-msgid "No templates yet"
-msgstr "Әзірге үлгілер жоқ"
+msgid "Signer"
+msgstr "Қол қоюшы"
 
-msgid "Upload your first DOCX template with variables."
-msgstr "Айнымалылары бар алғашқы DOCX үлгісін жүктеңіз."
+msgid "IIN"
+msgstr "ЖСН"
 
-msgid "Upload DOCX Template | Sign-App"
-msgstr "DOCX үлгісін жүктеу | Sign-App"
+msgid "Document already signed"
+msgstr "Құжатқа қол қойылған"
 
-msgid "Upload DOCX Template"
-msgstr "DOCX үлгісін жүктеу"
+msgid "This document has already been signed."
+msgstr "Бұл құжатқа бұрын қол қойылған."
 
-msgid "Upload a DOCX file with variables like"
-msgstr "Мынадай айнымалылары бар DOCX файлын жүктеңіз:"
+msgid "Signed at"
+msgstr "Қол қойылған уақыты"
 
-msgid "or"
-msgstr "немесе"
+msgid "Provider"
+msgstr "Провайдер"
+
+msgid "Certificate IIN"
+msgstr "Сертификат ЖСН"
+
+msgid "Signed content hash"
+msgstr "Қол қойылған мазмұн хэші"
+
+msgid "Signature is valid."
+msgstr "Қолтаңба жарамды."
+
+msgid "Validation note"
+msgstr "Валидация ескертпесі"
+
+msgid "View confirmation sheet"
+msgstr "Растау парағын көру"
+
+msgid "eGov Mobile session"
+msgstr "eGov Mobile сессиясы"
+
+msgid "Open eGov Mobile"
+msgstr "eGov Mobile ашу"
+
+msgid "QR payload"
+msgstr "QR деректері"
+
+msgid "API №1 URL"
+msgstr "API №1 URL"
+
+msgid "Mock complete signing"
+msgstr "Тестілік қол қоюды аяқтау"
+
+msgid "Selected method"
+msgstr "Таңдалған әдіс"
+
+msgid "Continue signing in eGov Mobile. You may need to confirm the signing request in the mobile app."
+msgstr "Қол қоюды eGov Mobile арқылы жалғастырыңыз. Мобильді қосымшада қол қою сұрауын растау қажет болуы мүмкін."
+
+msgid "Sign with eGov Mobile"
+msgstr "eGov Mobile арқылы қол қою"
+
+msgid "SMS code has been sent to your phone number."
+msgstr "SMS коды телефон нөміріңізге жіберілді."
+
+msgid "Session status"
+msgstr "Сессия мәртебесі"
+
+msgid "Code expires at"
+msgstr "Кодтың жарамдылық мерзімі"
+
+msgid "Attempts"
+msgstr "Әрекеттер"
+
+msgid "If the code is incorrect, wait before trying again."
+msgstr "Код қате болса, қайта әрекет жасамас бұрын күтіңіз."
+
+msgid "Confirm that you reviewed the document and request an SMS verification code."
+msgstr "Құжатты қарап шыққаныңызды растаңыз және SMS растау кодын сұраңыз."
+
+msgid "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code."
+msgstr "Мен құжатты қарап шыққанымды, оның мазмұнымен келісетінімді және осы құжатқа SMS растау коды арқылы қол қоюды растаймын."
+
+msgid "Send SMS code"
+msgstr "SMS код жіберу"
+
+msgid "To sign this document using ECP, make sure NCALayer is installed and running on your computer."
+msgstr "Бұл құжатқа ЭЦҚ арқылы қол қою үшін NCALayer компьютеріңізде орнатылғанына және іске қосылғанына көз жеткізіңіз."
+
+msgid "After clicking the button, choose your ECP key and confirm signing in NCALayer."
+msgstr "Батырманы басқаннан кейін ЭЦҚ кілтін таңдап, NCALayer ішінде қол қоюды растаңыз."
+
+msgid "Sign with ECP"
+msgstr "ЭЦҚ арқылы қол қою"
+
+msgid "Enter code"
+msgstr "Кодты енгізіңіз"
+
+msgid "Enter the code sent to your phone number."
+msgstr "Телефон нөміріңізге жіберілген кодты енгізіңіз."
+
+msgid "SMS code"
+msgstr "SMS коды"
+
+msgid "Confirm and sign"
+msgstr "Растау және қол қою"
+
+msgid "Document signers | QolQoyu"
+msgstr "Құжат қол қоюшылары | QolQoyu"
+
+msgid "Signing control"
+msgstr "Қол қоюды басқару"
+
+msgid "Document signers"
+msgstr "Құжат қол қоюшылары"
+
+msgid "Document status"
+msgstr "Құжат мәртебесі"
+
+msgid "Back to documents"
+msgstr "Құжаттарға қайту"
+
+msgid "Total signers"
+msgstr "Барлық қол қоюшылар"
+
+msgid "Generated from document parties"
+msgstr "Құжат тараптарынан жасалған"
+
+msgid "Signing methods"
+msgstr "Қол қою әдістері"
+
+msgid "Available for invited signers"
+msgstr "Шақырылған қол қоюшыларға қолжетімді"
+
+msgid "Access links"
+msgstr "Кіру сілтемелері"
+
+msgid "Secure"
+msgstr "Қорғалған"
+
+msgid "Each signer receives a personal link"
+msgstr "Әр қол қоюшы жеке сілтеме алады"
+
+msgid "Signing route"
+msgstr "Қол қою бағыты"
+
+msgid "These signers were created automatically from the document data."
+msgstr "Бұл қол қоюшылар құжат деректерінен автоматты түрде жасалды."
+
+msgid "Create SMS link"
+msgstr "SMS сілтеме жасау"
+
+msgid "Already signed"
+msgstr "Қол қойылған"
+
+msgid "No generated signers"
+msgstr "Жасалған қол қоюшылар жоқ"
+
+msgid "No signers were created from this document"
+msgstr "Бұл құжаттан қол қоюшылар жасалмады"
+
+msgid "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields."
+msgstr "Құжатты толтыру кезеңіне қайтып, шаблонда аты-жөні, ЖСН/БСН, телефон және қол қою әдісі өрістері бар қол қоюшы тараптар бар екеніне көз жеткізіңіз."
+
+msgid "Signing confirmation | QolQoyu"
+msgstr "Қол қоюды растау | QolQoyu"
+
+msgid "Confirmation sheet"
+msgstr "Растау парағы"
+
+msgid "Signing confirmation"
+msgstr "Қол қоюды растау"
+
+msgid "This page confirms that the document was signed electronically and records the signing evidence."
+msgstr "Бұл бет құжаттың электронды түрде қол қойылғанын растайды және қол қою дәлелдерін тіркейді."
+
+msgid "Valid signature"
+msgstr "Жарамды қолтаңба"
+
+msgid "Signature saved"
+msgstr "Қолтаңба сақталды"
+
+msgid "Recorded"
+msgstr "Тіркелді"
+
+msgid "Document details"
+msgstr "Құжат деректері"
+
+msgid "Title"
+msgstr "Атауы"
+
+msgid "Document ID"
+msgstr "Құжат ID"
+
+msgid "Signer identity"
+msgstr "Қол қоюшы деректері"
+
+msgid "Full name"
+msgstr "Аты-жөні"
+
+msgid "Signing evidence"
+msgstr "Қол қою дәлелдері"
+
+msgid "ECP confirmation"
+msgstr "ЭЦҚ растауы"
+
+msgid "eGov Mobile confirmation"
+msgstr "eGov Mobile растауы"
+
+msgid "Electronic signing confirmation"
+msgstr "Электронды қол қоюды растау"
+
+msgid "Session ID"
+msgstr "Сессия ID"
+
+msgid "Certificate serial"
+msgstr "Сертификаттың сериялық нөмірі"
+
+msgid "Signature valid"
+msgstr "Қолтаңба жарамды"
+
+msgid "Yes"
+msgstr "Иә"
+
+msgid "No"
+msgstr "Жоқ"
+
+msgid "Backend validation"
+msgstr "Серверлік валидация"
+
+msgid "Not implemented yet"
+msgstr "Әзірге іске асырылмаған"
+
+msgid "Certificate subject"
+msgstr "Сертификат субъектісі"
+
+msgid "Consent"
+msgstr "Келісім"
+
+msgid "Consent text"
+msgstr "Келісім мәтіні"
+
+msgid "Technical confirmation"
+msgstr "Техникалық растау"
+
+msgid "Confirmation text"
+msgstr "Растау мәтіні"
+
+msgid "Signing record created"
+msgstr "Қол қою жазбасы жасалды"
+
+msgid "The signing event was saved with document hash, signer data and technical metadata."
+msgstr "Қол қою оқиғасы құжат хэшімен, қол қоюшы деректерімен және техникалық метадеректермен сақталды."
+
+msgid "Technical data"
+msgstr "Техникалық деректер"
+
+msgid "IP address"
+msgstr "IP мекенжайы"
+
+msgid "User agent"
+msgstr "User agent"
+
+msgid "Created at"
+msgstr "Жасалған уақыты"
+
+msgid "Login | QolQoyu"
+msgstr "Кіру | QolQoyu"
+
+msgid "QolQoyu workspace"
+msgstr "QolQoyu жұмыс кеңістігі"
+
+msgid "Sign documents online with confidence."
+msgstr "Құжаттарға онлайн түрде сенімді қол қойыңыз."
+
+msgid "Create templates, prepare documents, invite signers and keep confirmation sheets in one secure workspace."
+msgstr "Шаблондар жасаңыз, құжаттарды дайындаңыз, қол қоюшыларды шақырыңыз және растау парақтарын бір қауіпсіз жұмыс кеңістігінде сақтаңыз."
+
+msgid "Reusable DOCX structures"
+msgstr "Қайта қолданылатын DOCX құрылымдары"
+
+msgid "SMS, ECP and eGov Mobile flows"
+msgstr "SMS, ЭЦҚ және eGov Mobile арқылы қол қою"
+
+msgid "Hash and confirmation tracking"
+msgstr "Хэш пен растауларды бақылау"
+
+msgid "Welcome back"
+msgstr "Қайта қош келдіңіз"
+
+msgid "Sign in"
+msgstr "Кіру"
+
+msgid "Access your document signing workspace."
+msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+msgid "Don’t have an account?"
+msgstr "Аккаунтыңыз жоқ па?"
+
+msgid "Profile | QolQoyu"
+msgstr "Профиль | QolQoyu"
+
+msgid "Account workspace"
+msgstr "Аккаунт жұмыс кеңістігі"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Manage your account and access your document signing workspace."
+msgstr "Аккаунтыңызды басқарып, құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+msgid "Signed in as"
+msgstr "Кірген аккаунт"
+
+msgid "No email added"
+msgstr "Email қосылмаған"
+
+msgid "Username"
+msgstr "Пайдаланушы аты"
+
+msgid "Not specified"
+msgstr "Көрсетілмеген"
+
+msgid "Date joined"
+msgstr "Тіркелген күні"
+
+msgid "Last login"
+msgstr "Соңғы кіру"
+
+msgid "Never"
+msgstr "Ешқашан"
+
+msgid "Quick actions"
+msgstr "Жылдам әрекеттер"
+
+msgid "Workspace actions"
+msgstr "Жұмыс кеңістігі әрекеттері"
+
+msgid "Quickly open your templates, documents or create a new document for signing."
+msgstr "Шаблондарыңызды, құжаттарыңызды тез ашыңыз немесе қол қою үшін жаңа құжат жасаңыз."
+
+msgid "Create"
+msgstr "Жасау"
+
+msgid "View templates"
+msgstr "Шаблондарды көру"
+
+msgid "Document signing environment"
+msgstr "Құжаттарға қол қою ортасы"
+
+msgid "Your account gives access to template management, document creation, signer routing and confirmation sheets."
+msgstr "Аккаунтыңыз шаблондарды басқаруға, құжат жасауға, қол қоюшылар бағытын реттеуге және растау парақтарына қол жеткізуге мүмкіндік береді."
+
+msgid "Templates → Documents → Signers"
+msgstr "Шаблондар → Құжаттар → Қол қоюшылар"
+
+msgid "Prepare reusable templates, create documents from them and send secure signing links to signers."
+msgstr "Қайта қолданылатын шаблондарды дайындаңыз, олардан құжаттар жасаңыз және қол қоюшыларға қауіпсіз қол қою сілтемелерін жіберіңіз."
+
+msgid "Register | QolQoyu"
+msgstr "Тіркелу | QolQoyu"
+
+msgid "New workspace"
+msgstr "Жаңа жұмыс кеңістігі"
+
+msgid "Create your workspace account to upload templates and manage documents."
+msgstr "Шаблондарды жүктеу және құжаттарды басқару үшін жұмыс кеңістігі аккаунтын жасаңыз."
+
+msgid "Already have an account?"
+msgstr "Аккаунтыңыз бар ма?"
+
+msgid "QolQoyu setup"
+msgstr "QolQoyu баптауы"
+
+msgid "Start your signing workspace in minutes."
+msgstr "Қол қою жұмыс кеңістігін бірнеше минутта іске қосыңыз."
+
+msgid "After registration, you can upload DOCX templates, create documents and invite signers through secure signing links."
+msgstr "Тіркелгеннен кейін DOCX шаблондарын жүктеп, құжаттар жасап, қол қоюшыларды қауіпсіз қол қою сілтемелері арқылы шақыра аласыз."
+
+msgid "Upload templates"
+msgstr "Шаблондарды жүктеу"
+
+msgid "Prepare reusable DOCX templates with variables."
+msgstr "Айнымалылары бар қайта қолданылатын DOCX шаблондарын дайындаңыз."
+
+msgid "Send for signing"
+msgstr "Қол қоюға жіберу"
+
+msgid "Create documents and invite signers by SMS, ECP or eGov Mobile."
+msgstr "Құжаттар жасап, қол қоюшыларды SMS, ЭЦҚ немесе eGov Mobile арқылы шақырыңыз."
+
+msgid "What you get"
+msgstr "Сіз не аласыз"
+
+msgid "Templates, document generation, signer routing, signing status tracking and confirmation sheets."
+msgstr "Шаблондар, құжат генерациясы, қол қоюшылар бағыты, қол қою мәртебесін бақылау және растау парақтары."
+
+msgid "Set up your personal access to the workspace."
+msgstr "Жұмыс кеңістігіне жеке қолжетімділікті баптаңыз."

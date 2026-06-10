@@ -1,145 +1,297 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Sign-App | Online Document Signing" %}{% endblock %}
+{% block title %}QolQoyu — {% trans "Digital document signing" %}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<section class="hero-section">
-    <div class="hero-content">
-        <div class="hero-badge">
-            {% trans "Online document signing platform" %}
+<section class="landing-hero">
+    <div class="landing-orb landing-orb--one"></div>
+    <div class="landing-orb landing-orb--two"></div>
+    <div class="landing-orb landing-orb--three"></div>
+
+    <div class="landing-hero__grid">
+        <div class="landing-hero__content reveal-on-scroll">
+            <div class="landing-eyebrow">
+                <span class="landing-eyebrow__dot"></span>
+                {% trans "QolQoyu means “to sign”" %}
+            </div>
+
+            <h1 class="landing-hero__title">
+                {% trans "Digital signing without confusion." %}
+            </h1>
+
+            <p class="landing-hero__text">
+                {% trans "Create documents, invite signers and track every signature step in one secure workspace." %}
+            </p>
+
+            <div class="landing-hero__actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'documents:document_create' %}" class="landing-btn landing-btn--primary">
+                        {% trans "Create document" %}
+                    </a>
+
+                    <a href="{% url 'documents:template_list' %}" class="landing-btn landing-btn--secondary">
+                        {% trans "Open templates" %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'accounts:register' %}" class="landing-btn landing-btn--primary">
+                        {% trans "Start now" %}
+                    </a>
+
+                    <a href="{% url 'accounts:login' %}" class="landing-btn landing-btn--secondary">
+                        {% trans "Login" %}
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="landing-trust-row">
+                <div class="landing-trust-item">
+                    <strong>SMS</strong>
+                    <span>{% trans "signing flow" %}</span>
+                </div>
+
+                <div class="landing-trust-item">
+                    <strong>ECP</strong>
+                    <span>{% trans "validation ready" %}</span>
+                </div>
+
+                <div class="landing-trust-item">
+                    <strong>Hash</strong>
+                    <span>{% trans "document integrity" %}</span>
+                </div>
+            </div>
         </div>
 
-        <h1 class="hero-title">
-            {% trans "Prepare, send and sign documents online" %}
-        </h1>
+        <div class="landing-hero__visual reveal-on-scroll">
+            <div class="product-window">
+                <div class="product-window__topbar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
 
-        <p class="hero-text">
-            {% trans "Sign-App helps organizations upload DOCX templates, generate documents, add signers and manage the signing process through secure online links." %}
-        </p>
+                <div class="product-window__body">
+                    <div class="product-panel product-panel--main">
+                        <div class="product-panel__header">
+                            <div>
+                                <span class="product-label">{% trans "Document" %}</span>
+                                <h3>{% trans "Service agreement" %}</h3>
+                            </div>
 
-        <div class="hero-actions">
-            {% if user.is_authenticated %}
-                <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-                    {% trans "Create document" %}
-                </a>
+                            <span class="product-status">{% trans "Waiting for signers" %}</span>
+                        </div>
 
-                <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
-                    {% trans "View templates" %}
-                </a>
-            {% else %}
-                <a href="{% url 'accounts:register' %}" class="btn btn-primary">
-                    {% trans "Create account" %}
-                </a>
+                        <div class="document-preview">
+                            <div class="document-line document-line--wide"></div>
+                            <div class="document-line"></div>
+                            <div class="document-line document-line--short"></div>
 
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline">
-                    {% trans "Sign in" %}
-                </a>
-            {% endif %}
-        </div>
-    </div>
+                            <div class="signature-zone">
+                                <div class="signature-zone__pen"></div>
+                                <div class="signature-zone__stroke"></div>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="hero-panel">
-        <div class="hero-panel__header">
-            <span class="hero-panel__dot"></span>
-            {% trans "Signing workflow" %}
-        </div>
+                    <div class="product-floating-card product-floating-card--one">
+                        <span class="floating-icon">✓</span>
+                        <div>
+                            <strong>{% trans "Signed" %}</strong>
+                            <small>{% trans "Customer verified" %}</small>
+                        </div>
+                    </div>
 
-        <div class="workflow-list">
-            <div class="workflow-item">
-                <span class="workflow-number">1</span>
-                <div>
-                    <strong>{% trans "Upload DOCX template" %}</strong>
-                    <p>
-                        {% trans "Add variables like" %}
-                        {% verbatim %}{{ full_name }}{% endverbatim %}
-                        {% trans "and" %}
-                        {% verbatim %}{{ date }}{% endverbatim %}.
-                    </p>
+                    <div class="product-floating-card product-floating-card--two">
+                        <span class="floating-icon floating-icon--blue">#</span>
+                        <div>
+                            <strong>{% trans "Hash fixed" %}</strong>
+                            <small>{% trans "No silent edits" %}</small>
+                        </div>
+                    </div>
+
+                    <div class="product-activity">
+                        <div class="activity-item">
+                            <span></span>
+                            <p>{% trans "Template selected" %}</p>
+                        </div>
+
+                        <div class="activity-item">
+                            <span></span>
+                            <p>{% trans "SMS code confirmed" %}</p>
+                        </div>
+
+                        <div class="activity-item">
+                            <span></span>
+                            <p>{% trans "Audit log updated" %}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="workflow-item">
-                <span class="workflow-number">2</span>
-                <div>
-                    <strong>{% trans "Create document" %}</strong>
-                    <p>{% trans "Generate a document from the selected template." %}</p>
-                </div>
-            </div>
-
-            <div class="workflow-item">
-                <span class="workflow-number">3</span>
-                <div>
-                    <strong>{% trans "Add signers" %}</strong>
-                    <p>{% trans "Specify signer name, IIN, phone number and signing order." %}</p>
-                </div>
-            </div>
-
-            <div class="workflow-item">
-                <span class="workflow-number">4</span>
-                <div>
-                    <strong>{% trans "Send secure link" %}</strong>
-                    <p>{% trans "The signer opens the link, reviews the document and confirms signing." %}</p>
-                </div>
-            </div>
+            <img
+                class="hero-photo"
+                src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80"
+                alt="Document signing workspace"
+                loading="lazy"
+            >
         </div>
     </div>
 </section>
 
-<section class="features-grid">
-    <div class="feature-card">
-        <div class="feature-icon">DOCX</div>
-        <h3>{% trans "Template-based documents" %}</h3>
+<section class="landing-section landing-section--bento">
+    <div class="landing-section__header reveal-on-scroll">
+        <span class="landing-section__kicker">{% trans "Workspace" %}</span>
+        <h2>{% trans "Everything around the document is connected." %}</h2>
         <p>
-            {% trans "Upload reusable DOCX templates and automatically fill document fields." %}
+            {% trans "QolQoyu is not only a signature button. It controls templates, signers, document state, signing method and audit history." %}
         </p>
     </div>
 
-    <div class="feature-card">
-        <div class="feature-icon">SMS</div>
-        <h3>{% trans "Secure signer links" %}</h3>
-        <p>
-            {% trans "Send each signer a personal secure link for document review and confirmation." %}
-        </p>
-    </div>
+    <div class="bento-grid">
+        <article class="bento-card bento-card--large reveal-on-scroll">
+            <div class="bento-card__content">
+                <span class="bento-card__tag">{% trans "Templates" %}</span>
+                <h3>{% trans "Reusable document templates" %}</h3>
+                <p>{% trans "Prepare variables once and generate clean documents without rewriting the same contract again." %}</p>
+            </div>
 
-    <div class="feature-card">
-        <div class="feature-icon">LOG</div>
-        <h3>{% trans "Signing history" %}</h3>
-        <p>
-            {% trans "Track document status, signer actions and signing progress." %}
-        </p>
+            <div class="template-stack">
+                <div class="template-paper template-paper--one"></div>
+                <div class="template-paper template-paper--two"></div>
+                <div class="template-paper template-paper--three">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </article>
+
+        <article class="bento-card reveal-on-scroll">
+            <span class="bento-card__tag">{% trans "Signing" %}</span>
+            <h3>{% trans "SMS and ECP flows" %}</h3>
+            <p>{% trans "Support different signing scenarios depending on the signer and document type." %}</p>
+        </article>
+
+        <article class="bento-card bento-card--dark reveal-on-scroll">
+            <span class="bento-card__tag">{% trans "Integrity" %}</span>
+            <h3>{% trans "Document hash control" %}</h3>
+            <p>{% trans "The system can fix the file hash at signing time to detect changes later." %}</p>
+        </article>
+
+        <article class="bento-card reveal-on-scroll">
+            <span class="bento-card__tag">{% trans "Audit" %}</span>
+            <h3>{% trans "Every action is visible" %}</h3>
+            <p>{% trans "Signing events, attempts, confirmation and status changes are stored in the audit trail." %}</p>
+        </article>
+
+        <article class="bento-card bento-card--image reveal-on-scroll">
+            <img
+                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80"
+                alt="Business documents"
+                loading="lazy"
+            >
+            <div>
+                <span class="bento-card__tag">{% trans "Documents" %}</span>
+                <h3>{% trans "One place for agreements" %}</h3>
+            </div>
+        </article>
     </div>
 </section>
 
-<section class="dashboard-preview">
-    <div class="dashboard-preview__content">
-        <h2>{% trans "Start with templates and documents" %}</h2>
-        <p>
-            {% trans "The MVP currently focuses on document templates, generated documents and the basic signing workflow. Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage." %}
-        </p>
+<section class="landing-section process-section">
+    <div class="landing-section__header reveal-on-scroll">
+        <span class="landing-section__kicker">{% trans "Flow" %}</span>
+        <h2>{% trans "From template to signed document." %}</h2>
+        <p>{% trans "The signing process is built as a clear sequence, so users always understand what is happening." %}</p>
     </div>
 
-    <div class="dashboard-preview__actions">
+    <div class="process-timeline">
+        <div class="process-step reveal-on-scroll">
+            <span class="process-step__number">01</span>
+            <h3>{% trans "Create template" %}</h3>
+            <p>{% trans "Upload or prepare a reusable document structure with variables." %}</p>
+        </div>
+
+        <div class="process-step reveal-on-scroll">
+            <span class="process-step__number">02</span>
+            <h3>{% trans "Fill document" %}</h3>
+            <p>{% trans "Enter values, signer data and signing method before sending." %}</p>
+        </div>
+
+        <div class="process-step reveal-on-scroll">
+            <span class="process-step__number">03</span>
+            <h3>{% trans "Invite signers" %}</h3>
+            <p>{% trans "Send secure access links and control signing order." %}</p>
+        </div>
+
+        <div class="process-step reveal-on-scroll">
+            <span class="process-step__number">04</span>
+            <h3>{% trans "Store proof" %}</h3>
+            <p>{% trans "Keep the signature, hash, confirmation text and audit log." %}</p>
+        </div>
+    </div>
+</section>
+
+<section class="landing-section landing-cta reveal-on-scroll">
+    <div class="landing-cta__content">
+        <span class="landing-section__kicker">{% trans "Ready" %}</span>
+        <h2>{% trans "Prepare your first document for signing." %}</h2>
+        <p>{% trans "Start with a template, create a document, add signers and test the full signing route." %}</p>
+    </div>
+
+    <div class="landing-cta__actions">
         {% if user.is_authenticated %}
-            <a href="{% url 'documents:template_upload' %}" class="btn btn-outline">
+            <a href="{% url 'documents:template_upload' %}" class="landing-btn landing-btn--primary">
                 {% trans "Upload template" %}
             </a>
 
-            <a href="{% url 'documents:document_list' %}" class="btn btn-primary">
-                {% trans "Open documents" %}
+            <a href="{% url 'documents:document_list' %}" class="landing-btn landing-btn--secondary">
+                {% trans "View documents" %}
             </a>
         {% else %}
-            <a href="{% url 'accounts:register' %}" class="btn btn-outline">
-                {% trans "Register" %}
-            </a>
-
-            <a href="{% url 'accounts:login' %}" class="btn btn-primary">
-                {% trans "Login" %}
+            <a href="{% url 'accounts:register' %}" class="landing-btn landing-btn--primary">
+                {% trans "Create account" %}
             </a>
         {% endif %}
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const revealItems = document.querySelectorAll(".reveal-on-scroll");
+
+        const revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.16
+        });
+
+        revealItems.forEach(function (item) {
+            revealObserver.observe(item);
+        });
+
+        const hero = document.querySelector(".landing-hero");
+
+        if (hero) {
+            window.addEventListener("scroll", function () {
+                const scrollY = window.scrollY;
+                hero.style.setProperty("--hero-scroll", Math.min(scrollY / 700, 1));
+            });
+        }
+    });
+</script>
 {% endblock %}

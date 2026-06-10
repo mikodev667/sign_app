@@ -2,7 +2,7 @@
 {% load i18n %}
 
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}QolQoyu{% endblock %}</title>
@@ -13,100 +13,198 @@
 
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
+<div class="app-shell">
 
-<header class="app-header">
-    <div class="container app-header__inner">
-        <a href="{% url 'home' %}" class="app-logo">
-            QolQoyu
-        </a>
+    <header class="app-header">
+        <div class="container app-header__inner">
 
-        <nav class="app-nav">
-            <a href="{% url 'home' %}" class="app-nav__link">
-                {% trans "Home" %}
+            <a href="{% url 'home' %}" class="app-logo">
+                <span class="app-logo__mark app-logo__mark--image">
+                    <img src="{% static 'img/qolqoyu-logo.png' %}" alt="QolQoyu logo">
+                </span>
+
+                <span class="app-logo__text">
+                    <span class="app-logo__name">QolQoyu</span>
+                    <span class="app-logo__subtitle">{% trans "Document signing platform" %}</span>
+                </span>
             </a>
 
-            {% if user.is_authenticated %}
-                <a href="{% url 'documents:template_list' %}" class="app-nav__link">
-                    {% trans "Templates" %}
+            <button class="app-menu-button" type="button" id="appMenuButton" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="app-nav" id="appNav">
+                <a href="{% url 'home' %}"
+                   class="app-nav__link {% if request.resolver_match.url_name == 'home' %}app-nav__link--active{% endif %}">
+
+                    <span>{% trans "Home" %}</span>
                 </a>
 
-                <a href="{% url 'documents:template_upload' %}" class="app-nav__link">
-                    {% trans "Upload template" %}
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'documents:document_list' %}"
+                       class="app-nav__link {% if request.resolver_match.url_name == 'document_list' or request.resolver_match.url_name == 'document_create' or request.resolver_match.url_name == 'document_fill' or request.resolver_match.url_name == 'document_render_docx' %}app-nav__link--active{% endif %}">
 
-                <a href="{% url 'documents:document_list' %}" class="app-nav__link">
-                    {% trans "Documents" %}
-                </a>
+                        <span>{% trans "Documents" %}</span>
+                    </a>
 
-                <a href="{% url 'documents:document_create' %}" class="app-nav__link app-nav__link--primary">
-                    {% trans "Create document" %}
-                </a>
+                    <a href="{% url 'documents:template_list' %}"
+                       class="app-nav__link {% if request.resolver_match.url_name == 'template_list' or request.resolver_match.url_name == 'template_upload' or request.resolver_match.url_name == 'template_edit' or request.resolver_match.url_name == 'template_party_create' or request.resolver_match.url_name == 'template_party_field_create' %}app-nav__link--active{% endif %}">
 
-                <a href="{% url 'accounts:profile' %}" class="app-nav__link">
-                    {% trans "Profile" %}
-                </a>
+                        <span>{% trans "Templates" %}</span>
+                    </a>
 
-                <form method="post" action="{% url 'accounts:logout' %}" class="logout-form">
+                    <div class="app-user-menu" id="appUserMenu">
+                        <button class="app-user-button" type="button" id="appUserButton">
+                            <span class="app-user-avatar">
+                                {{ user.username|first|default:"U" }}
+                            </span>
+
+                            <span class="app-user-info">
+                                <span class="app-user-name">{{ user.username }}</span>
+                                <span class="app-user-role">{% trans "Account" %}</span>
+                            </span>
+
+                            <span class="app-user-arrow">⌄</span>
+                        </button>
+
+                        <div class="app-user-dropdown">
+                            <a href="{% url 'accounts:profile' %}" class="app-user-dropdown__item">
+
+                                <span>{% trans "Profile" %}</span>
+                            </a>
+
+                            <a href="{% url 'documents:template_upload' %}" class="app-user-dropdown__item">
+
+                                <span>{% trans "Upload template" %}</span>
+                            </a>
+
+                            <div class="app-user-dropdown__divider"></div>
+
+                            <form method="post" action="{% url 'accounts:logout' %}" class="logout-form">
+                                {% csrf_token %}
+                                <button type="submit" class="app-user-dropdown__item app-user-dropdown__button">
+
+                                    <span>{% trans "Logout" %}</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="app-nav__link">
+                        <span class="app-nav__icon">↪</span>
+                        <span>{% trans "Login" %}</span>
+                    </a>
+
+                    <a href="{% url 'accounts:register' %}" class="app-nav__link app-nav__link--primary">
+                        <span class="app-nav__icon">＋</span>
+                        <span>{% trans "Register" %}</span>
+                    </a>
+                {% endif %}
+
+                <form action="{% url 'set_language' %}" method="post" class="language-form">
                     {% csrf_token %}
-                    <button type="submit" class="app-nav__link logout-button">
-                        {% trans "Logout" %}
-                    </button>
-                </form>
-            {% else %}
-                <a href="{% url 'accounts:login' %}" class="app-nav__link">
-                    {% trans "Login" %}
-                </a>
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
 
-                <a href="{% url 'accounts:register' %}" class="app-nav__link app-nav__link--primary">
-                    {% trans "Register" %}
-                </a>
+                    <select name="language" class="language-select" onchange="this.form.submit()">
+                        {% get_current_language as CURRENT_LANGUAGE %}
+
+                        <option value="en" {% if CURRENT_LANGUAGE == "en" %}selected{% endif %}>EN</option>
+                        <option value="ru" {% if CURRENT_LANGUAGE == "ru" %}selected{% endif %}>RU</option>
+                        <option value="kk" {% if CURRENT_LANGUAGE == "kk" %}selected{% endif %}>KZ</option>
+                    </select>
+                </form>
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div class="container">
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message message--{{ message.tags|default:'info' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
 
-            <form action="{% url 'set_language' %}" method="post" class="language-form">
-                {% csrf_token %}
-                <input name="next" type="hidden" value="{{ request.get_full_path }}">
+            {% block content %}
+            {% endblock %}
 
-                <select name="language" class="language-select" onchange="this.form.submit()">
-                    {% get_current_language as CURRENT_LANGUAGE %}
+        </div>
+    </main>
 
-                    <option value="en" {% if CURRENT_LANGUAGE == "en" %}selected{% endif %}>
-                        EN
-                    </option>
+    <footer class="app-footer">
+        <div class="container app-footer__inner">
+            <span>QolQoyu · {% now "Y" %}</span>
+            <span>{% trans "Secure online document signing" %}</span>
+        </div>
+    </footer>
 
-                    <option value="ru" {% if CURRENT_LANGUAGE == "ru" %}selected{% endif %}>
-                        RU
-                    </option>
+</div>
 
-                    <option value="kk" {% if CURRENT_LANGUAGE == "kk" %}selected{% endif %}>
-                        KZ
-                    </option>
-                </select>
-            </form>
-        </nav>
-    </div>
-</header>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuButton = document.getElementById("appMenuButton");
+        const appNav = document.getElementById("appNav");
 
-<main class="app-main">
-    <div class="container">
+        const userMenu = document.getElementById("appUserMenu");
+        const userButton = document.getElementById("appUserButton");
 
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="message message--{{ message.tags|default:'info' }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+        if (menuButton && appNav) {
+            menuButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                appNav.classList.toggle("app-nav--open");
+                menuButton.classList.toggle("app-menu-button--open");
 
-        {% block content %}
-        {% endblock %}
+                if (userMenu) {
+                    userMenu.classList.remove("app-user-menu--open");
+                }
+            });
+        }
 
-    </div>
-</main>
+        if (userMenu && userButton) {
+            userButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                userMenu.classList.toggle("app-user-menu--open");
+            });
+        }
+
+        document.addEventListener("click", function () {
+            if (appNav) {
+                appNav.classList.remove("app-nav--open");
+            }
+
+            if (menuButton) {
+                menuButton.classList.remove("app-menu-button--open");
+            }
+
+            if (userMenu) {
+                userMenu.classList.remove("app-user-menu--open");
+            }
+        });
+
+        if (appNav) {
+            appNav.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        if (userMenu) {
+            userMenu.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        }
+    });
+</script>
 
 {% block extra_js %}{% endblock %}
-
 </body>
 </html>

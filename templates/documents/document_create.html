@@ -1,63 +1,145 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Create Document | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Create Document | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <h1 class="page-title">{% trans "Create Document" %}</h1>
-    <p class="page-subtitle">
-        {% trans "Create a new document from an uploaded template and prepare it for signing." %}
-    </p>
-</div>
+<section class="create-document-page">
 
-<div class="card form-card">
-    <form method="post" class="app-form">
-        {% csrf_token %}
+    <div class="create-document-hero">
+        <div class="create-document-hero__content">
+            <div class="create-document-kicker">
+                {% trans "New document" %}
+            </div>
 
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}" class="form-label">
-                    {{ field.label }}
-                </label>
+            <h1 class="create-document-title">
+                {% trans "Create Document" %}
+            </h1>
 
-                {{ field }}
+            <p class="create-document-subtitle">
+                {% trans "Select a template, enter document details and prepare a clean file for the signing process." %}
+            </p>
+        </div>
 
-                {% if field.help_text %}
-                    <div class="form-help">
-                        {{ field.help_text }}
+        <div class="create-document-hero__visual">
+            <div class="create-document-mini-card create-document-mini-card--one">
+                <span>{% trans "Template" %}</span>
+                <strong>DOCX</strong>
+            </div>
+
+            <div class="create-document-mini-card create-document-mini-card--two">
+                <span>{% trans "Status" %}</span>
+                <strong>{% trans "Draft" %}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-document-layout">
+
+        <aside class="create-document-guide">
+            <div class="create-document-guide__top">
+                <div class="create-document-guide__icon">
+                    <span>01</span>
+                </div>
+
+                <div>
+                    <h2>{% trans "Document setup" %}</h2>
+                    <p>{% trans "This step creates the base document before signers are invited." %}</p>
+                </div>
+            </div>
+
+            <div class="create-document-steps">
+                <div class="create-document-step create-document-step--active">
+                    <span></span>
+                    <div>
+                        <strong>{% trans "Choose template" %}</strong>
+                        <p>{% trans "Use an uploaded DOCX template as the document base." %}</p>
                     </div>
-                {% endif %}
+                </div>
 
-                {% if field.errors %}
-                    <div class="form-errors">
-                        {% for error in field.errors %}
+                <div class="create-document-step">
+                    <span></span>
+                    <div>
+                        <strong>{% trans "Fill details" %}</strong>
+                        <p>{% trans "Enter title and required document information." %}</p>
+                    </div>
+                </div>
+
+                <div class="create-document-step">
+                    <span></span>
+                    <div>
+                        <strong>{% trans "Prepare signing" %}</strong>
+                        <p>{% trans "After creation, you can add signers and signing methods." %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="create-document-note">
+                <strong>{% trans "Tip" %}</strong>
+                <p>
+                    {% trans "Use clear document names so it is easier to track them later in the signing workspace." %}
+                </p>
+            </div>
+        </aside>
+
+        <div class="create-document-form-card">
+            <div class="create-document-form-card__header">
+                <div>
+                    <span>{% trans "Form" %}</span>
+                    <h2>{% trans "Document information" %}</h2>
+                </div>
+            </div>
+
+            <form method="post" class="app-form create-document-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group create-document-field">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <div class="form-help">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors form-errors--global">
+                        {% for error in form.non_field_errors %}
                             <div class="form-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                 {% endif %}
-            </div>
-        {% endfor %}
 
-        {% if form.non_field_errors %}
-            <div class="form-errors form-errors--global">
-                {% for error in form.non_field_errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
+                <div class="create-document-actions">
+                    <a href="{% url 'documents:document_list' %}" class="btn btn-secondary">
+                        {% trans "Cancel" %}
+                    </a>
 
-        <div class="form-actions">
-            <a href="{% url 'documents:document_list' %}" class="btn btn-outline">
-                {% trans "Cancel" %}
-            </a>
-
-            <button type="submit" class="btn btn-primary">
-                {% trans "Create document" %}
-            </button>
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Create document" %}
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
+
+    </div>
+
+</section>
 
 {% endblock %}

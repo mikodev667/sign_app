@@ -1,20 +1,57 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Login | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Login | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="auth-page">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h1 class="auth-title">{% trans "Sign in" %}</h1>
-            <p class="auth-subtitle">
+<section class="q-auth-page">
+
+    <div class="q-auth-visual">
+        <div class="q-auth-brand-card">
+            <div class="q-auth-logo">Q</div>
+
+            <div>
+                <span>{% trans "QolQoyu workspace" %}</span>
+                <h1>{% trans "Sign documents online with confidence." %}</h1>
+                <p>
+                    {% trans "Create templates, prepare documents, invite signers and keep confirmation sheets in one secure workspace." %}
+                </p>
+            </div>
+        </div>
+
+        <div class="q-auth-benefits">
+            <div class="q-auth-benefit">
+                <strong>{% trans "Templates" %}</strong>
+                <span>{% trans "Reusable DOCX structures" %}</span>
+            </div>
+
+            <div class="q-auth-benefit">
+                <strong>{% trans "Signing" %}</strong>
+                <span>{% trans "SMS, ECP and eGov Mobile flows" %}</span>
+            </div>
+
+            <div class="q-auth-benefit">
+                <strong>{% trans "Audit" %}</strong>
+                <span>{% trans "Hash and confirmation tracking" %}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="q-auth-card">
+        <div class="q-auth-card__header">
+            <div class="q-auth-kicker">
+                {% trans "Welcome back" %}
+            </div>
+
+            <h2>{% trans "Sign in" %}</h2>
+
+            <p>
                 {% trans "Access your document signing workspace." %}
             </p>
         </div>
 
-        <form method="post" class="app-form">
+        <form method="post" class="app-form q-auth-form">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -26,7 +63,7 @@
             {% endif %}
 
             {% for field in form %}
-                <div class="form-group">
+                <div class="form-group q-auth-field">
                     <label for="{{ field.id_for_label }}" class="form-label">
                         {{ field.label }}
                     </label>
@@ -43,18 +80,20 @@
                 </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-primary auth-submit">
+            <button type="submit" class="btn btn-primary q-auth-submit">
                 {% trans "Sign in" %}
             </button>
         </form>
 
-        <div class="auth-footer">
+        <div class="q-auth-footer">
             <span>{% trans "Don’t have an account?" %}</span>
-            <a href="{% url 'accounts:register' %}" class="table-link">
+
+            <a href="{% url 'accounts:register' %}">
                 {% trans "Create account" %}
             </a>
         </div>
     </div>
-</div>
+
+</section>
 
 {% endblock %}

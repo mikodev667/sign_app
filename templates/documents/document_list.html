@@ -1,83 +1,144 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Documents | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Documents | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header page-header--with-action">
-    <div>
-        <h1 class="page-title">{% trans "Documents" %}</h1>
-        <p class="page-subtitle">
-            {% trans "Manage generated documents and prepare them for online signing." %}
-        </p>
+<section class="documents-page">
+
+    <div class="documents-hero">
+        <div class="documents-hero__content">
+            <div class="documents-kicker">
+                {% trans "Document workspace" %}
+            </div>
+
+            <h1 class="documents-title">
+                {% trans "Documents" %}
+            </h1>
+
+            <p class="documents-subtitle">
+                {% trans "Manage generated documents, download rendered files and prepare every agreement for online signing." %}
+            </p>
+        </div>
+
+        <div class="documents-hero__actions">
+            <a href="{% url 'documents:document_create' %}" class="btn btn-primary documents-main-action">
+                {% trans "Create document" %}
+            </a>
+        </div>
     </div>
 
-    <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-        {% trans "Create document" %}
-    </a>
-</div>
+    <div class="documents-stats">
+        <div class="documents-stat-card">
+            <span class="documents-stat-card__label">{% trans "Total documents" %}</span>
+            <strong>{{ documents|length }}</strong>
+            <span class="documents-stat-card__hint">{% trans "Created in workspace" %}</span>
+        </div>
 
-<div class="table-wrapper">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{% trans "Title" %}</th>
-                <th>{% trans "Template" %}</th>
-                <th>{% trans "Status" %}</th>
-                <th>{% trans "DOCX" %}</th>
-                <th>{% trans "Signing" %}</th>
-            </tr>
-        </thead>
+        <div class="documents-stat-card documents-stat-card--blue">
+            <span class="documents-stat-card__label">{% trans "Signing flow" %}</span>
+            <strong>SMS / ECP</strong>
+            <span class="documents-stat-card__hint">{% trans "Available methods" %}</span>
+        </div>
 
-        <tbody>
+        <div class="documents-stat-card documents-stat-card--teal">
+            <span class="documents-stat-card__label">{% trans "Integrity" %}</span>
+            <strong>Hash</strong>
+            <span class="documents-stat-card__hint">{% trans "Document control" %}</span>
+        </div>
+    </div>
+
+    {% if documents %}
+        <div class="documents-toolbar">
+            <div>
+                <h2>{% trans "Generated documents" %}</h2>
+                <p>{% trans "Open signing settings, download files or continue preparing documents." %}</p>
+            </div>
+        </div>
+
+        <div class="documents-grid">
             {% for document in documents %}
-                <tr>
-                    <td>
-                        <strong>{{ document.title }}</strong>
-                    </td>
+                <article class="document-card">
+                    <div class="document-card__top">
+                        <div class="document-card__icon">
+                            <span>DOC</span>
+                        </div>
 
-                    <td>
-                        {{ document.template.title }}
-                    </td>
+                        <div class="document-card__status">
+                            <span class="badge badge-muted">
+                                {{ document.status }}
+                            </span>
+                        </div>
+                    </div>
 
-                    <td>
-                        <span class="badge badge-muted">
-                            {{ document.status }}
-                        </span>
-                    </td>
+                    <div class="document-card__body">
+                        <h3 class="document-card__title">
+                            {{ document.title }}
+                        </h3>
 
-                    <td>
+                        <div class="document-card__meta">
+                            <span>{% trans "Template" %}</span>
+                            <strong>{{ document.template.title }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="document-card__preview">
+                        <div class="document-preview-line document-preview-line--wide"></div>
+                        <div class="document-preview-line"></div>
+                        <div class="document-preview-line document-preview-line--short"></div>
+
+                        <div class="document-signature-mini">
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="document-card__actions">
                         {% if document.rendered_docx_file %}
-                            <a href="{{ document.rendered_docx_file.url }}" class="table-link">
-                                {% trans "Download" %}
+                            <a href="{{ document.rendered_docx_file.url }}" class="document-action document-action--download">
+                                {% trans "Download DOCX" %}
                             </a>
                         {% else %}
-                            <span class="text-muted">{% trans "Not rendered" %}</span>
+                            <span class="document-action document-action--disabled">
+                                {% trans "Not rendered" %}
+                            </span>
                         {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'signing:document_signers' document.pk %}" class="table-link">
+
+                        <a href="{% url 'signing:document_signers' document.pk %}" class="document-action document-action--primary">
                             {% trans "Signers" %}
                         </a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">
-                        <div class="empty-state">
-                            <h3>{% trans "No documents yet" %}</h3>
-                            <p>{% trans "Create your first document from a template." %}</p>
-
-                            <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
-                                {% trans "Create document" %}
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                    </div>
+                </article>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </div>
+    {% else %}
+        <div class="documents-empty">
+            <div class="documents-empty__visual">
+                <div class="empty-document empty-document--back"></div>
+                <div class="empty-document empty-document--front">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div></div>
+                </div>
+            </div>
+
+            <div class="documents-empty__content">
+                <span class="documents-kicker">{% trans "Start here" %}</span>
+
+                <h2>{% trans "No documents yet" %}</h2>
+
+                <p>
+                    {% trans "Create your first document from a template and prepare it for online signing." %}
+                </p>
+
+                <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
+                    {% trans "Create document" %}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+</section>
 
 {% endblock %}

@@ -1,256 +1,581 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: QolQoyu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-10 00:00+0000\n"
+"PO-Revision-Date: 2026-06-10 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Russian\n"
 "Language: ru\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14) ? 2 : 3);\n"
 
-msgid "Home"
-msgstr "Главная"
 
-msgid "Templates"
-msgstr "Шаблоны"
+msgid "Digital document signing"
+msgstr "Цифровое подписание документов"
 
-msgid "Upload template"
-msgstr "Загрузить шаблон"
+msgid "QolQoyu means “to sign”"
+msgstr "QolQoyu означает «подписать»"
 
-msgid "Documents"
-msgstr "Документы"
+msgid "Digital signing without confusion."
+msgstr "Цифровое подписание без путаницы."
+
+msgid "Create documents, invite signers and track every signature step in one secure workspace."
+msgstr "Создавайте документы, приглашайте подписантов и отслеживайте каждый этап подписания в одном защищенном рабочем пространстве."
 
 msgid "Create document"
 msgstr "Создать документ"
 
-msgid "Profile"
-msgstr "Профиль"
+msgid "Open templates"
+msgstr "Открыть шаблоны"
 
-msgid "Logout"
-msgstr "Выйти"
+msgid "Start now"
+msgstr "Начать сейчас"
 
 msgid "Login"
 msgstr "Войти"
 
-msgid "Register"
-msgstr "Регистрация"
+msgid "signing flow"
+msgstr "процесс подписания"
 
-msgid "Sign-App | Online Document Signing"
-msgstr "Sign-App | Онлайн-подписание документов"
+msgid "validation ready"
+msgstr "валидация готова"
 
-msgid "Online document signing platform"
-msgstr "Платформа онлайн-подписания документов"
+msgid "document integrity"
+msgstr "целостность документа"
 
-msgid "Prepare, send and sign documents online"
-msgstr "Подготавливайте, отправляйте и подписывайте документы онлайн"
+msgid "Document"
+msgstr "Документ"
 
-msgid "Sign-App helps organizations upload DOCX templates, generate documents, add signers and manage the signing process through secure online links."
-msgstr "Sign-App помогает организациям загружать DOCX-шаблоны, создавать документы, добавлять подписантов и управлять процессом подписания через защищённые онлайн-ссылки."
+msgid "Service agreement"
+msgstr "Договор оказания услуг"
 
-msgid "View templates"
-msgstr "Посмотреть шаблоны"
+msgid "Waiting for signers"
+msgstr "Ожидает подписантов"
 
-msgid "Create account"
-msgstr "Создать аккаунт"
+msgid "Signed"
+msgstr "Подписано"
 
-msgid "Sign in"
-msgstr "Войти"
+msgid "Customer verified"
+msgstr "Клиент подтвержден"
 
-msgid "Signing workflow"
-msgstr "Процесс подписания"
+msgid "Hash fixed"
+msgstr "Хэш зафиксирован"
 
-msgid "Upload DOCX template"
-msgstr "Загрузить DOCX-шаблон"
+msgid "No silent edits"
+msgstr "Без скрытых изменений"
 
-msgid "Add variables like"
-msgstr "Добавьте переменные, например"
+msgid "Template selected"
+msgstr "Шаблон выбран"
 
-msgid "and"
-msgstr "и"
+msgid "SMS code confirmed"
+msgstr "SMS-код подтвержден"
 
-msgid "Generate a document from the selected template."
-msgstr "Создайте документ на основе выбранного шаблона."
+msgid "Audit log updated"
+msgstr "Журнал аудита обновлен"
 
-msgid "Add signers"
-msgstr "Добавьте подписантов"
+msgid "Workspace"
+msgstr "Рабочее пространство"
 
-msgid "Specify signer name, IIN, phone number and signing order."
-msgstr "Укажите имя подписанта, ИИН, номер телефона и порядок подписания."
+msgid "Everything around the document is connected."
+msgstr "Все вокруг документа связано."
 
-msgid "Send secure link"
-msgstr "Отправьте защищённую ссылку"
+msgid "QolQoyu is not only a signature button. It controls templates, signers, document state, signing method and audit history."
+msgstr "QolQoyu — это не просто кнопка подписи. Система контролирует шаблоны, подписантов, состояние документа, способ подписания и историю аудита."
 
-msgid "The signer opens the link, reviews the document and confirms signing."
-msgstr "Подписант открывает ссылку, просматривает документ и подтверждает подписание."
+msgid "Templates"
+msgstr "Шаблоны"
 
-msgid "Template-based documents"
-msgstr "Документы на основе шаблонов"
+msgid "Reusable document templates"
+msgstr "Многоразовые шаблоны документов"
 
-msgid "Upload reusable DOCX templates and automatically fill document fields."
-msgstr "Загружайте многоразовые DOCX-шаблоны и автоматически заполняйте поля документа."
+msgid "Prepare variables once and generate clean documents without rewriting the same contract again."
+msgstr "Подготовьте переменные один раз и создавайте готовые документы без повторного переписывания одного и того же договора."
 
-msgid "Secure signer links"
-msgstr "Защищённые ссылки для подписантов"
+msgid "Signing"
+msgstr "Подписание"
 
-msgid "Send each signer a personal secure link for document review and confirmation."
-msgstr "Отправляйте каждому подписанту персональную защищённую ссылку для просмотра и подтверждения документа."
+msgid "SMS and ECP flows"
+msgstr "Подписание через SMS и ЭЦП"
 
-msgid "Signing history"
-msgstr "История подписания"
+msgid "Support different signing scenarios depending on the signer and document type."
+msgstr "Поддерживайте разные сценарии подписания в зависимости от подписанта и типа документа."
 
-msgid "Track document status, signer actions and signing progress."
-msgstr "Отслеживайте статус документа, действия подписантов и прогресс подписания."
+msgid "Integrity"
+msgstr "Целостность"
 
-msgid "Start with templates and documents"
-msgstr "Начните с шаблонов и документов"
+msgid "Document hash control"
+msgstr "Контроль хэша документа"
 
-msgid "The MVP currently focuses on document templates, generated documents and the basic signing workflow. Later we can add eGov Mobile signing, SMS confirmation, organizations, audit log and protected file storage."
-msgstr "Текущий MVP сосредоточен на шаблонах документов, созданных документах и базовом процессе подписания. Позже можно добавить подписание через eGov Mobile, SMS-подтверждение, организации, журнал аудита и защищённое хранение файлов."
+msgid "The system can fix the file hash at signing time to detect changes later."
+msgstr "Система может фиксировать хэш файла в момент подписания, чтобы позже обнаруживать изменения."
 
-msgid "Open documents"
-msgstr "Открыть документы"
+msgid "Audit"
+msgstr "Аудит"
 
-msgid "Login | Sign-App"
-msgstr "Вход | Sign-App"
+msgid "Every action is visible"
+msgstr "Каждое действие видно"
 
-msgid "Access your document signing workspace."
-msgstr "Войдите в рабочее пространство для подписания документов."
+msgid "Signing events, attempts, confirmation and status changes are stored in the audit trail."
+msgstr "События подписания, попытки, подтверждения и изменения статусов сохраняются в журнале аудита."
 
-msgid "Don’t have an account?"
-msgstr "Нет аккаунта?"
+msgid "Documents"
+msgstr "Документы"
 
-msgid "Profile | Sign-App"
-msgstr "Профиль | Sign-App"
+msgid "One place for agreements"
+msgstr "Одно место для соглашений"
 
-msgid "Manage your account and access your document signing workspace."
-msgstr "Управляйте аккаунтом и рабочим пространством для подписания документов."
+msgid "Flow"
+msgstr "Процесс"
 
-msgid "No email added"
-msgstr "Email не добавлен"
+msgid "From template to signed document."
+msgstr "От шаблона до подписанного документа."
 
-msgid "Username"
-msgstr "Имя пользователя"
+msgid "The signing process is built as a clear sequence, so users always understand what is happening."
+msgstr "Процесс подписания построен как понятная последовательность, поэтому пользователи всегда понимают, что происходит."
 
-msgid "Email"
-msgstr "Email"
+msgid "Create template"
+msgstr "Создать шаблон"
 
-msgid "Not specified"
-msgstr "Не указано"
+msgid "Upload or prepare a reusable document structure with variables."
+msgstr "Загрузите или подготовьте многоразовую структуру документа с переменными."
 
-msgid "Date joined"
-msgstr "Дата регистрации"
+msgid "Fill document"
+msgstr "Заполнить документ"
 
-msgid "Last login"
-msgstr "Последний вход"
+msgid "Enter values, signer data and signing method before sending."
+msgstr "Введите значения, данные подписанта и способ подписания перед отправкой."
 
-msgid "Never"
-msgstr "Никогда"
+msgid "Invite signers"
+msgstr "Пригласить подписантов"
 
-msgid "Workspace actions"
-msgstr "Действия в рабочей области"
+msgid "Send secure access links and control signing order."
+msgstr "Отправьте защищенные ссылки доступа и контролируйте порядок подписания."
 
-msgid "Quickly open your templates, documents or create a new document for signing."
-msgstr "Быстро откройте шаблоны, документы или создайте новый документ для подписания."
+msgid "Store proof"
+msgstr "Сохранить подтверждение"
+
+msgid "Keep the signature, hash, confirmation text and audit log."
+msgstr "Сохраняйте подпись, хэш, текст подтверждения и журнал аудита."
+
+msgid "Ready"
+msgstr "Готово"
+
+msgid "Prepare your first document for signing."
+msgstr "Подготовьте первый документ к подписанию."
+
+msgid "Start with a template, create a document, add signers and test the full signing route."
+msgstr "Начните с шаблона, создайте документ, добавьте подписантов и протестируйте полный маршрут подписания."
+
+msgid "Upload template"
+msgstr "Загрузить шаблон"
 
 msgid "View documents"
 msgstr "Посмотреть документы"
 
-msgid "Register | Sign-App"
-msgstr "Регистрация | Sign-App"
+msgid "Create account"
+msgstr "Создать аккаунт"
 
-msgid "Create your workspace account to upload templates and manage documents."
-msgstr "Создайте аккаунт, чтобы загружать шаблоны и управлять документами."
+msgid "Document signing workspace"
+msgstr "Рабочее пространство для подписания документов"
 
-msgid "Already have an account?"
-msgstr "Уже есть аккаунт?"
+msgid "Business documents"
+msgstr "Бизнес-документы"
 
-msgid "Create Document | Sign-App"
-msgstr "Создание документа | Sign-App"
+msgid "Documents | QolQoyu"
+msgstr "Документы | QolQoyu"
 
-msgid "Create Document"
-msgstr "Создание документа"
+msgid "Document workspace"
+msgstr "Рабочее пространство документов"
 
-msgid "Create a new document from an uploaded template and prepare it for signing."
-msgstr "Создайте новый документ на основе загруженного шаблона и подготовьте его к подписанию."
+msgid "Manage generated documents, download rendered files and prepare every agreement for online signing."
+msgstr "Управляйте созданными документами, скачивайте готовые файлы и подготавливайте каждое соглашение к онлайн-подписанию."
 
-msgid "Cancel"
-msgstr "Отмена"
+msgid "Total documents"
+msgstr "Всего документов"
 
-msgid "Create Document From Template | Sign-App"
-msgstr "Создание документа из шаблона | Sign-App"
+msgid "Created in workspace"
+msgstr "Создано в рабочем пространстве"
 
-msgid "Create a new document from the selected DOCX template."
-msgstr "Создайте новый документ на основе выбранного DOCX-шаблона."
+msgid "Signing flow"
+msgstr "Процесс подписания"
+
+msgid "Available methods"
+msgstr "Доступные способы"
+
+msgid "Document control"
+msgstr "Контроль документа"
+
+msgid "Generated documents"
+msgstr "Созданные документы"
+
+msgid "Open signing settings, download files or continue preparing documents."
+msgstr "Откройте настройки подписания, скачайте файлы или продолжите подготовку документов."
 
 msgid "Template"
 msgstr "Шаблон"
 
-msgid "Organization"
-msgstr "Организация"
-
-msgid "Create and fill document"
-msgstr "Создать и заполнить документ"
-
-msgid "Fill document"
-msgstr "Заполнение документа"
-
-msgid "Back"
-msgstr "Назад"
-
-msgid "Save and render"
-msgstr "Сохранить и сформировать"
-
-msgid "Document preview"
-msgstr "Предпросмотр документа"
-
-msgid "Document fields"
-msgstr "Поля документа"
-
-msgid "No fields schema found."
-msgstr "Схема полей не найдена."
-
-msgid "Documents | Sign-App"
-msgstr "Документы | Sign-App"
-
-msgid "Manage generated documents and prepare them for online signing."
-msgstr "Управляйте созданными документами и подготавливайте их к онлайн-подписанию."
-
-msgid "Title"
-msgstr "Название"
-
-msgid "Status"
-msgstr "Статус"
-
-msgid "DOCX"
-msgstr "DOCX"
-
-msgid "Download"
-msgstr "Скачать"
+msgid "Download DOCX"
+msgstr "Скачать DOCX"
 
 msgid "Not rendered"
 msgstr "Не сформирован"
 
+msgid "Signers"
+msgstr "Подписанты"
+
+msgid "Start here"
+msgstr "Начните здесь"
+
 msgid "No documents yet"
 msgstr "Документов пока нет"
 
-msgid "Create your first document from a template."
-msgstr "Создайте первый документ на основе шаблона."
+msgid "Create your first document from a template and prepare it for online signing."
+msgstr "Создайте первый документ из шаблона и подготовьте его к онлайн-подписанию."
 
-msgid "Edit template"
-msgstr "Редактирование шаблона"
+msgid "DOCX Templates | QolQoyu"
+msgstr "DOCX-шаблоны | QolQoyu"
 
-msgid "Save template"
-msgstr "Сохранить шаблон"
+msgid "Template studio"
+msgstr "Студия шаблонов"
 
-msgid "Fields constructor"
-msgstr "Конструктор полей"
+msgid "DOCX Templates"
+msgstr "DOCX-шаблоны"
 
-msgid "Group title, example: Party 1 data"
-msgstr "Название группы, например: Данные стороны 1"
+msgid "Build reusable DOCX structures, manage variables and create ready-to-sign documents faster."
+msgstr "Создавайте многоразовые DOCX-структуры, управляйте переменными и быстрее формируйте документы для подписания."
 
-msgid "Add group"
-msgstr "Добавить группу"
+msgid "Reusable templates"
+msgstr "Многоразовые шаблоны"
 
-msgid "Untitled group"
-msgstr "Группа без названия"
+msgid "Variables, parties and document generation in one place."
+msgstr "Переменные, стороны и генерация документов в одном месте."
+
+msgid "Upload new template"
+msgstr "Загрузить новый шаблон"
+
+msgid "Total templates"
+msgstr "Всего шаблонов"
+
+msgid "Uploaded DOCX structures available for document generation."
+msgstr "Загруженные DOCX-структуры, доступные для генерации документов."
+
+msgid "Variables"
+msgstr "Переменные"
+
+msgid "Use variables to personalize documents."
+msgstr "Используйте переменные для персонализации документов."
+
+msgid "Generation"
+msgstr "Генерация"
+
+msgid "Create documents directly from templates."
+msgstr "Создавайте документы напрямую из шаблонов."
+
+msgid "Template library"
+msgstr "Библиотека шаблонов"
+
+msgid "Edit structure, review variables or create a document from a selected template."
+msgstr "Редактируйте структуру, просматривайте переменные или создавайте документ из выбранного шаблона."
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "No variables added yet"
+msgstr "Переменные пока не добавлены"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Upload DOCX"
+msgstr "Загрузить DOCX"
+
+msgid "No templates yet"
+msgstr "Шаблонов пока нет"
+
+msgid "Upload your first DOCX template with variables and start generating documents from it."
+msgstr "Загрузите первый DOCX-шаблон с переменными и начните создавать документы на его основе."
+
+msgid "Create Document | QolQoyu"
+msgstr "Создать документ | QolQoyu"
+
+msgid "New document"
+msgstr "Новый документ"
+
+msgid "Create Document"
+msgstr "Создать документ"
+
+msgid "Select a template, enter document details and prepare a clean file for the signing process."
+msgstr "Выберите шаблон, введите данные документа и подготовьте готовый файл для процесса подписания."
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Draft"
+msgstr "Черновик"
+
+msgid "Document setup"
+msgstr "Настройка документа"
+
+msgid "This step creates the base document before signers are invited."
+msgstr "На этом шаге создается основной документ перед приглашением подписантов."
+
+msgid "Choose template"
+msgstr "Выбрать шаблон"
+
+msgid "Use an uploaded DOCX template as the document base."
+msgstr "Используйте загруженный DOCX-шаблон как основу документа."
+
+msgid "Fill details"
+msgstr "Заполнить данные"
+
+msgid "Enter title and required document information."
+msgstr "Введите название и необходимые данные документа."
+
+msgid "Prepare signing"
+msgstr "Подготовить подписание"
+
+msgid "After creation, you can add signers and signing methods."
+msgstr "После создания вы сможете добавить подписантов и способы подписания."
+
+msgid "Tip"
+msgstr "Совет"
+
+msgid "Use clear document names so it is easier to track them later in the signing workspace."
+msgstr "Используйте понятные названия документов, чтобы позже их было легче отслеживать в рабочем пространстве подписания."
+
+msgid "Form"
+msgstr "Форма"
+
+msgid "Document information"
+msgstr "Информация о документе"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Upload DOCX Template | QolQoyu"
+msgstr "Загрузить DOCX-шаблон | QolQoyu"
+
+msgid "DOCX upload"
+msgstr "Загрузка DOCX"
+
+msgid "Upload DOCX Template"
+msgstr "Загрузить DOCX-шаблон"
+
+msgid "Upload a DOCX file with variables and turn it into a reusable document template."
+msgstr "Загрузите DOCX-файл с переменными и превратите его в многоразовый шаблон документа."
+
+msgid "Before uploading"
+msgstr "Перед загрузкой"
+
+msgid "Make sure your DOCX template is prepared correctly."
+msgstr "Убедитесь, что ваш DOCX-шаблон подготовлен правильно."
+
+msgid "Use DOCX format"
+msgstr "Используйте формат DOCX"
+
+msgid "Only DOCX files should be uploaded as templates."
+msgstr "В качестве шаблонов следует загружать только DOCX-файлы."
+
+msgid "Add variables"
+msgstr "Добавьте переменные"
+
+msgid "Use variables like"
+msgstr "Используйте переменные, например"
+
+msgid "inside the document."
+msgstr "внутри документа."
+
+msgid "Keep names clear"
+msgstr "Используйте понятные названия"
+
+msgid "Use readable variable names so the document can be filled easily."
+msgstr "Используйте читаемые названия переменных, чтобы документ было легко заполнять."
+
+msgid "Example"
+msgstr "Пример"
+
+msgid "Upload form"
+msgstr "Форма загрузки"
+
+msgid "Template file"
+msgstr "Файл шаблона"
+
+msgid "Fill document | QolQoyu"
+msgstr "Заполнить документ | QolQoyu"
+
+msgid "Fill"
+msgstr "Заполнение"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Confirm and invite parties"
+msgstr "Подтвердить и пригласить стороны"
+
+msgid "Document preview"
+msgstr "Предпросмотр документа"
+
+msgid "Live filled document"
+msgstr "Заполненный документ в реальном времени"
+
+msgid "Fields"
+msgstr "Поля"
+
+msgid "Parties"
+msgstr "Стороны"
+
+msgid "Search fields"
+msgstr "Поиск полей"
+
+msgid "SMS confirmation"
+msgstr "Подтверждение через SMS"
+
+msgid "Custom"
+msgstr "Пользовательские"
+
+msgid "No fields schema found"
+msgstr "Схема полей не найдена"
+
+msgid "This document template does not contain fillable fields yet."
+msgstr "Этот шаблон документа пока не содержит заполняемых полей."
+
+msgid "Edit template | QolQoyu"
+msgstr "Редактировать шаблон | QolQoyu"
+
+msgid "Template editor"
+msgstr "Редактор шаблона"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Variable library"
+msgstr "Библиотека переменных"
+
+msgid "Search variables"
+msgstr "Поиск переменных"
+
+msgid "System fields"
+msgstr "Системные поля"
+
+msgid "No fields yet."
+msgstr "Полей пока нет."
+
+msgid "No parties yet. Create a party from the properties panel."
+msgstr "Сторон пока нет. Создайте сторону через панель свойств."
+
+msgid "Normal fields"
+msgstr "Обычные поля"
+
+msgid "Normal groups will appear here after you create them on the right."
+msgstr "Обычные группы появятся здесь после создания справа."
+
+msgid "Centered A4 paper"
+msgstr "Лист A4 по центру"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Add new party"
+msgstr "Добавить новую сторону"
+
+msgid "Party title, example: Customer"
+msgstr "Название стороны, например: Заказчик"
+
+msgid "Variable prefix, example: customer"
+msgstr "Префикс переменной, например: customer"
+
+msgid "Individual"
+msgstr "Физическое лицо"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Signing order"
+msgstr "Порядок подписания"
+
+msgid "Create signer from this party"
+msgstr "Создать подписанта из этой стороны"
+
+msgid "Add party"
+msgstr "Добавить сторону"
+
+msgid "Current fields"
+msgstr "Текущие поля"
 
 msgid "Delete"
 msgstr "Удалить"
+
+msgid "signer"
+msgstr "подписант"
+
+msgid "system"
+msgstr "системное"
+
+msgid "Delete field"
+msgstr "Удалить поле"
+
+msgid "No fields in this party yet."
+msgstr "В этой стороне пока нет полей."
+
+msgid "Add field to"
+msgstr "Добавить поле к"
+
+msgid "Field label, example: Address"
+msgstr "Название поля, например: Адрес"
+
+msgid "Variable name, example: address"
+msgstr "Имя переменной, например: address"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "IIN / BIN"
+msgstr "ИИН / БИН"
+
+msgid "Signing method"
+msgstr "Способ подписания"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Number"
+msgstr "Число"
+
+msgid "Default value, optional"
+msgstr "Значение по умолчанию, необязательно"
+
+msgid "Order"
+msgstr "Порядок"
+
+msgid "Required"
+msgstr "Обязательное"
+
+msgid "Add custom field"
+msgstr "Добавить пользовательское поле"
+
+msgid "No parties yet"
+msgstr "Сторон пока нет"
+
+msgid "Create Customer, Contractor, Director, or another signer party."
+msgstr "Создайте Заказчика, Исполнителя, Директора или другую сторону подписания."
+
+msgid "Group title, example: Contract data"
+msgstr "Название группы, например: Данные договора"
+
+msgid "Add normal group"
+msgstr "Добавить обычную группу"
+
+msgid "Untitled group"
+msgstr "Группа без названия"
 
 msgid "Field label"
 msgstr "Название поля"
@@ -258,14 +583,14 @@ msgstr "Название поля"
 msgid "Variable"
 msgstr "Переменная"
 
-msgid "Insert into document"
-msgstr "Вставить в документ"
+msgid "Insert"
+msgstr "Вставить"
 
-msgid "Field label, example: Full name of Party 1"
-msgstr "Название поля, например: ФИО стороны 1"
+msgid "Field label, example: Contract number"
+msgstr "Название поля, например: Номер договора"
 
-msgid "Variable key, example: party1_full_name"
-msgstr "Ключ переменной, например: party1_full_name"
+msgid "Variable key, example: contract_number"
+msgstr "Ключ переменной, например: contract_number"
 
 msgid "Add field"
 msgstr "Добавить поле"
@@ -282,47 +607,425 @@ msgstr "Введите корректный ключ переменной"
 msgid "Variable key is empty"
 msgstr "Ключ переменной пустой"
 
-msgid "DOCX Templates | Sign-App"
-msgstr "DOCX-шаблоны | Sign-App"
+msgid "Sign document | QolQoyu"
+msgstr "Подписать документ | QolQoyu"
 
-msgid "DOCX Templates"
-msgstr "DOCX-шаблоны"
+msgid "Secure signing"
+msgstr "Безопасное подписание"
 
-msgid "Manage uploaded document templates and create documents from them."
-msgstr "Управляйте загруженными шаблонами документов и создавайте документы на их основе."
+msgid "Document signing"
+msgstr "Подписание документа"
 
-msgid "Upload new template"
-msgstr "Загрузить новый шаблон"
+msgid "Review the document, check your details and complete signing using the selected method."
+msgstr "Проверьте документ, свои данные и завершите подписание выбранным способом."
 
-msgid "Variables"
-msgstr "Переменные"
+msgid "Signing status"
+msgstr "Статус подписания"
 
-msgid "Created"
+msgid "Open PDF"
+msgstr "Открыть PDF"
+
+msgid "Please make sure the document content is correct before confirming the signature."
+msgstr "Убедитесь, что содержание документа корректно, перед подтверждением подписи."
+
+msgid "Document file is not rendered yet."
+msgstr "Файл документа еще не сформирован."
+
+msgid "Document hash"
+msgstr "Хэш документа"
+
+msgid "Signer"
+msgstr "Подписант"
+
+msgid "IIN"
+msgstr "ИИН"
+
+msgid "Document already signed"
+msgstr "Документ уже подписан"
+
+msgid "This document has already been signed."
+msgstr "Этот документ уже был подписан."
+
+msgid "Signed at"
+msgstr "Подписано"
+
+msgid "Provider"
+msgstr "Провайдер"
+
+msgid "Certificate IIN"
+msgstr "ИИН сертификата"
+
+msgid "Signed content hash"
+msgstr "Хэш подписанного содержимого"
+
+msgid "Signature is valid."
+msgstr "Подпись действительна."
+
+msgid "Validation note"
+msgstr "Примечание валидации"
+
+msgid "View confirmation sheet"
+msgstr "Посмотреть лист подтверждения"
+
+msgid "eGov Mobile session"
+msgstr "Сессия eGov Mobile"
+
+msgid "Open eGov Mobile"
+msgstr "Открыть eGov Mobile"
+
+msgid "QR payload"
+msgstr "Данные QR"
+
+msgid "API №1 URL"
+msgstr "API №1 URL"
+
+msgid "Mock complete signing"
+msgstr "Тестовое завершение подписания"
+
+msgid "Selected method"
+msgstr "Выбранный способ"
+
+msgid "Continue signing in eGov Mobile. You may need to confirm the signing request in the mobile app."
+msgstr "Продолжите подписание в eGov Mobile. Возможно, потребуется подтвердить запрос на подписание в мобильном приложении."
+
+msgid "Sign with eGov Mobile"
+msgstr "Подписать через eGov Mobile"
+
+msgid "SMS code has been sent to your phone number."
+msgstr "SMS-код отправлен на ваш номер телефона."
+
+msgid "Session status"
+msgstr "Статус сессии"
+
+msgid "Code expires at"
+msgstr "Код действует до"
+
+msgid "Attempts"
+msgstr "Попытки"
+
+msgid "If the code is incorrect, wait before trying again."
+msgstr "Если код неверный, подождите перед следующей попыткой."
+
+msgid "Confirm that you reviewed the document and request an SMS verification code."
+msgstr "Подтвердите, что вы ознакомились с документом, и запросите SMS-код подтверждения."
+
+msgid "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code."
+msgstr "Я подтверждаю, что ознакомился с документом, согласен с его содержанием и подтверждаю подписание этого документа с помощью SMS-кода."
+
+msgid "Send SMS code"
+msgstr "Отправить SMS-код"
+
+msgid "To sign this document using ECP, make sure NCALayer is installed and running on your computer."
+msgstr "Чтобы подписать документ с помощью ЭЦП, убедитесь, что NCALayer установлен и запущен на вашем компьютере."
+
+msgid "After clicking the button, choose your ECP key and confirm signing in NCALayer."
+msgstr "После нажатия кнопки выберите ключ ЭЦП и подтвердите подписание в NCALayer."
+
+msgid "Sign with ECP"
+msgstr "Подписать через ЭЦП"
+
+msgid "Enter code"
+msgstr "Введите код"
+
+msgid "Enter the code sent to your phone number."
+msgstr "Введите код, отправленный на ваш номер телефона."
+
+msgid "SMS code"
+msgstr "SMS-код"
+
+msgid "Confirm and sign"
+msgstr "Подтвердить и подписать"
+
+msgid "Document signers | QolQoyu"
+msgstr "Подписанты документа | QolQoyu"
+
+msgid "Signing control"
+msgstr "Управление подписанием"
+
+msgid "Document signers"
+msgstr "Подписанты документа"
+
+msgid "Document status"
+msgstr "Статус документа"
+
+msgid "Back to documents"
+msgstr "Назад к документам"
+
+msgid "Total signers"
+msgstr "Всего подписантов"
+
+msgid "Generated from document parties"
+msgstr "Созданы из сторон документа"
+
+msgid "Signing methods"
+msgstr "Способы подписания"
+
+msgid "Available for invited signers"
+msgstr "Доступны для приглашенных подписантов"
+
+msgid "Access links"
+msgstr "Ссылки доступа"
+
+msgid "Secure"
+msgstr "Защищено"
+
+msgid "Each signer receives a personal link"
+msgstr "Каждый подписант получает персональную ссылку"
+
+msgid "Signing route"
+msgstr "Маршрут подписания"
+
+msgid "These signers were created automatically from the document data."
+msgstr "Эти подписанты были автоматически созданы из данных документа."
+
+msgid "Create SMS link"
+msgstr "Создать SMS-ссылку"
+
+msgid "Already signed"
+msgstr "Уже подписано"
+
+msgid "No generated signers"
+msgstr "Нет созданных подписантов"
+
+msgid "No signers were created from this document"
+msgstr "Из этого документа не были созданы подписанты"
+
+msgid "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields."
+msgstr "Вернитесь к этапу заполнения документа и убедитесь, что в шаблоне есть стороны подписания с полями ФИО, ИИН/БИН, телефон и способ подписания."
+
+msgid "Signing confirmation | QolQoyu"
+msgstr "Подтверждение подписания | QolQoyu"
+
+msgid "Confirmation sheet"
+msgstr "Лист подтверждения"
+
+msgid "Signing confirmation"
+msgstr "Подтверждение подписания"
+
+msgid "This page confirms that the document was signed electronically and records the signing evidence."
+msgstr "Эта страница подтверждает, что документ был подписан электронно, и фиксирует доказательства подписания."
+
+msgid "Valid signature"
+msgstr "Действительная подпись"
+
+msgid "Signature saved"
+msgstr "Подпись сохранена"
+
+msgid "Recorded"
+msgstr "Зафиксировано"
+
+msgid "Document details"
+msgstr "Данные документа"
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Document ID"
+msgstr "ID документа"
+
+msgid "Signer identity"
+msgstr "Данные подписанта"
+
+msgid "Full name"
+msgstr "ФИО"
+
+msgid "Signing evidence"
+msgstr "Доказательства подписания"
+
+msgid "ECP confirmation"
+msgstr "Подтверждение ЭЦП"
+
+msgid "eGov Mobile confirmation"
+msgstr "Подтверждение eGov Mobile"
+
+msgid "Electronic signing confirmation"
+msgstr "Подтверждение электронного подписания"
+
+msgid "Session ID"
+msgstr "ID сессии"
+
+msgid "Certificate serial"
+msgstr "Серийный номер сертификата"
+
+msgid "Signature valid"
+msgstr "Подпись действительна"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "Backend validation"
+msgstr "Серверная валидация"
+
+msgid "Not implemented yet"
+msgstr "Пока не реализовано"
+
+msgid "Certificate subject"
+msgstr "Субъект сертификата"
+
+msgid "Consent"
+msgstr "Согласие"
+
+msgid "Consent text"
+msgstr "Текст согласия"
+
+msgid "Technical confirmation"
+msgstr "Техническое подтверждение"
+
+msgid "Confirmation text"
+msgstr "Текст подтверждения"
+
+msgid "Signing record created"
+msgstr "Запись о подписании создана"
+
+msgid "The signing event was saved with document hash, signer data and technical metadata."
+msgstr "Событие подписания сохранено с хэшем документа, данными подписанта и техническими метаданными."
+
+msgid "Technical data"
+msgstr "Технические данные"
+
+msgid "IP address"
+msgstr "IP-адрес"
+
+msgid "User agent"
+msgstr "User agent"
+
+msgid "Created at"
 msgstr "Создано"
 
-msgid "Action"
-msgstr "Действие"
+msgid "Login | QolQoyu"
+msgstr "Вход | QolQoyu"
 
-msgid "No variables"
-msgstr "Нет переменных"
+msgid "QolQoyu workspace"
+msgstr "Рабочее пространство QolQoyu"
 
-msgid "Edit"
-msgstr "Редактировать"
+msgid "Sign documents online with confidence."
+msgstr "Подписывайте документы онлайн с уверенностью."
 
-msgid "No templates yet"
-msgstr "Шаблонов пока нет"
+msgid "Create templates, prepare documents, invite signers and keep confirmation sheets in one secure workspace."
+msgstr "Создавайте шаблоны, подготавливайте документы, приглашайте подписантов и храните листы подтверждения в одном защищенном рабочем пространстве."
 
-msgid "Upload your first DOCX template with variables."
-msgstr "Загрузите первый DOCX-шаблон с переменными."
+msgid "Reusable DOCX structures"
+msgstr "Многоразовые DOCX-структуры"
 
-msgid "Upload DOCX Template | Sign-App"
-msgstr "Загрузка DOCX-шаблона | Sign-App"
+msgid "SMS, ECP and eGov Mobile flows"
+msgstr "Подписание через SMS, ЭЦП и eGov Mobile"
 
-msgid "Upload DOCX Template"
-msgstr "Загрузка DOCX-шаблона"
+msgid "Hash and confirmation tracking"
+msgstr "Отслеживание хэша и подтверждений"
 
-msgid "Upload a DOCX file with variables like"
-msgstr "Загрузите DOCX-файл с переменными, например"
+msgid "Welcome back"
+msgstr "С возвращением"
 
-msgid "or"
-msgstr "или"
+msgid "Sign in"
+msgstr "Войти"
+
+msgid "Access your document signing workspace."
+msgstr "Войдите в рабочее пространство подписания документов."
+
+msgid "Don’t have an account?"
+msgstr "Нет аккаунта?"
+
+msgid "Profile | QolQoyu"
+msgstr "Профиль | QolQoyu"
+
+msgid "Account workspace"
+msgstr "Рабочее пространство аккаунта"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Manage your account and access your document signing workspace."
+msgstr "Управляйте аккаунтом и открывайте рабочее пространство подписания документов."
+
+msgid "Signed in as"
+msgstr "Вы вошли как"
+
+msgid "No email added"
+msgstr "Email не добавлен"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Not specified"
+msgstr "Не указано"
+
+msgid "Date joined"
+msgstr "Дата регистрации"
+
+msgid "Last login"
+msgstr "Последний вход"
+
+msgid "Never"
+msgstr "Никогда"
+
+msgid "Quick actions"
+msgstr "Быстрые действия"
+
+msgid "Workspace actions"
+msgstr "Действия в рабочем пространстве"
+
+msgid "Quickly open your templates, documents or create a new document for signing."
+msgstr "Быстро откройте шаблоны, документы или создайте новый документ для подписания."
+
+msgid "Create"
+msgstr "Создать"
+
+msgid "View templates"
+msgstr "Посмотреть шаблоны"
+
+msgid "Document signing environment"
+msgstr "Среда подписания документов"
+
+msgid "Your account gives access to template management, document creation, signer routing and confirmation sheets."
+msgstr "Ваш аккаунт дает доступ к управлению шаблонами, созданию документов, маршруту подписантов и листам подтверждения."
+
+msgid "Templates → Documents → Signers"
+msgstr "Шаблоны → Документы → Подписанты"
+
+msgid "Prepare reusable templates, create documents from them and send secure signing links to signers."
+msgstr "Подготавливайте многоразовые шаблоны, создавайте из них документы и отправляйте подписантам защищенные ссылки для подписания."
+
+msgid "Register | QolQoyu"
+msgstr "Регистрация | QolQoyu"
+
+msgid "New workspace"
+msgstr "Новое рабочее пространство"
+
+msgid "Create your workspace account to upload templates and manage documents."
+msgstr "Создайте аккаунт рабочего пространства, чтобы загружать шаблоны и управлять документами."
+
+msgid "Already have an account?"
+msgstr "Уже есть аккаунт?"
+
+msgid "QolQoyu setup"
+msgstr "Настройка QolQoyu"
+
+msgid "Start your signing workspace in minutes."
+msgstr "Запустите рабочее пространство для подписания за несколько минут."
+
+msgid "After registration, you can upload DOCX templates, create documents and invite signers through secure signing links."
+msgstr "После регистрации вы сможете загружать DOCX-шаблоны, создавать документы и приглашать подписантов через защищенные ссылки для подписания."
+
+msgid "Upload templates"
+msgstr "Загрузить шаблоны"
+
+msgid "Prepare reusable DOCX templates with variables."
+msgstr "Подготовьте многоразовые DOCX-шаблоны с переменными."
+
+msgid "Send for signing"
+msgstr "Отправить на подписание"
+
+msgid "Create documents and invite signers by SMS, ECP or eGov Mobile."
+msgstr "Создавайте документы и приглашайте подписантов через SMS, ЭЦП или eGov Mobile."
+
+msgid "What you get"
+msgstr "Что вы получите"
+
+msgid "Templates, document generation, signer routing, signing status tracking and confirmation sheets."
+msgstr "Шаблоны, генерацию документов, маршрут подписантов, отслеживание статуса подписания и листы подтверждения."
+
+msgid "Set up your personal access to the workspace."
+msgstr "Настройте личный доступ к рабочему пространству."

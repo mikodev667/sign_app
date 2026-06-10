@@ -1,89 +1,174 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "DOCX Templates | Sign-App" %}{% endblock %}
+{% block title %}{% trans "DOCX Templates | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header page-header--with-action">
-    <div>
-        <h1 class="page-title">{% trans "DOCX Templates" %}</h1>
-        <p class="page-subtitle">
-            {% trans "Manage uploaded document templates and create documents from them." %}
-        </p>
+<section class="templates-page">
+
+    <div class="templates-hero">
+        <div class="templates-hero__left">
+            <div class="templates-kicker">
+                {% trans "Template studio" %}
+            </div>
+
+            <h1 class="templates-title">
+                {% trans "DOCX Templates" %}
+            </h1>
+
+            <p class="templates-subtitle">
+                {% trans "Build reusable DOCX structures, manage variables and create ready-to-sign documents faster." %}
+            </p>
+        </div>
+
+        <div class="templates-hero__right">
+            <div class="templates-hero-card">
+                <div class="templates-hero-card__icon">
+                    <span>DOCX</span>
+                </div>
+
+                <div>
+                    <strong>{% trans "Reusable templates" %}</strong>
+                    <p>{% trans "Variables, parties and document generation in one place." %}</p>
+                </div>
+            </div>
+
+            <a href="{% url 'documents:template_upload' %}" class="btn btn-primary templates-upload-btn">
+                {% trans "Upload new template" %}
+            </a>
+        </div>
     </div>
 
-    <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
-        {% trans "Upload new template" %}
-    </a>
-</div>
+    <div class="templates-overview">
+        <div class="templates-overview__main">
+            <span>{% trans "Total templates" %}</span>
+            <strong>{{ templates|length }}</strong>
+            <p>{% trans "Uploaded DOCX structures available for document generation." %}</p>
+        </div>
 
-<div class="table-wrapper">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{% trans "Title" %}</th>
-                <th>{% trans "Variables" %}</th>
-                <th>{% trans "Created" %}</th>
-                <th>{% trans "Action" %}</th>
-            </tr>
-        </thead>
+        <div class="templates-overview__mini">
+            <span>{% trans "Variables" %}</span>
+            <strong>{{ templates|length }}</strong>
+            <p>{% trans "Use variables to personalize documents." %}</p>
+        </div>
 
-        <tbody>
+        <div class="templates-overview__mini templates-overview__mini--accent">
+            <span>{% trans "Generation" %}</span>
+            <strong>{% trans "Ready" %}</strong>
+            <p>{% trans "Create documents directly from templates." %}</p>
+        </div>
+    </div>
+
+    {% if templates %}
+        <div class="templates-library-header">
+            <div>
+                <h2>{% trans "Template library" %}</h2>
+                <p>{% trans "Edit structure, review variables or create a document from a selected template." %}</p>
+            </div>
+        </div>
+
+        <div class="templates-library">
             {% for item in templates %}
-                <tr>
-                    <td>
-                        <strong>{{ item.title }}</strong>
-                    </td>
+                <article class="template-row">
+                    <div class="template-row__visual">
+                        <div class="template-file">
+                            <div class="template-file__corner"></div>
+                            <div class="template-file__badge">DOCX</div>
 
-                    <td>
-                        {% if item.variables %}
-                            <div class="variable-list">
-                                {% for variable in item.variables %}
-                                    <span class="variable-chip">
-                                        {{ variable }}
-                                    </span>
-                                {% endfor %}
+                            <div class="template-file__lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
                             </div>
-                        {% else %}
-                            <span class="text-muted">{% trans "No variables" %}</span>
-                        {% endif %}
-                    </td>
 
-                    <td>
-                        <span class="text-muted">
-                            {{ item.created_at|date:"d.m.Y H:i" }}
-                        </span>
-                    </td>
-
-                    <td>
-                        <div class="table-actions">
-                            <a href="{% url 'documents:template_edit' item.id %}" class="table-link">
-                                {% trans "Edit" %}
-                            </a>
-
-                            <a href="{% url 'documents:document_create_from_template' item.id %}" class="table-link">
-                                {% trans "Create document" %}
-                            </a>
+                            <div class="template-file__variables">
+                                <small>{% trans "Variables" %}</small>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">
-                        <div class="empty-state">
-                            <h3>{% trans "No templates yet" %}</h3>
-                            <p>{% trans "Upload your first DOCX template with variables." %}</p>
+                    </div>
 
-                            <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
-                                {% trans "Upload template" %}
-                            </a>
+                    <div class="template-row__content">
+                        <div class="template-row__top">
+                            <div>
+                                <h3>{{ item.title }}</h3>
+
+                                <p>
+                                    {% trans "Created" %}:
+                                    <span>{{ item.created_at|date:"d.m.Y H:i" }}</span>
+                                </p>
+                            </div>
+
+                            <div class="template-row__status">
+                                {% trans "Template" %}
+                            </div>
                         </div>
-                    </td>
-                </tr>
+
+                        <div class="template-variable-area">
+                            {% if item.variables %}
+                                <div class="template-variable-label">
+                                    {% trans "Variables" %}
+                                </div>
+
+                                <div class="template-variable-list">
+                                    {% for variable in item.variables %}
+                                        <span class="template-variable-chip">
+                                            {{ variable }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="template-no-variables">
+                                    {% trans "No variables added yet" %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="template-row__actions">
+                        <a href="{% url 'documents:template_edit' item.id %}" class="template-action template-action--secondary">
+                            {% trans "Edit" %}
+                        </a>
+
+                        <a href="{% url 'documents:document_create_from_template' item.id %}" class="template-action template-action--primary">
+                            {% trans "Create document" %}
+                        </a>
+                    </div>
+                </article>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </div>
+    {% else %}
+        <div class="templates-empty">
+            <div class="templates-empty__art">
+                <div class="empty-template-card empty-template-card--back"></div>
+                <div class="empty-template-card empty-template-card--middle"></div>
+                <div class="empty-template-card empty-template-card--front">
+                    <div class="empty-template-card__corner"></div>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="empty-template-card__chip">
+                        {% verbatim %}{{ full_name }}{% endverbatim %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="templates-empty__content">
+                <span class="templates-kicker">{% trans "Upload DOCX" %}</span>
+
+                <h2>{% trans "No templates yet" %}</h2>
+
+                <p>
+                    {% trans "Upload your first DOCX template with variables and start generating documents from it." %}
+                </p>
+
+                <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">
+                    {% trans "Upload template" %}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+</section>
 
 {% endblock %}

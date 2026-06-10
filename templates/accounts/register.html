@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Register | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Register | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="auth-page">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h1 class="auth-title">{% trans "Create account" %}</h1>
-            <p class="auth-subtitle">
+<section class="q-register-page">
+
+    <div class="q-register-card">
+        <div class="q-register-card__header">
+            <div class="q-register-kicker">
+                {% trans "New workspace" %}
+            </div>
+
+            <h1>{% trans "Create account" %}</h1>
+
+            <p>
                 {% trans "Create your workspace account to upload templates and manage documents." %}
             </p>
         </div>
 
-        <form method="post" class="app-form">
+        <form method="post" class="app-form q-register-form">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -26,7 +32,7 @@
             {% endif %}
 
             {% for field in form %}
-                <div class="form-group">
+                <div class="form-group q-register-field">
                     <label for="{{ field.id_for_label }}" class="form-label">
                         {{ field.label }}
                     </label>
@@ -49,18 +55,70 @@
                 </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-primary auth-submit">
+            <button type="submit" class="btn btn-primary q-register-submit">
                 {% trans "Create account" %}
             </button>
         </form>
 
-        <div class="auth-footer">
+        <div class="q-register-footer">
             <span>{% trans "Already have an account?" %}</span>
-            <a href="{% url 'accounts:login' %}" class="table-link">
+
+            <a href="{% url 'accounts:login' %}">
                 {% trans "Sign in" %}
             </a>
         </div>
     </div>
-</div>
+
+    <div class="q-register-side">
+        <div class="q-register-brand">
+            <div class="q-register-logo">Q</div>
+
+            <div>
+                <span>{% trans "QolQoyu setup" %}</span>
+                <h2>{% trans "Start your signing workspace in minutes." %}</h2>
+                <p>
+                    {% trans "After registration, you can upload DOCX templates, create documents and invite signers through secure signing links." %}
+                </p>
+            </div>
+        </div>
+
+        <div class="q-register-steps">
+            <div class="q-register-step q-register-step--active">
+                <div>01</div>
+
+                <section>
+                    <strong>{% trans "Create account" %}</strong>
+                    <p>{% trans "Set up your personal access to the workspace." %}</p>
+                </section>
+            </div>
+
+            <div class="q-register-step">
+                <div>02</div>
+
+                <section>
+                    <strong>{% trans "Upload templates" %}</strong>
+                    <p>{% trans "Prepare reusable DOCX templates with variables." %}</p>
+                </section>
+            </div>
+
+            <div class="q-register-step">
+                <div>03</div>
+
+                <section>
+                    <strong>{% trans "Send for signing" %}</strong>
+                    <p>{% trans "Create documents and invite signers by SMS, ECP or eGov Mobile." %}</p>
+                </section>
+            </div>
+        </div>
+
+        <div class="q-register-note">
+            <strong>{% trans "What you get" %}</strong>
+            <p>
+                {% trans "Templates, document generation, signer routing, signing status tracking and confirmation sheets." %}
+            </p>
+        </div>
+    </div>
+
+</section>
 
 {% endblock %}

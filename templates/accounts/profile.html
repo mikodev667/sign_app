@@ -1,92 +1,148 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Profile | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Profile | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <h1 class="page-title">{% trans "Profile" %}</h1>
-    <p class="page-subtitle">
-        {% trans "Manage your account and access your document signing workspace." %}
-    </p>
-</div>
+<section class="q-profile-page">
 
-<div class="profile-layout">
-    <div class="profile-card">
-        <div class="profile-avatar">
-            {{ user.username|first|upper }}
+    <header class="q-profile-hero">
+        <div class="q-profile-hero__left">
+            <div class="q-profile-kicker">
+                {% trans "Account workspace" %}
+            </div>
+
+            <h1>{% trans "Profile" %}</h1>
+
+            <p>
+                {% trans "Manage your account and access your document signing workspace." %}
+            </p>
         </div>
 
-        <div class="profile-main-info">
-            <h2>{{ user.username }}</h2>
-
-            {% if user.email %}
-                <p>{{ user.email }}</p>
-            {% else %}
-                <p class="text-muted">{% trans "No email added" %}</p>
-            {% endif %}
-        </div>
-
-        <div class="profile-meta">
-            <div class="profile-meta__item">
-                <span>{% trans "Username" %}</span>
-                <strong>{{ user.username }}</strong>
-            </div>
-
-            <div class="profile-meta__item">
-                <span>{% trans "Email" %}</span>
-                <strong>
-                    {% if user.email %}
-                        {{ user.email }}
-                    {% else %}
-                        {% trans "Not specified" %}
-                    {% endif %}
-                </strong>
-            </div>
-
-            <div class="profile-meta__item">
-                <span>{% trans "Date joined" %}</span>
-                <strong>{{ user.date_joined|date:"d.m.Y H:i" }}</strong>
-            </div>
-
-            <div class="profile-meta__item">
-                <span>{% trans "Last login" %}</span>
-                <strong>
-                    {% if user.last_login %}
-                        {{ user.last_login|date:"d.m.Y H:i" }}
-                    {% else %}
-                        {% trans "Never" %}
-                    {% endif %}
-                </strong>
-            </div>
-        </div>
-    </div>
-
-    <div class="profile-actions-card">
-        <h3>{% trans "Workspace actions" %}</h3>
-        <p>
-            {% trans "Quickly open your templates, documents or create a new document for signing." %}
-        </p>
-
-        <div class="profile-actions">
+        <div class="q-profile-hero__right">
             <a href="{% url 'documents:document_create' %}" class="btn btn-primary">
                 {% trans "Create document" %}
             </a>
+        </div>
+    </header>
 
-            <a href="{% url 'documents:document_list' %}" class="btn btn-outline">
-                {% trans "View documents" %}
-            </a>
+    <div class="q-profile-layout">
 
-            <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
-                {% trans "View templates" %}
-            </a>
+        <main class="q-profile-main-card">
+            <div class="q-profile-user-head">
+                <div class="q-profile-avatar">
+                    {{ user.username|first|upper }}
+                </div>
 
-            <a href="{% url 'documents:template_upload' %}" class="btn btn-outline">
-                {% trans "Upload template" %}
-            </a>
+                <div class="q-profile-user-info">
+                    <span>{% trans "Signed in as" %}</span>
+
+                    <h2>{{ user.username }}</h2>
+
+                    {% if user.email %}
+                        <p>{{ user.email }}</p>
+                    {% else %}
+                        <p class="q-profile-muted">{% trans "No email added" %}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="q-profile-meta-grid">
+                <div class="q-profile-meta-item">
+                    <span>{% trans "Username" %}</span>
+                    <strong>{{ user.username }}</strong>
+                </div>
+
+                <div class="q-profile-meta-item">
+                    <span>{% trans "Email" %}</span>
+                    <strong>
+                        {% if user.email %}
+                            {{ user.email }}
+                        {% else %}
+                            {% trans "Not specified" %}
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div class="q-profile-meta-item">
+                    <span>{% trans "Date joined" %}</span>
+                    <strong>{{ user.date_joined|date:"d.m.Y H:i" }}</strong>
+                </div>
+
+                <div class="q-profile-meta-item">
+                    <span>{% trans "Last login" %}</span>
+                    <strong>
+                        {% if user.last_login %}
+                            {{ user.last_login|date:"d.m.Y H:i" }}
+                        {% else %}
+                            {% trans "Never" %}
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+        </main>
+
+        <aside class="q-profile-actions-card">
+            <div class="q-profile-card-header">
+                <span>{% trans "Quick actions" %}</span>
+                <h2>{% trans "Workspace actions" %}</h2>
+                <p>
+                    {% trans "Quickly open your templates, documents or create a new document for signing." %}
+                </p>
+            </div>
+
+            <div class="q-profile-actions">
+                <a href="{% url 'documents:document_create' %}" class="q-profile-action q-profile-action--primary">
+                    <span>{% trans "Create" %}</span>
+                    <strong>{% trans "Create document" %}</strong>
+                </a>
+
+                <a href="{% url 'documents:document_list' %}" class="q-profile-action">
+                    <span>{% trans "Documents" %}</span>
+                    <strong>{% trans "View documents" %}</strong>
+                </a>
+
+                <a href="{% url 'documents:template_list' %}" class="q-profile-action">
+                    <span>{% trans "Templates" %}</span>
+                    <strong>{% trans "View templates" %}</strong>
+                </a>
+
+                <a href="{% url 'documents:template_upload' %}" class="q-profile-action">
+                    <span>{% trans "DOCX" %}</span>
+                    <strong>{% trans "Upload template" %}</strong>
+                </a>
+            </div>
+        </aside>
+
+    </div>
+
+    <div class="q-profile-bottom-grid">
+        <div class="q-profile-info-panel">
+            <div class="q-profile-panel-icon">Q</div>
+
+            <div>
+                <span>{% trans "QolQoyu workspace" %}</span>
+                <h3>{% trans "Document signing environment" %}</h3>
+                <p>
+                    {% trans "Your account gives access to template management, document creation, signer routing and confirmation sheets." %}
+                </p>
+            </div>
+        </div>
+
+        <div class="q-profile-info-panel q-profile-info-panel--teal">
+            <div class="q-profile-panel-icon">✓</div>
+
+            <div>
+                <span>{% trans "Signing flow" %}</span>
+                <h3>{% trans "Templates → Documents → Signers" %}</h3>
+                <p>
+                    {% trans "Prepare reusable templates, create documents from them and send secure signing links to signers." %}
+                </p>
+            </div>
         </div>
     </div>
-</div>
+
+</section>
 
 {% endblock %}

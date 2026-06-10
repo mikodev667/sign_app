@@ -1,306 +1,201 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block title %}{% trans "Fill document | QolQoyu" %}{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        margin: 0;
-        background: #eef5f5;
-        font-family: Arial, sans-serif;
-        color: #2f4545;
-    }
 
-    .fill-page {
-        display: grid;
-        grid-template-columns: 1fr 430px;
-        gap: 20px;
-        padding: 20px;
-    }
+<section class="q-fill">
 
-    .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 18px 20px;
-        background: #ffffff;
-        border-bottom: 1px solid #dce7e7;
-    }
+    <form method="post" onsubmit="saveBeforeSubmit()" class="q-fill-form">
+        {% csrf_token %}
 
-    .top-bar h1 {
-        margin: 0;
-        font-size: 22px;
-    }
+        <header class="q-fill-topbar">
+            <div class="q-fill-brand">
+                <div class="q-fill-logo">Q</div>
 
-    .top-actions {
-        display: flex;
-        gap: 10px;
-    }
+                <div>
+                    <div class="q-fill-breadcrumb">
+                        {% trans "Documents" %} / {% trans "Fill" %}: {{ document.title }}
+                    </div>
 
-    .btn {
-        border: none;
-        border-radius: 8px;
-        padding: 10px 14px;
-        cursor: pointer;
-        font-weight: 700;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-primary {
-        background: #1e9bd7;
-        color: white;
-    }
-
-    .btn-secondary {
-        background: #e7f1f1;
-        color: #2f4545;
-    }
-
-    .document-panel,
-    .fields-panel {
-        background: #ffffff;
-        border-radius: 12px;
-        border: 1px solid #dce7e7;
-        overflow: hidden;
-    }
-
-    .panel-header {
-        padding: 14px 18px;
-        background: #dbeaf5;
-        color: #1264d8;
-        font-weight: 700;
-        border-bottom: 1px solid #dce7e7;
-    }
-
-    .document-scroll {
-        height: calc(100vh - 150px);
-        overflow-y: auto;
-        padding: 26px;
-    }
-
-    #documentPreview {
-        width: 850px;
-        min-height: 1100px;
-        margin: 0 auto;
-        padding: 55px;
-        background: white;
-        border: 1px solid #e1e7e7;
-        box-shadow: 0 10px 35px rgba(0,0,0,0.10);
-        font-family: "Times New Roman", serif;
-        font-size: 16px;
-        line-height: 1.55;
-    }
-
-    .fields-panel {
-        height: calc(100vh - 110px);
-        overflow-y: auto;
-    }
-
-    .fields-content {
-        padding: 16px;
-    }
-
-    .group-card {
-        background: #ffffff;
-        border: 1px solid #dce7e7;
-        border-radius: 12px;
-        margin-bottom: 14px;
-        overflow: hidden;
-    }
-
-    .group-header {
-        padding: 13px 15px;
-        background: #f7fbfb;
-        border-bottom: 1px solid #e4eeee;
-        font-weight: 800;
-        text-transform: uppercase;
-        font-size: 13px;
-    }
-
-    .group-body {
-        padding: 14px;
-    }
-
-    .field-block {
-        margin-bottom: 14px;
-    }
-
-    .field-block label {
-        display: block;
-        font-size: 12px;
-        font-weight: 700;
-        color: #6d8585;
-        margin-bottom: 6px;
-    }
-
-    .field-block input,
-    .field-block textarea,
-    .field-block select {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        border: 1px solid #dce7e7;
-        border-radius: 8px;
-        font-size: 14px;
-    }
-
-    .field-block textarea {
-        min-height: 90px;
-        resize: vertical;
-    }
-
-    .variable-value {
-        background: #e8f3ff;
-        color: #1264d8;
-        padding: 2px 5px;
-        border-radius: 5px;
-        font-weight: 700;
-    }
-
-    .empty-value {
-        color: #1264d8;
-        background: #eef6ff;
-        padding: 2px 5px;
-        border-radius: 5px;
-        font-family: Consolas, monospace;
-    }
-</style>
-
-<form method="post" onsubmit="saveBeforeSubmit()">
-    {% csrf_token %}
-
-    <div class="top-bar">
-        <div>
-            <h1>{% trans "Fill document" %}</h1>
-            <div>{{ document.title }}</div>
-        </div>
-
-        <div class="top-actions">
-            <a class="btn btn-secondary" href="{% url 'documents:document_list' %}">
-                {% trans "Back" %}
-            </a>
-
-            <button class="btn btn-primary" type="submit">
-                {% trans "Confirm and invite parties" %}
-            </button>
-        </div>
-    </div>
-
-    <div class="fill-page">
-        <div class="document-panel">
-            <div class="panel-header">
-                {% trans "Document preview" %}
-            </div>
-
-            <div class="document-scroll">
-                <div id="documentPreview">
-                    {{ document.template.body_template|safe }}
+                    <h1>{% trans "Fill document" %}</h1>
                 </div>
             </div>
-        </div>
 
-        <div class="fields-panel">
-            <div class="panel-header">
-                {% trans "Document fields" %}
+            <div class="q-fill-actions">
+                <span class="q-fill-status">{% trans "Draft" %}</span>
+
+                <a class="q-fill-btn q-fill-btn--secondary" href="{% url 'documents:document_list' %}">
+                    {% trans "Back" %}
+                </a>
+
+                <button class="q-fill-btn q-fill-btn--primary" type="submit">
+                    {% trans "Confirm and invite parties" %}
+                </button>
             </div>
+        </header>
 
-            <div class="fields-content">
+        <div class="q-fill-layout">
 
-                {% for party in parties %}
-                    <div class="group-card">
-                        <div class="group-header">
-                            {{ party.title }}
+            <main class="q-fill-preview-panel">
+                <div class="q-fill-panel-toolbar">
+                    <div>
+                        <span>{% trans "Document preview" %}</span>
+                        <strong>{% trans "Live filled document" %}</strong>
+                    </div>
+
+                    <div class="q-fill-document-tools">
+                        <span>A4</span>
+
+                        <div class="q-fill-zoom-control">
+                            <button type="button" onclick="changeFillDocumentZoom(-10)">−</button>
+                            <span id="fillDocumentZoomValue">100%</span>
+                            <button type="button" onclick="changeFillDocumentZoom(10)">+</button>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="group-body">
-                            {% for party_field in party.fields.all %}
-                                {% with full_key=party.variable_prefix|add:"_"|add:party_field.variable_name %}
-                                    {% for field in fields %}
-                                        {% if field.field_name == full_key %}
-                                            <div class="field-block">
-                                                <label>
-                                                    {{ party_field.label }}
+                <div class="q-fill-document-stage">
+                    <div class="q-fill-paper-shadow">
+                        <div id="documentPreview" class="q-fill-a4-paper">
+                            {{ document.template.body_template|safe }}
+                        </div>
+                    </div>
+                </div>
+            </main>
 
-                                                    {% if party_field.is_required %}
-                                                        <span style="color: #b42318;">*</span>
+            <aside class="q-fill-fields-panel">
+                <div class="q-fill-tabs">
+                    <button type="button" class="q-fill-tab q-fill-tab--active">
+                        {% trans "Fields" %}
+                    </button>
+
+                    <button type="button" class="q-fill-tab">
+                        {% trans "Parties" %}
+                    </button>
+                </div>
+
+                <div class="q-fill-fields-scroll">
+
+                    <div class="q-fill-search">
+                        <input type="text" id="fillFieldSearch" placeholder="{% trans 'Search fields' %}">
+                    </div>
+
+                    {% for party in parties %}
+                        <details class="q-fill-group" open>
+                            <summary>
+                                <span>{{ party.title }}</span>
+                                <small>{{ party.variable_prefix }}</small>
+                            </summary>
+
+                            <div class="q-fill-group-body">
+                                {% for party_field in party.fields.all %}
+                                    {% with full_key=party.variable_prefix|add:"_"|add:party_field.variable_name %}
+                                        {% for field in fields %}
+                                            {% if field.field_name == full_key %}
+                                                <div class="q-fill-field" data-field-search="{{ party_field.label }} {{ field.field_name }}">
+                                                    <label for="field_{{ field.id }}">
+                                                        <span>
+                                                            {{ party_field.label }}
+
+                                                            {% if party_field.is_required %}
+                                                                <strong>*</strong>
+                                                            {% endif %}
+                                                        </span>
+
+                                                        <small>{{ field.field_name }}</small>
+                                                    </label>
+
+                                                    {% if party_field.field_type == "signing_method" %}
+                                                        <select
+                                                            id="field_{{ field.id }}"
+                                                            name="field_{{ field.id }}"
+                                                            data-variable="{{ field.field_name }}"
+                                                            onchange="updatePreviewVariable(this)"
+                                                            {% if party_field.is_required %}required{% endif %}
+                                                        >
+                                                            <option value="egov_mobile" {% if field.field_value == "egov_mobile" %}selected{% endif %}>
+                                                                eGov Mobile
+                                                            </option>
+
+                                                            <option value="sms" {% if field.field_value == "sms" %}selected{% endif %}>
+                                                                SMS confirmation
+                                                            </option>
+
+                                                            <option value="ecp" {% if field.field_value == "ecp" %}selected{% endif %}>
+                                                                ЭЦП
+                                                            </option>
+                                                        </select>
+                                                    {% else %}
+                                                        <input
+                                                            id="field_{{ field.id }}"
+                                                            type="text"
+                                                            name="field_{{ field.id }}"
+                                                            value="{{ field.field_value }}"
+                                                            data-variable="{{ field.field_name }}"
+                                                            placeholder="{{ party_field.label }}"
+                                                            oninput="updatePreviewVariable(this)"
+                                                            {% if party_field.is_required %}required{% endif %}
+                                                        >
                                                     {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+                        </details>
+                    {% endfor %}
+
+                    {% for group in document.template.field_schema %}
+                        <details class="q-fill-group" open>
+                            <summary>
+                                <span>{{ group.title }}</span>
+                                <small>{% trans "Custom" %}</small>
+                            </summary>
+
+                            <div class="q-fill-group-body">
+                                {% for schema_field in group.fields %}
+                                    {% for field in fields %}
+                                        {% if field.field_name == schema_field.key %}
+                                            <div class="q-fill-field" data-field-search="{{ schema_field.label }} {{ field.field_name }}">
+                                                <label for="field_{{ field.id }}">
+                                                    <span>{{ schema_field.label }}</span>
+                                                    <small>{{ field.field_name }}</small>
                                                 </label>
 
-                                                {% if party_field.field_type == "signing_method" %}
-                                                    <select
-                                                        name="field_{{ field.id }}"
-                                                        data-variable="{{ field.field_name }}"
-                                                        onchange="updatePreviewVariable(this)"
-                                                        {% if party_field.is_required %}required{% endif %}
-                                                    >
-                                                        <option value="egov_mobile" {% if field.field_value == "egov_mobile" %}selected{% endif %}>
-                                                            eGov Mobile
-                                                        </option>
-
-                                                        <option value="sms" {% if field.field_value == "sms" %}selected{% endif %}>
-                                                            SMS confirmation
-                                                        </option>
-
-                                                        <option value="ecp" {% if field.field_value == "ecp" %}selected{% endif %}>
-                                                            ЭЦП
-                                                        </option>
-                                                    </select>
-                                                {% else %}
-                                                    <input
-                                                        type="text"
-                                                        name="field_{{ field.id }}"
-                                                        value="{{ field.field_value }}"
-                                                        data-variable="{{ field.field_name }}"
-                                                        placeholder="{{ party_field.label }}"
-                                                        oninput="updatePreviewVariable(this)"
-                                                        {% if party_field.is_required %}required{% endif %}
-                                                    >
-                                                {% endif %}
+                                                <input
+                                                    id="field_{{ field.id }}"
+                                                    type="text"
+                                                    name="field_{{ field.id }}"
+                                                    value="{{ field.field_value }}"
+                                                    data-variable="{{ field.field_name }}"
+                                                    placeholder="{{ schema_field.placeholder }}"
+                                                    oninput="updatePreviewVariable(this)"
+                                                >
                                             </div>
                                         {% endif %}
                                     {% endfor %}
-                                {% endwith %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-
-                {% for group in document.template.field_schema %}
-                    <div class="group-card">
-                        <div class="group-header">
-                            {{ group.title }}
-                        </div>
-
-                        <div class="group-body">
-                            {% for schema_field in group.fields %}
-                                {% for field in fields %}
-                                    {% if field.field_name == schema_field.key %}
-                                        <div class="field-block">
-                                            <label>{{ schema_field.label }}</label>
-
-                                            <input
-                                                type="text"
-                                                name="field_{{ field.id }}"
-                                                value="{{ field.field_value }}"
-                                                data-variable="{{ field.field_name }}"
-                                                placeholder="{{ schema_field.placeholder }}"
-                                                oninput="updatePreviewVariable(this)"
-                                            >
-                                        </div>
-                                    {% endif %}
                                 {% endfor %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% empty %}
-                    {% if not parties %}
-                        <p>{% trans "No fields schema found." %}</p>
-                    {% endif %}
-                {% endfor %}
-            </div>
+                            </div>
+                        </details>
+                    {% empty %}
+                        {% if not parties %}
+                            <div class="q-fill-empty">
+                                <strong>{% trans "No fields schema found" %}</strong>
+                                <p>{% trans "This document template does not contain fillable fields yet." %}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </aside>
+
         </div>
-    </div>
-</form>
+    </form>
+
+</section>
 
 <script>
     const initialTemplateHtml = document.getElementById("documentPreview").innerHTML;
@@ -336,14 +231,14 @@
             if (value) {
                 html = html.replace(
                     regex,
-                    `<span class="variable-value">${escapeHtml(value)}</span>`
+                    `<span class="q-fill-variable-value">${escapeHtml(value)}</span>`
                 );
             } else {
                 const emptyVariableText = "{% templatetag openvariable %} " + key + " {% templatetag closevariable %}";
 
                 html = html.replace(
                     regex,
-                    `<span class="empty-value">${emptyVariableText}</span>`
+                    `<span class="q-fill-empty-value">${emptyVariableText}</span>`
                 );
             }
         });
@@ -359,6 +254,53 @@
         renderPreview();
     }
 
-    renderPreview();
+    let fillDocumentZoom = 100;
+
+    function applyFillDocumentZoom() {
+        const paperShadow = document.querySelector(".q-fill-paper-shadow");
+        const zoomValue = document.getElementById("fillDocumentZoomValue");
+
+        if (!paperShadow || !zoomValue) {
+            return;
+        }
+
+        paperShadow.style.transform = "scale(" + (fillDocumentZoom / 100) + ")";
+        paperShadow.style.transformOrigin = "top center";
+        zoomValue.innerText = fillDocumentZoom + "%";
+    }
+
+    function changeFillDocumentZoom(step) {
+        fillDocumentZoom = fillDocumentZoom + step;
+
+        if (fillDocumentZoom < 50) {
+            fillDocumentZoom = 50;
+        }
+
+        if (fillDocumentZoom > 150) {
+            fillDocumentZoom = 150;
+        }
+
+        applyFillDocumentZoom();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("fillFieldSearch");
+
+        if (searchInput) {
+            searchInput.addEventListener("input", function () {
+                const query = this.value.toLowerCase().trim();
+                const fields = document.querySelectorAll(".q-fill-field");
+
+                fields.forEach(function (field) {
+                    const value = field.dataset.fieldSearch.toLowerCase();
+                    field.style.display = value.includes(query) ? "grid" : "none";
+                });
+            });
+        }
+
+        renderPreview();
+        applyFillDocumentZoom();
+    });
 </script>
+
 {% endblock %}

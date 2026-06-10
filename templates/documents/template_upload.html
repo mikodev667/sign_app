@@ -1,66 +1,165 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Upload DOCX Template | Sign-App" %}{% endblock %}
+{% block title %}{% trans "Upload DOCX Template | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-    <h1 class="page-title">{% trans "Upload DOCX Template" %}</h1>
-    <p class="page-subtitle">
-        {% trans "Upload a DOCX file with variables like" %}
-        {% verbatim %}{{ full_name }}, {{ date }}{% endverbatim %}
-        {% trans "or" %}
-        {% verbatim %}{{ contract_number }}{% endverbatim %}.
-    </p>
-</div>
+<section class="template-upload-page">
 
-<div class="card form-card">
-    <form method="post" enctype="multipart/form-data" class="app-form">
-        {% csrf_token %}
+    <div class="template-upload-hero">
+        <div class="template-upload-hero__content">
+            <div class="template-upload-kicker">
+                {% trans "DOCX upload" %}
+            </div>
 
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}" class="form-label">
-                    {{ field.label }}
-                </label>
+            <h1 class="template-upload-title">
+                {% trans "Upload DOCX Template" %}
+            </h1>
 
-                {{ field }}
+            <p class="template-upload-subtitle">
+                {% trans "Upload a DOCX file with variables and turn it into a reusable document template." %}
+            </p>
 
-                {% if field.help_text %}
-                    <div class="form-help">
-                        {{ field.help_text }}
+            <div class="template-upload-examples">
+                <span>{% verbatim %}{{ full_name }}{% endverbatim %}</span>
+                <span>{% verbatim %}{{ date }}{% endverbatim %}</span>
+                <span>{% verbatim %}{{ contract_number }}{% endverbatim %}</span>
+            </div>
+        </div>
+
+        <div class="template-upload-hero__visual">
+            <div class="upload-docx-preview">
+                <div class="upload-docx-preview__corner"></div>
+
+                <div class="upload-docx-preview__badge">
+                    DOCX
+                </div>
+
+                <div class="upload-docx-preview__lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="upload-docx-preview__variable">
+                    {% verbatim %}{{ variable }}{% endverbatim %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="template-upload-layout">
+
+        <aside class="template-upload-guide">
+            <div class="template-upload-guide__header">
+                <div class="template-upload-guide__icon">
+                    ↑
+                </div>
+
+                <div>
+                    <h2>{% trans "Before uploading" %}</h2>
+                    <p>{% trans "Make sure your DOCX template is prepared correctly." %}</p>
+                </div>
+            </div>
+
+            <div class="template-upload-rules">
+                <div class="template-upload-rule">
+                    <span>01</span>
+                    <div>
+                        <strong>{% trans "Use DOCX format" %}</strong>
+                        <p>{% trans "Only DOCX files should be uploaded as templates." %}</p>
                     </div>
-                {% endif %}
+                </div>
 
-                {% if field.errors %}
-                    <div class="form-errors">
-                        {% for error in field.errors %}
+                <div class="template-upload-rule">
+                    <span>02</span>
+                    <div>
+                        <strong>{% trans "Add variables" %}</strong>
+                        <p>
+                            {% trans "Use variables like" %}
+                            {% verbatim %}{{ full_name }}{% endverbatim %}
+                            {% trans "inside the document." %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="template-upload-rule">
+                    <span>03</span>
+                    <div>
+                        <strong>{% trans "Keep names clear" %}</strong>
+                        <p>{% trans "Use readable variable names so the document can be filled easily." %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="template-upload-note">
+                <strong>{% trans "Example" %}</strong>
+                <p>
+                    {% verbatim %}{{ customer_name }}, {{ iin }}, {{ contract_date }}{% endverbatim %}
+                </p>
+            </div>
+        </aside>
+
+        <div class="template-upload-form-card">
+            <div class="template-upload-form-card__header">
+                <div>
+                    <span>{% trans "Upload form" %}</span>
+                    <h2>{% trans "Template file" %}</h2>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="app-form template-upload-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group template-upload-field {% if field.field.widget.input_type == 'file' %}template-upload-field--file{% endif %}">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+
+                        <div class="template-upload-input-wrap">
+                            {{ field }}
+                        </div>
+
+                        {% if field.help_text %}
+                            <div class="form-help">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors form-errors--global">
+                        {% for error in form.non_field_errors %}
                             <div class="form-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                 {% endif %}
-            </div>
-        {% endfor %}
 
-        {% if form.non_field_errors %}
-            <div class="form-errors form-errors--global">
-                {% for error in form.non_field_errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
+                <div class="template-upload-actions">
+                    <a href="{% url 'documents:template_list' %}" class="btn btn-secondary">
+                        {% trans "Cancel" %}
+                    </a>
 
-        <div class="form-actions">
-            <a href="{% url 'documents:template_list' %}" class="btn btn-outline">
-                {% trans "Cancel" %}
-            </a>
-
-            <button type="submit" class="btn btn-primary">
-                {% trans "Upload template" %}
-            </button>
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Upload template" %}
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
+
+    </div>
+
+</section>
 
 {% endblock %}
