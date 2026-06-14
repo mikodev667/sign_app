@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -59,6 +60,24 @@ class OrganizationMember(models.Model):
         verbose_name = "Organization member"
         verbose_name_plural = "Organization members"
         unique_together = ("organization", "user")
+
+    def clean(self):
+        super().clean()
+
+        if not self.user_id:
+            return
+
+        existing_membership = OrganizationMember.objects.filter(
+            user_id=self.user_id,
+        )
+
+        if self.pk:
+            existing_membership = existing_membership.exclude(pk=self.pk)
+
+        if existing_membership.exists():
+            raise ValidationError({
+                "user": "This user already belongs to another organization.",
+            })
 
     def __str__(self):
         return f"{self.user} - {self.organization} ({self.role})"

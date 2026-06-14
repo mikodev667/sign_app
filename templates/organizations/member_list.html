@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Organization members | QolQoyu" %}{% endblock %}
+
+{% block content %}
+
+<section class="q-organization-page">
+
+    <header class="q-organization-hero">
+        <div>
+            <div class="q-organization-kicker">
+                {% trans "Organization" %}
+            </div>
+
+            <h1>{{ organization.name }}</h1>
+
+            <p>{% trans "Add registered users to this organization and manage their role." %}</p>
+        </div>
+
+        <a href="{% url 'organizations:organization_list' %}" class="btn btn-secondary">
+            {% trans "Back to organizations" %}
+        </a>
+    </header>
+
+    <div class="q-organization-layout">
+
+        <main class="q-organization-panel">
+            <div class="q-organization-panel__header">
+                <span>{% trans "Members" %}</span>
+                <h2>{% trans "Current members" %}</h2>
+            </div>
+
+            <div class="q-organization-members">
+                {% for member in members %}
+                    <div class="q-organization-member">
+                        <div class="q-organization-member__avatar">
+                            {{ member.user.username|first|upper }}
+                        </div>
+
+                        <div>
+                            <strong>{{ member.user.username }}</strong>
+
+                            {% if member.user.email %}
+                                <span>{{ member.user.email }}</span>
+                            {% else %}
+                                <span>{% trans "No email" %}</span>
+                            {% endif %}
+                        </div>
+
+                        <small>{{ member.get_role_display }}</small>
+                    </div>
+                {% empty %}
+                    <p class="q-profile-muted">
+                        {% trans "No members have been added yet." %}
+                    </p>
+                {% endfor %}
+            </div>
+        </main>
+
+        <aside class="q-organization-panel">
+            <div class="q-organization-panel__header">
+                <span>{% trans "Add user" %}</span>
+                <h2>{% trans "Invite existing account" %}</h2>
+            </div>
+
+            <form method="post" class="app-form q-organization-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Add member" %}
+                </button>
+            </form>
+        </aside>
+
+    </div>
+
+</section>
+
+{% endblock %}

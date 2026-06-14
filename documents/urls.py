@@ -12,6 +12,7 @@ urlpatterns = [
     path("documents/create/", views.document_create, name="document_create"),
     path("documents/<int:pk>/fill/", views.document_fill, name="document_fill"),
     path("documents/<int:pk>/render/", views.document_render_docx, name="document_render_docx"),
+    path("documents/<int:pk>/lawvision/", views.document_lawvision_report, name="document_lawvision_report"),
 
     path("templates/<int:pk>/edit/", views.template_edit, name="template_edit"),
     path("templates/<int:template_pk>/documents/create/", views.document_create_from_template, name="document_create_from_template"),

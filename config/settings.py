@@ -25,6 +25,11 @@ MOBIZON_API_URL = os.getenv("MOBIZON_API_URL", "https://api.mobizon.kz/service")
 MOBIZON_API_KEY = os.getenv("MOBIZON_API_KEY", "")
 MOBIZON_SENDER = os.getenv("MOBIZON_SENDER", "")
 
+#LawVision
+LAWVISION_API_KEY = os.getenv("LAWVISION_API_KEY", "")
+LAWVISION_API_URL = os.getenv("LAWVISION_API_URL", "https://lawvision.kz/api/v1")
+LAWVISION_TIMEOUT_SECONDS = int(os.getenv("LAWVISION_TIMEOUT_SECONDS", "90"))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -88,6 +93,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'organizations.context_processors.organization_access',
             ],
         },
     },
@@ -100,11 +106,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB", "sign_app"),
+        "USER": os.getenv("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "CONN_MAX_AGE": int(os.getenv("POSTGRES_CONN_MAX_AGE", "60")),
     }
 }
+
+POSTGRES_SSLMODE = os.getenv("POSTGRES_SSLMODE")
+if POSTGRES_SSLMODE:
+    DATABASES["default"]["OPTIONS"] = {"sslmode": POSTGRES_SSLMODE}
 
 
 # Password validation
@@ -166,6 +181,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
+LIBREOFFICE_PATH = os.getenv("LIBREOFFICE_PATH", "")
+PDF_OVERLAY_FONT_PATH = os.getenv("PDF_OVERLAY_FONT_PATH", "")
 
 
 #ECP verifier

@@ -4,9 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from documents.models import Document
+from documents.models import Document, DocumentLawVisionReport
+from documents.services.lawvision_service import LawVisionError, LawVisionService
+from organizations.services import get_user_managed_organizations
 from signing.forms import SignerForm
 from signing.services.access_token_service import SignerAccessTokenService
 from signing.services.egov_mobile_service import EgovMobileSigningService
@@ -16,14 +19,51 @@ from signing.services.sms_gateway_service import SmsGatewayService, SmsGatewayEr
 from signing.models import Signer, SigningSession, Signature, SigningAuditLog
 from signing.services.audit_log_service import SigningAuditLogService
 from signing.services.ecp_signing_service import EcpSigningService
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
+
+
+def get_current_lawvision_report(document, *, include_failed=False):
+    if not document.content_hash:
+        return None
+
+    queryset = DocumentLawVisionReport.objects.filter(
+        document=document,
+        content_hash=document.content_hash,
+    )
+
+    if not include_failed:
+        queryset = queryset.filter(status=DocumentLawVisionReport.Status.SUCCESS)
+
+    return queryset.order_by("-created_at").first()
+
+
+def can_request_lawvision_report(document):
+    return bool(
+        document.rendered_pdf_file
+        or document.rendered_docx_file
+        or document.rendered_html
+    )
+
+
+def render_signer_lawvision_report_page(request, *, token, signer, document, report):
+    return render(request, "documents/lawvision_report.html", {
+        "document": document,
+        "report": report,
+        "analysis": report.analysis if report else {},
+        "metadata": report.metadata if report else {},
+        "start_url": reverse("signing:signer_lawvision_report", args=[token]),
+        "back_url": reverse("signing:signer_public_page", args=[token]),
+        "is_public": True,
+        "signer": signer,
+        "can_start_analysis": can_request_lawvision_report(document),
+    })
 
 @login_required
 def document_signers(request, document_pk):
     document = get_object_or_404(
         Document.objects.select_related("template", "organization"),
         pk=document_pk,
-        created_by=request.user,
+        organization__in=get_user_managed_organizations(request.user),
     )
 
     if request.method == "POST":
@@ -64,7 +104,7 @@ def create_signer_access_link(request, signer_pk):
     signer = get_object_or_404(
         Signer.objects.select_related("document"),
         pk=signer_pk,
-        document__created_by=request.user,
+        document__organization__in=get_user_managed_organizations(request.user),
     )
 
     try:
@@ -154,6 +194,7 @@ def signer_public_page(request, token):
     )
 
     signature = getattr(signer, "signature", None)
+    lawvision_report = get_current_lawvision_report(document)
 
     return render(request, "signing/signer_public_page.html", {
         "token": token,
@@ -162,7 +203,44 @@ def signer_public_page(request, token):
         "latest_session": latest_session,
         "latest_sms_session": latest_sms_session,
         "signature": signature,
+        "lawvision_report": lawvision_report,
     })
+
+
+@require_http_methods(["GET", "POST"])
+def signer_lawvision_report(request, token):
+    access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
+
+    if not access_token:
+        return render(request, "signing/signer_link_invalid.html", status=404)
+
+    signer = access_token.signer
+    document = signer.document
+    report = get_current_lawvision_report(document, include_failed=True)
+
+    if request.method == "POST":
+        try:
+            report, cached = LawVisionService.get_or_analyze_document(
+                document=document,
+                source=DocumentLawVisionReport.Source.PUBLIC_SIGNER,
+                force=request.POST.get("force") == "1",
+            )
+        except LawVisionError as exc:
+            report = get_current_lawvision_report(document, include_failed=True)
+            messages.error(request, f"LawVision analysis failed: {exc}")
+        else:
+            if cached:
+                messages.info(request, "Using saved LawVision report for this document.")
+            else:
+                messages.success(request, "LawVision report is ready.")
+
+    return render_signer_lawvision_report_page(
+        request,
+        token=token,
+        signer=signer,
+        document=document,
+        report=report,
+    )
 
 
 @require_POST

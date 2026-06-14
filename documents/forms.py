@@ -1,5 +1,7 @@
 from django import forms
 
+from organizations.services import get_user_managed_organizations
+
 from .models import (
     DocumentTemplate,
     Document,
@@ -7,39 +9,48 @@ from .models import (
     TemplateParty,
     TemplatePartyField,
 )
+from .services.template_file_service import TemplateFileService
 
 
 class DocumentTemplateUploadForm(forms.ModelForm):
     class Meta:
         model = DocumentTemplate
-        fields = ["organization", "title", "template_file", "status"]
+        fields = ["title", "template_file", "status"]
 
         widgets = {
-            "organization": forms.Select(attrs={
-                "class": "form-control",
-            }),
             "title": forms.TextInput(attrs={
                 "class": "form-control",
                 "placeholder": "Example: Employment Agreement Template",
             }),
             "template_file": forms.ClearableFileInput(attrs={
                 "class": "form-control",
+                "accept": ".doc,.docx",
             }),
             "status": forms.Select(attrs={
                 "class": "form-control",
             }),
         }
 
+    def clean_template_file(self):
+        return clean_template_file_field(self.cleaned_data.get("template_file"))
+
 
 class DocumentCreateForm(forms.ModelForm):
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if user is not None:
+            organizations = get_user_managed_organizations(user)
+            self.fields["template"].queryset = DocumentTemplate.objects.filter(
+                organization__in=organizations,
+                status=DocumentTemplate.Status.ACTIVE,
+            ).order_by("title")
+
     class Meta:
         model = Document
-        fields = ["organization", "template", "title"]
+        fields = ["template", "title"]
 
         widgets = {
-            "organization": forms.Select(attrs={
-                "class": "form-control",
-            }),
             "template": forms.Select(attrs={
                 "class": "form-control",
             }),
@@ -74,6 +85,7 @@ class DocumentFromTemplateForm(forms.ModelForm):
                 "placeholder": "Example: Employment Agreement with John Smith",
             }),
         }
+
 
 class TemplatePartyForm(forms.ModelForm):
     class Meta:
@@ -144,3 +156,13 @@ class TemplatePartyFieldForm(forms.ModelForm):
                 "min": "1",
             }),
         }
+
+
+def clean_template_file_field(template_file):
+    if template_file:
+        try:
+            TemplateFileService.validate_file_name(template_file.name)
+        except ValueError as exc:
+            raise forms.ValidationError(str(exc)) from exc
+
+    return template_file

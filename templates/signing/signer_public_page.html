@@ -79,6 +79,19 @@
                                 </a>
                             {% endif %}
 
+                            {% if lawvision_report %}
+                                <a href="{% url 'signing:signer_lawvision_report' token %}" class="q-public-file-btn q-public-file-btn--lawvision">
+                                    {% trans "LawVision report" %}
+                                </a>
+                            {% elif document.rendered_pdf_file or document.rendered_docx_file or document.rendered_html %}
+                                <form method="post" action="{% url 'signing:signer_lawvision_report' token %}" class="q-public-file-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="q-public-file-btn q-public-file-btn--lawvision">
+                                        {% trans "Analyze with LawVision" %}
+                                    </button>
+                                </form>
+                            {% endif %}
+
                             {% if not document.rendered_pdf_file and not document.rendered_docx_file %}
                                 <div class="q-public-file-missing">
                                     {% trans "Document file is not rendered yet." %}

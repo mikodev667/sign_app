@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "LawVision report | QolQoyu" %}{% endblock %}
+
+{% block content %}
+
+<section class="lawvision-page">
+    <div class="lawvision-hero">
+        <div>
+            <div class="lawvision-kicker">LawVision</div>
+            <h1>{% trans "Document legal analysis" %}</h1>
+            <p>{{ document.title }}</p>
+        </div>
+
+        <a href="{{ back_url }}" class="btn btn-secondary">
+            {% trans "Back" %}
+        </a>
+    </div>
+
+    {% if report and report.status == "success" %}
+        <div class="lawvision-score-grid">
+            <div class="lawvision-score-card lawvision-score-card--main">
+                <span>{% trans "Control score" %}</span>
+                <strong>
+                    {% if report.overall_score != None %}
+                        {{ report.overall_score }}/100
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="lawvision-score-card">
+                <span>{% trans "Risk level" %}</span>
+                <strong>{{ report.risk_level|default:"N/A" }}</strong>
+            </div>
+
+            <div class="lawvision-score-card">
+                <span>{% trans "Contract type" %}</span>
+                <strong>{{ report.contract_type_detected|default:"N/A" }}</strong>
+            </div>
+
+            <div class="lawvision-score-card">
+                <span>{% trans "Analyzed at" %}</span>
+                <strong>{{ metadata.analyzed_at|default:report.updated_at }}</strong>
+            </div>
+        </div>
+
+        {% if metadata.truncated %}
+            <div class="lawvision-warning">
+                {% trans "LawVision truncated the document because it exceeded the analysis length limit." %}
+            </div>
+        {% endif %}
+
+        <div class="lawvision-layout">
+            <main class="lawvision-main">
+                <section class="lawvision-section">
+                    <h2>{% trans "Summary" %}</h2>
+                    <p>{{ report.summary|default:analysis.summary }}</p>
+                </section>
+
+                <section class="lawvision-section">
+                    <div class="lawvision-section__head">
+                        <h2>{% trans "Risks" %}</h2>
+
+                        {% if analysis.risk_counts %}
+                            <div class="lawvision-risk-counts">
+                                <span>{% trans "High" %}: {{ analysis.risk_counts.high|default:0 }}</span>
+                                <span>{% trans "Medium" %}: {{ analysis.risk_counts.medium|default:0 }}</span>
+                                <span>{% trans "Low" %}: {{ analysis.risk_counts.low|default:0 }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if analysis.risks %}
+                        <div class="lawvision-list">
+                            {% for risk in analysis.risks %}
+                                <article class="lawvision-item">
+                                    <div class="lawvision-item__top">
+                                        <strong>{{ risk.title }}</strong>
+                                        <span class="lawvision-severity lawvision-severity--{{ risk.severity }}">
+                                            {{ risk.severity }}
+                                        </span>
+                                    </div>
+
+                                    <p>{{ risk.description }}</p>
+
+                                    {% if risk.clause_reference %}
+                                        <small>{% trans "Clause" %}: {{ risk.clause_reference }}</small>
+                                    {% endif %}
+
+                                    {% if risk.recommendation %}
+                                        <div class="lawvision-recommendation">
+                                            {{ risk.recommendation }}
+                                        </div>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="lawvision-empty-note">
+                            {% trans "No risks returned by LawVision." %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="lawvision-section">
+                    <h2>{% trans "Missing clauses" %}</h2>
+
+                    {% if analysis.missing_clauses %}
+                        <div class="lawvision-list">
+                            {% for clause in analysis.missing_clauses %}
+                                <article class="lawvision-item">
+                                    <div class="lawvision-item__top">
+                                        <strong>{{ clause.clause }}</strong>
+                                        <span class="lawvision-severity lawvision-severity--{{ clause.importance }}">
+                                            {{ clause.importance }}
+                                        </span>
+                                    </div>
+                                    <p>{{ clause.reason }}</p>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="lawvision-empty-note">
+                            {% trans "No missing clauses returned by LawVision." %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="lawvision-section">
+                    <h2>{% trans "Compliance" %}</h2>
+
+                    {% if analysis.compliance %}
+                        <div class="lawvision-list">
+                            {% for item in analysis.compliance %}
+                                <article class="lawvision-item">
+                                    <div class="lawvision-item__top">
+                                        <strong>{{ item.law }}</strong>
+                                        <span class="lawvision-severity lawvision-severity--{{ item.status }}">
+                                            {{ item.status }}
+                                        </span>
+                                    </div>
+                                    <p>{{ item.note }}</p>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="lawvision-empty-note">
+                            {% trans "No compliance notes returned by LawVision." %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="lawvision-section">
+                    <h2>{% trans "Recommendations" %}</h2>
+
+                    {% if analysis.recommendations %}
+                        <div class="lawvision-list">
+                            {% for recommendation in analysis.recommendations %}
+                                <article class="lawvision-item">
+                                    <div class="lawvision-item__top">
+                                        <strong>{{ recommendation.title }}</strong>
+                                        <span class="lawvision-severity lawvision-severity--{{ recommendation.priority }}">
+                                            {{ recommendation.priority }}
+                                        </span>
+                                    </div>
+                                    <p>{{ recommendation.description }}</p>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="lawvision-empty-note">
+                            {% trans "No recommendations returned by LawVision." %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                {% if report.raw_response.raw_analysis %}
+                    <section class="lawvision-section">
+                        <h2>{% trans "Raw analysis" %}</h2>
+                        <pre class="lawvision-raw">{{ report.raw_response.raw_analysis }}</pre>
+                    </section>
+                {% endif %}
+            </main>
+
+            <aside class="lawvision-side">
+                <section class="lawvision-side-card">
+                    <h2>{% trans "Strengths" %}</h2>
+
+                    {% if analysis.strengths %}
+                        <ul class="lawvision-strengths">
+                            {% for strength in analysis.strengths %}
+                                <li>{{ strength }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{% trans "No strengths returned by LawVision." %}</p>
+                    {% endif %}
+                </section>
+
+                <section class="lawvision-side-card">
+                    <h2>{% trans "Details" %}</h2>
+
+                    <dl class="lawvision-details">
+                        <div>
+                            <dt>{% trans "Language" %}</dt>
+                            <dd>{{ metadata.language|default:report.language }}</dd>
+                        </div>
+
+                        <div>
+                            <dt>{% trans "Model" %}</dt>
+                            <dd>{{ metadata.model|default:"N/A" }}</dd>
+                        </div>
+
+                        <div>
+                            <dt>{% trans "Text length" %}</dt>
+                            <dd>{{ metadata.text_length|default:"N/A" }}</dd>
+                        </div>
+
+                        <div>
+                            <dt>{% trans "Document hash" %}</dt>
+                            <dd><code>{{ report.content_hash }}</code></dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="lawvision-side-card lawvision-side-card--note">
+                    <p>
+                        {% trans "This report is for reference only and does not replace advice from a qualified lawyer." %}
+                    </p>
+                </section>
+
+                {% if can_start_analysis %}
+                    <form method="post" action="{{ start_url }}" class="lawvision-rerun-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="force" value="1">
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Run analysis again" %}
+                        </button>
+                    </form>
+                {% endif %}
+            </aside>
+        </div>
+    {% elif report and report.status == "failed" %}
+        <div class="lawvision-state-card lawvision-state-card--error">
+            <div class="lawvision-kicker">LawVision</div>
+            <h2>{% trans "Analysis failed" %}</h2>
+            <p>{{ report.error_message }}</p>
+
+            {% if report.error_code %}
+                <code>{{ report.error_code }}</code>
+            {% endif %}
+
+            {% if can_start_analysis %}
+                <form method="post" action="{{ start_url }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="force" value="1">
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Try again" %}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="lawvision-state-card">
+            <div class="lawvision-kicker">LawVision</div>
+            <h2>{% trans "No report yet" %}</h2>
+            <p>
+                {% trans "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations." %}
+            </p>
+
+            {% if can_start_analysis %}
+                <form method="post" action="{{ start_url }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Analyze with LawVision" %}
+                    </button>
+                </form>
+            {% else %}
+                <div class="lawvision-empty-note">
+                    {% trans "Render the document before requesting LawVision analysis." %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}

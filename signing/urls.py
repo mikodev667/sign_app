@@ -22,6 +22,11 @@ urlpatterns = [
         views.signer_public_page,
         name="signer_public_page",
     ),
+    path(
+        "s/<str:token>/lawvision/",
+        views.signer_lawvision_report,
+        name="signer_lawvision_report",
+    ),
 
     # eGov Mobile public flow
     path(

@@ -30,7 +30,7 @@ class DocumentTemplate(models.Model):
     )
 
     template_file = models.FileField(
-        upload_to="document_templates/docx/",
+        upload_to="document_templates/files/",
         blank=True,
         null=True,
     )
@@ -238,6 +238,87 @@ class Document(models.Model):
             )
 
         return self
+
+
+class DocumentLawVisionReport(models.Model):
+    class Status(models.TextChoices):
+        PROCESSING = "processing", "Processing"
+        SUCCESS = "success", "Success"
+        FAILED = "failed", "Failed"
+
+    class Source(models.TextChoices):
+        MANAGER = "manager", "Manager"
+        PUBLIC_SIGNER = "public_signer", "Public signer"
+
+    document = models.ForeignKey(
+        Document,
+        on_delete=models.CASCADE,
+        related_name="lawvision_reports",
+    )
+
+    requested_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="lawvision_reports",
+        blank=True,
+        null=True,
+    )
+
+    source = models.CharField(
+        max_length=30,
+        choices=Source.choices,
+        default=Source.MANAGER,
+    )
+
+    content_hash = models.CharField(max_length=64, db_index=True)
+    language = models.CharField(max_length=5, default="ru")
+    contract_type = models.CharField(max_length=100, blank=True)
+    perspective = models.CharField(max_length=255, blank=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PROCESSING,
+        db_index=True,
+    )
+
+    contract_type_detected = models.CharField(max_length=100, blank=True)
+    overall_score = models.PositiveSmallIntegerField(blank=True, null=True)
+    risk_level = models.CharField(max_length=20, blank=True)
+    summary = models.TextField(blank=True)
+
+    analysis = models.JSONField(default=dict, blank=True)
+    metadata = models.JSONField(default=dict, blank=True)
+    raw_response = models.JSONField(default=dict, blank=True)
+
+    error_code = models.CharField(max_length=100, blank=True)
+    error_message = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "LawVision report"
+        verbose_name_plural = "LawVision reports"
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "document",
+                    "content_hash",
+                    "language",
+                    "contract_type",
+                    "perspective",
+                ],
+                name="uniq_lawvision_doc_hash_options",
+            )
+        ]
+
+    def __str__(self):
+        return f"LawVision report for {self.document_id} ({self.status})"
+
+    def is_successful(self):
+        return self.status == self.Status.SUCCESS
 
 
 class DocumentFieldValue(models.Model):

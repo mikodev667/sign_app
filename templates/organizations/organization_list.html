@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Organizations | QolQoyu" %}{% endblock %}
+
+{% block content %}
+
+<section class="q-organization-page">
+
+    <header class="q-organization-hero">
+        <div>
+            <div class="q-organization-kicker">
+                {% trans "Organizations" %}
+            </div>
+
+            <h1>{% trans "Managed organizations" %}</h1>
+
+            <p>{% trans "Open an organization to add registered users and manage their access." %}</p>
+        </div>
+    </header>
+
+    {% if organizations %}
+        <div class="q-organization-grid">
+            {% for organization in organizations %}
+                <article class="q-organization-card">
+                    <div class="q-organization-card__top">
+                        <div class="q-organization-card__mark">
+                            {{ organization.name|first|upper }}
+                        </div>
+
+                        <span>{% trans "Manager" %}</span>
+                    </div>
+
+                    <h2>{{ organization.name }}</h2>
+
+                    {% if organization.bin %}
+                        <p>BIN: {{ organization.bin }}</p>
+                    {% else %}
+                        <p>{% trans "BIN is not specified" %}</p>
+                    {% endif %}
+
+                    <div class="q-organization-card__meta">
+                        <span>{% trans "Members" %}</span>
+                        <strong>{{ organization.members.all|length }}</strong>
+                    </div>
+
+                    <a href="{% url 'organizations:organization_members' organization.pk %}" class="btn btn-primary">
+                        {% trans "Manage members" %}
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="q-organization-empty">
+            <strong>{% trans "No managed organizations" %}</strong>
+            <p>{% trans "A site admin must create an organization and add you as owner or admin first." %}</p>
+        </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 
+from organizations.services import (
+    get_user_managed_organizations,
+    get_user_organization_memberships,
+)
+
 from .forms import LoginForm, RegisterForm
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 
 
 class UserLoginView(LoginView):
@@ -33,4 +37,7 @@ def register_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, "accounts/profile.html")
+    return render(request, "accounts/profile.html", {
+        "managed_organizations": get_user_managed_organizations(request.user),
+        "organization_memberships": get_user_organization_memberships(request.user),
+    })

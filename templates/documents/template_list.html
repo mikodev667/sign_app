@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "DOCX Templates | QolQoyu" %}{% endblock %}
+{% block title %}{% trans "Document Templates | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
@@ -14,18 +14,18 @@
             </div>
 
             <h1 class="templates-title">
-                {% trans "DOCX Templates" %}
+                {% trans "Document Templates" %}
             </h1>
 
             <p class="templates-subtitle">
-                {% trans "Build reusable DOCX structures, manage variables and create ready-to-sign documents faster." %}
+                {% trans "Build reusable document structures, manage variables and create ready-to-sign documents faster." %}
             </p>
         </div>
 
         <div class="templates-hero__right">
             <div class="templates-hero-card">
                 <div class="templates-hero-card__icon">
-                    <span>DOCX</span>
+                    <span>DOC</span>
                 </div>
 
                 <div>
@@ -44,7 +44,7 @@
         <div class="templates-overview__main">
             <span>{% trans "Total templates" %}</span>
             <strong>{{ templates|length }}</strong>
-            <p>{% trans "Uploaded DOCX structures available for document generation." %}</p>
+            <p>{% trans "Uploaded document structures available for document generation." %}</p>
         </div>
 
         <div class="templates-overview__mini">
@@ -74,7 +74,7 @@
                     <div class="template-row__visual">
                         <div class="template-file">
                             <div class="template-file__corner"></div>
-                            <div class="template-file__badge">DOCX</div>
+                            <div class="template-file__badge">DOC</div>
 
                             <div class="template-file__lines">
                                 <span></span>
@@ -154,12 +154,12 @@
             </div>
 
             <div class="templates-empty__content">
-                <span class="templates-kicker">{% trans "Upload DOCX" %}</span>
+                <span class="templates-kicker">{% trans "Upload document" %}</span>
 
                 <h2>{% trans "No templates yet" %}</h2>
 
                 <p>
-                    {% trans "Upload your first DOCX template with variables and start generating documents from it." %}
+                    {% trans "Upload your first document template with variables and start generating documents from it." %}
                 </p>
 
                 <a href="{% url 'documents:template_upload' %}" class="btn btn-primary">

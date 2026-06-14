@@ -101,7 +101,7 @@
                     <span>A4</span>
 
                     <div class="q-zoom-control">
-                        <button type="button" onclick="changeDocumentZoom(-10)">−</button>
+                        <button type="button" onclick="changeDocumentZoom(-10)">-</button>
 
                         <span id="documentZoomValue">100%</span>
 
@@ -122,7 +122,6 @@
         <aside class="q-editor-right">
             <div class="q-properties-tabs">
                 <button type="button" class="q-tab q-tab--active">{% trans "Variables" %}</button>
-                <button type="button" class="q-tab">{% trans "Settings" %}</button>
             </div>
 
             <div class="q-properties-scroll">
@@ -331,7 +330,6 @@
     const textDelete = "{% trans 'Delete' %}";
     const textFieldLabel = "{% trans 'Field label' %}";
     const textVariable = "{% trans 'Variable' %}";
-    const textInsertIntoDocument = "{% trans 'Insert' %}";
     const textFieldLabelPlaceholder = "{% trans 'Field label, example: Contract number' %}";
     const textVariableKeyPlaceholder = "{% trans 'Variable key, example: contract_number' %}";
     const textAddField = "{% trans 'Add field' %}";
@@ -488,7 +486,7 @@
         const editor = document.getElementById("docxEditor");
         editor.focus();
 
-        const variableText = "{{ " + variableKey + " }}";
+        const variableText = "{% templatetag openvariable %} " + variableKey + " {% templatetag closevariable %}";
         document.execCommand("insertText", false, variableText);
     }
 
@@ -500,24 +498,24 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-            const searchInput = document.getElementById("variableSearch");
+        const searchInput = document.getElementById("variableSearch");
 
-            if (searchInput) {
-                searchInput.addEventListener("input", function () {
-                    const query = this.value.toLowerCase().trim();
-                    const chips = document.querySelectorAll(".q-variable-chip");
+        if (searchInput) {
+            searchInput.addEventListener("input", function () {
+                const query = this.value.toLowerCase().trim();
+                const chips = document.querySelectorAll(".q-variable-chip");
 
-                    chips.forEach(function (chip) {
-                        const value = chip.dataset.variable.toLowerCase();
-                        const text = chip.innerText.toLowerCase();
+                chips.forEach(function (chip) {
+                    const value = chip.dataset.variable.toLowerCase();
+                    const text = chip.innerText.toLowerCase();
 
-                        chip.style.display = value.includes(query) || text.includes(query) ? "grid" : "none";
-                    });
+                    chip.style.display = value.includes(query) || text.includes(query) ? "grid" : "none";
                 });
-            }
-        });
+            });
+        }
+    });
 
-        let documentZoom = 100;
+    let documentZoom = 100;
 
     function applyDocumentZoom() {
         const paperShadow = document.querySelector(".q-paper-shadow");

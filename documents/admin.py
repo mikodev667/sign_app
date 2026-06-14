@@ -1,7 +1,14 @@
 from django.contrib import admin
-from .services.docx_template_service import DocxTemplateService
-from .models import DocumentTemplate, Document, DocumentFieldValue, TemplateParty, TemplatePartyField
+from .models import (
+    DocumentTemplate,
+    Document,
+    DocumentFieldValue,
+    DocumentLawVisionReport,
+    TemplateParty,
+    TemplatePartyField,
+)
 from .services.document_docx_render_service import DocumentDocxRenderService
+from .services.template_file_service import TemplateFileService
 
 class DocumentFieldValueInline(admin.TabularInline):
     model = DocumentFieldValue
@@ -19,10 +26,14 @@ class DocumentTemplateAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
         if obj.template_file:
-            obj.variables = DocxTemplateService.extract_variables(
+            TemplateFileService.normalize_template_file_to_docx(obj)
+            obj.body_template = TemplateFileService.convert_to_html(
                 obj.template_file.path
             )
-            obj.save(update_fields=["variables", "updated_at"])
+            obj.variables = TemplateFileService.extract_variables(
+                obj.template_file.path
+            )
+            obj.save(update_fields=["body_template", "variables", "updated_at"])
 
 class TemplatePartyFieldInline(admin.TabularInline):
     model = TemplatePartyField
@@ -83,11 +94,12 @@ class DocumentAdmin(admin.ModelAdmin):
         "updated_at",
         "signed_at",
         "rendered_docx_file",
+        "rendered_pdf_file",
     )
 
     inlines = [DocumentFieldValueInline]
 
-    actions = ["render_docx_documents"]
+    actions = ["render_documents"]
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -101,8 +113,8 @@ class DocumentAdmin(admin.ModelAdmin):
                 defaults={"field_value": ""}
             )
 
-    @admin.action(description="Render selected DOCX documents")
-    def render_docx_documents(self, request, queryset):
+    @admin.action(description="Render selected documents")
+    def render_documents(self, request, queryset):
         success_count = 0
 
         for document in queryset:
@@ -126,3 +138,32 @@ class DocumentAdmin(admin.ModelAdmin):
 class DocumentFieldValueAdmin(admin.ModelAdmin):
     list_display = ("id", "document", "field_name")
     search_fields = ("document__title", "field_name", "field_value")
+
+
+@admin.register(DocumentLawVisionReport)
+class DocumentLawVisionReportAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "document",
+        "status",
+        "overall_score",
+        "risk_level",
+        "contract_type_detected",
+        "source",
+        "created_at",
+    )
+    list_filter = ("status", "risk_level", "source", "created_at")
+    search_fields = (
+        "document__title",
+        "content_hash",
+        "summary",
+        "error_code",
+        "error_message",
+    )
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "analysis",
+        "metadata",
+        "raw_response",
+    )

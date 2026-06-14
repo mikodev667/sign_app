@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Upload DOCX Template | QolQoyu" %}{% endblock %}
+{% block title %}{% trans "Upload Template | QolQoyu" %}{% endblock %}
 
 {% block content %}
 
@@ -10,15 +10,15 @@
     <div class="template-upload-hero">
         <div class="template-upload-hero__content">
             <div class="template-upload-kicker">
-                {% trans "DOCX upload" %}
+                {% trans "Document upload" %}
             </div>
 
             <h1 class="template-upload-title">
-                {% trans "Upload DOCX Template" %}
+                {% trans "Upload Template" %}
             </h1>
 
             <p class="template-upload-subtitle">
-                {% trans "Upload a DOCX file with variables and turn it into a reusable document template." %}
+                {% trans "Upload a DOCX or DOC file with variables and turn it into a reusable document template." %}
             </p>
 
             <div class="template-upload-examples">
@@ -33,7 +33,7 @@
                 <div class="upload-docx-preview__corner"></div>
 
                 <div class="upload-docx-preview__badge">
-                    DOCX
+                    DOC
                 </div>
 
                 <div class="upload-docx-preview__lines">
@@ -67,8 +67,8 @@
                 <div class="template-upload-rule">
                     <span>01</span>
                     <div>
-                        <strong>{% trans "Use DOCX format" %}</strong>
-                        <p>{% trans "Only DOCX files should be uploaded as templates." %}</p>
+                        <strong>{% trans "Use DOCX or DOC format" %}</strong>
+                        <p>{% trans "DOCX works directly. DOC is converted to DOCX before editing." %}</p>
                     </div>
                 </div>
 
@@ -111,6 +111,11 @@
 
             <form method="post" enctype="multipart/form-data" class="app-form template-upload-form">
                 {% csrf_token %}
+
+                <div class="template-upload-organization">
+                    <span>{% trans "Organization" %}</span>
+                    <strong>{{ organization.name }}</strong>
+                </div>
 
                 {% for field in form %}
                     <div class="form-group template-upload-field {% if field.field.widget.input_type == 'file' %}template-upload-field--file{% endif %}">

@@ -57,6 +57,14 @@
                         <span>{% trans "Templates" %}</span>
                     </a>
 
+                    {% if has_managed_organizations %}
+                        <a href="{% url 'organizations:organization_list' %}"
+                           class="app-nav__link {% if request.resolver_match.app_name == 'organizations' %}app-nav__link--active{% endif %}">
+
+                            <span>{% trans "Organizations" %}</span>
+                        </a>
+                    {% endif %}
+
                     <div class="app-user-menu" id="appUserMenu">
                         <button class="app-user-button" type="button" id="appUserButton">
                             <span class="app-user-avatar">
@@ -81,6 +89,13 @@
 
                                 <span>{% trans "Upload template" %}</span>
                             </a>
+
+                            {% if has_managed_organizations %}
+                                <a href="{% url 'organizations:organization_list' %}" class="app-user-dropdown__item">
+
+                                    <span>{% trans "Organizations" %}</span>
+                                </a>
+                            {% endif %}
 
                             <div class="app-user-dropdown__divider"></div>
 

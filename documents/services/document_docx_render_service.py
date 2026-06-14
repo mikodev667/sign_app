@@ -27,7 +27,7 @@ class DocumentDocxRenderService:
         if document.rendered_html:
             HtmlToDocxService.render_html_to_docx(
                 html=document.rendered_html,
-                output_path=output_path
+                output_path=output_path,
             )
         else:
             if not template.template_file:
@@ -53,11 +53,13 @@ class DocumentDocxRenderService:
         with open(output_path, "rb") as f:
             document.rendered_docx_file.save(filename, File(f), save=False)
 
+        document.rendered_pdf_file = None
         document.update_content_hash(save=False)
         document.save(update_fields=[
             "rendered_docx_file",
+            "rendered_pdf_file",
             "content_hash",
-            "updated_at"
+            "updated_at",
         ])
 
         return document

@@ -59,7 +59,7 @@
                 <div class="q-fill-document-stage">
                     <div class="q-fill-paper-shadow">
                         <div id="documentPreview" class="q-fill-a4-paper">
-                            {{ document.template.body_template|safe }}
+                            {{ preview_html|safe }}
                         </div>
                     </div>
                 </div>
@@ -69,10 +69,6 @@
                 <div class="q-fill-tabs">
                     <button type="button" class="q-fill-tab q-fill-tab--active">
                         {% trans "Fields" %}
-                    </button>
-
-                    <button type="button" class="q-fill-tab">
-                        {% trans "Parties" %}
                     </button>
                 </div>
 

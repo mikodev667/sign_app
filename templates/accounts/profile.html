@@ -81,6 +81,34 @@
                     </strong>
                 </div>
             </div>
+
+            <div class="q-profile-org-list">
+                <div class="q-profile-card-header q-profile-card-header--compact">
+                    <span>{% trans "Organizations" %}</span>
+                    <h2>{% trans "Your access" %}</h2>
+                </div>
+
+                {% if organization_memberships %}
+                    {% for membership in organization_memberships %}
+                        <div class="q-profile-org-item">
+                            <div>
+                                <strong>{{ membership.organization.name }}</strong>
+                                <span>{{ membership.get_role_display }}</span>
+                            </div>
+
+                            {% if membership.role == "owner" or membership.role == "admin" %}
+                                <a href="{% url 'organizations:organization_members' membership.organization.pk %}" class="btn btn-secondary">
+                                    {% trans "Members" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="q-profile-muted">
+                        {% trans "You are not a member of any organization yet." %}
+                    </p>
+                {% endif %}
+            </div>
         </main>
 
         <aside class="q-profile-actions-card">
@@ -112,6 +140,13 @@
                     <span>{% trans "DOCX" %}</span>
                     <strong>{% trans "Upload template" %}</strong>
                 </a>
+
+                {% for organization in managed_organizations %}
+                    <a href="{% url 'organizations:organization_members' organization.pk %}" class="q-profile-action">
+                        <span>{% trans "Team" %}</span>
+                        <strong>{{ organization.name }}</strong>
+                    </a>
+                {% endfor %}
             </div>
         </aside>
 
