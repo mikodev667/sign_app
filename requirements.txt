@@ -4,10 +4,12 @@ cobble==0.1.4
 Django==5.2.14
 djangorestframework==3.17.1
 docxtpl==0.20.2
+gunicorn==23.0.0
 Jinja2==3.1.6
 lxml==6.1.1
 mammoth==1.12.0
 MarkupSafe==3.0.3
+minio==7.2.15
 pillow==12.2.0
 psycopg[binary]==3.2.13
 python-docx==1.2.0

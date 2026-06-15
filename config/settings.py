@@ -38,12 +38,56 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c#%6#jnn$-rzu814j1javkw0am!)hl)r3@57x0b5)_@t-vp$!u'
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-c#%6#jnn$-rzu814j1javkw0am!)hl)r3@57x0b5)_@t-vp$!u",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() in {"1", "true", "yes", "on"}
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+    if host.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+SESSION_COOKIE_SECURE = os.getenv("DJANGO_SESSION_COOKIE_SECURE", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+SECURE_HSTS_SECONDS = int(os.getenv("DJANGO_SECURE_HSTS_SECONDS", "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv(
+    "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
+    "False",
+).lower() in {"1", "true", "yes", "on"}
+SECURE_HSTS_PRELOAD = os.getenv("DJANGO_SECURE_HSTS_PRELOAD", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
 
 
 # Application definition
@@ -167,6 +211,7 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -186,5 +231,16 @@ LIBREOFFICE_PATH = os.getenv("LIBREOFFICE_PATH", "")
 PDF_OVERLAY_FONT_PATH = os.getenv("PDF_OVERLAY_FONT_PATH", "")
 
 
+# Immutable object storage for final legal documents and evidence.
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT", "127.0.0.1:9000")
+MINIO_EXTERNAL_ENDPOINT = os.getenv("MINIO_EXTERNAL_ENDPOINT", "http://127.0.0.1:9000")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "signappminio")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "signappminio123")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET", "sign-app-documents")
+MINIO_SECURE = os.getenv("MINIO_SECURE", "False").lower() in {"1", "true", "yes", "on"}
+MINIO_DEFAULT_RETENTION_DAYS = int(os.getenv("MINIO_DEFAULT_RETENTION_DAYS", "30"))
+OBJECT_STORAGE_ENABLED = os.getenv("OBJECT_STORAGE_ENABLED", "True").lower() in {"1", "true", "yes", "on"}
+
+
 #ECP verifier
-ECP_VERIFIER_URL = "http://127.0.0.1:9001/verify-ecp"
+ECP_VERIFIER_URL = os.getenv("ECP_VERIFIER_URL", "http://127.0.0.1:9001/verify-ecp")

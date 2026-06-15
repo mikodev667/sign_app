@@ -1,4 +1,4 @@
-msgid ""
+﻿msgid ""
 msgstr ""
 "Project-Id-Version: QolQoyu\n"
 "Report-Msgid-Bugs-To: \n"
@@ -1028,3 +1028,399 @@ msgstr "Шаблондар, құжат генерациясы, қол қоюшы
 
 msgid "Set up your personal access to the workspace."
 msgstr "Жұмыс кеңістігіне жеке қолжетімділікті баптаңыз."
+
+msgid "Download evidence bundle for selected document"
+msgstr "Таңдалған құжат үшін дәлелдер пакетін жүктеу"
+
+msgid "Select exactly one document to download an evidence bundle."
+msgstr "Дәлелдер пакетін жүктеу үшін дәл бір құжатты таңдаңыз."
+
+msgid "Evidence bundle could not be generated: %(error)s"
+msgstr "Дәлелдер пакетін қалыптастыру мүмкін болмады: %(error)s"
+
+msgid "Evidence bundle"
+msgstr "Дәлелдер пакеті"
+
+msgid "Temporary console code:"
+msgstr "Консольдегі уақытша код:"
+
+msgid "Signing invitation SMS was printed to console. Link: %(link)s"
+msgstr "Қол қоюға шақыру SMS-і консольге шығарылды. Сілтеме: %(link)s"
+
+msgid "SMS confirmation code was printed to console. Code: %(code)s"
+msgstr "SMS растау коды консольге шығарылды. Код: %(code)s"
+
+msgid "Signing invitation SMS was sent successfully."
+msgstr "Қол қоюға шақыру SMS-і сәтті жіберілді."
+
+msgid "SMS confirmation code was sent to your phone."
+msgstr "SMS растау коды телефоныңызға жіберілді."
+
+msgid "Signed document is immutable and cannot be updated."
+msgstr "Қол қойылған құжат өзгермейді және оны жаңарту мүмкін емес."
+
+msgid "Signed document is immutable and cannot be deleted."
+msgstr "Қол қойылған құжат өзгермейді және оны жою мүмкін емес."
+
+msgid "Signature is immutable and cannot be updated."
+msgstr "Қолтаңба өзгермейді және оны жаңарту мүмкін емес."
+
+msgid "Signature is immutable and cannot be deleted."
+msgstr "Қолтаңба өзгермейді және оны жою мүмкін емес."
+
+msgid "Signing audit log is append-only and cannot be updated."
+msgstr "Қол қою аудит журналына тек жаңа жазба қосылады, оны жаңарту мүмкін емес."
+
+msgid "Signing audit log is append-only and cannot be deleted."
+msgstr "Қол қою аудит журналына тек жаңа жазба қосылады, оны жою мүмкін емес."
+
+msgid "Final PDF"
+msgstr "Финалдық PDF"
+
+msgid "Final DOCX"
+msgstr "Финалдық DOCX"
+
+msgid "Stored object"
+msgstr "Сақталған объект"
+
+msgid "Stored objects"
+msgstr "Сақталған объектілер"
+
+msgid "Compliance"
+msgstr "Талаптарға сәйкестік"
+
+msgid "Governance"
+msgstr "Басқарылатын режим"
+
+msgid "None"
+msgstr "Жоқ"
+
+msgid "Stored"
+msgstr "Сақталды"
+
+msgid "Failed"
+msgstr "Қате"
+
+msgid "No final stored PDF/DOCX objects found for this document."
+msgstr "Бұл құжат үшін сақталған финалдық PDF/DOCX объектілері табылмады."
+
+msgid "Stored object verification failed for #%(object_id)s: %(error)s"
+msgstr "#%(object_id)s сақталған объектісін тексеру сәтсіз аяқталды: %(error)s"
+
+msgid "Stored object hash mismatch: object=%(object_id)s expected=%(expected)s actual=%(actual)s"
+msgstr "Сақталған объект хеші сәйкес емес: объект=%(object_id)s күтілген=%(expected)s нақты=%(actual)s"
+
+msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
+msgstr "'minio' пакеті қажет. Орындаңыз: pip install -r requirements.txt"
+
+msgid "Audit chain break at log #%(log_id)s: previous_hash mismatch."
+msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: previous_hash сәйкес емес."
+
+msgid "Audit chain break at log #%(log_id)s: payload_hash mismatch."
+msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: payload_hash сәйкес емес."
+
+msgid "Audit chain break at log #%(log_id)s: entry_hash mismatch."
+msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: entry_hash сәйкес емес."
+
+msgid "No audit log entries found."
+msgstr "Аудит журналы жазбалары табылмады."
+
+msgid "LawVision report"
+msgstr "LawVision есебі"
+
+msgid "LawVision reports"
+msgstr "LawVision есептері"
+
+msgid "LawVision report | QolQoyu"
+msgstr "LawVision есебі | QolQoyu"
+
+msgid "Analyze LawVision"
+msgstr "LawVision талдауы"
+
+msgid "LawVision analysis failed: %(error)s"
+msgstr "LawVision талдауы орындалмады: %(error)s"
+
+msgid "Using saved LawVision report for this document."
+msgstr "Бұл құжат үшін сақталған LawVision есебі қолданылды."
+
+msgid "LawVision report is ready."
+msgstr "LawVision есебі дайын."
+
+msgid "Organization"
+msgstr "Ұйым"
+
+msgid "Organizations"
+msgstr "Ұйымдар"
+
+msgid "Organization member"
+msgstr "Ұйым мүшесі"
+
+msgid "Organization members"
+msgstr "Ұйым мүшелері"
+
+msgid "Organizations | QolQoyu"
+msgstr "Ұйымдар | QolQoyu"
+
+msgid "Organization members | QolQoyu"
+msgstr "Ұйым мүшелері | QolQoyu"
+
+msgid "Managed organizations"
+msgstr "Басқарылатын ұйымдар"
+
+msgid "Open an organization to add registered users and manage their access."
+msgstr "Тіркелген пайдаланушыларды қосу және олардың қолжетімділігін басқару үшін ұйымды ашыңыз."
+
+msgid "Manager"
+msgstr "Менеджер"
+
+msgid "BIN"
+msgstr "БСН"
+
+msgid "BIN is not specified"
+msgstr "БСН көрсетілмеген"
+
+msgid "Members"
+msgstr "Мүшелер"
+
+msgid "Manage members"
+msgstr "Мүшелерді басқару"
+
+msgid "No managed organizations"
+msgstr "Басқарылатын ұйымдар жоқ"
+
+msgid "A site admin must create an organization and add you as owner or admin first."
+msgstr "Сайт әкімшісі алдымен ұйым құрып, сізді иесі немесе әкімші ретінде қосуы керек."
+
+msgid "Add registered users to this organization and manage their role."
+msgstr "Бұл ұйымға тіркелген пайдаланушыларды қосып, олардың рөлін басқарыңыз."
+
+msgid "Back to organizations"
+msgstr "Ұйымдарға қайту"
+
+msgid "Current members"
+msgstr "Қазіргі мүшелер"
+
+msgid "No email"
+msgstr "Email көрсетілмеген"
+
+msgid "No members have been added yet."
+msgstr "Әзірге мүшелер қосылмаған."
+
+msgid "Add user"
+msgstr "Пайдаланушы қосу"
+
+msgid "Invite existing account"
+msgstr "Бар аккаунтты шақыру"
+
+msgid "Add member"
+msgstr "Мүше қосу"
+
+msgid "Username or email"
+msgstr "Пайдаланушы аты немесе email"
+
+msgid "Registered username or email"
+msgstr "Тіркелген аккаунттың пайдаланушы аты немесе email"
+
+msgid "Role"
+msgstr "Рөл"
+
+msgid "Owner"
+msgstr "Иесі"
+
+msgid "Admin"
+msgstr "Әкімші"
+
+msgid "Member"
+msgstr "Мүше"
+
+msgid "Registered user was not found."
+msgstr "Тіркелген пайдаланушы табылмады."
+
+msgid "This user is already a member of the organization."
+msgstr "Бұл пайдаланушы осы ұйымның мүшесі."
+
+msgid "This user already belongs to another organization."
+msgstr "Бұл пайдаланушы басқа ұйымға тіркелген."
+
+msgid "Organization member added."
+msgstr "Ұйым мүшесі қосылды."
+
+msgid "Secure digital document signing."
+msgstr "Құжаттарды қауіпсіз цифрлық қол қою."
+
+msgid "Document legal analysis"
+msgstr "Құжаттың құқықтық талдауы"
+
+msgid "Control score"
+msgstr "Бақылау бағасы"
+
+msgid "Risk level"
+msgstr "Тәуекел деңгейі"
+
+msgid "Contract type"
+msgstr "Шарт түрі"
+
+msgid "Analyzed at"
+msgstr "Талдау уақыты"
+
+msgid "LawVision truncated the document because it exceeded the analysis length limit."
+msgstr "Құжат талдау ұзындығының шегінен асқандықтан, LawVision оны қысқартты."
+
+msgid "Summary"
+msgstr "Қысқаша қорытынды"
+
+msgid "Risks"
+msgstr "Тәуекелдер"
+
+msgid "High"
+msgstr "Жоғары"
+
+msgid "Medium"
+msgstr "Орташа"
+
+msgid "Low"
+msgstr "Төмен"
+
+msgid "Clause"
+msgstr "Тармақ"
+
+msgid "No risks returned by LawVision."
+msgstr "LawVision тәуекелдерді қайтармады."
+
+msgid "Missing clauses"
+msgstr "Жетіспейтін ережелер"
+
+msgid "No missing clauses returned by LawVision."
+msgstr "LawVision жетіспейтін ережелерді қайтармады."
+
+msgid "Compliance"
+msgstr "Сәйкестік"
+
+msgid "No compliance notes returned by LawVision."
+msgstr "LawVision сәйкестік бойынша ескертпелерді қайтармады."
+
+msgid "Recommendations"
+msgstr "Ұсынымдар"
+
+msgid "No recommendations returned by LawVision."
+msgstr "LawVision ұсынымдарды қайтармады."
+
+msgid "Raw analysis"
+msgstr "Бастапқы талдау"
+
+msgid "Strengths"
+msgstr "Күшті жақтар"
+
+msgid "No strengths returned by LawVision."
+msgstr "LawVision күшті жақтарды қайтармады."
+
+msgid "Details"
+msgstr "Мәліметтер"
+
+msgid "Language"
+msgstr "Тіл"
+
+msgid "Model"
+msgstr "Модель"
+
+msgid "Text length"
+msgstr "Мәтін ұзындығы"
+
+msgid "Document hash"
+msgstr "Құжат хеші"
+
+msgid "This report is for reference only and does not replace advice from a qualified lawyer."
+msgstr "Бұл есеп тек анықтамалық сипатта және білікті заңгердің кеңесін алмастырмайды."
+
+msgid "Run analysis again"
+msgstr "Талдауды қайта іске қосу"
+
+msgid "Analysis failed"
+msgstr "Талдау орындалмады"
+
+msgid "Try again"
+msgstr "Қайта көру"
+
+msgid "No report yet"
+msgstr "Есеп әлі жоқ"
+
+msgid "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations."
+msgstr "Құжат тәуекелдерін, жетіспейтін ережелерді, сәйкестікті және ұсынымдарды талдау үшін LawVision тексерісін іске қосыңыз."
+
+msgid "Analyze with LawVision"
+msgstr "LawVision арқылы талдау"
+
+msgid "Render the document before requesting LawVision analysis."
+msgstr "LawVision талдауын сұрамас бұрын құжатты қалыптастырыңыз."
+
+msgid "N/A"
+msgstr "Қ/Ж"
+
+msgid "Critical"
+msgstr "Критикалық"
+
+msgid "Violation"
+msgstr "Бұзушылық"
+
+msgid "Warning"
+msgstr "Ескерту"
+
+msgid "Recommended"
+msgstr "Ұсынылады"
+
+msgid "Optional"
+msgstr "Міндетті емес"
+
+msgid "Compliant"
+msgstr "Сәйкес"
+
+msgid "Success"
+msgstr "Сәтті"
+
+msgid "Failed"
+msgstr "Қате"
+
+msgid "Processing"
+msgstr "Өңделуде"
+
+msgid "Good"
+msgstr "Жақсы"
+
+msgid "Unknown"
+msgstr "Белгісіз"
+
+msgid "Missing"
+msgstr "Жоқ"
+
+msgid "Required"
+msgstr "Міндетті"
+
+msgid "Minor"
+msgstr "Кіші"
+
+msgid "Major"
+msgstr "Маңызды"
+
+msgid "Russian"
+msgstr "Орыс тілі"
+
+msgid "Kazakh"
+msgstr "Қазақ тілі"
+
+msgid "English"
+msgstr "Ағылшын тілі"
+
+msgid "LawVision API key is not configured."
+msgstr "LawVision API кілті бапталмаған."
+
+msgid "Document text is shorter than LawVision minimum of 50 characters."
+msgstr "Құжат мәтіні LawVision үшін қажет ең аз 50 таңбадан қысқа."
+
+msgid "Could not connect to LawVision: %(error)s"
+msgstr "LawVision қызметіне қосылу мүмкін болмады: %(error)s"
+
+msgid "LawVision returned a non-JSON response."
+msgstr "LawVision JSON емес жауап қайтарды."
+
+msgid "LawVision analysis failed."
+msgstr "LawVision талдауы орындалмады."

@@ -1,6 +1,7 @@
 import random
 from datetime import timedelta
 
+from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
@@ -174,6 +175,8 @@ class SmsSigningService:
                 "sms_result": sms_result,
                 "message": "SMS code sent.",
             }
+            if getattr(settings, "SMS_BACKEND", "console") == "console":
+                session.raw_response["dev_otp"] = otp
             session.save(update_fields=["status", "raw_response", "updated_at"])
 
             signer.status = Signer.Status.SMS_SENT

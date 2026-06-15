@@ -1,13 +1,22 @@
 from django.contrib import admin
+from django.http import HttpResponse
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
+
 from .models import (
     DocumentTemplate,
     Document,
     DocumentFieldValue,
     DocumentLawVisionReport,
+    StoredObject,
     TemplateParty,
     TemplatePartyField,
 )
 from .services.document_docx_render_service import DocumentDocxRenderService
+from .services.evidence_bundle_service import (
+    EvidenceBundleError,
+    EvidenceBundleService,
+)
 from .services.template_file_service import TemplateFileService
 
 class DocumentFieldValueInline(admin.TabularInline):
@@ -99,7 +108,7 @@ class DocumentAdmin(admin.ModelAdmin):
 
     inlines = [DocumentFieldValueInline]
 
-    actions = ["render_documents"]
+    actions = ["render_documents", "download_evidence_bundle"]
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -132,6 +141,39 @@ class DocumentAdmin(admin.ModelAdmin):
             request,
             f"Successfully rendered {success_count} document(s)."
         )
+
+    @admin.action(description=gettext_lazy("Download evidence bundle for selected document"))
+    def download_evidence_bundle(self, request, queryset):
+        if queryset.count() != 1:
+            self.message_user(
+                request,
+                _("Select exactly one document to download an evidence bundle."),
+                level="error",
+            )
+            return None
+
+        document = queryset.prefetch_related("stored_objects").first()
+
+        try:
+            bundle = EvidenceBundleService.build_bundle(
+                document=document,
+                created_by=request.user,
+                persist=True,
+            )
+        except EvidenceBundleError as exc:
+            self.message_user(
+                request,
+                _("Evidence bundle could not be generated: %(error)s") % {
+                    "error": exc,
+                },
+                level="error",
+            )
+            return None
+
+        response = HttpResponse(bundle.content, content_type="application/zip")
+        response["Content-Disposition"] = f'attachment; filename="{bundle.filename}"'
+        response["X-Evidence-Bundle-SHA256"] = bundle.sha256
+        return response
 
 
 @admin.register(DocumentFieldValue)
@@ -166,4 +208,37 @@ class DocumentLawVisionReportAdmin(admin.ModelAdmin):
         "analysis",
         "metadata",
         "raw_response",
+    )
+
+
+@admin.register(StoredObject)
+class StoredObjectAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "document",
+        "object_type",
+        "bucket",
+        "version_id",
+        "sha256",
+        "retention_until",
+        "storage_status",
+        "created_at",
+    )
+    list_filter = ("object_type", "storage_status", "retention_mode", "created_at")
+    search_fields = ("document__title", "object_key", "sha256", "version_id")
+    readonly_fields = (
+        "document",
+        "object_type",
+        "bucket",
+        "object_key",
+        "version_id",
+        "etag",
+        "sha256",
+        "content_type",
+        "size_bytes",
+        "retention_mode",
+        "retention_until",
+        "storage_status",
+        "created_by",
+        "created_at",
     )

@@ -154,13 +154,7 @@
                                 <option value="company">{% trans "Company" %}</option>
                             </select>
 
-                            <input
-                                type="number"
-                                name="signing_order"
-                                value="1"
-                                min="1"
-                                placeholder="{% trans 'Signing order' %}"
-                            >
+                            <input type="hidden" name="signing_order" value="1">
 
                             <label class="q-checkbox-line">
                                 <input type="checkbox" name="is_signer" checked>

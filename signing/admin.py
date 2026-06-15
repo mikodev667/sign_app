@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import Signer, SignerAccessToken, SigningSession, Signature
+from .models import (
+    Signer,
+    SignerAccessToken,
+    SigningAuditLog,
+    SigningSession,
+    Signature,
+)
 
 
 class SigningSessionInline(admin.TabularInline):
@@ -39,3 +45,44 @@ class SignatureAdmin(admin.ModelAdmin):
     search_fields = ("signer__full_name", "signer__iin", "certificate_iin", "certificate_serial", "document__title")
     list_filter = ("provider", "is_valid", "signed_at", "created_at")
     readonly_fields = ("raw_payload", "created_at")
+
+
+@admin.register(SigningAuditLog)
+class SigningAuditLogAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "document",
+        "signer",
+        "event",
+        "document_hash",
+        "entry_hash",
+        "created_at",
+    )
+    search_fields = (
+        "document__title",
+        "signer__full_name",
+        "event",
+        "document_hash",
+        "entry_hash",
+        "previous_hash",
+    )
+    list_filter = ("event", "created_at")
+    readonly_fields = (
+        "document",
+        "signer",
+        "signing_session",
+        "event",
+        "signing_method",
+        "phone",
+        "iin",
+        "full_name",
+        "ip_address",
+        "user_agent",
+        "document_hash",
+        "signed_content_hash",
+        "metadata",
+        "payload_hash",
+        "previous_hash",
+        "entry_hash",
+        "created_at",
+    )

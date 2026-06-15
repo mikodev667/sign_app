@@ -8434,3 +8434,64 @@ tbody tr:last-child td {
         flex-direction: column;
     }
 }
+
+/* =========================================================
+   Flat buttons
+========================================================= */
+
+.btn-primary,
+.app-nav__link--primary,
+.document-action--primary,
+.template-action--primary,
+.q-editor-btn--primary,
+.q-fill-btn--primary,
+.q-public-file-btn--primary,
+.q-public-file-btn--lawvision,
+.q-auth-submit,
+.q-register-submit {
+    color: #ffffff !important;
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.20) !important;
+}
+
+.btn-primary:hover,
+.app-nav__link--primary:hover,
+.document-action--primary:hover,
+.template-action--primary:hover,
+.q-editor-btn--primary:hover,
+.q-fill-btn--primary:hover,
+.q-public-file-btn--primary:hover,
+.q-public-file-btn--lawvision:hover,
+.q-auth-submit:hover,
+.q-register-submit:hover {
+    color: #ffffff !important;
+    background: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.24) !important;
+}
+
+.btn-secondary,
+.document-action--download,
+.document-action--edit,
+.template-action--secondary,
+.q-editor-btn--secondary,
+.q-fill-btn--secondary,
+.q-public-file-btn {
+    background: #ffffff !important;
+    border-color: #dbe3ef !important;
+    color: #334155 !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+.btn-secondary:hover,
+.document-action--download:hover,
+.document-action--edit:hover,
+.template-action--secondary:hover,
+.q-editor-btn--secondary:hover,
+.q-fill-btn--secondary:hover,
+.q-public-file-btn:hover {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #1d4ed8 !important;
+}

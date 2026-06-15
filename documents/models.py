@@ -1,7 +1,9 @@
 import hashlib
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 
@@ -136,6 +138,25 @@ class Document(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.pk and not getattr(self, "_allow_final_document_update", False):
+            old_status = (
+                Document.objects
+                .filter(pk=self.pk)
+                .values_list("status", flat=True)
+                .first()
+            )
+            if old_status == self.Status.SIGNED:
+                raise ValidationError(_("Signed document is immutable and cannot be updated."))
+
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.status == self.Status.SIGNED:
+            raise ValidationError(_("Signed document is immutable and cannot be deleted."))
+
+        return super().delete(*args, **kwargs)
 
     def is_locked(self):
         """
@@ -298,8 +319,8 @@ class DocumentLawVisionReport(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "LawVision report"
-        verbose_name_plural = "LawVision reports"
+        verbose_name = _("LawVision report")
+        verbose_name_plural = _("LawVision reports")
         ordering = ["-created_at"]
         constraints = [
             models.UniqueConstraint(
@@ -427,3 +448,82 @@ class TemplatePartyField(models.Model):
 
     def __str__(self):
         return f"{self.party.title} — {self.label}"
+class StoredObject(models.Model):
+    class ObjectType(models.TextChoices):
+        FINAL_PDF = "final_pdf", _("Final PDF")
+        FINAL_DOCX = "final_docx", _("Final DOCX")
+        SIGNATURE = "signature", _("Signature")
+        EVIDENCE_BUNDLE = "evidence_bundle", _("Evidence bundle")
+        OTHER = "other", _("Other")
+
+    class RetentionMode(models.TextChoices):
+        COMPLIANCE = "COMPLIANCE", _("Compliance")
+        GOVERNANCE = "GOVERNANCE", _("Governance")
+        NONE = "NONE", _("None")
+
+    class StorageStatus(models.TextChoices):
+        STORED = "stored", _("Stored")
+        FAILED = "failed", _("Failed")
+
+    document = models.ForeignKey(
+        Document,
+        on_delete=models.PROTECT,
+        related_name="stored_objects",
+    )
+
+    object_type = models.CharField(
+        max_length=30,
+        choices=ObjectType.choices,
+        default=ObjectType.OTHER,
+        db_index=True,
+    )
+
+    bucket = models.CharField(max_length=255)
+    object_key = models.CharField(max_length=1024)
+    version_id = models.CharField(max_length=255, blank=True)
+    etag = models.CharField(max_length=255, blank=True)
+
+    sha256 = models.CharField(max_length=64, db_index=True)
+    content_type = models.CharField(max_length=255, blank=True)
+    size_bytes = models.PositiveBigIntegerField(default=0)
+
+    retention_mode = models.CharField(
+        max_length=20,
+        choices=RetentionMode.choices,
+        default=RetentionMode.COMPLIANCE,
+    )
+    retention_until = models.DateTimeField(blank=True, null=True)
+
+    storage_status = models.CharField(
+        max_length=20,
+        choices=StorageStatus.choices,
+        default=StorageStatus.STORED,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="stored_objects",
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        verbose_name = _("Stored object")
+        verbose_name_plural = _("Stored objects")
+        ordering = ["-created_at"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(sha256__regex=r"^[0-9a-f]{64}$"),
+                name="stored_object_sha256_hex",
+            ),
+            models.UniqueConstraint(
+                fields=["bucket", "object_key", "version_id"],
+                name="uniq_stored_object_version",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.object_type} {self.object_key}"

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Organization(models.Model):
@@ -9,7 +10,7 @@ class Organization(models.Model):
         max_length=12,
         blank=True,
         null=True,
-        verbose_name="BIN"
+        verbose_name=_("BIN")
     )
 
     created_by = models.ForeignKey(
@@ -22,8 +23,8 @@ class Organization(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Organization"
-        verbose_name_plural = "Organizations"
+        verbose_name = _("Organization")
+        verbose_name_plural = _("Organizations")
         ordering = ["name"]
 
     def __str__(self):
@@ -32,9 +33,9 @@ class Organization(models.Model):
 
 class OrganizationMember(models.Model):
     class Role(models.TextChoices):
-        OWNER = "owner", "Owner"
-        ADMIN = "admin", "Admin"
-        MEMBER = "member", "Member"
+        OWNER = "owner", _("Owner")
+        ADMIN = "admin", _("Admin")
+        MEMBER = "member", _("Member")
 
     organization = models.ForeignKey(
         Organization,
@@ -57,8 +58,8 @@ class OrganizationMember(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Organization member"
-        verbose_name_plural = "Organization members"
+        verbose_name = _("Organization member")
+        verbose_name_plural = _("Organization members")
         unique_together = ("organization", "user")
 
     def clean(self):
@@ -76,7 +77,7 @@ class OrganizationMember(models.Model):
 
         if existing_membership.exists():
             raise ValidationError({
-                "user": "This user already belongs to another organization.",
+                "user": _("This user already belongs to another organization."),
             })
 
     def __str__(self):

@@ -1,4 +1,4 @@
-msgid ""
+﻿msgid ""
 msgstr ""
 "Project-Id-Version: QolQoyu\n"
 "Report-Msgid-Bugs-To: \n"
@@ -1029,3 +1029,399 @@ msgstr "Шаблоны, генерацию документов, маршрут 
 
 msgid "Set up your personal access to the workspace."
 msgstr "Настройте личный доступ к рабочему пространству."
+
+msgid "Download evidence bundle for selected document"
+msgstr "Скачать пакет доказательств для выбранного документа"
+
+msgid "Select exactly one document to download an evidence bundle."
+msgstr "Выберите ровно один документ, чтобы скачать пакет доказательств."
+
+msgid "Evidence bundle could not be generated: %(error)s"
+msgstr "Не удалось сформировать пакет доказательств: %(error)s"
+
+msgid "Evidence bundle"
+msgstr "Пакет доказательств"
+
+msgid "Temporary console code:"
+msgstr "Временный код из консоли:"
+
+msgid "Signing invitation SMS was printed to console. Link: %(link)s"
+msgstr "SMS-приглашение на подписание выведено в консоль. Ссылка: %(link)s"
+
+msgid "SMS confirmation code was printed to console. Code: %(code)s"
+msgstr "SMS-код подтверждения выведен в консоль. Код: %(code)s"
+
+msgid "Signing invitation SMS was sent successfully."
+msgstr "SMS-приглашение на подписание успешно отправлено."
+
+msgid "SMS confirmation code was sent to your phone."
+msgstr "SMS-код подтверждения отправлен на ваш телефон."
+
+msgid "Signed document is immutable and cannot be updated."
+msgstr "Подписанный документ неизменяем и не может быть обновлен."
+
+msgid "Signed document is immutable and cannot be deleted."
+msgstr "Подписанный документ неизменяем и не может быть удален."
+
+msgid "Signature is immutable and cannot be updated."
+msgstr "Подпись неизменяема и не может быть обновлена."
+
+msgid "Signature is immutable and cannot be deleted."
+msgstr "Подпись неизменяема и не может быть удалена."
+
+msgid "Signing audit log is append-only and cannot be updated."
+msgstr "Журнал аудита подписания доступен только для добавления записей и не может быть обновлен."
+
+msgid "Signing audit log is append-only and cannot be deleted."
+msgstr "Журнал аудита подписания доступен только для добавления записей и не может быть удален."
+
+msgid "Final PDF"
+msgstr "Финальный PDF"
+
+msgid "Final DOCX"
+msgstr "Финальный DOCX"
+
+msgid "Stored object"
+msgstr "Сохраненный объект"
+
+msgid "Stored objects"
+msgstr "Сохраненные объекты"
+
+msgid "Compliance"
+msgstr "Соответствие требованиям"
+
+msgid "Governance"
+msgstr "Управляемый режим"
+
+msgid "None"
+msgstr "Нет"
+
+msgid "Stored"
+msgstr "Сохранено"
+
+msgid "Failed"
+msgstr "Ошибка"
+
+msgid "No final stored PDF/DOCX objects found for this document."
+msgstr "Для этого документа не найдены финальные сохраненные PDF/DOCX-объекты."
+
+msgid "Stored object verification failed for #%(object_id)s: %(error)s"
+msgstr "Проверка сохраненного объекта #%(object_id)s не прошла: %(error)s"
+
+msgid "Stored object hash mismatch: object=%(object_id)s expected=%(expected)s actual=%(actual)s"
+msgstr "Хеш сохраненного объекта не совпадает: объект=%(object_id)s ожидалось=%(expected)s фактически=%(actual)s"
+
+msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
+msgstr "Требуется пакет 'minio'. Выполните: pip install -r requirements.txt"
+
+msgid "Audit chain break at log #%(log_id)s: previous_hash mismatch."
+msgstr "Разрыв цепочки аудита в записи #%(log_id)s: previous_hash не совпадает."
+
+msgid "Audit chain break at log #%(log_id)s: payload_hash mismatch."
+msgstr "Разрыв цепочки аудита в записи #%(log_id)s: payload_hash не совпадает."
+
+msgid "Audit chain break at log #%(log_id)s: entry_hash mismatch."
+msgstr "Разрыв цепочки аудита в записи #%(log_id)s: entry_hash не совпадает."
+
+msgid "No audit log entries found."
+msgstr "Записи журнала аудита не найдены."
+
+msgid "LawVision report"
+msgstr "Отчет LawVision"
+
+msgid "LawVision reports"
+msgstr "Отчеты LawVision"
+
+msgid "LawVision report | QolQoyu"
+msgstr "Отчет LawVision | QolQoyu"
+
+msgid "Analyze LawVision"
+msgstr "Анализ LawVision"
+
+msgid "LawVision analysis failed: %(error)s"
+msgstr "Анализ LawVision не выполнен: %(error)s"
+
+msgid "Using saved LawVision report for this document."
+msgstr "Используется сохраненный отчет LawVision для этого документа."
+
+msgid "LawVision report is ready."
+msgstr "Отчет LawVision готов."
+
+msgid "Organization"
+msgstr "Организация"
+
+msgid "Organizations"
+msgstr "Организации"
+
+msgid "Organization member"
+msgstr "Участник организации"
+
+msgid "Organization members"
+msgstr "Участники организации"
+
+msgid "Organizations | QolQoyu"
+msgstr "Организации | QolQoyu"
+
+msgid "Organization members | QolQoyu"
+msgstr "Участники организации | QolQoyu"
+
+msgid "Managed organizations"
+msgstr "Управляемые организации"
+
+msgid "Open an organization to add registered users and manage their access."
+msgstr "Откройте организацию, чтобы добавить зарегистрированных пользователей и управлять их доступом."
+
+msgid "Manager"
+msgstr "Менеджер"
+
+msgid "BIN"
+msgstr "БИН"
+
+msgid "BIN is not specified"
+msgstr "БИН не указан"
+
+msgid "Members"
+msgstr "Участники"
+
+msgid "Manage members"
+msgstr "Управлять участниками"
+
+msgid "No managed organizations"
+msgstr "Нет управляемых организаций"
+
+msgid "A site admin must create an organization and add you as owner or admin first."
+msgstr "Администратор сайта должен сначала создать организацию и добавить вас как владельца или администратора."
+
+msgid "Add registered users to this organization and manage their role."
+msgstr "Добавляйте зарегистрированных пользователей в эту организацию и управляйте их ролью."
+
+msgid "Back to organizations"
+msgstr "Назад к организациям"
+
+msgid "Current members"
+msgstr "Текущие участники"
+
+msgid "No email"
+msgstr "Email не указан"
+
+msgid "No members have been added yet."
+msgstr "Участники пока не добавлены."
+
+msgid "Add user"
+msgstr "Добавить пользователя"
+
+msgid "Invite existing account"
+msgstr "Пригласить существующий аккаунт"
+
+msgid "Add member"
+msgstr "Добавить участника"
+
+msgid "Username or email"
+msgstr "Имя пользователя или email"
+
+msgid "Registered username or email"
+msgstr "Имя пользователя или email зарегистрированного аккаунта"
+
+msgid "Role"
+msgstr "Роль"
+
+msgid "Owner"
+msgstr "Владелец"
+
+msgid "Admin"
+msgstr "Администратор"
+
+msgid "Member"
+msgstr "Участник"
+
+msgid "Registered user was not found."
+msgstr "Зарегистрированный пользователь не найден."
+
+msgid "This user is already a member of the organization."
+msgstr "Этот пользователь уже является участником организации."
+
+msgid "This user already belongs to another organization."
+msgstr "Этот пользователь уже состоит в другой организации."
+
+msgid "Organization member added."
+msgstr "Участник организации добавлен."
+
+msgid "Secure digital document signing."
+msgstr "Безопасное цифровое подписание документов."
+
+msgid "Document legal analysis"
+msgstr "Юридический анализ документа"
+
+msgid "Control score"
+msgstr "Оценка контроля"
+
+msgid "Risk level"
+msgstr "Уровень риска"
+
+msgid "Contract type"
+msgstr "Тип договора"
+
+msgid "Analyzed at"
+msgstr "Дата анализа"
+
+msgid "LawVision truncated the document because it exceeded the analysis length limit."
+msgstr "LawVision сократил документ, потому что он превысил лимит длины для анализа."
+
+msgid "Summary"
+msgstr "Краткое резюме"
+
+msgid "Risks"
+msgstr "Риски"
+
+msgid "High"
+msgstr "Высокий"
+
+msgid "Medium"
+msgstr "Средний"
+
+msgid "Low"
+msgstr "Низкий"
+
+msgid "Clause"
+msgstr "Пункт"
+
+msgid "No risks returned by LawVision."
+msgstr "LawVision не вернул риски."
+
+msgid "Missing clauses"
+msgstr "Недостающие положения"
+
+msgid "No missing clauses returned by LawVision."
+msgstr "LawVision не вернул недостающие положения."
+
+msgid "Compliance"
+msgstr "Соответствие"
+
+msgid "No compliance notes returned by LawVision."
+msgstr "LawVision не вернул замечания по соответствию."
+
+msgid "Recommendations"
+msgstr "Рекомендации"
+
+msgid "No recommendations returned by LawVision."
+msgstr "LawVision не вернул рекомендации."
+
+msgid "Raw analysis"
+msgstr "Исходный анализ"
+
+msgid "Strengths"
+msgstr "Сильные стороны"
+
+msgid "No strengths returned by LawVision."
+msgstr "LawVision не вернул сильные стороны."
+
+msgid "Details"
+msgstr "Детали"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Model"
+msgstr "Модель"
+
+msgid "Text length"
+msgstr "Длина текста"
+
+msgid "Document hash"
+msgstr "Хеш документа"
+
+msgid "This report is for reference only and does not replace advice from a qualified lawyer."
+msgstr "Этот отчет носит справочный характер и не заменяет консультацию квалифицированного юриста."
+
+msgid "Run analysis again"
+msgstr "Запустить анализ повторно"
+
+msgid "Analysis failed"
+msgstr "Анализ не выполнен"
+
+msgid "Try again"
+msgstr "Попробовать снова"
+
+msgid "No report yet"
+msgstr "Отчета пока нет"
+
+msgid "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations."
+msgstr "Запустите проверку LawVision, чтобы проанализировать риски документа, недостающие положения, соответствие и рекомендации."
+
+msgid "Analyze with LawVision"
+msgstr "Проанализировать через LawVision"
+
+msgid "Render the document before requesting LawVision analysis."
+msgstr "Сформируйте документ перед запросом анализа LawVision."
+
+msgid "N/A"
+msgstr "Н/Д"
+
+msgid "Critical"
+msgstr "Критический"
+
+msgid "Violation"
+msgstr "Нарушение"
+
+msgid "Warning"
+msgstr "Предупреждение"
+
+msgid "Recommended"
+msgstr "Рекомендуется"
+
+msgid "Optional"
+msgstr "Необязательно"
+
+msgid "Compliant"
+msgstr "Соответствует"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "Failed"
+msgstr "Ошибка"
+
+msgid "Processing"
+msgstr "В обработке"
+
+msgid "Good"
+msgstr "Хорошо"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+msgid "Missing"
+msgstr "Отсутствует"
+
+msgid "Required"
+msgstr "Обязательно"
+
+msgid "Minor"
+msgstr "Незначительный"
+
+msgid "Major"
+msgstr "Значительный"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Kazakh"
+msgstr "Казахский"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "LawVision API key is not configured."
+msgstr "API-ключ LawVision не настроен."
+
+msgid "Document text is shorter than LawVision minimum of 50 characters."
+msgstr "Текст документа короче минимальных 50 символов для LawVision."
+
+msgid "Could not connect to LawVision: %(error)s"
+msgstr "Не удалось подключиться к LawVision: %(error)s"
+
+msgid "LawVision returned a non-JSON response."
+msgstr "LawVision вернул ответ не в формате JSON."
+
+msgid "LawVision analysis failed."
+msgstr "Анализ LawVision не выполнен."

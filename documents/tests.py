@@ -11,7 +11,12 @@ from django.urls import reverse
 from docx import Document as WordDocument
 
 from documents.forms import DocumentTemplateUploadForm
-from documents.models import Document, DocumentTemplate
+from documents.models import (
+    Document,
+    DocumentFieldValue,
+    DocumentTemplate,
+    TemplateParty,
+)
 from documents.services.template_file_service import TemplateFileService
 from organizations.models import Organization, OrganizationMember
 
@@ -237,14 +242,60 @@ class DocumentDraftEditingTests(TestCase):
 
         self.assertRedirects(response, reverse("documents:document_list"))
 
+    def test_document_fill_handles_invalid_template_party_signer_data(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+        document = self.create_document(user, organization, template)
+        for field_name in [
+            "customer_full_name",
+            "customer_iin_bin",
+            "customer_phone",
+        ]:
+            DocumentFieldValue.objects.create(
+                document=document,
+                field_name=field_name,
+            )
+        self.client.force_login(user)
+        field_inputs = {
+            field.field_name: field.id
+            for field in document.field_values.all()
+        }
+
+        response = self.client.post(
+            reverse("documents:document_fill", args=[document.pk]),
+            {
+                f"field_{field_inputs['customer_full_name']}": "Test Signer",
+                f"field_{field_inputs['customer_iin_bin']}": "123",
+                f"field_{field_inputs['customer_phone']}": "+77071234567",
+            },
+        )
+
+        self.assertRedirects(response, reverse("documents:document_fill", args=[document.pk]))
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("ИИН должен содержать ровно 12 цифр" in str(item) for item in messages))
+
     @staticmethod
     def create_template(user, organization):
         return DocumentTemplate.objects.create(
             organization=organization,
             created_by=user,
             title="Editable template",
-            body_template="Hello {{ full_name }}",
-            variables=["full_name"],
+            body_template=(
+                "Hello {{ full_name }} {{ customer_full_name }} "
+                "{{ customer_iin_bin }} {{ customer_phone }}"
+            ),
+            variables=[
+                "full_name",
+                "customer_full_name",
+                "customer_iin_bin",
+                "customer_phone",
+            ],
         )
 
     @staticmethod

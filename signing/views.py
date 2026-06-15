@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_exempt
 from documents.models import Document, DocumentLawVisionReport
 from documents.services.lawvision_service import LawVisionError, LawVisionService
@@ -150,10 +151,18 @@ def create_signer_access_link(request, signer_pk):
         },
     )
 
-    messages.success(
-        request,
-        "Signing invitation SMS was sent successfully.",
-    )
+    if sms_result.get("backend") == "console":
+        messages.success(
+            request,
+            _("Signing invitation SMS was printed to console. Link: %(link)s") % {
+                "link": absolute_url,
+            },
+        )
+    else:
+        messages.success(
+            request,
+            _("Signing invitation SMS was sent successfully."),
+        )
 
     return redirect("signing:document_signers", document_pk=signer.document_id)
 
@@ -227,12 +236,12 @@ def signer_lawvision_report(request, token):
             )
         except LawVisionError as exc:
             report = get_current_lawvision_report(document, include_failed=True)
-            messages.error(request, f"LawVision analysis failed: {exc}")
+            messages.error(request, _("LawVision analysis failed: %(error)s") % {"error": exc})
         else:
             if cached:
-                messages.info(request, "Using saved LawVision report for this document.")
+                messages.info(request, _("Using saved LawVision report for this document."))
             else:
-                messages.success(request, "LawVision report is ready.")
+                messages.success(request, _("LawVision report is ready."))
 
     return render_signer_lawvision_report_page(
         request,
@@ -421,7 +430,7 @@ def start_sms_signing(request, token):
     user_agent = SigningAuditLogService.get_user_agent(request)
 
     try:
-        SmsSigningService.create_session(
+        session = SmsSigningService.create_session(
             signer=signer,
             consent_accepted=consent_accepted,
             ip_address=ip_address,
@@ -434,10 +443,19 @@ def start_sms_signing(request, token):
         messages.error(request, f"SMS code was not sent: {exc}")
         return redirect("signing:signer_public_page", token=token)
 
-    messages.success(
-        request,
-        "SMS confirmation code was sent to your phone."
-    )
+    dev_otp = (session.raw_response or {}).get("dev_otp")
+    if dev_otp:
+        messages.success(
+            request,
+            _("SMS confirmation code was printed to console. Code: %(code)s") % {
+                "code": dev_otp,
+            },
+        )
+    else:
+        messages.success(
+            request,
+            _("SMS confirmation code was sent to your phone.")
+        )
 
     return redirect("signing:signer_public_page", token=token)
 

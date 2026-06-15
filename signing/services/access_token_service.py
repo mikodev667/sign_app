@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from documents.services.object_storage_service import ObjectStorageService
 from signing.models import SignerAccessToken, SigningAuditLog
 
 
@@ -92,6 +93,21 @@ class SignerAccessTokenService:
                 },
             )
 
+        try:
+            stored_objects = ObjectStorageService.ensure_final_document_objects(
+                document=document,
+                created_by=getattr(request, "user", None) if request else None,
+            )
+        except Exception as exc:
+            raise ValueError(
+                f"Final document could not be stored in immutable object storage: {exc}"
+            ) from exc
+
+        if ObjectStorageService.is_enabled() and not stored_objects:
+            raise ValueError(
+                "Final document has no rendered PDF or DOCX file to store in immutable object storage."
+            )
+
         raw_token = secrets.token_urlsafe(32)
         token_hash = cls.hash_token(raw_token)
 
@@ -111,6 +127,22 @@ class SignerAccessTokenService:
                 "access_token_id": access_token.id,
                 "expires_at": access_token.expires_at.isoformat(),
                 "ttl_days": cls.TOKEN_TTL_DAYS,
+                "stored_objects": [
+                    {
+                        "id": stored_object.id,
+                        "object_type": stored_object.object_type,
+                        "bucket": stored_object.bucket,
+                        "object_key": stored_object.object_key,
+                        "version_id": stored_object.version_id,
+                        "sha256": stored_object.sha256,
+                        "retention_until": (
+                            stored_object.retention_until.isoformat()
+                            if stored_object.retention_until
+                            else None
+                        ),
+                    }
+                    for stored_object in stored_objects
+                ],
             },
         )
 

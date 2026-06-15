@@ -4,10 +4,13 @@ import re
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.html import escape
-from django.views.decorators.http import require_http_methods
+from django.utils.translation import gettext as _
+from django.views.decorators.http import require_GET, require_http_methods
 
 from organizations.services import (
     get_default_managed_organization,
@@ -32,6 +35,10 @@ from .models import (
     TemplatePartyField,
 )
 from .services.lawvision_service import LawVisionError, LawVisionService
+from .services.evidence_bundle_service import (
+    EvidenceBundleError,
+    EvidenceBundleService,
+)
 from .services.template_file_service import TemplateFileService
 
 
@@ -285,8 +292,16 @@ def template_upload(request):
 @login_required
 def document_list(request):
     documents = attach_lawvision_reports(
-        get_managed_documents_queryset(request.user).order_by("-created_at")
+        get_managed_documents_queryset(request.user)
+        .prefetch_related("stored_objects")
+        .order_by("-created_at")
     )
+
+    for document in documents:
+        document.has_evidence_objects = any(
+            item.object_type in {"final_pdf", "final_docx"}
+            for item in document.stored_objects.all()
+        )
 
     return render(request, "documents/document_list.html", {
         "documents": documents,
@@ -313,12 +328,12 @@ def document_lawvision_report(request, pk):
             )
         except LawVisionError as exc:
             report = get_current_lawvision_report(document, include_failed=True)
-            messages.error(request, f"LawVision analysis failed: {exc}")
+            messages.error(request, _("LawVision analysis failed: %(error)s") % {"error": exc})
         else:
             if cached:
-                messages.info(request, "Using saved LawVision report for this document.")
+                messages.info(request, _("Using saved LawVision report for this document."))
             else:
-                messages.success(request, "LawVision report is ready.")
+                messages.success(request, _("LawVision report is ready."))
 
     return render_lawvision_report_page(
         request,
@@ -327,6 +342,33 @@ def document_lawvision_report(request, pk):
         start_url=reverse("documents:document_lawvision_report", args=[document.pk]),
         back_url=reverse("documents:document_list"),
     )
+
+
+@login_required
+@require_GET
+def document_evidence_bundle(request, pk):
+    document = get_object_or_404(
+        get_managed_documents_queryset(request.user).prefetch_related("stored_objects"),
+        pk=pk,
+    )
+
+    try:
+        bundle = EvidenceBundleService.build_bundle(
+            document=document,
+            created_by=request.user,
+            persist=True,
+        )
+    except EvidenceBundleError as exc:
+        messages.error(
+            request,
+            _("Evidence bundle could not be generated: %(error)s") % {"error": exc},
+        )
+        return redirect("documents:document_list")
+
+    response = HttpResponse(bundle.content, content_type="application/zip")
+    response["Content-Disposition"] = f'attachment; filename="{bundle.filename}"'
+    response["X-Evidence-Bundle-SHA256"] = bundle.sha256
+    return response
 
 
 @login_required
@@ -354,56 +396,73 @@ def document_create(request):
 
 
 def create_signers_from_template_parties(document, values, request=None):
-    for party in document.template.parties.prefetch_related("fields").all():
-        if not party.is_signer:
-            continue
+    with transaction.atomic():
+        for party in document.template.parties.prefetch_related("fields").all():
+            if not party.is_signer:
+                continue
 
-        prefix = party.variable_prefix
+            prefix = party.variable_prefix
 
-        full_name = values.get(f"{prefix}_full_name", "").strip()
-        iin = values.get(f"{prefix}_iin_bin", "").strip()
-        phone = values.get(f"{prefix}_phone", "").strip()
-        signing_method = values.get(f"{prefix}_signing_method", "").strip()
+            full_name = values.get(f"{prefix}_full_name", "").strip()
+            iin = values.get(f"{prefix}_iin_bin", "").strip()
+            phone = values.get(f"{prefix}_phone", "").strip()
+            signing_method = values.get(f"{prefix}_signing_method", "").strip()
 
-        if not signing_method:
-            signing_method = Signer.SigningMethod.EGOV_MOBILE
+            if not signing_method:
+                signing_method = Signer.SigningMethod.EGOV_MOBILE
 
-        if not full_name or not iin or not phone:
-            continue
+            has_partial_signer = bool(full_name or iin or phone)
+            if not has_partial_signer:
+                continue
 
-        existing_signer = Signer.objects.filter(
-            document=document,
-            template_party=party,
-        ).first()
+            if not full_name or not iin or not phone:
+                raise ValueError(
+                    _("Заполните данные подписанта для группы '%(party)s': ФИО, ИИН/БИН и телефон обязательны.")
+                    % {"party": party.title}
+                )
 
-        if existing_signer:
-            existing_signer.full_name = full_name
-            existing_signer.iin = iin
-            existing_signer.phone = SignerService.normalize_phone(phone)
-            existing_signer.signing_method = signing_method
-            existing_signer.signing_order = party.signing_order
-            existing_signer.role_title = party.title
-            existing_signer.save(update_fields=[
-                "full_name",
-                "iin",
-                "phone",
-                "signing_method",
-                "signing_order",
-                "role_title",
-                "updated_at",
-            ])
-        else:
-            SignerService.add_signer(
+            if signing_method not in Signer.SigningMethod.values:
+                raise ValueError(
+                    _("Некорректный способ подписания для группы '%(party)s'.")
+                    % {"party": party.title}
+                )
+
+            existing_signer = Signer.objects.filter(
                 document=document,
-                full_name=full_name,
-                iin=iin,
-                phone=phone,
-                signing_order=party.signing_order,
-                signing_method=signing_method,
                 template_party=party,
-                role_title=party.title,
-                request=request,
-            )
+            ).first()
+
+            if existing_signer:
+                SignerService.validate_iin(iin)
+                SignerService.validate_phone(phone)
+
+                existing_signer.full_name = full_name
+                existing_signer.iin = iin
+                existing_signer.phone = SignerService.normalize_phone(phone)
+                existing_signer.signing_method = signing_method
+                existing_signer.signing_order = party.signing_order
+                existing_signer.role_title = party.title
+                existing_signer.save(update_fields=[
+                    "full_name",
+                    "iin",
+                    "phone",
+                    "signing_method",
+                    "signing_order",
+                    "role_title",
+                    "updated_at",
+                ])
+            else:
+                SignerService.add_signer(
+                    document=document,
+                    full_name=full_name,
+                    iin=iin,
+                    phone=phone,
+                    signing_order=party.signing_order,
+                    signing_method=signing_method,
+                    template_party=party,
+                    role_title=party.title,
+                    request=request,
+                )
 
 
 @login_required
@@ -429,7 +488,11 @@ def document_fill(request, pk):
             field.save(update_fields=["field_value"])
             values[field.field_name] = value
 
-        create_signers_from_template_parties(document, values, request=request)
+        try:
+            create_signers_from_template_parties(document, values, request=request)
+        except ValueError as exc:
+            messages.error(request, str(exc))
+            return redirect("documents:document_fill", pk=document.pk)
 
         rendered_html = document.template.body_template or ""
 

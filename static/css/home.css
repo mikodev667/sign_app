@@ -615,8 +615,13 @@
 }
 
 .bento-card--dark h3,
-.bento-card--dark p {
-    color: #ffffff;
+.bento-card--dark p,
+.bento-card--dark .bento-card__tag {
+    color: #ffffff !important;
+}
+
+.bento-card--dark .bento-card__tag {
+    opacity: 0.82;
 }
 
 .bento-card--image {
@@ -1398,4 +1403,31 @@
     .activity-item p {
         font-size: 11px !important;
     }
+}
+
+/* Flat landing buttons */
+.landing-btn--primary {
+    color: #ffffff !important;
+    background: #2563eb !important;
+    border: 1px solid #2563eb !important;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.20) !important;
+}
+
+.landing-btn--primary:hover {
+    background: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.24) !important;
+}
+
+.landing-btn--secondary {
+    color: #334155 !important;
+    background: #ffffff !important;
+    border: 1px solid #dbe3ef !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+.landing-btn--secondary:hover {
+    color: #1d4ed8 !important;
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
 }

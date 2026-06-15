@@ -1,8 +1,12 @@
 import hashlib
+import json
 import secrets
 
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db import transaction
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class Signer(models.Model):
@@ -349,6 +353,15 @@ class Signature(models.Model):
     def __str__(self):
         return f"Signature for {self.signer}"
 
+    def save(self, *args, **kwargs):
+        if self.pk and not getattr(self, "_allow_signature_update", False):
+            raise ValidationError(_("Signature is immutable and cannot be updated."))
+
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError(_("Signature is immutable and cannot be deleted."))
+
 
 class SigningAuditLog(models.Model):
     class Event(models.TextChoices):
@@ -437,12 +450,69 @@ class SigningAuditLog(models.Model):
 
     metadata = models.JSONField(default=dict, blank=True)
 
+    payload_hash = models.CharField(max_length=64, blank=True, db_index=True)
+    previous_hash = models.CharField(max_length=64, blank=True)
+    entry_hash = models.CharField(max_length=64, blank=True, unique=True, db_index=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Signing audit log"
         verbose_name_plural = "Signing audit logs"
         ordering = ["created_at"]
+
+    def save(self, *args, **kwargs):
+        if self.pk and not getattr(self, "_allow_audit_update", False):
+            raise ValidationError(_("Signing audit log is append-only and cannot be updated."))
+
+        if not self.pk:
+            with transaction.atomic():
+                if not self.previous_hash:
+                    previous = (
+                        SigningAuditLog.objects
+                        .select_for_update()
+                        .filter(document_id=self.document_id)
+                        .order_by("-id")
+                        .first()
+                    )
+                    self.previous_hash = previous.entry_hash if previous else ""
+
+                self.payload_hash = self.calculate_payload_hash()
+                self.entry_hash = self.calculate_entry_hash()
+                return super().save(*args, **kwargs)
+
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise ValidationError(_("Signing audit log is append-only and cannot be deleted."))
+
+    def calculate_payload_hash(self) -> str:
+        payload = self._canonical_json(self.metadata or {})
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def calculate_entry_hash(self) -> str:
+        payload = {
+            "document_id": self.document_id,
+            "signer_id": self.signer_id,
+            "signing_session_id": self.signing_session_id,
+            "event": self.event,
+            "signing_method": self.signing_method,
+            "phone": self.phone,
+            "iin": self.iin,
+            "full_name": self.full_name,
+            "ip_address": str(self.ip_address or ""),
+            "user_agent": self.user_agent,
+            "document_hash": self.document_hash,
+            "signed_content_hash": self.signed_content_hash,
+            "payload_hash": self.payload_hash,
+            "previous_hash": self.previous_hash,
+        }
+        canonical = self._canonical_json(payload)
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+    @staticmethod
+    def _canonical_json(value) -> str:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
     def __str__(self):
         return f"{self.event} — document={self.document_id} — {self.created_at}"

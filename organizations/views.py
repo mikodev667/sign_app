@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 
 from .forms import OrganizationMemberForm
 from .models import OrganizationMember
@@ -36,7 +37,7 @@ def organization_members(request, organization_pk):
                 user=form.user,
                 role=form.cleaned_data["role"],
             )
-            messages.success(request, "Organization member added.")
+            messages.success(request, _("Organization member added."))
             return redirect(
                 "organizations:organization_members",
                 organization_pk=organization.pk,

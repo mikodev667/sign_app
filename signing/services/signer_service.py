@@ -13,10 +13,10 @@ class SignerService:
     @classmethod
     def validate_iin(cls, iin: str) -> None:
         if not iin:
-            raise ValueError("IIN is required.")
+            raise ValueError("ИИН обязателен.")
 
         if not cls.IIN_PATTERN.match(iin):
-            raise ValueError("IIN must contain exactly 12 digits.")
+            raise ValueError("ИИН должен содержать ровно 12 цифр.")
 
     @classmethod
     def normalize_phone(cls, phone: str) -> str:
@@ -30,17 +30,17 @@ class SignerService:
     @classmethod
     def validate_phone(cls, phone: str) -> None:
         if not phone or not phone.strip():
-            raise ValueError("Phone is required.")
+            raise ValueError("Телефон обязателен.")
 
         normalized_phone = cls.normalize_phone(phone)
 
         if not re.fullmatch(r"7\d{10}", normalized_phone):
-            raise ValueError("Phone must be a valid Kazakhstan number, for example +77071234567.")
+            raise ValueError("Телефон должен быть корректным номером Казахстана, например +77071234567.")
 
     @classmethod
     def validate_signing_order(cls, signing_order: int) -> None:
         if signing_order < 1:
-            raise ValueError("Signing order must be greater than or equal to 1.")
+            raise ValueError("Порядок подписания должен быть не меньше 1.")
 
     @classmethod
     def ensure_document_can_be_edited(cls, document: Document) -> None:
@@ -50,7 +50,7 @@ class SignerService:
             return
 
         if document.status != Document.Status.DRAFT:
-            raise ValueError("Signers can be edited only while document is draft.")
+            raise ValueError("Подписантов можно редактировать только пока документ находится в черновике.")
 
     @classmethod
     @transaction.atomic
@@ -75,12 +75,12 @@ class SignerService:
         role_title = role_title.strip() if role_title else ""
 
         if not full_name:
-            raise ValueError("Full name is required.")
+            raise ValueError("ФИО обязательно.")
 
         try:
             signing_order = int(signing_order)
         except (TypeError, ValueError):
-            raise ValueError("Signing order must be a number.")
+            raise ValueError("Порядок подписания должен быть числом.")
 
         cls.validate_iin(iin)
         cls.validate_phone(phone)
@@ -89,7 +89,7 @@ class SignerService:
         normalized_phone = cls.normalize_phone(phone)
 
         if signing_method not in Signer.SigningMethod.values:
-            raise ValueError("Invalid signing method.")
+            raise ValueError("Некорректный способ подписания.")
 
         existing_signer = Signer.objects.filter(
             document=document,
@@ -97,7 +97,7 @@ class SignerService:
         ).first()
 
         if existing_signer:
-            raise ValueError("Signer with this IIN already exists for this document.")
+            raise ValueError("Подписант с таким ИИН уже добавлен к этому документу.")
 
         signer = Signer.objects.create(
             document=document,
@@ -207,7 +207,7 @@ class SignerService:
     @classmethod
     def ensure_can_sign_now(cls, *, signer: Signer) -> None:
         if signer.status == Signer.Status.SIGNED:
-            raise ValueError("This signer has already signed the document.")
+            raise ValueError("Этот подписант уже подписал документ.")
 
         if not cls.can_sign_now(signer=signer):
-            raise ValueError("Previous signers must sign the document first.")
+            raise ValueError("Сначала документ должны подписать предыдущие подписанты.")

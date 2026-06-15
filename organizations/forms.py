@@ -1,21 +1,22 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 from .models import OrganizationMember
 
 
 class OrganizationMemberForm(forms.Form):
     username_or_email = forms.CharField(
-        label="Username or email",
+        label=_("Username or email"),
         widget=forms.TextInput(attrs={
             "class": "form-control",
-            "placeholder": "Registered username or email",
+            "placeholder": _("Registered username or email"),
         }),
     )
 
     role = forms.ChoiceField(
-        label="Role",
+        label=_("Role"),
         choices=OrganizationMember.Role.choices,
         initial=OrganizationMember.Role.MEMBER,
         widget=forms.Select(attrs={
@@ -39,7 +40,7 @@ class OrganizationMemberForm(forms.Form):
         )
 
         if not user:
-            raise forms.ValidationError("Registered user was not found.")
+            raise forms.ValidationError(_("Registered user was not found."))
 
         current_organization_membership = OrganizationMember.objects.filter(
             organization=self.organization,
@@ -47,7 +48,7 @@ class OrganizationMemberForm(forms.Form):
         )
 
         if self.organization and current_organization_membership.exists():
-            raise forms.ValidationError("This user is already a member of the organization.")
+            raise forms.ValidationError(_("This user is already a member of the organization."))
 
         other_organization_membership = OrganizationMember.objects.filter(
             user=user,
@@ -59,7 +60,7 @@ class OrganizationMemberForm(forms.Form):
             )
 
         if other_organization_membership.exists():
-            raise forms.ValidationError("This user already belongs to another organization.")
+            raise forms.ValidationError(_("This user already belongs to another organization."))
 
         self.user = user
         return value

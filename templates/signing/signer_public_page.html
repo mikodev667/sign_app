@@ -345,6 +345,13 @@
                             {% trans "Enter the code sent to your phone number." %}
                         </p>
 
+                        {% if latest_sms_session.raw_response.dev_otp %}
+                            <div class="q-public-muted-note">
+                                {% trans "Temporary console code:" %}
+                                <strong>{{ latest_sms_session.raw_response.dev_otp }}</strong>
+                            </div>
+                        {% endif %}
+
                         <form method="post" action="{% url 'signing:complete_sms_signing' token %}" class="q-public-sms-form">
                             {% csrf_token %}
 
