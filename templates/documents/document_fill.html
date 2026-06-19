@@ -90,10 +90,10 @@
                                     {% with full_key=party.variable_prefix|add:"_"|add:party_field.variable_name %}
                                         {% for field in fields %}
                                             {% if field.field_name == full_key %}
-                                                <div class="q-fill-field" data-field-search="{{ party_field.label }} {{ field.field_name }}">
+                                                <div class="q-fill-field" data-field-search="{{ party_field.display_label }} {{ field.field_name }}">
                                                     <label for="field_{{ field.id }}">
                                                         <span>
-                                                            {{ party_field.label }}
+                                                            {{ party_field.display_label }}
 
                                                             {% if party_field.is_required %}
                                                                 <strong>*</strong>
@@ -130,7 +130,7 @@
                                                             name="field_{{ field.id }}"
                                                             value="{{ field.field_value }}"
                                                             data-variable="{{ field.field_name }}"
-                                                            placeholder="{{ party_field.label }}"
+                                                            placeholder="{{ party_field.display_label }}"
                                                             oninput="updatePreviewVariable(this)"
                                                             {% if party_field.is_required %}required{% endif %}
                                                         >

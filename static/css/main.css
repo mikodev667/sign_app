@@ -983,30 +983,76 @@ tbody tr:last-child td {
 ========================= */
 
 .messages {
+    position: fixed;
+    top: 92px;
+    right: 24px;
+    z-index: 1200;
+    width: min(420px, calc(100vw - 32px));
     display: grid;
     gap: 12px;
-    margin-bottom: 22px;
+    pointer-events: none;
 }
 
 .message {
-    padding: 15px 16px;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: start;
+    padding: 15px 14px 15px 16px;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     background: rgba(255, 255, 255, 0.88);
     box-shadow: var(--shadow-sm);
     font-weight: 820;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    pointer-events: auto;
     animation: messageDrop 0.28s ease both;
+}
+
+.message__close {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    color: currentColor;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.message__close:hover {
+    background: rgba(15, 23, 42, 0.14);
+}
+
+.message--closing {
+    animation: messageClose 0.18s ease both;
 }
 
 @keyframes messageDrop {
     from {
         opacity: 0;
-        transform: translateY(-6px);
+        transform: translateY(-8px) translateX(12px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) translateX(0);
+    }
+}
+
+@keyframes messageClose {
+    from {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-6px) translateX(12px);
     }
 }
 
@@ -1033,6 +1079,15 @@ tbody tr:last-child td {
     color: #1e40af;
     background: #eff6ff;
     border-color: #bfdbfe;
+}
+
+@media (max-width: 640px) {
+    .messages {
+        top: 76px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+    }
 }
 
 /* =========================
@@ -1792,6 +1847,12 @@ tbody tr:last-child td {
     transition: 0.22s ease;
 }
 
+.document-action--button {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+}
+
 .document-action-form {
     margin: 0;
 }
@@ -1847,6 +1908,103 @@ tbody tr:last-child td {
     color: #94a3b8;
     background: #f1f5f9;
     cursor: not-allowed;
+}
+
+/* =========================
+   SIGNERS MODAL
+========================= */
+
+.document-signers-modal {
+    width: min(1120px, calc(100vw - 32px));
+    max-height: min(820px, calc(100vh - 32px));
+    padding: 0;
+    border: 0;
+    border-radius: 28px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.document-signers-modal::backdrop {
+    background: rgba(15, 23, 42, 0.48);
+    backdrop-filter: blur(5px);
+}
+
+.document-signers-modal__panel {
+    max-height: min(820px, calc(100vh - 32px));
+    display: grid;
+    gap: 18px;
+    padding: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.94);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.22);
+    overflow-y: auto;
+}
+
+.document-signers-modal__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.document-signers-modal__head h2 {
+    margin: 14px 0 0;
+    color: #0f172a;
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -0.055em;
+}
+
+.document-signers-modal__head p {
+    margin: 10px 0 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 650;
+}
+
+.document-signers-modal__close {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 14px;
+    color: #475569;
+    background: #f1f5f9;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.document-signers-modal__close:hover {
+    color: #0f172a;
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.document-signers-modal__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.document-signers-modal__section-head {
+    margin-top: 0;
+}
+
+.document-signers-modal__timeline {
+    max-height: 430px;
+    padding-right: 4px;
+    overflow-y: auto;
+}
+
+.document-signers-modal__empty {
+    box-shadow: none;
 }
 
 /* =========================
@@ -1988,6 +2146,15 @@ tbody tr:last-child td {
     .documents-empty__visual {
         min-height: 230px;
     }
+
+    .document-signers-modal__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .document-signers-modal__timeline {
+        max-height: none;
+        overflow-y: visible;
+    }
 }
 
 @media (max-width: 520px) {
@@ -2025,6 +2192,22 @@ tbody tr:last-child td {
 
     .documents-empty__visual {
         display: none;
+    }
+
+    .document-signers-modal {
+        width: calc(100vw - 18px);
+        max-height: calc(100vh - 18px);
+        border-radius: 22px;
+    }
+
+    .document-signers-modal__panel {
+        max-height: calc(100vh - 18px);
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .document-signers-modal__head h2 {
+        font-size: 24px;
     }
 }
 
@@ -5329,6 +5512,45 @@ tbody tr:last-child td {
     font-weight: 650;
 }
 
+.q-signers-page .form-card {
+    color: #0f172a;
+}
+
+.q-signers-page .form-card .q-signers-section-head h2 {
+    color: #111827;
+}
+
+.q-signers-page .form-card .q-signers-section-head p {
+    color: #475569;
+    font-weight: 800;
+}
+
+.q-signers-page .form-card .form-label {
+    color: #334155;
+    font-weight: 950;
+}
+
+.q-signers-page .form-card .form-control,
+.q-signers-page .form-card input,
+.q-signers-page .form-card select,
+.q-signers-page .form-card textarea {
+    color: #111827;
+    border-color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.q-signers-page .form-card .form-control::placeholder,
+.q-signers-page .form-card input::placeholder,
+.q-signers-page .form-card textarea::placeholder {
+    color: #64748b;
+    opacity: 1;
+}
+
+.q-signers-page .form-card .form-help {
+    color: #475569;
+    font-weight: 750;
+}
+
 /* TIMELINE */
 
 .q-signers-timeline {
@@ -5833,6 +6055,52 @@ tbody tr:last-child td {
     padding: 20px;
 }
 
+.q-public-document-preview {
+    min-height: 680px;
+    overflow: hidden;
+    border: 1px solid rgba(203, 213, 225, 0.95);
+    border-radius: 22px;
+    background:
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        #eef4fb;
+    background-size: 24px 24px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.q-public-document-preview__frame {
+    width: 100%;
+    height: min(76vh, 920px);
+    min-height: 680px;
+    display: block;
+    border: 0;
+    background: #ffffff;
+}
+
+.q-public-document-preview--empty {
+    min-height: 260px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 8px;
+    padding: 28px;
+    text-align: center;
+    color: #64748b;
+}
+
+.q-public-document-preview--empty strong {
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.q-public-document-preview--empty span {
+    max-width: 420px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
 .q-public-document-card {
     display: grid;
     grid-template-columns: 82px minmax(0, 1fr);
@@ -6050,6 +6318,118 @@ tbody tr:last-child td {
     word-break: break-word;
 }
 
+.q-public-lawvision-card {
+    position: relative;
+    display: grid;
+    gap: 13px;
+    padding: 18px;
+    border: 1px solid rgba(20, 184, 166, 0.42);
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, rgba(236, 253, 245, 0.96), rgba(239, 246, 255, 0.98)),
+        #ffffff;
+    box-shadow: 0 18px 34px rgba(20, 184, 166, 0.18);
+    overflow: hidden;
+}
+
+.q-public-lawvision-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg, #14b8a6, #2563eb);
+}
+
+.q-public-lawvision-card__top {
+    position: relative;
+    display: grid;
+    gap: 6px;
+}
+
+.q-public-lawvision-card__top span {
+    width: fit-content;
+    padding: 7px 10px;
+    border-radius: 999px;
+    color: #065f46;
+    background: rgba(20, 184, 166, 0.14);
+    font-size: 11px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+}
+
+.q-public-lawvision-card__top strong {
+    color: #0f172a;
+    font-size: 22px;
+    line-height: 1.08;
+    font-weight: 950;
+}
+
+.q-public-lawvision-card p {
+    position: relative;
+    margin: 0;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 720;
+}
+
+.q-public-lawvision-tags {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.q-public-lawvision-tags span {
+    padding: 7px 9px;
+    border: 1px solid rgba(37, 99, 235, 0.16);
+    border-radius: 999px;
+    color: #1e3a8a;
+    background: rgba(255, 255, 255, 0.76);
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 900;
+}
+
+.q-public-lawvision-card form {
+    position: relative;
+    margin: 0;
+}
+
+.q-public-lawvision-btn {
+    position: relative;
+    width: 100%;
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 16px;
+    padding: 14px 16px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0f766e, #2563eb);
+    box-shadow: 0 14px 28px rgba(15, 118, 110, 0.28);
+    font-size: 14px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.q-public-lawvision-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 34px rgba(15, 118, 110, 0.32);
+}
+
+.q-public-lawvision-card--ready {
+    border-color: rgba(37, 99, 235, 0.28);
+    background:
+        linear-gradient(135deg, rgba(239, 246, 255, 0.98), rgba(240, 253, 244, 0.96)),
+        #ffffff;
+}
+
 /* METHOD */
 
 .q-public-method-card,
@@ -6258,6 +6638,19 @@ tbody tr:last-child td {
 
     .q-public-sign-hero h1 {
         font-size: 36px;
+    }
+
+    .q-public-document-body {
+        padding: 12px;
+    }
+
+    .q-public-document-preview,
+    .q-public-document-preview__frame {
+        min-height: 520px;
+    }
+
+    .q-public-document-preview__frame {
+        height: 68vh;
     }
 
     .q-public-document-card {
@@ -8494,4 +8887,63 @@ tbody tr:last-child td {
     background: #f8fafc !important;
     border-color: #cbd5e1 !important;
     color: #1d4ed8 !important;
+}
+
+/* =========================================================
+   Document signers contrast override
+========================================================= */
+
+.q-signers-page .form-card,
+.q-signers-page .form-card * {
+    color: #111827;
+}
+
+.q-signers-page .form-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.q-signers-page .form-card::before {
+    display: none !important;
+}
+
+.q-signers-page .form-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.q-signers-page .form-card .q-signers-section-head h2 {
+    color: #111827 !important;
+}
+
+.q-signers-page .form-card .q-signers-section-head p {
+    color: #334155 !important;
+    font-weight: 850 !important;
+}
+
+.q-signers-page .form-card .form-label,
+.q-signers-page .form-card label {
+    color: #1f2937 !important;
+    font-weight: 950 !important;
+}
+
+.q-signers-page .form-card input,
+.q-signers-page .form-card select,
+.q-signers-page .form-card textarea,
+.q-signers-page .form-card .form-control {
+    color: #111827 !important;
+    background-color: #ffffff !important;
+    border-color: #b8c5d8 !important;
+}
+
+.q-signers-page .form-card input::placeholder,
+.q-signers-page .form-card textarea::placeholder,
+.q-signers-page .form-card .form-control::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+
+.q-signers-page .form-card select option {
+    color: #111827 !important;
 }

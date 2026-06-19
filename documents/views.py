@@ -1,10 +1,17 @@
 from .services.document_docx_render_service import DocumentDocxRenderService
 import json
+import os
 import re
+import tempfile
+from pathlib import Path
+from uuid import uuid4
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
+from django.core.files.storage import default_storage
 from django.db import transaction
+from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -39,6 +46,7 @@ from .services.evidence_bundle_service import (
     EvidenceBundleError,
     EvidenceBundleService,
 )
+from .services.docx_preview_service import DocxPreviewService
 from .services.template_file_service import TemplateFileService
 
 
@@ -136,6 +144,9 @@ def render_lawvision_report_page(
 
 
 def create_field_values_for_template(document):
+    if not document.template:
+        return
+
     for variable in document.template.variables or []:
         DocumentFieldValue.objects.get_or_create(
             document=document,
@@ -237,6 +248,54 @@ def ensure_document_editable_or_redirect(request, document):
     return None
 
 
+def normalize_uploaded_document_to_docx(document):
+    if not document.rendered_docx_file:
+        return document
+
+    file_path = document.rendered_docx_file.path
+    extension = TemplateFileService.get_extension(file_path)
+
+    if extension == ".docx":
+        document.update_content_hash(save=True)
+        return document
+
+    if extension != ".doc":
+        TemplateFileService.validate_file_name(file_path)
+        return document
+
+    old_file_name = document.rendered_docx_file.name
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        output_path = os.path.join(temp_dir, Path(file_path).stem + ".docx")
+        TemplateFileService.convert_doc_to_docx(
+            file_path=file_path,
+            output_path=output_path,
+        )
+
+        new_file_name = f"{Path(old_file_name).stem}_{uuid4().hex}.docx"
+
+        with open(output_path, "rb") as converted_file:
+            document.rendered_docx_file.save(
+                new_file_name,
+                File(converted_file),
+                save=False,
+            )
+
+    if old_file_name and old_file_name != document.rendered_docx_file.name:
+        default_storage.delete(old_file_name)
+
+    document.rendered_pdf_file = None
+    document.update_content_hash(save=False)
+    document.save(update_fields=[
+        "rendered_docx_file",
+        "rendered_pdf_file",
+        "content_hash",
+        "updated_at",
+    ])
+
+    return document
+
+
 @login_required
 def template_list(request):
     templates = get_managed_templates_queryset(request.user).order_by("-created_at")
@@ -293,7 +352,13 @@ def template_upload(request):
 def document_list(request):
     documents = attach_lawvision_reports(
         get_managed_documents_queryset(request.user)
-        .prefetch_related("stored_objects")
+        .prefetch_related(
+            "stored_objects",
+            Prefetch(
+                "signers",
+                queryset=Signer.objects.order_by("signing_order", "created_at"),
+            ),
+        )
         .order_by("-created_at")
     )
 
@@ -373,15 +438,47 @@ def document_evidence_bundle(request, pk):
 
 @login_required
 def document_create(request):
+    organization = get_default_managed_organization(request.user)
+
+    if not organization:
+        messages.error(
+            request,
+            "Create an organization or ask an organization owner to add you first.",
+        )
+        return redirect("accounts:profile")
+
     if request.method == "POST":
-        form = DocumentCreateForm(request.POST, user=request.user)
+        form = DocumentCreateForm(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
+            document_file = form.cleaned_data.get("document_file")
             document = form.save(commit=False)
-            document.organization = document.template.organization
+            if document.template:
+                document.organization = document.template.organization
+            else:
+                document.organization = organization
             document.created_by = request.user
             document.status = Document.Status.DRAFT
             document.save()
+
+            if document_file:
+                document.rendered_docx_file.save(
+                    document_file.name,
+                    document_file,
+                    save=True,
+                )
+
+                try:
+                    normalize_uploaded_document_to_docx(document)
+                except ValueError as exc:
+                    document.delete()
+                    form.add_error("document_file", str(exc))
+                    return render(request, "documents/document_create.html", {
+                        "form": form,
+                    })
+
+                messages.success(request, "Document uploaded. Review it in the editor.")
+                return redirect("documents:document_editor", pk=document.pk)
 
             create_field_values_for_template(document)
 
@@ -395,7 +492,86 @@ def document_create(request):
     })
 
 
+@login_required
+def editor_one(request):
+    return render(request, "documents/editor_one.html", {
+        "editor_html": "",
+        "editor_storage_key": "qolqoyu.editorOne.content",
+    })
+
+
+def get_uploaded_document_editor_html(document):
+    if document.rendered_html:
+        return document.rendered_html
+
+    if not document.rendered_docx_file:
+        return ""
+
+    try:
+        return TemplateFileService.convert_to_html(document.rendered_docx_file.path)
+    except ValueError:
+        return ""
+
+
+def get_uploaded_document_page_layout(document):
+    if not document.rendered_docx_file:
+        return {}
+
+    try:
+        return DocxPreviewService.get_page_layout(document.rendered_docx_file.path)
+    except ValueError:
+        return {}
+
+
+@login_required
+def document_editor(request, pk):
+    document = get_object_or_404(
+        get_managed_documents_queryset(request.user),
+        pk=pk,
+    )
+
+    locked_redirect = ensure_document_editable_or_redirect(request, document)
+    if locked_redirect:
+        return locked_redirect
+
+    if document.template:
+        return redirect("documents:document_fill", pk=document.pk)
+
+    if request.method == "POST":
+        if request.POST.get("document_changed") != "1" and document.rendered_docx_file:
+            messages.success(request, "Document reviewed. Add signers when ready.")
+            return redirect("signing:document_signers", document_pk=document.pk)
+
+        document.rendered_html = request.POST.get("rendered_html", "")
+        document.status = Document.Status.DRAFT
+        document.save(update_fields=[
+            "rendered_html",
+            "status",
+            "updated_at",
+        ])
+
+        try:
+            DocumentDocxRenderService.render(document)
+        except (FileNotFoundError, ValueError) as exc:
+            messages.error(request, str(exc))
+            return redirect("documents:document_editor", pk=document.pk)
+
+        messages.success(request, "Document reviewed. Add signers when ready.")
+        return redirect("signing:document_signers", document_pk=document.pk)
+
+    return render(request, "documents/editor_one.html", {
+        "document": document,
+        "editor_html": get_uploaded_document_editor_html(document),
+        "editor_page_layout": get_uploaded_document_page_layout(document),
+        "editor_storage_key": f"qolqoyu.editorOne.document.{document.pk}",
+        "continue_to_signers": True,
+    })
+
+
 def create_signers_from_template_parties(document, values, request=None):
+    if not document.template:
+        return
+
     with transaction.atomic():
         for party in document.template.parties.prefetch_related("fields").all():
             if not party.is_signer:
@@ -476,6 +652,10 @@ def document_fill(request, pk):
     if locked_redirect:
         return locked_redirect
 
+    if not document.template:
+        messages.info(request, "Uploaded documents do not have template fields.")
+        return redirect("signing:document_signers", document_pk=document.pk)
+
     fields = document.field_values.all().order_by("field_name")
     parties = document.template.parties.prefetch_related("fields").all()
 
@@ -518,7 +698,7 @@ def document_fill(request, pk):
             return redirect("documents:document_fill", pk=document.pk)
 
         messages.success(request, "Document prepared. Invite signers.")
-        return redirect("signing:document_signers", document.pk)
+        return redirect(f"{reverse('documents:document_list')}?signers={document.pk}")
 
     return render(request, "documents/document_fill.html", {
         "document": document,
@@ -539,11 +719,12 @@ def document_render_docx(request, pk):
     if locked_redirect:
         return locked_redirect
 
-    try:
-        DocumentDocxRenderService.render(document)
-    except (FileNotFoundError, ValueError) as exc:
-        messages.error(request, str(exc))
-        return redirect("documents:document_fill", pk=document.pk)
+    if document.template:
+        try:
+            DocumentDocxRenderService.render(document)
+        except (FileNotFoundError, ValueError) as exc:
+            messages.error(request, str(exc))
+            return redirect("documents:document_fill", pk=document.pk)
 
     document.update_content_hash(save=True)
 

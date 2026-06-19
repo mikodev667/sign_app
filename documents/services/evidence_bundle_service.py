@@ -45,7 +45,16 @@ class EvidenceBundleService:
         if not final_objects:
             raise EvidenceBundleError(_("No final stored PDF/DOCX objects found for this document."))
 
-        verified_files = cls._load_verified_files(final_objects)
+        signature_objects = list(
+            document.stored_objects
+            .filter(
+                object_type=StoredObject.ObjectType.SIGNATURE,
+                storage_status=StoredObject.StorageStatus.STORED,
+            )
+            .order_by("-created_at")
+        )
+
+        verified_files = cls._load_verified_files(final_objects + signature_objects)
         audit_result = AuditChainService.verify_document(document_id=document.id)
 
         stored_objects_payload = cls._serialize_stored_objects(

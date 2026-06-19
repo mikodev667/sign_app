@@ -183,11 +183,22 @@ class ObjectStorageService:
         retention_until = timezone.now() + timedelta(
             days=getattr(settings, "MINIO_DEFAULT_RETENTION_DAYS", 30)
         )
+        retention_mode = StoredObject.RetentionMode.COMPLIANCE
+        version_id = getattr(result, "version_id", "") or ""
+
+        cls._set_object_retention(
+            client=client,
+            bucket=bucket,
+            object_key=object_key,
+            retention_mode=retention_mode,
+            retention_until=retention_until,
+            version_id=version_id,
+        )
 
         stored_object, _ = StoredObject.objects.update_or_create(
             bucket=bucket,
             object_key=object_key,
-            version_id=getattr(result, "version_id", "") or "",
+            version_id=version_id,
             defaults={
                 "document": document,
                 "object_type": object_type,
@@ -195,7 +206,7 @@ class ObjectStorageService:
                 "sha256": payload.sha256,
                 "content_type": payload.content_type,
                 "size_bytes": payload.size_bytes,
-                "retention_mode": StoredObject.RetentionMode.COMPLIANCE,
+                "retention_mode": retention_mode,
                 "retention_until": retention_until,
                 "storage_status": StoredObject.StorageStatus.STORED,
                 "created_by": created_by,
@@ -236,6 +247,40 @@ class ObjectStorageService:
     ) -> str:
         safe_filename = filename.replace("\\", "/").split("/")[-1]
         return f"documents/{document_id}/{object_type}/{sha256}-{safe_filename}"
+
+    @classmethod
+    def _set_object_retention(
+        cls,
+        *,
+        client,
+        bucket: str,
+        object_key: str,
+        retention_mode: str,
+        retention_until,
+        version_id: str = "",
+    ) -> None:
+        try:
+            from minio.retention import COMPLIANCE, GOVERNANCE, Retention
+        except ImportError as exc:
+            raise ImproperlyConfigured(
+                _("The 'minio' package is required. Run: pip install -r requirements.txt")
+            ) from exc
+
+        mode_map = {
+            StoredObject.RetentionMode.COMPLIANCE: COMPLIANCE,
+            StoredObject.RetentionMode.GOVERNANCE: GOVERNANCE,
+        }
+        minio_mode = mode_map.get(retention_mode)
+
+        if not minio_mode or not retention_until:
+            return
+
+        client.set_object_retention(
+            bucket,
+            object_key,
+            Retention(minio_mode, retention_until),
+            version_id=version_id or None,
+        )
 
     @classmethod
     def _client(cls):

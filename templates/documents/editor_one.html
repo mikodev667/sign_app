@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Editor 1 | QolQoyu{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/editor_one.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section
+    class="editor-one"
+    data-editor-one
+    data-status-ready="{% if continue_to_signers %}{% trans 'Original file preserved' %}{% else %}{% trans 'Saved in this browser' %}{% endif %}"
+    data-status-saving="{% trans 'Saving...' %}"
+    data-confirm-clear="{% trans 'Clear the editor content?' %}"
+    data-alert-file-type="{% trans 'Choose a DOCX or PDF file. Old DOC files are supported only when the browser can read them.' %}"
+    data-alert-file-read="{% trans 'File could not be read.' %}"
+    data-alert-import-prefix="{% trans 'Import error' %}"
+    data-storage-key="{{ editor_storage_key|default:'qolqoyu.editorOne.content' }}"
+    data-use-local-storage="{% if continue_to_signers %}0{% else %}1{% endif %}"
+    data-use-stored-margins="{% if continue_to_signers %}0{% else %}1{% endif %}"
+    data-default-margin-top="{{ editor_page_layout.margin_top|default:'2' }}"
+    data-default-margin-bottom="{{ editor_page_layout.margin_bottom|default:'2' }}"
+    data-default-margin-left="{{ editor_page_layout.margin_left|default:'2' }}"
+    data-default-margin-right="{{ editor_page_layout.margin_right|default:'2' }}"
+>
+    {% if continue_to_signers %}
+        <form id="editorContinueForm" method="post" data-editor-save-form>
+            {% csrf_token %}
+            <input type="hidden" name="rendered_html" data-editor-rendered-html>
+            <input type="hidden" name="document_changed" value="0" data-editor-document-changed>
+        </form>
+    {% endif %}
+
+    <header class="editor-one__topbar">
+        <div class="editor-one__brand">
+            <div class="editor-one__logo">E1</div>
+
+            <div>
+                <div class="editor-one__breadcrumb">
+                    {% if document %}
+                        {% trans "Documents" %} / {{ document.title }}
+                    {% else %}
+                        {% trans "Documents" %} / Editor 1
+                    {% endif %}
+                </div>
+                <h1>
+                    {% if document %}
+                        {{ document.title }}
+                    {% else %}
+                        Editor 1
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+
+        <div class="editor-one__actions">
+            <span class="editor-one__status" data-editor-save-status>
+                {% if continue_to_signers %}
+                    {% trans "Original file preserved" %}
+                {% else %}
+                    {% trans "Saved in this browser" %}
+                {% endif %}
+            </span>
+
+            <a href="{% url 'documents:document_list' %}" class="editor-one__button editor-one__button--secondary">
+                {% trans "Back" %}
+            </a>
+
+            <button class="editor-one__button editor-one__button--primary" type="button" data-editor-action="upload">
+                {% trans "Import" %}
+            </button>
+
+            {% if continue_to_signers %}
+                <button class="editor-one__button editor-one__button--primary" type="submit" form="editorContinueForm">
+                    {% trans "Continue to signers" %}
+                </button>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="editor-one__shell">
+        <div class="editor-one__toolbar" role="toolbar" aria-label="Editor toolbar">
+            <div class="editor-one__toolbar-section editor-one__toolbar-section--selects">
+                <div class="editor-one__toolbar-title">{% trans "Text" %}</div>
+
+                <div class="editor-one__toolbar-group editor-one__toolbar-group--selects">
+                    <label>
+                        <span>{% trans "Style" %}</span>
+                        <select data-editor-command="formatBlock">
+                            <option value="p">{% trans "Normal" %}</option>
+                            <option value="h1">{% trans "Heading 1" %}</option>
+                            <option value="h2">{% trans "Heading 2" %}</option>
+                            <option value="h3">{% trans "Heading 3" %}</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>{% trans "Font" %}</span>
+                        <select data-editor-command="fontName">
+                            <option value="Calibri, Arial, sans-serif">Calibri</option>
+                            <option value="Arial, Helvetica, sans-serif">Arial</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="Times New Roman, Times, serif">Times New Roman</option>
+                            <option value="Courier New, Courier, monospace">Courier New</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>{% trans "Size" %}</span>
+                        <select data-editor-font-size>
+                            <option value="10">10</option>
+                            <option value="11" selected>11</option>
+                            <option value="12">12</option>
+                            <option value="14">14</option>
+                            <option value="16">16</option>
+                            <option value="18">18</option>
+                            <option value="20">20</option>
+                            <option value="24">24</option>
+                            <option value="28">28</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="editor-one__toolbar-section">
+                <div class="editor-one__toolbar-title">{% trans "Format" %}</div>
+
+                <div class="editor-one__toolbar-group">
+                    <button class="editor-one__tool" type="button" data-editor-command="bold" title="{% trans 'Bold' %}"><strong>B</strong></button>
+                    <button class="editor-one__tool" type="button" data-editor-command="italic" title="{% trans 'Italic' %}"><em>I</em></button>
+                    <button class="editor-one__tool" type="button" data-editor-command="underline" title="{% trans 'Underline' %}"><u>U</u></button>
+                    <button class="editor-one__tool" type="button" data-editor-command="strikeThrough" title="{% trans 'Strikethrough' %}"><s>S</s></button>
+
+                    <span class="editor-one__color editor-one__color--text" title="{% trans 'Text color' %}">
+                        <button type="button" data-editor-color-apply="foreColor" title="{% trans 'Apply text color' %}">
+                            <span class="editor-one__color-mark" aria-hidden="true">A</span>
+                        </button>
+                        <label title="{% trans 'Choose text color' %}">
+                            <span class="editor-one__color-arrow" aria-hidden="true"></span>
+                            <input type="color" value="#111827" data-editor-color-picker="foreColor">
+                        </label>
+                    </span>
+
+                    <span class="editor-one__color editor-one__color--highlight" title="{% trans 'Highlight' %}">
+                        <button type="button" data-editor-color-apply="hiliteColor" title="{% trans 'Apply highlight' %}">
+                            <span class="editor-one__color-mark" aria-hidden="true"></span>
+                        </button>
+                        <label title="{% trans 'Choose highlight color' %}">
+                            <span class="editor-one__color-arrow" aria-hidden="true"></span>
+                            <input type="color" value="#fff3bf" data-editor-color-picker="hiliteColor">
+                        </label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="editor-one__toolbar-section">
+                <div class="editor-one__toolbar-title">{% trans "Paragraph" %}</div>
+
+                <div class="editor-one__toolbar-group">
+                    <button class="editor-one__tool" type="button" data-editor-command="justifyLeft" title="{% trans 'Align left' %}">
+                        <span class="editor-one__icon editor-one__icon--align-left" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="justifyCenter" title="{% trans 'Align center' %}">
+                        <span class="editor-one__icon editor-one__icon--align-center" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="justifyRight" title="{% trans 'Align right' %}">
+                        <span class="editor-one__icon editor-one__icon--align-right" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="justifyFull" title="{% trans 'Justify' %}">
+                        <span class="editor-one__icon editor-one__icon--align-justify" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="insertUnorderedList" title="{% trans 'Bulleted list' %}">
+                        <span class="editor-one__icon editor-one__icon--list-bullets" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="insertOrderedList" title="{% trans 'Numbered list' %}">
+                        <span class="editor-one__icon editor-one__icon--list-numbered" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="outdent" title="{% trans 'Outdent' %}">
+                        <span class="editor-one__icon editor-one__icon--outdent" aria-hidden="true"></span>
+                    </button>
+                    <button class="editor-one__tool" type="button" data-editor-command="indent" title="{% trans 'Indent' %}">
+                        <span class="editor-one__icon editor-one__icon--indent" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="editor-one__toolbar-section">
+                <div class="editor-one__toolbar-title">{% trans "Insert" %}</div>
+
+                <div class="editor-one__toolbar-group editor-one__toolbar-group--insert">
+                    <button class="editor-one__tool editor-one__tool--text" type="button" data-editor-action="link">
+                        {% trans "Link" %}
+                    </button>
+                    <button class="editor-one__tool editor-one__tool--text" type="button" data-editor-action="table">
+                        {% trans "Table" %}
+                    </button>
+                    <button class="editor-one__tool editor-one__tool--text" type="button" data-editor-action="margins">
+                        {% trans "Margins" %}
+                    </button>
+                    <button class="editor-one__tool editor-one__tool--text editor-one__tool--danger" type="button" data-editor-action="clear">
+                        {% trans "Clear" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <input type="file" class="editor-one__file" accept=".docx,.pdf,.doc" data-editor-file>
+
+        <div class="editor-one__workspace">
+            <aside class="editor-one__side">
+                <div class="editor-one__panel">
+                    <h2>{% trans "Document" %}</h2>
+
+                    <div class="editor-one__stat">
+                        <span>{% trans "Words" %}</span>
+                        <strong data-editor-word-count>0</strong>
+                    </div>
+
+                    <div class="editor-one__stat">
+                        <span>{% trans "Characters" %}</span>
+                        <strong data-editor-char-count>0</strong>
+                    </div>
+                </div>
+
+                <div class="editor-one__panel">
+                    <h2>{% trans "Page" %}</h2>
+
+                    <div class="editor-one__zoom">
+                        <button type="button" data-editor-zoom="-10" title="{% trans 'Zoom out' %}">-</button>
+                        <span data-editor-zoom-value>100%</span>
+                        <button type="button" data-editor-zoom="10" title="{% trans 'Zoom in' %}">+</button>
+                    </div>
+
+                    <p>
+                        {% if continue_to_signers %}
+                            {% trans "Original file is preserved unless you edit the document." %}
+                        {% else %}
+                            {% trans "Draft is saved locally in this browser." %}
+                        {% endif %}
+                    </p>
+                </div>
+            </aside>
+
+            <main class="editor-one__stage">
+                <div class="editor-one__paper-wrap" data-editor-paper-wrap>
+                    <article
+                        class="editor-one__paper"
+                        data-editor-paper
+                        {% if editor_page_layout %}
+                            style="width: {{ editor_page_layout.width_px }}px; min-height: {{ editor_page_layout.height_px }}px; padding: {{ editor_page_layout.margin_top }}cm {{ editor_page_layout.margin_right }}cm {{ editor_page_layout.margin_bottom }}cm {{ editor_page_layout.margin_left }}cm;"
+                        {% endif %}
+                    >
+                        <div
+                            class="editor-one__content"
+                            contenteditable="true"
+                            data-editor-content
+                            data-placeholder="{% trans 'Start writing here...' %}"
+                        >{% if editor_html %}{{ editor_html|safe }}{% else %}<h1>{% trans "New document" %}</h1><p>{% trans "Start typing here or import a DOCX/PDF file from the toolbar." %}</p>{% endif %}</div>
+                    </article>
+                </div>
+            </main>
+        </div>
+
+        <div class="editor-one__footer">
+            <span>Editor 1</span>
+            <span>{% trans "No AI tools enabled" %}</span>
+        </div>
+    </div>
+</section>
+
+<dialog class="editor-one-modal" data-editor-modal="link">
+    <form method="dialog" class="editor-one-modal__panel">
+        <header>
+            <h2>{% trans "Link properties" %}</h2>
+            <button type="button" data-editor-modal-close>&times;</button>
+        </header>
+
+        <label>
+            <span>{% trans "Display text" %}</span>
+            <input type="text" data-editor-link-text>
+        </label>
+
+        <label>
+            <span>URL</span>
+            <input type="text" data-editor-link-url placeholder="https://example.com">
+        </label>
+
+        <footer>
+            <button type="button" class="editor-one__button editor-one__button--secondary" data-editor-modal-close>{% trans "Cancel" %}</button>
+            <button type="button" class="editor-one__button editor-one__button--primary" data-editor-link-insert>{% trans "Insert" %}</button>
+        </footer>
+    </form>
+</dialog>
+
+<dialog class="editor-one-modal" data-editor-modal="table">
+    <form method="dialog" class="editor-one-modal__panel">
+        <header>
+            <h2>{% trans "Table properties" %}</h2>
+            <button type="button" data-editor-modal-close>&times;</button>
+        </header>
+
+        <div class="editor-one-modal__grid">
+            <label>
+                <span>{% trans "Rows" %}</span>
+                <input type="number" min="1" max="20" value="3" data-editor-table-rows>
+            </label>
+
+            <label>
+                <span>{% trans "Columns" %}</span>
+                <input type="number" min="1" max="12" value="2" data-editor-table-cols>
+            </label>
+
+            <label>
+                <span>{% trans "Width" %}</span>
+                <input type="text" value="100%" data-editor-table-width>
+            </label>
+
+            <label>
+                <span>{% trans "Cell padding" %}</span>
+                <input type="number" min="0" max="40" value="8" data-editor-table-padding>
+            </label>
+        </div>
+
+        <footer>
+            <button type="button" class="editor-one__button editor-one__button--secondary" data-editor-modal-close>{% trans "Cancel" %}</button>
+            <button type="button" class="editor-one__button editor-one__button--primary" data-editor-table-insert>{% trans "Insert table" %}</button>
+        </footer>
+    </form>
+</dialog>
+
+<dialog class="editor-one-modal" data-editor-modal="margins">
+    <form method="dialog" class="editor-one-modal__panel">
+        <header>
+            <h2>{% trans "Page margins" %}</h2>
+            <button type="button" data-editor-modal-close>&times;</button>
+        </header>
+
+        <div class="editor-one-modal__grid">
+            <label>
+                <span>{% trans "Top" %}</span>
+                <input type="number" step="0.1" min="0" max="8" value="2" data-editor-margin="top">
+            </label>
+
+            <label>
+                <span>{% trans "Bottom" %}</span>
+                <input type="number" step="0.1" min="0" max="8" value="2" data-editor-margin="bottom">
+            </label>
+
+            <label>
+                <span>{% trans "Left" %}</span>
+                <input type="number" step="0.1" min="0" max="8" value="2" data-editor-margin="left">
+            </label>
+
+            <label>
+                <span>{% trans "Right" %}</span>
+                <input type="number" step="0.1" min="0" max="8" value="2" data-editor-margin="right">
+            </label>
+        </div>
+
+        <footer>
+            <button type="button" class="editor-one__button editor-one__button--secondary" data-editor-modal-close>{% trans "Cancel" %}</button>
+            <button type="button" class="editor-one__button editor-one__button--primary" data-editor-margins-apply>{% trans "Apply" %}</button>
+        </footer>
+    </form>
+</dialog>
+
+<div class="editor-one__loading" hidden data-editor-loading>
+    <div>
+        <span></span>
+        <strong>{% trans "Importing document" %}</strong>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="{% static 'js/editor_one.js' %}"></script>
+{% endblock %}

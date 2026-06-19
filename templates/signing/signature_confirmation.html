@@ -228,6 +228,14 @@
                         {{ signature.validation_error }}
                     </div>
                 {% endif %}
+
+                {% if signature.provider == "ecp" %}
+                    {% if signature.signature_value %}
+                        <a href="{% url 'signing:signature_cms_download' signature.pk %}" class="btn btn-primary">
+                            {% trans "Download CMS file" %}
+                        </a>
+                    {% endif %}
+                {% endif %}
             </section>
 
             {% if signature.consent_text %}

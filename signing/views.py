@@ -1,15 +1,21 @@
 import json
 import base64
+import os
+import tempfile
+from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_exempt
-from documents.models import Document, DocumentLawVisionReport
+from documents.models import Document, DocumentLawVisionReport, StoredObject
 from documents.services.lawvision_service import LawVisionError, LawVisionService
+from documents.services.object_storage_service import ObjectStorageService
+from documents.services.template_file_service import TemplateFileService
 from organizations.services import get_user_managed_organizations
 from signing.forms import SignerForm
 from signing.services.access_token_service import SignerAccessTokenService
@@ -44,6 +50,138 @@ def can_request_lawvision_report(document):
         or document.rendered_docx_file
         or document.rendered_html
     )
+
+
+def get_public_document_preview(document):
+    if document.rendered_pdf_file:
+        return {
+            "type": "pdf",
+            "url": document.rendered_pdf_file.url,
+        }
+
+    if document.rendered_docx_file:
+        return {
+            "type": "generated_pdf",
+            "url": "",
+        }
+
+    if document.rendered_html:
+        return {
+            "type": "html",
+            "url": "",
+        }
+
+    return {
+        "type": "",
+        "url": "",
+    }
+
+
+def build_public_document_preview_pdf(document):
+    if not document.rendered_docx_file:
+        return b""
+
+    soffice_path = TemplateFileService.find_soffice()
+
+    if not soffice_path:
+        return b""
+
+    try:
+        source_path = document.rendered_docx_file.path
+    except (NotImplementedError, ValueError):
+        return b""
+
+    if not os.path.exists(source_path):
+        return b""
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            result = TemplateFileService.run_soffice_conversion(
+                soffice_path=soffice_path,
+                file_path=source_path,
+                output_dir=temp_dir,
+                convert_to="pdf",
+                timeout=60,
+                operation="building public PDF preview",
+            )
+        except ValueError:
+            return b""
+
+        pdf_path = os.path.join(temp_dir, Path(source_path).stem + ".pdf")
+
+        if result.returncode != 0 or not os.path.exists(pdf_path):
+            return b""
+
+        with open(pdf_path, "rb") as pdf_file:
+            return pdf_file.read()
+
+
+def build_public_document_preview_html(document):
+    if document.rendered_docx_file:
+        try:
+            html = TemplateFileService.convert_to_html(document.rendered_docx_file.path)
+        except (FileNotFoundError, ValueError):
+            html = ""
+
+        if html:
+            return make_public_preview_read_only(html)
+
+    if document.rendered_html:
+        html = document.rendered_html.strip()
+
+        if "<html" in html[:300].lower():
+            return make_public_preview_read_only(html)
+
+        return make_public_preview_read_only(f"""<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        html, body {{
+            margin: 0;
+            background: #f8fafc;
+            color: #111827;
+            font-family: Arial, sans-serif;
+        }}
+        body {{
+            padding: 32px;
+        }}
+        [contenteditable="true"] {{
+            outline: none;
+        }}
+    </style>
+</head>
+<body>
+{html}
+</body>
+</html>""")
+
+    return ""
+
+
+def make_public_preview_read_only(html):
+    readonly_style = """
+<style id="qolqoyu-readonly-preview">
+    html, body {
+        -webkit-user-modify: read-only !important;
+        user-modify: read-only !important;
+    }
+    [contenteditable],
+    input,
+    textarea,
+    select,
+    button {
+        pointer-events: none !important;
+    }
+</style>
+"""
+    lower_html = html.lower()
+    head_end_index = lower_html.find("</head>")
+
+    if head_end_index != -1:
+        return html[:head_end_index] + readonly_style + html[head_end_index:]
+
+    return readonly_style + html
 
 
 def render_signer_lawvision_report_page(request, *, token, signer, document, report):
@@ -115,6 +253,8 @@ def create_signer_access_link(request, signer_pk):
         )
     except ValueError as exc:
         messages.error(request, str(exc))
+        if signer.document.template_id:
+            return redirect(f"{reverse('documents:document_list')}?signers={signer.document_id}")
         return redirect("signing:document_signers", document_pk=signer.document_id)
 
     relative_url = f"/signing/s/{created_token.raw_token}/"
@@ -136,7 +276,7 @@ def create_signer_access_link(request, signer_pk):
             request,
             f"Signing link was created, but SMS was not sent: {exc}",
         )
-        return redirect("signing:document_signers", document_pk=signer.document_id)
+        return redirect(f"{reverse('documents:document_list')}?signers={signer.document_id}")
 
     SigningAuditLogService.log(
         document=signer.document,
@@ -164,6 +304,8 @@ def create_signer_access_link(request, signer_pk):
             _("Signing invitation SMS was sent successfully."),
         )
 
+    if signer.document.template_id:
+        return redirect(f"{reverse('documents:document_list')}?signers={signer.document_id}")
     return redirect("signing:document_signers", document_pk=signer.document_id)
 
 def signer_public_page(request, token):
@@ -204,16 +346,54 @@ def signer_public_page(request, token):
 
     signature = getattr(signer, "signature", None)
     lawvision_report = get_current_lawvision_report(document)
+    document_preview = get_public_document_preview(document)
 
     return render(request, "signing/signer_public_page.html", {
         "token": token,
         "signer": signer,
         "document": document,
+        "document_preview": document_preview,
         "latest_session": latest_session,
         "latest_sms_session": latest_sms_session,
         "signature": signature,
         "lawvision_report": lawvision_report,
     })
+
+
+@require_GET
+@xframe_options_sameorigin
+def signer_document_preview(request, token):
+    access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
+
+    if not access_token:
+        return HttpResponse(_("Signing link is invalid or expired."), status=404)
+
+    document = access_token.signer.document
+
+    pdf_bytes = build_public_document_preview_pdf(document)
+
+    if pdf_bytes:
+        response = HttpResponse(pdf_bytes, content_type="application/pdf")
+        response["Content-Disposition"] = 'inline; filename="document-preview.pdf"'
+        response["Cache-Control"] = "private, no-store"
+        return response
+
+    html = build_public_document_preview_html(document)
+
+    if not html:
+        return HttpResponse(_("Document preview is not available."), status=404)
+
+    response = HttpResponse(html, content_type="text/html; charset=utf-8")
+    response["Content-Security-Policy"] = (
+        "default-src 'none'; "
+        "style-src 'self' 'unsafe-inline' data:; "
+        "img-src 'self' data: blob:; "
+        "font-src 'self' data:; "
+        "base-uri 'none'; "
+        "form-action 'none'"
+    )
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @require_http_methods(["GET", "POST"])
@@ -529,6 +709,50 @@ def signature_confirmation(request, signature_pk):
         "signer": signature.signer,
         "signing_session": signature.signing_session,
     })
+
+
+@require_GET
+def signature_cms_download(request, signature_pk):
+    signature = get_object_or_404(
+        Signature.objects.select_related("document", "signer"),
+        pk=signature_pk,
+        provider=SigningSession.Provider.ECP,
+    )
+
+    filename = (
+        f"document_{signature.document_id}_"
+        f"signature_{signature.id}_"
+        f"signer_{signature.signer_id}.cms"
+    )
+
+    stored_cms_object = (
+        signature.document.stored_objects
+        .filter(
+            object_type=StoredObject.ObjectType.SIGNATURE,
+            storage_status=StoredObject.StorageStatus.STORED,
+            object_key__contains=f"signature_{signature.id}_",
+        )
+        .order_by("-created_at")
+        .first()
+    )
+
+    if stored_cms_object:
+        cms_bytes = ObjectStorageService.get_stored_object_bytes(stored_cms_object)
+        response = HttpResponse(cms_bytes, content_type="application/pkcs7-mime")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    elif signature.signature_value:
+        cms_bytes = EcpSigningService.cms_to_der_bytes(signature.signature_value)
+
+        response = HttpResponse(
+            cms_bytes,
+            content_type="application/pkcs7-mime",
+        )
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    else:
+        return HttpResponse(_("CMS file is not available."), status=404)
+
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @require_GET

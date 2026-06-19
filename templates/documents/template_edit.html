@@ -67,7 +67,7 @@
                                     data-variable="{{ party.variable_prefix }}_{{ field.variable_name }}"
                                     onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}')"
                                 >
-                                    <span>{{ field.label }}</span>
+                                    <span>{{ field.display_label }}</span>
                                     <small>{{ party.variable_prefix }}_{{ field.variable_name }}</small>
                                 </button>
                             {% empty %}
@@ -199,7 +199,7 @@
                                 {% for field in party.fields.all %}
                                     <div class="q-current-field">
                                         <div class="q-current-field__top">
-                                            <strong>{{ field.label }}</strong>
+                                            <strong>{{ field.display_label }}</strong>
 
                                             {% if field.is_system %}
                                                 <span class="q-code-chip q-code-chip--muted">{% trans "system" %}</span>

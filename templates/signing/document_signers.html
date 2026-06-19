@@ -36,7 +36,13 @@
         <div class="q-signers-overview-card">
             <span>{% trans "Total signers" %}</span>
             <strong>{{ signers|length }}</strong>
-            <p>{% trans "Generated from document parties" %}</p>
+            <p>
+                {% if document.template %}
+                    {% trans "Generated from document parties" %}
+                {% else %}
+                    {% trans "Added manually" %}
+                {% endif %}
+            </p>
         </div>
 
         <div class="q-signers-overview-card q-signers-overview-card--blue">
@@ -52,11 +58,68 @@
         </div>
     </div>
 
+    {% if document.can_be_edited %}
+        <div class="card form-card">
+            <div class="q-signers-section-head">
+                <div>
+                    <h2>{% trans "Add signer" %}</h2>
+                    <p>{% trans "Enter signer details and choose the signing method." %}</p>
+                </div>
+            </div>
+
+            <form method="post" class="app-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <div class="form-help">{{ field.help_text }}</div>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors form-errors--global">
+                        {% for error in form.non_field_errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Add signer" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
     {% if signers %}
         <div class="q-signers-section-head">
             <div>
                 <h2>{% trans "Signing route" %}</h2>
-                <p>{% trans "These signers were created automatically from the document data." %}</p>
+                <p>
+                    {% if document.template %}
+                        {% trans "These signers were created automatically from the document data." %}
+                    {% else %}
+                        {% trans "These signers were added manually." %}
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -125,12 +188,28 @@
             </div>
 
             <div>
-                <span class="q-signers-kicker">{% trans "No generated signers" %}</span>
+                <span class="q-signers-kicker">
+                    {% if document.template %}
+                        {% trans "No generated signers" %}
+                    {% else %}
+                        {% trans "No manual signers" %}
+                    {% endif %}
+                </span>
 
-                <h2>{% trans "No signers were created from this document" %}</h2>
+                <h2>
+                    {% if document.template %}
+                        {% trans "No signers were created from this document" %}
+                    {% else %}
+                        {% trans "No signers were added yet" %}
+                    {% endif %}
+                </h2>
 
                 <p>
-                    {% trans "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields." %}
+                    {% if document.template %}
+                        {% trans "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields." %}
+                    {% else %}
+                        {% trans "Use the form above to add the signer details manually." %}
+                    {% endif %}
                 </p>
 
                 <a href="{% url 'documents:document_list' %}" class="btn btn-primary">

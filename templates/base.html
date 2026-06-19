@@ -141,10 +141,19 @@
         <div class="container">
 
             {% if messages %}
-                <div class="messages">
+                <div class="messages" id="appMessages" role="status" aria-live="polite">
                     {% for message in messages %}
                         <div class="message message--{{ message.tags|default:'info' }}">
-                            {{ message }}
+                            <span>{{ message }}</span>
+
+                            <button
+                                type="button"
+                                class="message__close"
+                                aria-label="{% trans 'Close' %}"
+                                data-message-close
+                            >
+                                &times;
+                            </button>
                         </div>
                     {% endfor %}
                 </div>
@@ -217,6 +226,24 @@
                 event.stopPropagation();
             });
         }
+
+        document.querySelectorAll(".message").forEach(function (message) {
+            const closeButton = message.querySelector("[data-message-close]");
+            const closeMessage = function () {
+                message.classList.add("message--closing");
+
+                window.setTimeout(function () {
+                    message.remove();
+                }, 180);
+            };
+
+            if (closeButton) {
+                closeButton.addEventListener("click", closeMessage);
+            }
+
+            const isError = message.classList.contains("message--error");
+            window.setTimeout(closeMessage, isError ? 12000 : 8000);
+        });
     });
 </script>
 

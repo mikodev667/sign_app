@@ -30,6 +30,9 @@ class DocumentDocxRenderService:
                 output_path=output_path,
             )
         else:
+            if not template:
+                raise ValueError("Uploaded documents are already rendered.")
+
             if not template.template_file:
                 raise ValueError("Document template has no DOCX file.")
 

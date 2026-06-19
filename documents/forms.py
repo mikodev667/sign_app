@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from organizations.services import get_user_managed_organizations
 
@@ -36,8 +37,26 @@ class DocumentTemplateUploadForm(forms.ModelForm):
 
 
 class DocumentCreateForm(forms.ModelForm):
+    document_file = forms.FileField(
+        required=False,
+        label=_("Ready DOC/DOCX file"),
+        help_text=_("Upload a prepared DOC or DOCX document instead of choosing a template."),
+        widget=forms.ClearableFileInput(attrs={
+            "class": "form-control",
+            "accept": ".doc,.docx",
+            "data-document-file-input": "true",
+        }),
+    )
+
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.fields["template"].required = False
+        self.fields["template"].empty_label = _("Без шаблона")
+        self.fields["template"].widget.attrs["data-template-select"] = "true"
+        self.fields["template"].label = _("Template")
+        self.fields["template"].empty_label = _("No template")
+        self.fields["title"].label = _("Document title")
 
         if user is not None:
             organizations = get_user_managed_organizations(user)
@@ -46,9 +65,32 @@ class DocumentCreateForm(forms.ModelForm):
                 status=DocumentTemplate.Status.ACTIVE,
             ).order_by("title")
 
+    def clean_document_file(self):
+        document_file = self.cleaned_data.get("document_file")
+
+        if document_file:
+            try:
+                TemplateFileService.validate_file_name(document_file.name)
+            except ValueError as exc:
+                raise forms.ValidationError(str(exc)) from exc
+
+        return document_file
+
+    def clean(self):
+        cleaned_data = super().clean()
+        template = cleaned_data.get("template")
+        document_file = cleaned_data.get("document_file")
+
+        if bool(template) == bool(document_file):
+            raise forms.ValidationError(
+                _("Choose a template or upload a ready DOC/DOCX file.")
+            )
+
+        return cleaned_data
+
     class Meta:
         model = Document
-        fields = ["template", "title"]
+        fields = ["template", "title", "document_file"]
 
         widgets = {
             "template": forms.Select(attrs={
@@ -56,7 +98,7 @@ class DocumentCreateForm(forms.ModelForm):
             }),
             "title": forms.TextInput(attrs={
                 "class": "form-control",
-                "placeholder": "Example: Employment Agreement with John Smith",
+                "placeholder": _("Example: Employment Agreement with John Smith"),
             }),
         }
 

@@ -113,6 +113,9 @@ class DocumentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 
+        if not obj.template:
+            return
+
         template_variables = obj.template.variables or []
 
         for variable in template_variables:

@@ -268,7 +268,7 @@ msgid "Use variables to personalize documents."
 msgstr "Құжаттарды жекелендіру үшін айнымалыларды пайдаланыңыз."
 
 msgid "Generation"
-msgstr "Генерация"
+msgstr "Қалыптастыру"
 
 msgid "Create documents directly from templates."
 msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
@@ -313,7 +313,7 @@ msgid "Status"
 msgstr "Мәртебе"
 
 msgid "Draft"
-msgstr "Черновик"
+msgstr "Жоба"
 
 msgid "Document setup"
 msgstr "Құжатты баптау"
@@ -1424,3 +1424,45 @@ msgstr "LawVision JSON емес жауап қайтарды."
 
 msgid "LawVision analysis failed."
 msgstr "LawVision талдауы орындалмады."
+
+msgid "Document Templates | QolQoyu"
+msgstr "Құжат шаблондары | QolQoyu"
+
+msgid "Document Templates"
+msgstr "Құжат шаблондары"
+
+msgid "Build reusable document structures, manage variables and create ready-to-sign documents faster."
+msgstr "Қайта қолданылатын құжат құрылымдарын жасаңыз, айнымалыларды басқарыңыз және қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
+
+msgid "Uploaded document structures available for document generation."
+msgstr "Жүктелген құжат құрылымдары құжат қалыптастыру үшін қолжетімді."
+
+msgid "Upload document"
+msgstr "Құжат жүктеу"
+
+msgid "Upload your first document template with variables and start generating documents from it."
+msgstr "Айнымалылары бар алғашқы құжат шаблонын жүктеп, одан құжаттар жасауды бастаңыз."
+
+msgid "Select a template or upload a ready DOC/DOCX file for the signing process."
+msgstr "Қол қою процесі үшін шаблонды таңдаңыз немесе дайын DOC/DOCX файлын жүктеңіз."
+
+msgid "Use an uploaded DOCX template as the document base, or upload a ready file."
+msgstr "Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз немесе дайын файлды жүктеңіз."
+
+msgid "Ready DOC/DOCX file"
+msgstr "Дайын DOC/DOCX файлы"
+
+msgid "Upload a prepared DOC or DOCX document instead of choosing a template."
+msgstr "Шаблон таңдаудың орнына дайындалған DOC немесе DOCX құжатын жүктеңіз."
+
+msgid "No template"
+msgstr "Шаблонсыз"
+
+msgid "Document title"
+msgstr "Құжат атауы"
+
+msgid "Choose a template or upload a ready DOC/DOCX file."
+msgstr "Шаблонды таңдаңыз немесе дайын DOC/DOCX файлын жүктеңіз."
+
+msgid "Example: Employment Agreement with John Smith"
+msgstr "Мысалы: Иван Ивановпен еңбек шарты"

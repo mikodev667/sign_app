@@ -54,6 +54,38 @@
             </div>
 
             <div class="q-public-document-body">
+                {% if document_preview.type == "pdf" %}
+                    <div class="q-public-document-preview">
+                        <iframe
+                            class="q-public-document-preview__frame"
+                            src="{{ document_preview.url }}"
+                            title="{% trans 'Document preview' %}"
+                        ></iframe>
+                    </div>
+                {% elif document_preview.type == "generated_pdf" %}
+                    <div class="q-public-document-preview">
+                        <iframe
+                            class="q-public-document-preview__frame"
+                            src="{% url 'signing:signer_document_preview' token %}"
+                            title="{% trans 'Document preview' %}"
+                        ></iframe>
+                    </div>
+                {% elif document_preview.type == "html" %}
+                    <div class="q-public-document-preview">
+                        <iframe
+                            class="q-public-document-preview__frame"
+                            src="{% url 'signing:signer_document_preview' token %}"
+                            sandbox="allow-same-origin"
+                            title="{% trans 'Document preview' %}"
+                        ></iframe>
+                    </div>
+                {% else %}
+                    <div class="q-public-document-preview q-public-document-preview--empty">
+                        <strong>{% trans "Document preview is not available." %}</strong>
+                        <span>{% trans "You can continue once the document file is rendered." %}</span>
+                    </div>
+                {% endif %}
+
                 <div class="q-public-document-card">
                     <div class="q-public-doc-icon">
                         <span>DOC</span>
@@ -77,19 +109,6 @@
                                 <a href="{{ document.rendered_docx_file.url }}" target="_blank" class="q-public-file-btn">
                                     {% trans "Download DOCX" %}
                                 </a>
-                            {% endif %}
-
-                            {% if lawvision_report %}
-                                <a href="{% url 'signing:signer_lawvision_report' token %}" class="q-public-file-btn q-public-file-btn--lawvision">
-                                    {% trans "LawVision report" %}
-                                </a>
-                            {% elif document.rendered_pdf_file or document.rendered_docx_file or document.rendered_html %}
-                                <form method="post" action="{% url 'signing:signer_lawvision_report' token %}" class="q-public-file-form">
-                                    {% csrf_token %}
-                                    <button type="submit" class="q-public-file-btn q-public-file-btn--lawvision">
-                                        {% trans "Analyze with LawVision" %}
-                                    </button>
-                                </form>
                             {% endif %}
 
                             {% if not document.rendered_pdf_file and not document.rendered_docx_file %}
@@ -145,6 +164,52 @@
                 </div>
             </div>
 
+            {% if lawvision_report %}
+                <div class="q-public-lawvision-card q-public-lawvision-card--ready">
+                    <div class="q-public-lawvision-card__top">
+                        <span>LawVision</span>
+                        <strong>{% trans "LawVision report" %}</strong>
+                    </div>
+
+                    <p>
+                        {% trans "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations." %}
+                    </p>
+
+                    <div class="q-public-lawvision-tags">
+                        <span>{% trans "Risks" %}</span>
+                        <span>{% trans "Recommendations" %}</span>
+                    </div>
+
+                    <a href="{% url 'signing:signer_lawvision_report' token %}" class="q-public-lawvision-btn">
+                        {% trans "LawVision report" %}
+                    </a>
+                </div>
+            {% elif document.rendered_pdf_file or document.rendered_docx_file or document.rendered_html %}
+                <div class="q-public-lawvision-card">
+                    <div class="q-public-lawvision-card__top">
+                        <span>LawVision</span>
+                        <strong>{% trans "Analyze with LawVision" %}</strong>
+                    </div>
+
+                    <p>
+                        {% trans "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations." %}
+                    </p>
+
+                    <div class="q-public-lawvision-tags">
+                        <span>{% trans "Risks" %}</span>
+                        <span>{% trans "Missing clauses" %}</span>
+                        <span>{% trans "Compliance" %}</span>
+                    </div>
+
+                    <form method="post" action="{% url 'signing:signer_lawvision_report' token %}">
+                        {% csrf_token %}
+                        <button type="submit" class="q-public-lawvision-btn">
+                            {% trans "Analyze with LawVision" %}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+
             {% if signer.status == "signed" %}
                 <div class="q-public-complete-card">
                     <div class="q-public-complete-icon">✓</div>
@@ -194,6 +259,14 @@
                         <a href="{% url 'signing:signature_confirmation' signature.pk %}" class="q-public-main-btn">
                             {% trans "View confirmation sheet" %}
                         </a>
+
+                        {% if signature.provider == "ecp" %}
+                            {% if signature.signature_value %}
+                                <a href="{% url 'signing:signature_cms_download' signature.pk %}" class="q-public-secondary-btn">
+                                    {% trans "Download CMS file" %}
+                                </a>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                 </div>
             {% else %}
@@ -344,13 +417,6 @@
                         <p class="q-public-method-text">
                             {% trans "Enter the code sent to your phone number." %}
                         </p>
-
-                        {% if latest_sms_session.raw_response.dev_otp %}
-                            <div class="q-public-muted-note">
-                                {% trans "Temporary console code:" %}
-                                <strong>{{ latest_sms_session.raw_response.dev_otp }}</strong>
-                            </div>
-                        {% endif %}
 
                         <form method="post" action="{% url 'signing:complete_sms_signing' token %}" class="q-public-sms-form">
                             {% csrf_token %}

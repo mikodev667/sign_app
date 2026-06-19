@@ -18,7 +18,7 @@
             </h1>
 
             <p class="create-document-subtitle">
-                {% trans "Select a template, enter document details and prepare a clean file for the signing process." %}
+                {% trans "Select a template or upload a ready DOC/DOCX file for the signing process." %}
             </p>
         </div>
 
@@ -54,7 +54,7 @@
                     <span></span>
                     <div>
                         <strong>{% trans "Choose template" %}</strong>
-                        <p>{% trans "Use an uploaded DOCX template as the document base." %}</p>
+                        <p>{% trans "Use an uploaded DOCX template as the document base, or upload a ready file." %}</p>
                     </div>
                 </div>
 
@@ -91,16 +91,25 @@
                 </div>
             </div>
 
-            <form method="post" class="app-form create-document-form">
+            <form method="post" enctype="multipart/form-data" class="app-form create-document-form">
                 {% csrf_token %}
 
                 {% for field in form %}
-                    <div class="form-group create-document-field">
+                    <div
+                        class="form-group create-document-field {% if field.name == 'document_file' %}template-upload-field template-upload-field--file{% endif %}"
+                        {% if field.name == "document_file" %}data-document-file-field{% endif %}
+                    >
                         <label for="{{ field.id_for_label }}" class="form-label">
                             {{ field.label }}
                         </label>
 
-                        {{ field }}
+                        {% if field.name == "document_file" %}
+                            <div class="template-upload-input-wrap">
+                                {{ field }}
+                            </div>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
 
                         {% if field.help_text %}
                             <div class="form-help">
@@ -141,5 +150,31 @@
     </div>
 
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const templateSelect = document.querySelector("[data-template-select]");
+        const fileField = document.querySelector("[data-document-file-field]");
+        const fileInput = document.querySelector("[data-document-file-input]");
+
+        if (!templateSelect || !fileField || !fileInput) {
+            return;
+        }
+
+        function syncDocumentFileField() {
+            const useUploadedFile = !templateSelect.value;
+            fileField.hidden = !useUploadedFile;
+            fileField.style.display = useUploadedFile ? "" : "none";
+            fileField.setAttribute("aria-hidden", useUploadedFile ? "false" : "true");
+
+            if (!useUploadedFile) {
+                fileInput.value = "";
+            }
+        }
+
+        templateSelect.addEventListener("change", syncDocumentFileField);
+        syncDocumentFileField();
+    });
+</script>
 
 {% endblock %}

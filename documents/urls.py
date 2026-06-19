@@ -10,6 +10,8 @@ urlpatterns = [
 
     path("documents/", views.document_list, name="document_list"),
     path("documents/create/", views.document_create, name="document_create"),
+    path("documents/editor-1/", views.editor_one, name="editor_one"),
+    path("documents/<int:pk>/editor/", views.document_editor, name="document_editor"),
     path("documents/<int:pk>/fill/", views.document_fill, name="document_fill"),
     path("documents/<int:pk>/render/", views.document_render_docx, name="document_render_docx"),
     path("documents/<int:pk>/lawvision/", views.document_lawvision_report, name="document_lawvision_report"),

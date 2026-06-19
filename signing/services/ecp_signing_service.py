@@ -3,6 +3,11 @@ import re
 from django.db import transaction
 from django.utils import timezone
 
+import base64
+import binascii
+
+from documents.models import StoredObject
+from documents.services.object_storage_service import ObjectStorageService
 from signing.models import (
     Signer,
     SigningSession,
@@ -20,6 +25,48 @@ class EcpSigningService:
 
         match = re.search(r"\b\d{12}\b", subject)
         return match.group(0) if match else ""
+
+    @staticmethod
+    def cms_to_der_bytes(cms_signature: str) -> bytes:
+        """
+        Converts NCALayer CMS string to DER bytes for .cms file.
+
+        NCALayer may return:
+        1) PEM-like CMS:
+        -----BEGIN CMS-----
+        MIIF...
+        -----END CMS-----
+
+        2) plain base64 CMS:
+        MIIF...
+
+        For ezSigner, we should store raw DER bytes, not PEM text.
+        """
+        if not cms_signature:
+            return b""
+
+        cms_text = cms_signature.strip()
+
+        cms_text = cms_text.replace("-----BEGIN CMS-----", "")
+        cms_text = cms_text.replace("-----END CMS-----", "")
+        cms_text = cms_text.replace("-----BEGIN PKCS7-----", "")
+        cms_text = cms_text.replace("-----END PKCS7-----", "")
+
+        cms_text = "".join(cms_text.split())
+
+        try:
+            return base64.b64decode(cms_text, validate=True)
+        except (binascii.Error, ValueError):
+            return cms_signature.encode("utf-8")
+
+    @staticmethod
+    def build_cms_filename(
+        *,
+        document_id: int,
+        signer_id: int,
+        signature_id: int,
+    ) -> str:
+        return f"document_{document_id}_signature_{signature_id}_signer_{signer_id}.cms"
 
     @classmethod
     @transaction.atomic
@@ -135,6 +182,20 @@ class EcpSigningService:
             ),
         )
 
+        cms_file_bytes = cls.cms_to_der_bytes(cms_signature)
+
+        stored_cms_object = ObjectStorageService.store_bytes(
+            document=document,
+            data=cms_file_bytes,
+            filename=cls.build_cms_filename(
+                document_id=document.id,
+                signer_id=signer.id,
+                signature_id=signature.id,
+            ),
+            content_type="application/pkcs7-mime",
+            object_type=StoredObject.ObjectType.SIGNATURE,
+        )
+
         if is_valid:
             signer.mark_signed()
             session.mark_signed()
@@ -163,6 +224,7 @@ class EcpSigningService:
                 "certificate_serial_number": certificate_serial_number,
                 "backend_validation": "not_implemented",
                 "validation_result": validation_result,
+                "stored_cms_object": cls.serialize_stored_cms_object(stored_cms_object),
             },
         )
 
@@ -184,7 +246,26 @@ class EcpSigningService:
                 "provider": SigningSession.Provider.ECP,
                 "is_valid": is_valid,
                 "validation_error": validation_error,
+                "stored_cms_object": cls.serialize_stored_cms_object(stored_cms_object),
             },
         )
 
         return signature
+
+    @staticmethod
+    def serialize_stored_cms_object(stored_object):
+        if not stored_object:
+            return None
+
+        return {
+            "id": stored_object.id,
+            "bucket": stored_object.bucket,
+            "object_key": stored_object.object_key,
+            "version_id": stored_object.version_id,
+            "sha256": stored_object.sha256,
+            "retention_until": (
+                stored_object.retention_until.isoformat()
+                if stored_object.retention_until
+                else None
+            ),
+        }

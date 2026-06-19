@@ -23,6 +23,11 @@ urlpatterns = [
         name="signer_public_page",
     ),
     path(
+        "s/<str:token>/preview/",
+        views.signer_document_preview,
+        name="signer_document_preview",
+    ),
+    path(
         "s/<str:token>/lawvision/",
         views.signer_lawvision_report,
         name="signer_lawvision_report",
@@ -71,6 +76,11 @@ urlpatterns = [
         "signature/<int:signature_pk>/confirmation/",
         views.signature_confirmation,
         name="signature_confirmation",
+    ),
+    path(
+        "signature/<int:signature_pk>/cms/",
+        views.signature_cms_download,
+        name="signature_cms_download",
     ),
     #ecp confirmation
     path(

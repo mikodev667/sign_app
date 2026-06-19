@@ -1425,3 +1425,45 @@ msgstr "LawVision вернул ответ не в формате JSON."
 
 msgid "LawVision analysis failed."
 msgstr "Анализ LawVision не выполнен."
+
+msgid "Document Templates | QolQoyu"
+msgstr "Шаблоны документов | QolQoyu"
+
+msgid "Document Templates"
+msgstr "Шаблоны документов"
+
+msgid "Build reusable document structures, manage variables and create ready-to-sign documents faster."
+msgstr "Создавайте многоразовые структуры документов, управляйте переменными и быстрее формируйте документы для подписания."
+
+msgid "Uploaded document structures available for document generation."
+msgstr "Загруженные структуры документов доступны для генерации документов."
+
+msgid "Upload document"
+msgstr "Загрузить документ"
+
+msgid "Upload your first document template with variables and start generating documents from it."
+msgstr "Загрузите первый шаблон документа с переменными и начните создавать документы на его основе."
+
+msgid "Select a template or upload a ready DOC/DOCX file for the signing process."
+msgstr "Выберите шаблон или загрузите готовый DOC/DOCX-файл для процесса подписания."
+
+msgid "Use an uploaded DOCX template as the document base, or upload a ready file."
+msgstr "Используйте загруженный DOCX-шаблон как основу документа или загрузите готовый файл."
+
+msgid "Ready DOC/DOCX file"
+msgstr "Готовый DOC/DOCX-файл"
+
+msgid "Upload a prepared DOC or DOCX document instead of choosing a template."
+msgstr "Загрузите подготовленный DOC или DOCX-документ вместо выбора шаблона."
+
+msgid "No template"
+msgstr "Без шаблона"
+
+msgid "Document title"
+msgstr "Название документа"
+
+msgid "Choose a template or upload a ready DOC/DOCX file."
+msgstr "Выберите шаблон или загрузите готовый DOC/DOCX-файл."
+
+msgid "Example: Employment Agreement with John Smith"
+msgstr "Например: трудовой договор с Иваном Ивановым"

@@ -23,6 +23,7 @@
         </div>
 
         <div class="documents-hero__actions">
+
             <a href="{% url 'documents:document_create' %}" class="btn btn-primary documents-main-action">
                 {% trans "Create document" %}
             </a>
@@ -79,7 +80,13 @@
 
                         <div class="document-card__meta">
                             <span>{% trans "Template" %}</span>
-                            <strong>{{ document.template.title }}</strong>
+                            <strong>
+                                {% if document.template %}
+                                    {{ document.template.title }}
+                                {% else %}
+                                    {% trans "Uploaded DOCX" %}
+                                {% endif %}
+                            </strong>
                         </div>
                     </div>
 
@@ -132,15 +139,156 @@
                         {% endif %}
 
                         {% if document.can_be_edited %}
-                            <a href="{% url 'documents:document_fill' document.pk %}" class="document-action document-action--edit">
-                                {% trans "Edit" %}
-                            </a>
+                            {% if document.template %}
+                                <a href="{% url 'documents:document_fill' document.pk %}" class="document-action document-action--edit">
+                                    {% trans "Edit" %}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'documents:document_editor' document.pk %}" class="document-action document-action--edit">
+                                    {% trans "Edit" %}
+                                </a>
+                            {% endif %}
                         {% endif %}
 
-                        <a href="{% url 'signing:document_signers' document.pk %}" class="document-action document-action--primary">
-                            {% trans "Signers" %}
-                        </a>
+                        {% if document.template %}
+                            <button
+                                type="button"
+                                class="document-action document-action--primary document-action--button"
+                                data-signers-modal-open="document-signers-{{ document.pk }}"
+                            >
+                                {% trans "Signers" %}
+                            </button>
+                        {% else %}
+                            <a href="{% url 'signing:document_signers' document.pk %}" class="document-action document-action--primary">
+                                {% trans "Signers" %}
+                            </a>
+                        {% endif %}
                     </div>
+
+                    <dialog class="document-signers-modal" id="document-signers-{{ document.pk }}">
+                        <div class="document-signers-modal__panel">
+                            <div class="document-signers-modal__head">
+                                <div>
+                                    <span class="q-signers-kicker">{% trans "Signing control" %}</span>
+                                    <h2>{% trans "Document signers" %}</h2>
+                                    <p>{{ document.title }}</p>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="document-signers-modal__close"
+                                    data-signers-modal-close
+                                    aria-label="{% trans 'Close' %}"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+
+                            <div class="document-signers-modal__stats">
+                                <div class="q-signers-overview-card">
+                                    <span>{% trans "Total signers" %}</span>
+                                    <strong>{{ document.signers.all|length }}</strong>
+                                    <p>{% trans "Prepared for signing" %}</p>
+                                </div>
+
+                                <div class="q-signers-overview-card q-signers-overview-card--blue">
+                                    <span>{% trans "Document status" %}</span>
+                                    <strong>{{ document.status }}</strong>
+                                    <p>{% trans "Current signing state" %}</p>
+                                </div>
+
+                                <div class="q-signers-overview-card q-signers-overview-card--teal">
+                                    <span>{% trans "Access links" %}</span>
+                                    <strong>{% trans "Secure" %}</strong>
+                                    <p>{% trans "Each signer receives a personal link" %}</p>
+                                </div>
+                            </div>
+
+                            {% if document.signers.all %}
+                                <div class="q-signers-section-head document-signers-modal__section-head">
+                                    <div>
+                                        <h2>{% trans "Signing route" %}</h2>
+                                        <p>{% trans "These signers are attached to the document." %}</p>
+                                    </div>
+                                </div>
+
+                                <div class="q-signers-timeline document-signers-modal__timeline">
+                                    {% for signer in document.signers.all %}
+                                        <article class="q-signer-card">
+                                            <div class="q-signer-order">
+                                                <span>{% trans "Order" %}</span>
+                                                <strong>{{ signer.signing_order }}</strong>
+                                            </div>
+
+                                            <div class="q-signer-main">
+                                                <div class="q-signer-top">
+                                                    <div>
+                                                        <h3>{{ signer.full_name }}</h3>
+
+                                                        <div class="q-signer-meta">
+                                                            <span>{{ signer.iin }}</span>
+                                                            <span>{{ signer.phone }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <span class="q-signer-badge">
+                                                        {{ signer.get_status_display }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="q-signer-details">
+                                                    <div>
+                                                        <span>{% trans "Signing method" %}</span>
+                                                        <strong>{{ signer.get_signing_method_display }}</strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>{% trans "Status" %}</span>
+                                                        <strong>{{ signer.get_status_display }}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="q-signer-actions">
+                                                {% if signer.status != "signed" %}
+                                                    <form method="post" action="{% url 'signing:create_signer_access_link' signer.pk %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="q-signer-action-btn">
+                                                            {% trans "Create SMS link" %}
+                                                        </button>
+                                                    </form>
+                                                {% else %}
+                                                    <div class="q-signer-completed">
+                                                        {% trans "Already signed" %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </article>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="q-signers-empty document-signers-modal__empty">
+                                    <div class="q-signers-empty__visual">
+                                        <div class="q-empty-route">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <span class="q-signers-kicker">{% trans "No generated signers" %}</span>
+
+                                        <h2>{% trans "No signers were created from this document" %}</h2>
+
+                                        <p>
+                                            {% trans "Signer management will be available here after manual signer forms are added." %}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </dialog>
                 </article>
             {% endfor %}
         </div>
@@ -174,4 +322,47 @@
 
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openModal = function (modal) {
+            if (!modal) {
+                return;
+            }
+
+            if (typeof modal.showModal === "function") {
+                modal.showModal();
+            } else {
+                modal.setAttribute("open", "open");
+            }
+        };
+
+        document.querySelectorAll("[data-signers-modal-open]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                openModal(document.getElementById(button.dataset.signersModalOpen));
+            });
+        });
+
+        document.querySelectorAll(".document-signers-modal").forEach(function (modal) {
+            modal.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.close();
+                }
+            });
+
+            modal.querySelectorAll("[data-signers-modal-close]").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    modal.close();
+                });
+            });
+        });
+
+        const signersDocumentId = new URLSearchParams(window.location.search).get("signers");
+        if (signersDocumentId) {
+            openModal(document.getElementById("document-signers-" + signersDocumentId));
+        }
+    });
+</script>
 {% endblock %}

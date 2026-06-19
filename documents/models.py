@@ -82,6 +82,8 @@ class Document(models.Model):
         DocumentTemplate,
         on_delete=models.PROTECT,
         related_name="documents",
+        blank=True,
+        null=True,
     )
 
     created_by = models.ForeignKey(
@@ -448,6 +450,21 @@ class TemplatePartyField(models.Model):
 
     def __str__(self):
         return f"{self.party.title} — {self.label}"
+    @property
+    def display_label(self):
+        if not self.is_system:
+            return self.label
+
+        system_labels = {
+            self.SystemField.FULL_NAME: _("Full name"),
+            self.SystemField.IIN_BIN: _("IIN / BIN"),
+            self.SystemField.PHONE: _("Phone"),
+            self.SystemField.SIGNING_METHOD: _("Signing method"),
+        }
+
+        return system_labels.get(self.variable_name, self.label)
+
+
 class StoredObject(models.Model):
     class ObjectType(models.TextChoices):
         FINAL_PDF = "final_pdf", _("Final PDF")
