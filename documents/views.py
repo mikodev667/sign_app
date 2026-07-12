@@ -3,20 +3,24 @@ import json
 import os
 import re
 import tempfile
-from pathlib import Path
 from uuid import uuid4
+from pathlib import Path
 
+import requests
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.db import transaction
 from django.db.models import Prefetch
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import gettext as _
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_http_methods
 
 from organizations.services import (
@@ -47,6 +51,7 @@ from .services.evidence_bundle_service import (
     EvidenceBundleService,
 )
 from .services.docx_preview_service import DocxPreviewService
+from .services.onlyoffice_service import OnlyOfficeService, OnlyOfficeTokenError
 from .services.template_file_service import TemplateFileService
 
 
@@ -179,16 +184,34 @@ def create_field_values_for_template(document):
 
 
 def get_template_preview_html(template):
-    if template.body_template:
-        return template.body_template
-
     if template.template_file:
+        if template.body_template:
+            return template.body_template
+
         try:
-            return TemplateFileService.convert_to_html(template.template_file.path)
+            preview_html = TemplateFileService.convert_to_html(template.template_file.path)
         except ValueError:
             return ""
 
+        template.body_template = preview_html
+        template.save(update_fields=["body_template", "updated_at"])
+        return preview_html
+
+    if template.body_template:
+        return template.body_template
+
     return ""
+
+
+def get_onlyoffice_internal_download_url(download_url):
+    public_base = settings.ONLYOFFICE_SERVER_URL.rstrip("/")
+    command_base = settings.ONLYOFFICE_COMMAND_SERVICE_URL.rstrip("/")
+    internal_base = command_base.rsplit("/", 1)[0]
+
+    if download_url and download_url.startswith(public_base):
+        return internal_base + download_url[len(public_base):]
+
+    return download_url
 
 
 def collect_field_schema_variables(field_schema):
@@ -221,12 +244,24 @@ def collect_template_variables(template, *, body_template="", field_schema=None)
     ))
 
 
+def collect_docx_template_variables(template, *, field_schema=None):
+    variables = []
+
+    if template.template_file:
+        try:
+            variables.extend(TemplateFileService.extract_variables(template.template_file.path))
+        except ValueError:
+            pass
+
+    variables.extend(collect_field_schema_variables(field_schema))
+    variables.extend(collect_party_variables(template))
+    return list(dict.fromkeys(variables))
+
+
 def prepare_uploaded_template_file(template):
     TemplateFileService.normalize_template_file_to_docx(template)
 
-    template.body_template = TemplateFileService.convert_to_html(
-        template.template_file.path
-    )
+    template.body_template = ""
     template.variables = TemplateFileService.extract_variables(
         template.template_file.path
     )
@@ -241,11 +276,18 @@ def ensure_document_editable_or_redirect(request, document):
     if hasattr(document, "can_be_edited") and not document.can_be_edited():
         messages.error(
             request,
-            "Document cannot be edited after signer invitation.",
+            "Document cannot be edited after the first signer has signed.",
         )
         return redirect("documents:document_list")
 
     return None
+
+
+def get_status_after_edit(document):
+    if document.pk and document.signers.exists():
+        return Document.Status.WAITING_FOR_SIGNERS
+
+    return Document.Status.DRAFT
 
 
 def normalize_uploaded_document_to_docx(document):
@@ -478,7 +520,7 @@ def document_create(request):
                     })
 
                 messages.success(request, "Document uploaded. Review it in the editor.")
-                return redirect("documents:document_editor", pk=document.pk)
+                return redirect("documents:document_onlyoffice_editor", pk=document.pk)
 
             create_field_values_for_template(document)
 
@@ -524,6 +566,265 @@ def get_uploaded_document_page_layout(document):
 
 
 @login_required
+def document_onlyoffice_editor(request, pk):
+    document = get_object_or_404(
+        get_managed_documents_queryset(request.user),
+        pk=pk,
+    )
+
+    if document.template:
+        return redirect("documents:document_fill", pk=document.pk)
+
+    if not document.rendered_docx_file:
+        messages.error(request, _("Document DOCX file is not available."))
+        return redirect("documents:document_list")
+
+    return render(request, "documents/onlyoffice_editor.html", {
+        "document": document,
+        "onlyoffice_server_url": settings.ONLYOFFICE_SERVER_URL.rstrip("/"),
+        "editor_config": OnlyOfficeService.build_editor_config(
+            document=document,
+            user=request.user,
+            request=request,
+        ),
+    })
+
+
+@require_GET
+def document_onlyoffice_file(request, pk):
+    document = get_object_or_404(Document, pk=pk)
+
+    try:
+        OnlyOfficeService.verify_action_token(
+            request.GET.get("token", ""),
+            document_id=document.pk,
+            action="download",
+        )
+    except OnlyOfficeTokenError:
+        return HttpResponse(_("Document access token is invalid."), status=403)
+
+    if not document.rendered_docx_file:
+        return HttpResponse(_("Document DOCX file is not available."), status=404)
+
+    with document.rendered_docx_file.open("rb") as document_file:
+        content = document_file.read()
+
+    response = HttpResponse(
+        content,
+        content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+    filename = document.rendered_docx_file.name.rsplit("/", 1)[-1] or f"document-{document.pk}.docx"
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def document_onlyoffice_callback(request, pk):
+    document = get_object_or_404(Document, pk=pk)
+
+    try:
+        OnlyOfficeService.verify_action_token(
+            request.GET.get("token", ""),
+            document_id=document.pk,
+            action="callback",
+        )
+    except OnlyOfficeTokenError:
+        return JsonResponse({"error": 1})
+
+    try:
+        payload = json.loads(request.body.decode("utf-8") or "{}")
+    except (TypeError, ValueError, UnicodeDecodeError):
+        return JsonResponse({"error": 1})
+
+    status = payload.get("status")
+
+    if status not in {2, 6}:
+        return JsonResponse({"error": 0})
+
+    if not document.can_be_edited():
+        return JsonResponse({"error": 1})
+
+    download_url = payload.get("url")
+
+    if not download_url:
+        return JsonResponse({"error": 1})
+
+    download_url = get_onlyoffice_internal_download_url(download_url)
+
+    try:
+        saved_response = requests.get(download_url, timeout=60)
+        saved_response.raise_for_status()
+    except requests.RequestException:
+        return JsonResponse({"error": 1})
+
+    filename = f"document_{document.pk}_{uuid4().hex}.docx"
+    document.rendered_docx_file.save(
+        filename,
+        ContentFile(saved_response.content),
+        save=False,
+    )
+    document.rendered_html = ""
+    document.rendered_pdf_file = None
+    document.status = get_status_after_edit(document)
+    document.update_content_hash(save=False)
+    document.save(update_fields=[
+        "rendered_docx_file",
+        "rendered_html",
+        "rendered_pdf_file",
+        "status",
+        "content_hash",
+        "updated_at",
+    ])
+    return JsonResponse({"error": 0})
+
+
+@require_GET
+def template_onlyoffice_file(request, pk):
+    template = get_object_or_404(DocumentTemplate, pk=pk)
+
+    try:
+        OnlyOfficeService.verify_action_token(
+            request.GET.get("token", ""),
+            template_id=template.pk,
+            action="download_template",
+        )
+    except OnlyOfficeTokenError:
+        return HttpResponse(_("Template access token is invalid."), status=403)
+
+    if not template.template_file:
+        return HttpResponse(_("Template DOCX file is not available."), status=404)
+
+    with template.template_file.open("rb") as template_file:
+        content = template_file.read()
+
+    response = HttpResponse(
+        content,
+        content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
+    filename = template.template_file.name.rsplit("/", 1)[-1] or f"template-{template.pk}.docx"
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def template_onlyoffice_callback(request, pk):
+    template = get_object_or_404(DocumentTemplate, pk=pk)
+
+    try:
+        OnlyOfficeService.verify_action_token(
+            request.GET.get("token", ""),
+            template_id=template.pk,
+            action="callback_template",
+        )
+    except OnlyOfficeTokenError:
+        return JsonResponse({"error": 1})
+
+    try:
+        payload = json.loads(request.body.decode("utf-8") or "{}")
+    except (TypeError, ValueError, UnicodeDecodeError):
+        return JsonResponse({"error": 1})
+
+    if payload.get("status") not in {2, 6}:
+        return JsonResponse({"error": 0})
+
+    download_url = payload.get("url")
+
+    if not download_url:
+        return JsonResponse({"error": 1})
+
+    download_url = get_onlyoffice_internal_download_url(download_url)
+
+    try:
+        saved_response = requests.get(download_url, timeout=60)
+        saved_response.raise_for_status()
+    except requests.RequestException:
+        return JsonResponse({"error": 1})
+
+    old_file_name = template.template_file.name if template.template_file else ""
+    filename = f"template_{template.pk}_{uuid4().hex}.docx"
+    template.template_file.save(
+        filename,
+        ContentFile(saved_response.content),
+        save=False,
+    )
+    template.body_template = ""
+    template.variables = collect_docx_template_variables(
+        template,
+        field_schema=template.field_schema,
+    )
+    template.save(update_fields=[
+        "template_file",
+        "body_template",
+        "variables",
+        "updated_at",
+    ])
+
+    if old_file_name and old_file_name != template.template_file.name:
+        default_storage.delete(old_file_name)
+
+    return JsonResponse({"error": 0})
+
+
+@login_required
+@require_http_methods(["POST"])
+def template_onlyoffice_save(request, pk):
+    template = get_object_or_404(
+        get_managed_templates_queryset(request.user),
+        pk=pk,
+    )
+
+    if not template.template_file:
+        return JsonResponse({"ok": False, "message": _("Template DOCX file is not available.")}, status=400)
+
+    try:
+        field_schema = json.loads(request.POST.get("field_schema", "[]"))
+    except json.JSONDecodeError:
+        field_schema = []
+
+    key = request.POST.get("onlyoffice_key") or OnlyOfficeService.template_key(template)
+    template.field_schema = field_schema
+    template.variables = collect_docx_template_variables(
+        template,
+        field_schema=field_schema,
+    )
+    template.save(update_fields=[
+        "field_schema",
+        "variables",
+        "updated_at",
+    ])
+
+    try:
+        command_response = OnlyOfficeService.force_save_key(key)
+    except requests.RequestException as exc:
+        return JsonResponse({
+            "ok": False,
+            "message": _("OnlyOffice save command failed: %(error)s") % {"error": str(exc)},
+        }, status=502)
+    except (TypeError, ValueError) as exc:
+        return JsonResponse({
+            "ok": False,
+            "message": _("OnlyOffice returned an invalid save response: %(error)s") % {"error": str(exc)},
+        }, status=502)
+
+    error_code = command_response.get("error", 0)
+
+    if error_code not in {0, 4}:
+        return JsonResponse({
+            "ok": False,
+            "message": _("OnlyOffice save command returned error %(error)s.") % {"error": error_code},
+            "response": command_response,
+        }, status=502)
+
+    return JsonResponse({
+        "ok": True,
+        "message": _("Save requested. OnlyOffice will update the DOCX shortly."),
+        "response": command_response,
+    })
+
+
+@login_required
 def document_editor(request, pk):
     document = get_object_or_404(
         get_managed_documents_queryset(request.user),
@@ -537,13 +838,16 @@ def document_editor(request, pk):
     if document.template:
         return redirect("documents:document_fill", pk=document.pk)
 
+    if document.rendered_docx_file:
+        return redirect("documents:document_onlyoffice_editor", pk=document.pk)
+
     if request.method == "POST":
         if request.POST.get("document_changed") != "1" and document.rendered_docx_file:
             messages.success(request, "Document reviewed. Add signers when ready.")
             return redirect("signing:document_signers", document_pk=document.pk)
 
         document.rendered_html = request.POST.get("rendered_html", "")
-        document.status = Document.Status.DRAFT
+        document.status = get_status_after_edit(document)
         document.save(update_fields=[
             "rendered_html",
             "status",
@@ -582,12 +886,10 @@ def create_signers_from_template_parties(document, values, request=None):
             full_name = values.get(f"{prefix}_full_name", "").strip()
             iin = values.get(f"{prefix}_iin_bin", "").strip()
             phone = values.get(f"{prefix}_phone", "").strip()
-            signing_method = values.get(f"{prefix}_signing_method", "").strip()
+            email = values.get(f"{prefix}_email", "").strip()
+            signing_method = Signer.SigningMethod.EGOV_MOBILE
 
-            if not signing_method:
-                signing_method = Signer.SigningMethod.EGOV_MOBILE
-
-            has_partial_signer = bool(full_name or iin or phone)
+            has_partial_signer = bool(full_name or iin or phone or email)
             if not has_partial_signer:
                 continue
 
@@ -611,10 +913,12 @@ def create_signers_from_template_parties(document, values, request=None):
             if existing_signer:
                 SignerService.validate_iin(iin)
                 SignerService.validate_phone(phone)
+                SignerService.validate_email(email)
 
                 existing_signer.full_name = full_name
                 existing_signer.iin = iin
                 existing_signer.phone = SignerService.normalize_phone(phone)
+                existing_signer.email = email
                 existing_signer.signing_method = signing_method
                 existing_signer.signing_order = party.signing_order
                 existing_signer.role_title = party.title
@@ -622,6 +926,7 @@ def create_signers_from_template_parties(document, values, request=None):
                     "full_name",
                     "iin",
                     "phone",
+                    "email",
                     "signing_method",
                     "signing_order",
                     "role_title",
@@ -633,6 +938,7 @@ def create_signers_from_template_parties(document, values, request=None):
                     full_name=full_name,
                     iin=iin,
                     phone=phone,
+                    email=email,
                     signing_order=party.signing_order,
                     signing_method=signing_method,
                     template_party=party,
@@ -674,17 +980,20 @@ def document_fill(request, pk):
             messages.error(request, str(exc))
             return redirect("documents:document_fill", pk=document.pk)
 
-        rendered_html = document.template.body_template or ""
+        if document.template.template_file:
+            document.rendered_html = ""
+        else:
+            rendered_html = document.template.body_template or ""
 
-        for key, value in values.items():
-            rendered_html = re.sub(
-                r"{{\s*" + re.escape(key) + r"\s*}}",
-                escape(value),
-                rendered_html,
-            )
+            for key, value in values.items():
+                rendered_html = re.sub(
+                    r"{{\s*" + re.escape(key) + r"\s*}}",
+                    escape(value),
+                    rendered_html,
+                )
 
-        document.rendered_html = rendered_html
-        document.status = Document.Status.DRAFT
+            document.rendered_html = rendered_html
+        document.status = get_status_after_edit(document)
         document.save(update_fields=[
             "rendered_html",
             "status",
@@ -705,6 +1014,7 @@ def document_fill(request, pk):
         "fields": fields,
         "parties": parties,
         "preview_html": get_template_preview_html(document.template),
+        "is_docx_template": bool(document.template and document.template.template_file),
     })
 
 
@@ -748,20 +1058,32 @@ def template_edit(request, pk):
         except json.JSONDecodeError:
             field_schema = []
 
-        template.body_template = body_template
-        template.field_schema = field_schema
-        template.variables = collect_template_variables(
-            template,
-            body_template=body_template,
-            field_schema=field_schema,
-        )
+        if not template.template_file:
+            template.body_template = body_template
 
-        template.save(update_fields=[
-            "body_template",
+        template.field_schema = field_schema
+        if template.template_file:
+            template.variables = collect_docx_template_variables(
+                template,
+                field_schema=field_schema,
+            )
+        else:
+            template.variables = collect_template_variables(
+                template,
+                body_template=body_template,
+                field_schema=field_schema,
+            )
+
+        update_fields = [
             "field_schema",
             "variables",
             "updated_at",
-        ])
+        ]
+
+        if not template.template_file:
+            update_fields.insert(0, "body_template")
+
+        template.save(update_fields=update_fields)
 
         messages.success(request, "Template saved successfully.")
         return redirect("documents:template_edit", pk=template.pk)
@@ -782,6 +1104,16 @@ def template_edit(request, pk):
     return render(request, "documents/template_edit.html", {
         "template": template,
         "editor_html": editor_html,
+        "onlyoffice_server_url": settings.ONLYOFFICE_SERVER_URL.rstrip("/"),
+        "template_onlyoffice_config": (
+            OnlyOfficeService.build_template_editor_config(
+                template=template,
+                user=request.user,
+                request=request,
+            )
+            if template.template_file
+            else None
+        ),
         "field_schema_json": json.dumps(template.field_schema or [], ensure_ascii=False),
         "parties": parties,
         "party_form": TemplatePartyForm(),

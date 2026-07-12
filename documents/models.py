@@ -165,7 +165,16 @@ class Document(models.Model):
         Документ нельзя редактировать, если он уже заблокирован
         или вышел из статуса draft.
         """
-        return self.locked_at is not None or self.status != self.Status.DRAFT
+        if self.status in {self.Status.PARTIALLY_SIGNED, self.Status.SIGNED}:
+            return True
+
+        if self.signed_at:
+            return True
+
+        if not self.pk:
+            return False
+
+        return self.signers.filter(status="signed").exists()
 
     def can_be_edited(self):
         """
@@ -412,6 +421,7 @@ class TemplatePartyField(models.Model):
         FULL_NAME = "full_name", "Full name"
         IIN_BIN = "iin_bin", "IIN / BIN"
         PHONE = "phone", "Phone"
+        EMAIL = "email", "Email"
         SIGNING_METHOD = "signing_method", "Signing method"
 
     party = models.ForeignKey(
@@ -459,6 +469,7 @@ class TemplatePartyField(models.Model):
             self.SystemField.FULL_NAME: _("Full name"),
             self.SystemField.IIN_BIN: _("IIN / BIN"),
             self.SystemField.PHONE: _("Phone"),
+            self.SystemField.EMAIL: _("Email"),
             self.SystemField.SIGNING_METHOD: _("Signing method"),
         }
 

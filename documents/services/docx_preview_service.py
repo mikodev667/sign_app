@@ -227,11 +227,20 @@ class DocxPreviewService:
 
     @classmethod
     def run_soffice_conversion(cls, *, soffice_path: str, file_path: str, output_dir: str):
+        profile_dir = os.path.join(output_dir, "lo_profile")
+        profile_uri = Path(profile_dir).as_posix()
+
         try:
             return subprocess.run(
                 [
                     soffice_path,
                     "--headless",
+                    "--invisible",
+                    "--nodefault",
+                    "--nofirststartwizard",
+                    "--nolockcheck",
+                    "--norestore",
+                    f"-env:UserInstallation=file:///{profile_uri}",
                     "--convert-to",
                     "html",
                     "--outdir",

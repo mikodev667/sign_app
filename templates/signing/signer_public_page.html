@@ -153,10 +153,19 @@
                     <strong>{{ signer.phone }}</strong>
                 </div>
 
-                <div>
-                    <span>{% trans "Signing method" %}</span>
-                    <strong>{{ signer.get_signing_method_display }}</strong>
-                </div>
+                {% if signer.email %}
+                    <div>
+                        <span>{% trans "Email" %}</span>
+                        <strong>{{ signer.email }}</strong>
+                    </div>
+                {% endif %}
+
+                {% if not show_method_choice %}
+                    <div>
+                        <span>{% trans "Signing method" %}</span>
+                        <strong>{{ signer.get_signing_method_display }}</strong>
+                    </div>
+                {% endif %}
 
                 <div>
                     <span>{% trans "Status" %}</span>
@@ -271,6 +280,48 @@
                 </div>
             {% else %}
 
+                {% if show_method_choice %}
+                    <div class="q-public-method-card q-public-method-card--choice">
+                        <div class="q-public-method-card__head">
+                            <span>{% trans "Signing method" %}</span>
+                            <strong>{% trans "Choose how to sign" %}</strong>
+                        </div>
+
+                        <p class="q-public-method-text">
+                            {% trans "Select the signing method you want to use for this document." %}
+                        </p>
+
+                        <div class="q-public-method-choice-grid">
+                            <form method="post" action="{% url 'signing:choose_signing_method' token %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="signing_method" value="egov_mobile">
+                                <button type="submit" class="q-public-method-choice-btn q-public-method-choice-btn--egov">
+                                    <strong>{% trans "eGov Mobile" %}</strong>
+                                    <span>{% trans "Sign through the mobile app" %}</span>
+                                </button>
+                            </form>
+
+                            <form method="post" action="{% url 'signing:choose_signing_method' token %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="signing_method" value="sms">
+                                <button type="submit" class="q-public-method-choice-btn q-public-method-choice-btn--sms">
+                                    <strong>{% trans "SMS confirmation" %}</strong>
+                                    <span>{% trans "Receive and enter a code" %}</span>
+                                </button>
+                            </form>
+
+                            <form method="post" action="{% url 'signing:choose_signing_method' token %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="signing_method" value="ecp">
+                                <button type="submit" class="q-public-method-choice-btn q-public-method-choice-btn--ecp">
+                                    <strong>{% trans "ECP" %}</strong>
+                                    <span>{% trans "Sign with NCALayer" %}</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+
                 {% if latest_session and latest_session.provider == "egov_mobile" %}
                     <div class="q-public-method-card">
                         <div class="q-public-method-card__head">
@@ -307,105 +358,107 @@
                     </div>
                 {% endif %}
 
-                <div class="q-public-method-card">
-                    <div class="q-public-method-card__head">
-                        <span>{% trans "Selected method" %}</span>
-                        <strong>{{ signer.get_signing_method_display }}</strong>
-                    </div>
+                {% if not show_method_choice %}
+                    <div class="q-public-method-card">
+                        <div class="q-public-method-card__head">
+                            <span>{% trans "Selected method" %}</span>
+                            <strong>{{ signer.get_signing_method_display }}</strong>
+                        </div>
 
-                    {% if signer.signing_method == "egov_mobile" %}
-                        <p class="q-public-method-text">
-                            {% trans "Continue signing in eGov Mobile. You may need to confirm the signing request in the mobile app." %}
-                        </p>
-
-                        <form method="post" action="{% url 'signing:start_egov_signing' token %}">
-                            {% csrf_token %}
-                            <button type="submit" class="q-public-main-btn">
-                                {% trans "Sign with eGov Mobile" %}
-                            </button>
-                        </form>
-
-                    {% elif signer.signing_method == "sms" %}
-
-                        {% if latest_sms_session %}
+                        {% if signer.signing_method == "egov_mobile" %}
                             <p class="q-public-method-text">
-                                {% trans "SMS code has been sent to your phone number." %}
+                                {% trans "Continue signing in eGov Mobile. You may need to confirm the signing request in the mobile app." %}
                             </p>
 
-                            <div class="q-public-session-grid">
-                                <div>
-                                    <span>{% trans "Session status" %}</span>
-                                    <strong>{{ latest_sms_session.get_status_display }}</strong>
-                                </div>
-
-                                {% if latest_sms_session.expires_at %}
-                                    <div>
-                                        <span>{% trans "Code expires at" %}</span>
-                                        <strong>{{ latest_sms_session.expires_at }}</strong>
-                                    </div>
-                                {% endif %}
-
-                                <div>
-                                    <span>{% trans "Attempts" %}</span>
-                                    <strong>{{ latest_sms_session.attempts_count }} / {{ latest_sms_session.max_attempts }}</strong>
-                                </div>
-                            </div>
-
-                            {% if latest_sms_session.cooldown_until %}
-                                <div class="q-public-muted-note">
-                                    {% trans "If the code is incorrect, wait before trying again." %}
-                                </div>
-                            {% endif %}
-                        {% else %}
-                            <p class="q-public-method-text">
-                                {% trans "Confirm that you reviewed the document and request an SMS verification code." %}
-                            </p>
-
-                            <form method="post" action="{% url 'signing:start_sms_signing' token %}" class="q-public-consent-form">
+                            <form method="post" action="{% url 'signing:start_egov_signing' token %}">
                                 {% csrf_token %}
-
-                                <label class="q-public-consent">
-                                    <input type="checkbox" name="consent" required>
-
-                                    <span>
-                                        {% trans "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code." %}
-                                    </span>
-                                </label>
-
                                 <button type="submit" class="q-public-main-btn">
-                                    {% trans "Send SMS code" %}
+                                    {% trans "Sign with eGov Mobile" %}
                                 </button>
                             </form>
+
+                        {% elif signer.signing_method == "sms" %}
+
+                            {% if latest_sms_session %}
+                                <p class="q-public-method-text">
+                                    {% trans "SMS code has been sent to your phone number." %}
+                                </p>
+
+                                <div class="q-public-session-grid">
+                                    <div>
+                                        <span>{% trans "Session status" %}</span>
+                                        <strong>{{ latest_sms_session.get_status_display }}</strong>
+                                    </div>
+
+                                    {% if latest_sms_session.expires_at %}
+                                        <div>
+                                            <span>{% trans "Code expires at" %}</span>
+                                            <strong>{{ latest_sms_session.expires_at }}</strong>
+                                        </div>
+                                    {% endif %}
+
+                                    <div>
+                                        <span>{% trans "Attempts" %}</span>
+                                        <strong>{{ latest_sms_session.attempts_count }} / {{ latest_sms_session.max_attempts }}</strong>
+                                    </div>
+                                </div>
+
+                                {% if latest_sms_session.cooldown_until %}
+                                    <div class="q-public-muted-note">
+                                        {% trans "If the code is incorrect, wait before trying again." %}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <p class="q-public-method-text">
+                                    {% trans "Confirm that you reviewed the document and request an SMS verification code." %}
+                                </p>
+
+                                <form method="post" action="{% url 'signing:start_sms_signing' token %}" class="q-public-consent-form">
+                                    {% csrf_token %}
+
+                                    <label class="q-public-consent">
+                                        <input type="checkbox" name="consent" required>
+
+                                        <span>
+                                            {% trans "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code." %}
+                                        </span>
+                                    </label>
+
+                                    <button type="submit" class="q-public-main-btn">
+                                        {% trans "Send SMS code" %}
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                        {% elif signer.signing_method == "ecp" %}
+
+                            <p class="q-public-method-text">
+                                {% trans "To sign this document using ECP, make sure NCALayer is installed and running on your computer." %}
+                            </p>
+
+                            <p class="q-public-muted-note">
+                                {% trans "After clicking the button, choose your ECP key and confirm signing in NCALayer." %}
+                            </p>
+
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                            <button
+                                type="button"
+                                id="ecp-sign-button"
+                                class="q-public-main-btn"
+                                onclick="signDocumentWithEcp(
+                                    '{% url 'signing:ecp_signing_payload' token %}',
+                                    '{% url 'signing:ecp_signing_complete' token %}'
+                                )"
+                            >
+                                {% trans "Sign with ECP" %}
+                            </button>
+
+                            <p id="ecp-status" class="q-public-muted-note"></p>
+
                         {% endif %}
-
-                    {% elif signer.signing_method == "ecp" %}
-
-                        <p class="q-public-method-text">
-                            {% trans "To sign this document using ECP, make sure NCALayer is installed and running on your computer." %}
-                        </p>
-
-                        <p class="q-public-muted-note">
-                            {% trans "After clicking the button, choose your ECP key and confirm signing in NCALayer." %}
-                        </p>
-
-                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-
-                        <button
-                            type="button"
-                            id="ecp-sign-button"
-                            class="q-public-main-btn"
-                            onclick="signDocumentWithEcp(
-                                '{% url 'signing:ecp_signing_payload' token %}',
-                                '{% url 'signing:ecp_signing_complete' token %}'
-                            )"
-                        >
-                            {% trans "Sign with ECP" %}
-                        </button>
-
-                        <p id="ecp-status" class="q-public-muted-note"></p>
-
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
 
                 {% if latest_sms_session and latest_sms_session.provider == "sms" %}
                     <div class="q-public-method-card q-public-sms-confirm-card">

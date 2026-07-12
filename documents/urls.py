@@ -12,12 +12,18 @@ urlpatterns = [
     path("documents/create/", views.document_create, name="document_create"),
     path("documents/editor-1/", views.editor_one, name="editor_one"),
     path("documents/<int:pk>/editor/", views.document_editor, name="document_editor"),
+    path("documents/<int:pk>/onlyoffice/", views.document_onlyoffice_editor, name="document_onlyoffice_editor"),
+    path("documents/<int:pk>/onlyoffice/file/", views.document_onlyoffice_file, name="document_onlyoffice_file"),
+    path("documents/<int:pk>/onlyoffice/callback/", views.document_onlyoffice_callback, name="document_onlyoffice_callback"),
     path("documents/<int:pk>/fill/", views.document_fill, name="document_fill"),
     path("documents/<int:pk>/render/", views.document_render_docx, name="document_render_docx"),
     path("documents/<int:pk>/lawvision/", views.document_lawvision_report, name="document_lawvision_report"),
     path("documents/<int:pk>/evidence-bundle/", views.document_evidence_bundle, name="document_evidence_bundle"),
 
     path("templates/<int:pk>/edit/", views.template_edit, name="template_edit"),
+    path("templates/<int:pk>/onlyoffice/file/", views.template_onlyoffice_file, name="template_onlyoffice_file"),
+    path("templates/<int:pk>/onlyoffice/callback/", views.template_onlyoffice_callback, name="template_onlyoffice_callback"),
+    path("templates/<int:pk>/onlyoffice/save/", views.template_onlyoffice_save, name="template_onlyoffice_save"),
     path("templates/<int:template_pk>/documents/create/", views.document_create_from_template, name="document_create_from_template"),
     path(
         "templates/<int:template_pk>/parties/create/",

@@ -1,3 +1,4 @@
+import json
 from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -11,6 +12,7 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 from docx import Document as WordDocument
 from docx.shared import Cm
+from docx.shared import RGBColor
 
 from documents.forms import DocumentTemplateUploadForm
 from documents.models import (
@@ -19,11 +21,15 @@ from documents.models import (
     DocumentTemplate,
     StoredObject,
     TemplateParty,
+    TemplatePartyField,
 )
 from documents.services.object_storage_service import ObjectStorageService
+from documents.services.docx_template_service import DocxTemplateService
 from documents.services.docx_preview_service import DocxPreviewService
+from documents.services.onlyoffice_service import OnlyOfficeService
 from documents.services.template_file_service import TemplateFileService
 from organizations.models import Organization, OrganizationMember
+from signing.models import Signer
 
 
 class TemplateFileServiceTests(SimpleTestCase):
@@ -80,6 +86,34 @@ class TemplateFileServiceTests(SimpleTestCase):
         self.assertEqual(layout["margin_left"], "1.5")
         self.assertTrue(layout["width_px"])
         self.assertTrue(layout["height_px"])
+
+    def test_render_docx_normalizes_inserted_value_color(self):
+        with TemporaryDirectory() as temp_dir:
+            template_path = Path(temp_dir) / "template.docx"
+            output_path = Path(temp_dir) / "output.docx"
+
+            document = WordDocument()
+            paragraph = document.add_paragraph("Client: ")
+            run = paragraph.add_run("{{ full_name }}")
+            run.font.color.rgb = RGBColor(112, 48, 160)
+            document.save(template_path)
+
+            DocxTemplateService.render_docx(
+                template_path=str(template_path),
+                output_path=str(output_path),
+                values={"full_name": "Иван Иванов"},
+            )
+
+            rendered_document = WordDocument(output_path)
+            rendered_runs = [
+                run
+                for paragraph in rendered_document.paragraphs
+                for run in paragraph.runs
+                if "Иван Иванов" in run.text
+            ]
+
+            self.assertTrue(rendered_runs)
+            self.assertEqual(rendered_runs[0].font.color.rgb, RGBColor(0, 0, 0))
 
     def test_prepare_editor_html_extracts_body_and_scopes_styles(self):
         html = """<!doctype html>
@@ -172,7 +206,7 @@ class TemplateUploadFlowTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("template_file", form.errors)
 
-    def test_docx_upload_stores_editable_html_and_variables(self):
+    def test_docx_upload_stores_docx_template_and_variables(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
             user, organization = self.create_user_and_organization()
             self.client.force_login(user)
@@ -198,7 +232,7 @@ class TemplateUploadFlowTests(TestCase):
             template = DocumentTemplate.objects.get(title="DOCX template")
             self.assertTrue(template.template_file.name.endswith(".docx"))
             self.assertEqual(template.organization, organization)
-            self.assertIn("Hello {{ full_name }}", template.body_template)
+            self.assertEqual(template.body_template, "")
             self.assertEqual(template.variables, ["full_name"])
 
     def test_doc_upload_is_normalized_to_docx(self):
@@ -234,6 +268,134 @@ class TemplateUploadFlowTests(TestCase):
             self.assertIn("contract_number", TemplateFileService.extract_variables(
                 template.template_file.path
             ))
+
+    def test_template_edit_uses_onlyoffice_for_docx_template(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_SERVER_URL="http://onlyoffice.test",
+            ONLYOFFICE_DJANGO_URL="http://django.test",
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
+            user, organization = self.create_user_and_organization()
+            template = DocumentTemplate.objects.create(
+                organization=organization,
+                created_by=user,
+                title="DOCX template",
+            )
+            template.template_file.save(
+                "template.docx",
+                ContentFile(self.create_docx_bytes("Hello {{ full_name }}")),
+                save=True,
+            )
+            self.client.force_login(user)
+
+            response = self.client.get(reverse("documents:template_edit", args=[template.pk]))
+
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, "http://onlyoffice.test/web-apps/apps/api/documents/api.js")
+            self.assertContains(response, "templateOnlyOfficeEditor")
+            self.assertContains(response, "DocsAPI.DocEditor")
+            self.assertContains(response, "http://django.test/documents/")
+
+    def test_template_onlyoffice_callback_saves_updated_template_and_variables(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
+            user, organization = self.create_user_and_organization()
+            template = DocumentTemplate.objects.create(
+                organization=organization,
+                created_by=user,
+                title="DOCX template",
+            )
+            template.template_file.save(
+                "template.docx",
+                ContentFile(self.create_docx_bytes("Hello {{ old_name }}")),
+                save=True,
+            )
+            token = OnlyOfficeService.encode_token({
+                "template_id": template.pk,
+                "action": "callback_template",
+            })
+            updated_bytes = self.create_docx_bytes("Hello {{ new_name }}")
+
+            with patch("documents.views.requests.get") as get_mock:
+                get_mock.return_value = SimpleNamespace(
+                    content=updated_bytes,
+                    raise_for_status=lambda: None,
+                )
+                response = self.client.post(
+                    reverse("documents:template_onlyoffice_callback", args=[template.pk]),
+                    data=json.dumps({"status": 2, "url": "http://onlyoffice.test/template.docx"}),
+                    content_type="application/json",
+                    QUERY_STRING=f"token={token}",
+                )
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), {"error": 0})
+
+            template.refresh_from_db()
+            self.assertEqual(template.body_template, "")
+            self.assertEqual(template.variables, ["new_name"])
+            with template.template_file.open("rb") as saved_file:
+                self.assertEqual(saved_file.read(), updated_bytes)
+
+    def test_template_onlyoffice_save_updates_schema_and_requests_force_save(self):
+        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+            user, organization = self.create_user_and_organization()
+            template = DocumentTemplate.objects.create(
+                organization=organization,
+                created_by=user,
+                title="DOCX template",
+            )
+            template.template_file.save(
+                "template.docx",
+                ContentFile(self.create_docx_bytes("Hello {{ full_name }}")),
+                save=True,
+            )
+            self.client.force_login(user)
+            schema = [{"title": "Contract", "fields": [{"label": "Number", "key": "contract_number"}]}]
+
+            with patch.object(OnlyOfficeService, "force_save_key", return_value={"error": 0}) as force_save:
+                response = self.client.post(
+                    reverse("documents:template_onlyoffice_save", args=[template.pk]),
+                    {
+                        "field_schema": json.dumps(schema),
+                        "onlyoffice_key": "opened-key",
+                    },
+                    HTTP_X_REQUESTED_WITH="XMLHttpRequest",
+                )
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["ok"], True)
+            force_save.assert_called_once_with("opened-key")
+
+            template.refresh_from_db()
+            self.assertEqual(template.field_schema, schema)
+            self.assertEqual(template.variables, ["full_name", "contract_number"])
+
+    def test_new_template_party_gets_optional_system_email_field(self):
+        user, organization = self.create_user_and_organization()
+        template = DocumentTemplate.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Template with signer",
+        )
+
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+
+        email_field = TemplatePartyField.objects.get(
+            party=party,
+            variable_name="email",
+        )
+        self.assertEqual(email_field.field_type, TemplatePartyField.FieldType.EMAIL)
+        self.assertTrue(email_field.is_system)
+        self.assertFalse(email_field.is_required)
 
     @staticmethod
     def create_docx_bytes(text):
@@ -353,7 +515,7 @@ class DocumentDraftEditingTests(TestCase):
 
             self.assertRedirects(
                 response,
-                reverse("documents:document_editor", args=[document.pk]),
+                reverse("documents:document_onlyoffice_editor", args=[document.pk]),
             )
             self.assertEqual(document.organization, organization)
             self.assertIsNone(document.template)
@@ -389,14 +551,14 @@ class DocumentDraftEditingTests(TestCase):
 
             self.assertRedirects(
                 response,
-                reverse("documents:document_editor", args=[document.pk]),
+                reverse("documents:document_onlyoffice_editor", args=[document.pk]),
             )
             self.assertEqual(document.organization, organization)
             self.assertIsNone(document.template)
             self.assertTrue(document.rendered_docx_file.name.endswith(".docx"))
             self.assertTrue(document.content_hash)
 
-    def test_uploaded_document_editor_shows_docx_content(self):
+    def test_uploaded_document_editor_redirects_to_onlyoffice(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
             user, organization = self.create_user_and_organization()
             document = Document.objects.create(
@@ -412,19 +574,17 @@ class DocumentDraftEditingTests(TestCase):
             )
             self.client.force_login(user)
 
-            with patch.object(
-                DocxPreviewService,
-                "convert_docx_to_html_with_libreoffice",
-                return_value="",
-            ):
-                response = self.client.get(reverse("documents:document_editor", args=[document.pk]))
+            response = self.client.get(reverse("documents:document_editor", args=[document.pk]))
 
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, "Ready document")
-            self.assertContains(response, "data-editor-content")
+            self.assertRedirects(response, reverse("documents:document_onlyoffice_editor", args=[document.pk]))
 
-    def test_uploaded_document_editor_uses_docx_page_layout(self):
-        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+    def test_uploaded_document_onlyoffice_editor_builds_config(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_SERVER_URL="http://onlyoffice.test",
+            ONLYOFFICE_DJANGO_URL="http://django.test",
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
             user, organization = self.create_user_and_organization()
             document = Document.objects.create(
                 organization=organization,
@@ -434,22 +594,18 @@ class DocumentDraftEditingTests(TestCase):
             )
             document.rendered_docx_file.save(
                 "ready.docx",
-                ContentFile(self.create_docx_bytes_with_margins("Ready document")),
+                ContentFile(self.create_docx_bytes("Ready document")),
                 save=True,
             )
             self.client.force_login(user)
 
-            with patch.object(
-                DocxPreviewService,
-                "convert_docx_to_html_with_libreoffice",
-                return_value="",
-            ):
-                response = self.client.get(reverse("documents:document_editor", args=[document.pk]))
+            response = self.client.get(reverse("documents:document_onlyoffice_editor", args=[document.pk]))
 
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'data-default-margin-left="1.5"')
-            self.assertContains(response, 'data-default-margin-right="1.5"')
-            self.assertContains(response, "padding: 1cm 1.5cm 1.25cm 1.5cm;")
+            self.assertContains(response, "http://onlyoffice.test/web-apps/apps/api/documents/api.js")
+            self.assertContains(response, "DocsAPI.DocEditor")
+            self.assertContains(response, "http://django.test/documents/")
+            self.assertContains(response, '"documentType": "word"')
 
     def test_document_list_shows_edit_link_for_uploaded_draft_document(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
@@ -470,10 +626,13 @@ class DocumentDraftEditingTests(TestCase):
             response = self.client.get(reverse("documents:document_list"))
 
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, reverse("documents:document_editor", args=[document.pk]))
+            self.assertContains(response, reverse("documents:document_onlyoffice_editor", args=[document.pk]))
 
-    def test_uploaded_document_editor_saves_html_and_redirects_to_signers(self):
-        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+    def test_onlyoffice_file_endpoint_returns_docx_with_valid_token(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
             user, organization = self.create_user_and_organization()
             document = Document.objects.create(
                 organization=organization,
@@ -486,23 +645,28 @@ class DocumentDraftEditingTests(TestCase):
                 ContentFile(self.create_docx_bytes("Ready document")),
                 save=True,
             )
-            self.client.force_login(user)
+            token = OnlyOfficeService.encode_token({
+                "document_id": document.pk,
+                "action": "download",
+            })
 
-            response = self.client.post(
-                reverse("documents:document_editor", args=[document.pk]),
-                {
-                    "rendered_html": "<h1>Reviewed document</h1>",
-                    "document_changed": "1",
-                },
+            response = self.client.get(
+                reverse("documents:document_onlyoffice_file", args=[document.pk]),
+                {"token": token},
             )
 
-            document.refresh_from_db()
-            self.assertRedirects(response, reverse("signing:document_signers", args=[document.pk]))
-            self.assertEqual(document.rendered_html, "<h1>Reviewed document</h1>")
-            self.assertTrue(document.rendered_docx_file.name.endswith(".docx"))
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(
+                response["Content-Type"],
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            )
+            self.assertTrue(response.content)
 
-    def test_uploaded_document_editor_preserves_original_docx_when_unchanged(self):
-        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+    def test_onlyoffice_callback_saves_updated_docx(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
             user, organization = self.create_user_and_organization()
             document = Document.objects.create(
                 organization=organization,
@@ -516,19 +680,66 @@ class DocumentDraftEditingTests(TestCase):
                 save=True,
             )
             original_docx_name = document.rendered_docx_file.name
-            self.client.force_login(user)
+            token = OnlyOfficeService.encode_token({
+                "document_id": document.pk,
+                "action": "callback",
+            })
+            updated_bytes = self.create_docx_bytes("Updated document")
+
+            with patch("documents.views.requests.get") as get_mock:
+                get_mock.return_value = SimpleNamespace(
+                    content=updated_bytes,
+                    raise_for_status=lambda: None,
+                )
+                response = self.client.post(
+                    reverse("documents:document_onlyoffice_callback", args=[document.pk]),
+                    data=json.dumps({"status": 2, "url": "http://onlyoffice.test/saved.docx"}),
+                    content_type="application/json",
+                    QUERY_STRING=f"token={token}",
+                )
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json(), {"error": 0})
+
+            document.refresh_from_db()
+            self.assertEqual(document.rendered_html, "")
+            self.assertNotEqual(document.rendered_docx_file.name, original_docx_name)
+            self.assertTrue(document.rendered_docx_file.name.endswith(".docx"))
+            with document.rendered_docx_file.open("rb") as saved_file:
+                self.assertEqual(saved_file.read(), updated_bytes)
+
+    def test_onlyoffice_callback_ignores_non_save_status(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            ONLYOFFICE_JWT_SECRET="test-secret",
+        ):
+            user, organization = self.create_user_and_organization()
+            document = Document.objects.create(
+                organization=organization,
+                created_by=user,
+                title="Uploaded document",
+                status=Document.Status.DRAFT,
+            )
+            document.rendered_docx_file.save(
+                "ready.docx",
+                ContentFile(self.create_docx_bytes("Ready document")),
+                save=True,
+            )
+            original_docx_name = document.rendered_docx_file.name
+            token = OnlyOfficeService.encode_token({
+                "document_id": document.pk,
+                "action": "callback",
+            })
 
             response = self.client.post(
-                reverse("documents:document_editor", args=[document.pk]),
-                {
-                    "rendered_html": "<h1>Ready document</h1>",
-                    "document_changed": "0",
-                },
+                reverse("documents:document_onlyoffice_callback", args=[document.pk]),
+                data=json.dumps({"status": 1}),
+                content_type="application/json",
+                QUERY_STRING=f"token={token}",
             )
 
             document.refresh_from_db()
-            self.assertRedirects(response, reverse("signing:document_signers", args=[document.pk]))
-            self.assertEqual(document.rendered_html, "")
+            self.assertEqual(response.json(), {"error": 0})
             self.assertEqual(document.rendered_docx_file.name, original_docx_name)
 
     def test_uploaded_document_fill_redirects_to_signers_modal(self):
@@ -580,7 +791,7 @@ class DocumentDraftEditingTests(TestCase):
         self.assertEqual(signer.full_name, "Manual Signer")
         self.assertIsNone(signer.template_party)
 
-    def test_document_list_shows_edit_link_only_for_drafts(self):
+    def test_document_list_shows_edit_link_until_first_signature(self):
         user, organization = self.create_user_and_organization()
         template = self.create_template(user, organization)
         draft_document = self.create_document(
@@ -597,6 +808,20 @@ class DocumentDraftEditingTests(TestCase):
             title="Waiting document",
             status=Document.Status.WAITING_FOR_SIGNERS,
         )
+        signed_document = self.create_document(
+            user,
+            organization,
+            template,
+            title="Partially signed document",
+            status=Document.Status.WAITING_FOR_SIGNERS,
+        )
+        Signer.objects.create(
+            document=signed_document,
+            full_name="Signed Person",
+            iin="123456789012",
+            phone="77071234567",
+            status=Signer.Status.SIGNED,
+        )
         self.client.force_login(user)
 
         response = self.client.get(reverse("documents:document_list"))
@@ -605,12 +830,16 @@ class DocumentDraftEditingTests(TestCase):
             response,
             reverse("documents:document_fill", args=[draft_document.pk]),
         )
-        self.assertNotContains(
+        self.assertContains(
             response,
             reverse("documents:document_fill", args=[locked_document.pk]),
         )
+        self.assertNotContains(
+            response,
+            reverse("documents:document_fill", args=[signed_document.pk]),
+        )
 
-    def test_document_fill_redirects_when_document_is_not_draft(self):
+    def test_document_fill_allows_waiting_document_without_signatures(self):
         user, organization = self.create_user_and_organization()
         template = self.create_template(user, organization)
         document = self.create_document(
@@ -618,6 +847,28 @@ class DocumentDraftEditingTests(TestCase):
             organization,
             template,
             status=Document.Status.WAITING_FOR_SIGNERS,
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_fill", args=[document.pk]))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_document_fill_redirects_after_first_signature(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        document = self.create_document(
+            user,
+            organization,
+            template,
+            status=Document.Status.WAITING_FOR_SIGNERS,
+        )
+        Signer.objects.create(
+            document=document,
+            full_name="Signed Person",
+            iin="123456789012",
+            phone="77071234567",
+            status=Signer.Status.SIGNED,
         )
         self.client.force_login(user)
 
@@ -663,6 +914,134 @@ class DocumentDraftEditingTests(TestCase):
         messages = list(response.wsgi_request._messages)
         self.assertTrue(any("ИИН должен содержать ровно 12 цифр" in str(item) for item in messages))
 
+    def test_document_fill_creates_template_signer_with_empty_email(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+        document = self.create_document(user, organization, template)
+        self.create_signer_field_values(document, party)
+        self.client.force_login(user)
+        field_inputs = {
+            field.field_name: field.id
+            for field in document.field_values.all()
+        }
+
+        response = self.client.post(
+            reverse("documents:document_fill", args=[document.pk]),
+            {
+                f"field_{field_inputs['customer_full_name']}": "Test Signer",
+                f"field_{field_inputs['customer_iin_bin']}": "123456789012",
+                f"field_{field_inputs['customer_phone']}": "+77071234567",
+                f"field_{field_inputs['customer_email']}": "",
+            },
+        )
+
+        self.assertRedirects(response, f"{reverse('documents:document_list')}?signers={document.pk}")
+        signer = document.signers.get()
+        self.assertEqual(signer.email, "")
+
+    def test_document_fill_creates_template_signer_with_valid_email(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+        document = self.create_document(user, organization, template)
+        self.create_signer_field_values(document, party)
+        self.client.force_login(user)
+        field_inputs = {
+            field.field_name: field.id
+            for field in document.field_values.all()
+        }
+
+        with patch("signing.services.signer_service.SignerService.email_domain_exists", return_value=True):
+            response = self.client.post(
+                reverse("documents:document_fill", args=[document.pk]),
+                {
+                    f"field_{field_inputs['customer_full_name']}": "Test Signer",
+                    f"field_{field_inputs['customer_iin_bin']}": "123456789012",
+                    f"field_{field_inputs['customer_phone']}": "+77071234567",
+                    f"field_{field_inputs['customer_email']}": "signer@example.com",
+                },
+            )
+
+        self.assertRedirects(response, f"{reverse('documents:document_list')}?signers={document.pk}")
+        signer = document.signers.get()
+        self.assertEqual(signer.email, "signer@example.com")
+
+    def test_document_fill_rejects_invalid_template_signer_email(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+        document = self.create_document(user, organization, template)
+        self.create_signer_field_values(document, party)
+        self.client.force_login(user)
+        field_inputs = {
+            field.field_name: field.id
+            for field in document.field_values.all()
+        }
+
+        response = self.client.post(
+            reverse("documents:document_fill", args=[document.pk]),
+            {
+                f"field_{field_inputs['customer_full_name']}": "Test Signer",
+                f"field_{field_inputs['customer_iin_bin']}": "123456789012",
+                f"field_{field_inputs['customer_phone']}": "+77071234567",
+                f"field_{field_inputs['customer_email']}": "not-an-email",
+            },
+        )
+
+        self.assertRedirects(response, reverse("documents:document_fill", args=[document.pk]))
+        self.assertFalse(document.signers.exists())
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("Email must be a valid email address." in str(item) for item in messages))
+
+    def test_document_fill_rejects_unverified_template_signer_email_domain(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        party = TemplateParty.objects.create(
+            template=template,
+            title="Customer",
+            variable_prefix="customer",
+            is_signer=True,
+        )
+        document = self.create_document(user, organization, template)
+        self.create_signer_field_values(document, party)
+        self.client.force_login(user)
+        field_inputs = {
+            field.field_name: field.id
+            for field in document.field_values.all()
+        }
+
+        with patch("signing.services.signer_service.SignerService.email_domain_exists", return_value=False):
+            response = self.client.post(
+                reverse("documents:document_fill", args=[document.pk]),
+                {
+                    f"field_{field_inputs['customer_full_name']}": "Test Signer",
+                    f"field_{field_inputs['customer_iin_bin']}": "123456789012",
+                    f"field_{field_inputs['customer_phone']}": "+77071234567",
+                    f"field_{field_inputs['customer_email']}": "signer@missing.example",
+                },
+            )
+
+        self.assertRedirects(response, reverse("documents:document_fill", args=[document.pk]))
+        self.assertFalse(document.signers.exists())
+        messages = list(response.wsgi_request._messages)
+        self.assertTrue(any("Email domain could not be verified." in str(item) for item in messages))
+
     @staticmethod
     def create_template(user, organization):
         return DocumentTemplate.objects.create(
@@ -690,6 +1069,14 @@ class DocumentDraftEditingTests(TestCase):
             title=title,
             status=status,
         )
+
+    @staticmethod
+    def create_signer_field_values(document, party):
+        for field in party.fields.all():
+            DocumentFieldValue.objects.create(
+                document=document,
+                field_name=f"{party.variable_prefix}_{field.variable_name}",
+            )
 
     @staticmethod
     def create_docx_bytes(text):

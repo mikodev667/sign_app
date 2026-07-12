@@ -1,4 +1,5 @@
 from tempfile import TemporaryDirectory
+from datetime import timedelta
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -9,8 +10,9 @@ from django.utils import timezone
 
 from documents.models import Document, StoredObject
 from organizations.models import Organization
-from signing.models import Signer, SigningSession, Signature
+from signing.models import Signer, SignerAccessToken, SigningSession, Signature
 from signing.services.ecp_signing_service import EcpSigningService
+from signing.services.access_token_service import SignerAccessTokenService
 
 
 class EcpCmsFileTests(TestCase):
@@ -227,4 +229,70 @@ class EcpCmsFileTests(TestCase):
             iin="123456789012",
             phone="77071234567",
             signing_method=signing_method,
+        )
+
+
+class PublicSigningMethodChoiceTests(TestCase):
+    def test_public_page_asks_signer_to_choose_method_before_signing(self):
+        signer = self.create_signer()
+        token = self.create_token(signer)
+
+        response = self.client.get(reverse("signing:signer_public_page", args=[token]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Choose how to sign")
+        self.assertContains(response, "SMS confirmation")
+        self.assertContains(response, "ECP")
+
+    def test_signer_can_choose_sms_method_on_public_page(self):
+        signer = self.create_signer()
+        token = self.create_token(signer)
+
+        response = self.client.post(
+            reverse("signing:choose_signing_method", args=[token]),
+            {"signing_method": Signer.SigningMethod.SMS},
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("signing:signer_public_page", args=[token]),
+            fetch_redirect_response=False,
+        )
+
+        signer.refresh_from_db()
+        self.assertEqual(signer.signing_method, Signer.SigningMethod.SMS)
+        self.assertEqual(signer.status, Signer.Status.SIGNING_STARTED)
+
+    @staticmethod
+    def create_token(signer):
+        raw_token = "public-choice-token"
+        SignerAccessToken.objects.create(
+            signer=signer,
+            token_hash=SignerAccessTokenService.hash_token(raw_token),
+            expires_at=timezone.now() + timedelta(days=1),
+            is_active=True,
+        )
+        return raw_token
+
+    @staticmethod
+    def create_signer():
+        user = get_user_model().objects.create_user(
+            username="public-choice-user",
+            password="password",
+        )
+        organization = Organization.objects.create(
+            name="Public Choice Organization",
+            created_by=user,
+        )
+        document = Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Public Choice Document",
+            content_hash="c" * 64,
+        )
+        return Signer.objects.create(
+            document=document,
+            full_name="Public Signer",
+            iin="123456789012",
+            phone="77071234567",
         )

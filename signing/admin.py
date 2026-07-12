@@ -17,8 +17,8 @@ class SigningSessionInline(admin.TabularInline):
 
 @admin.register(Signer)
 class SignerAdmin(admin.ModelAdmin):
-    list_display = ("id", "full_name", "iin", "phone", "document", "signing_order", "status", "created_at", "signed_at")
-    search_fields = ("full_name", "iin", "phone", "document__title")
+    list_display = ("id", "full_name", "iin", "phone", "email", "document", "signing_order", "status", "created_at", "signed_at")
+    search_fields = ("full_name", "iin", "phone", "email", "document__title")
     list_filter = ("status", "signing_order", "created_at", "signed_at")
     inlines = [SigningSessionInline]
 

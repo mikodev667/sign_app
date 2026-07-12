@@ -32,6 +32,11 @@ urlpatterns = [
         views.signer_lawvision_report,
         name="signer_lawvision_report",
     ),
+    path(
+        "s/<str:token>/method/",
+        views.choose_signing_method,
+        name="choose_signing_method",
+    ),
 
     # eGov Mobile public flow
     path(

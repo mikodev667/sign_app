@@ -144,7 +144,7 @@
                                     {% trans "Edit" %}
                                 </a>
                             {% else %}
-                                <a href="{% url 'documents:document_editor' document.pk %}" class="document-action document-action--edit">
+                                <a href="{% url 'documents:document_onlyoffice_editor' document.pk %}" class="document-action document-action--edit">
                                     {% trans "Edit" %}
                                 </a>
                             {% endif %}
@@ -228,6 +228,9 @@
                                                         <div class="q-signer-meta">
                                                             <span>{{ signer.iin }}</span>
                                                             <span>{{ signer.phone }}</span>
+                                                            {% if signer.email %}
+                                                                <span>{{ signer.email }}</span>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
 

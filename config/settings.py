@@ -244,3 +244,17 @@ OBJECT_STORAGE_ENABLED = os.getenv("OBJECT_STORAGE_ENABLED", "True").lower() in 
 
 #ECP verifier
 ECP_VERIFIER_URL = os.getenv("ECP_VERIFIER_URL", "http://127.0.0.1:9001/verify-ecp")
+
+
+# ONLYOFFICE Docs integration. The browser loads scripts from
+# ONLYOFFICE_SERVER_URL, while Document Server uses ONLYOFFICE_DJANGO_URL to
+# download documents and send save callbacks back to Django.
+ONLYOFFICE_SERVER_URL = os.getenv("ONLYOFFICE_SERVER_URL", "http://127.0.0.1:8082")
+ONLYOFFICE_COMMAND_SERVICE_URL = os.getenv(
+    "ONLYOFFICE_COMMAND_SERVICE_URL",
+    f"{ONLYOFFICE_SERVER_URL.rstrip('/')}/command",
+)
+ONLYOFFICE_DJANGO_URL = os.getenv("ONLYOFFICE_DJANGO_URL", "http://host.docker.internal:8000")
+ONLYOFFICE_JWT_SECRET = os.getenv("ONLYOFFICE_JWT_SECRET", SECRET_KEY)
+ONLYOFFICE_JWT_HEADER = os.getenv("ONLYOFFICE_JWT_HEADER", "Authorization")
+ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS = int(os.getenv("ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS", "86400"))

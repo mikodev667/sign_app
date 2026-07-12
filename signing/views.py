@@ -215,8 +215,8 @@ def document_signers(request, document_pk):
                     full_name=form.cleaned_data["full_name"],
                     iin=form.cleaned_data["iin"],
                     phone=form.cleaned_data["phone"],
+                    email=form.cleaned_data["email"],
                     signing_order=form.cleaned_data["signing_order"],
-                    signing_method=form.cleaned_data["signing_method"],
                     request=request,
                 )
 
@@ -347,6 +347,10 @@ def signer_public_page(request, token):
     signature = getattr(signer, "signature", None)
     lawvision_report = get_current_lawvision_report(document)
     document_preview = get_public_document_preview(document)
+    show_method_choice = (
+        signer.status in [Signer.Status.PENDING, Signer.Status.OPENED]
+        and not signer.signing_sessions.exists()
+    )
 
     return render(request, "signing/signer_public_page.html", {
         "token": token,
@@ -357,6 +361,8 @@ def signer_public_page(request, token):
         "latest_sms_session": latest_sms_session,
         "signature": signature,
         "lawvision_report": lawvision_report,
+        "show_method_choice": show_method_choice,
+        "signing_methods": Signer.SigningMethod.choices,
     })
 
 
@@ -433,6 +439,48 @@ def signer_lawvision_report(request, token):
 
 
 @require_POST
+def choose_signing_method(request, token):
+    access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
+
+    if not access_token:
+        return render(request, "signing/signer_link_invalid.html", status=404)
+
+    signer = access_token.signer
+
+    if signer.status == Signer.Status.SIGNED:
+        messages.info(request, _("This document has already been signed."))
+        return redirect("signing:signer_public_page", token=token)
+
+    signing_method = request.POST.get("signing_method", "").strip()
+
+    if signing_method not in Signer.SigningMethod.values:
+        messages.error(request, _("Choose a valid signing method."))
+        return redirect("signing:signer_public_page", token=token)
+
+    signer.signing_method = signing_method
+
+    if signer.status in [Signer.Status.PENDING, Signer.Status.OPENED]:
+        signer.status = Signer.Status.SIGNING_STARTED
+
+    signer.save(update_fields=["signing_method", "status", "updated_at"])
+
+    SigningAuditLogService.log(
+        document=signer.document,
+        signer=signer,
+        event=SigningAuditLog.Event.STATUS_RECALCULATED,
+        request=request,
+        metadata={
+            "signing_method": signing_method,
+            "selected_by": "signer",
+            "reason": "signing_method_selected",
+        },
+    )
+
+    messages.success(request, _("Signing method selected."))
+    return redirect("signing:signer_public_page", token=token)
+
+
+@require_POST
 def start_egov_signing(request, token):
     access_token = SignerAccessTokenService.get_valid_token(raw_token=token)
 
@@ -444,6 +492,10 @@ def start_egov_signing(request, token):
     if signer.status == Signer.Status.SIGNED:
         messages.info(request, "This document has already been signed.")
         return redirect("signing:signer_public_page", token=token)
+
+    if signer.signing_method != Signer.SigningMethod.EGOV_MOBILE:
+        signer.signing_method = Signer.SigningMethod.EGOV_MOBILE
+        signer.save(update_fields=["signing_method", "updated_at"])
 
     try:
         EgovMobileSigningService.create_session(signer=signer, request=request)
@@ -603,6 +655,10 @@ def start_sms_signing(request, token):
     if signer.status == Signer.Status.SIGNED:
         messages.info(request, "This document has already been signed.")
         return redirect("signing:signer_public_page", token=token)
+
+    if signer.signing_method != Signer.SigningMethod.SMS:
+        signer.signing_method = Signer.SigningMethod.SMS
+        signer.save(update_fields=["signing_method", "updated_at"])
 
     consent_accepted = request.POST.get("consent") == "on"
 
@@ -791,6 +847,7 @@ def ecp_signing_payload(request, token):
         "document_id": document.id,
         "signer_id": signer.id,
         "signer_iin": signer.iin,
+        "signer_email": signer.email,
         "document_hash": document.content_hash,
         "title": document.title,
     }

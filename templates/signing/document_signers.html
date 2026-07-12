@@ -47,8 +47,8 @@
 
         <div class="q-signers-overview-card q-signers-overview-card--blue">
             <span>{% trans "Signing methods" %}</span>
-            <strong>SMS / ECP</strong>
-            <p>{% trans "Available for invited signers" %}</p>
+            <strong>SMS / ECP / eGov</strong>
+            <p>{% trans "Selected by each signer" %}</p>
         </div>
 
         <div class="q-signers-overview-card q-signers-overview-card--teal">
@@ -139,6 +139,9 @@
                                 <div class="q-signer-meta">
                                     <span>{{ signer.iin }}</span>
                                     <span>{{ signer.phone }}</span>
+                                    {% if signer.email %}
+                                        <span>{{ signer.email }}</span>
+                                    {% endif %}
                                 </div>
                             </div>
 
@@ -150,7 +153,11 @@
                         <div class="q-signer-details">
                             <div>
                                 <span>{% trans "Signing method" %}</span>
-                                <strong>{{ signer.get_signing_method_display }}</strong>
+                                {% if signer.status == "pending" or signer.status == "opened" %}
+                                    <strong>{% trans "Selected by signer" %}</strong>
+                                {% else %}
+                                    <strong>{{ signer.get_signing_method_display }}</strong>
+                                {% endif %}
                             </div>
 
                             <div>
@@ -165,7 +172,7 @@
                             <form method="post" action="{% url 'signing:create_signer_access_link' signer.pk %}">
                                 {% csrf_token %}
                                 <button type="submit" class="q-signer-action-btn">
-                                    {% trans "Create SMS link" %}
+                                    {% trans "Create signing link" %}
                                 </button>
                             </form>
                         {% else %}
@@ -206,7 +213,7 @@
 
                 <p>
                     {% if document.template %}
-                        {% trans "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields." %}
+                        {% trans "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN and phone fields." %}
                     {% else %}
                         {% trans "Use the form above to add the signer details manually." %}
                     {% endif %}

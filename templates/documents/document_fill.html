@@ -38,7 +38,7 @@
 
         <div class="q-fill-layout">
 
-            <main class="q-fill-preview-panel">
+            <main class="q-fill-preview-panel{% if is_docx_template %} q-fill-preview-panel--docx{% endif %}">
                 <div class="q-fill-panel-toolbar">
                     <div>
                         <span>{% trans "Document preview" %}</span>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="q-fill-document-tools">
-                        <span>A4</span>
+                        <span>{% if is_docx_template %}DOCX{% else %}A4{% endif %}</span>
 
                         <div class="q-fill-zoom-control">
                             <button type="button" onclick="changeFillDocumentZoom(-10)">−</button>
@@ -56,9 +56,9 @@
                     </div>
                 </div>
 
-                <div class="q-fill-document-stage">
+                <div class="q-fill-document-stage{% if is_docx_template %} q-fill-document-stage--docx{% endif %}">
                     <div class="q-fill-paper-shadow">
-                        <div id="documentPreview" class="q-fill-a4-paper">
+                        <div id="documentPreview" class="q-fill-a4-paper{% if is_docx_template %} q-fill-a4-paper--docx{% endif %}">
                             {{ preview_html|safe }}
                         </div>
                     </div>
@@ -90,6 +90,7 @@
                                     {% with full_key=party.variable_prefix|add:"_"|add:party_field.variable_name %}
                                         {% for field in fields %}
                                             {% if field.field_name == full_key %}
+                                                {% if party_field.field_type != "signing_method" %}
                                                 <div class="q-fill-field" data-field-search="{{ party_field.display_label }} {{ field.field_name }}">
                                                     <label for="field_{{ field.id }}">
                                                         <span>
@@ -126,7 +127,7 @@
                                                     {% else %}
                                                         <input
                                                             id="field_{{ field.id }}"
-                                                            type="text"
+                                                            type="{% if party_field.field_type == 'email' %}email{% else %}text{% endif %}"
                                                             name="field_{{ field.id }}"
                                                             value="{{ field.field_value }}"
                                                             data-variable="{{ field.field_name }}"
@@ -136,6 +137,7 @@
                                                         >
                                                     {% endif %}
                                                 </div>
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     {% endwith %}
@@ -186,8 +188,11 @@
                     {% endfor %}
 
                 </div>
+                
             </aside>
-
+            <button class="q-fill-btn q-fill-btn--primary" type="submit">
+                    {% trans "Confirm and invite parties" %}
+            </button>
         </div>
     </form>
 

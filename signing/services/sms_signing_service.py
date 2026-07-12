@@ -133,6 +133,7 @@ class SmsSigningService:
             cooldown_until=timezone.now() + timedelta(seconds=cls.COOLDOWN_SECONDS),
             raw_request={
                 "phone": signer.phone,
+                "email": signer.email,
                 "otp_ttl_minutes": cls.OTP_TTL_MINUTES,
                 "max_attempts": cls.MAX_ATTEMPTS,
                 "cooldown_seconds": cls.COOLDOWN_SECONDS,
@@ -538,6 +539,7 @@ class SmsSigningService:
             f"full_name={signer.full_name};"
             f"iin={signer.iin};"
             f"phone={signer.phone};"
+            f"email={signer.email};"
             f"signing_session_id={session.id};"
             f"signed_at={signed_at.isoformat()};"
             f"ip_address={ip_address};"
@@ -554,6 +556,8 @@ class SmsSigningService:
         signed_at,
         document_hash: str,
     ) -> str:
+        email_line = f"Email: {signer.email}\n" if signer.email else ""
+
         return (
             "Signing confirmation sheet\n\n"
             f"Document: {document.title}\n"
@@ -561,6 +565,7 @@ class SmsSigningService:
             f"Signer: {signer.full_name}\n"
             f"IIN: {signer.iin}\n"
             f"Phone: {signer.phone}\n"
+            f"{email_line}"
             f"Signing method: SMS confirmation\n"
             f"Signing session ID: {session.id}\n"
             f"Signed at: {signed_at.strftime('%Y-%m-%d %H:%M:%S')}\n"

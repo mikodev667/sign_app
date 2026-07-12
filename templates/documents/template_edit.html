@@ -2,15 +2,25 @@
 {% load i18n %}
 
 {% block title %}{% trans "Edit template | QolQoyu" %}{% endblock %}
+{% block body_class %}{% if template_onlyoffice_config %}template-onlyoffice-body{% endif %}{% endblock %}
 
 {% block content %}
 
-<section class="q-editor">
+<section class="q-editor{% if template_onlyoffice_config %} q-editor--onlyoffice{% endif %}">
 
-    <form id="templateSaveForm" method="post" onsubmit="saveTemplateBeforeSubmit()">
+    <form
+        id="templateSaveForm"
+        method="post"
+        action="{% if template_onlyoffice_config %}{% url 'documents:template_onlyoffice_save' template.pk %}{% else %}{% url 'documents:template_edit' template.pk %}{% endif %}"
+        data-onlyoffice-template-save="{% if template_onlyoffice_config %}1{% else %}0{% endif %}"
+        onsubmit="return saveTemplateBeforeSubmit(event)"
+    >
         {% csrf_token %}
         <input type="hidden" name="body_template" id="bodyTemplateInput">
         <input type="hidden" name="field_schema" id="fieldSchemaInput">
+        {% if template_onlyoffice_config %}
+            <input type="hidden" name="onlyoffice_key" value="{{ template_onlyoffice_config.document.key }}">
+        {% endif %}
     </form>
 
     <header class="q-editor-topbar">
@@ -27,7 +37,7 @@
         </div>
 
         <div class="q-editor-actions">
-            <span class="q-editor-status">{% trans "Draft" %}</span>
+            <span class="q-editor-status" id="templateSaveStatus">{% trans "Draft" %}</span>
 
             <a href="{% url 'documents:template_list' %}" class="q-editor-btn q-editor-btn--secondary">
                 {% trans "Back" %}
@@ -93,10 +103,11 @@
         <main class="q-editor-center">
             <div class="q-document-toolbar">
                 <div>
-                    <span>{% trans "Document preview" %}</span>
-                    <strong>{% trans "Centered A4 paper" %}</strong>
+                    <span>{% trans "Document editor" %}</span>
+                    <strong>{% if template_onlyoffice_config %}OnlyOffice DOCX{% else %}{% trans "Centered A4 paper" %}{% endif %}</strong>
                 </div>
 
+                {% if not template_onlyoffice_config %}
                 <div class="q-document-tools">
                     <span>A4</span>
 
@@ -108,14 +119,21 @@
                         <button type="button" onclick="changeDocumentZoom(10)">+</button>
                     </div>
                 </div>
+                {% endif %}
             </div>
 
             <div class="q-document-stage">
-                <div class="q-paper-shadow">
-                    <div id="docxEditor" class="q-a4-paper" contenteditable="true">
-                        {{ editor_html|safe }}
+                {% if template_onlyoffice_config %}
+                    <div class="q-onlyoffice-template-frame">
+                        <div id="templateOnlyOfficeEditor"></div>
                     </div>
-                </div>
+                {% else %}
+                    <div class="q-paper-shadow">
+                        <div id="docxEditor" class="q-a4-paper" contenteditable="true">
+                            {{ editor_html|safe }}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </main>
 
@@ -312,9 +330,13 @@
                 </section>
 
             </div>
+            <button type="submit" form="templateSaveForm" class="q-editor-btn q-editor-btn--primary">
+                {% trans "Save" %}
+            </button>
         </aside>
 
     </div>
+    
 </section>
 
 <script>
@@ -477,18 +499,81 @@
             return;
         }
 
-        const editor = document.getElementById("docxEditor");
-        editor.focus();
-
         const variableText = "{% templatetag openvariable %} " + variableKey + " {% templatetag closevariable %}";
-        document.execCommand("insertText", false, variableText);
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(variableText);
+            return;
+        }
+
+        const editor = document.getElementById("docxEditor");
+
+        if (editor) {
+            editor.focus();
+            document.execCommand("insertText", false, variableText);
+        }
     }
 
-    function saveTemplateBeforeSubmit() {
+    function saveTemplateBeforeSubmit(event) {
         const editor = document.getElementById("docxEditor");
 
-        document.getElementById("bodyTemplateInput").value = editor.innerHTML;
+        document.getElementById("bodyTemplateInput").value = editor ? editor.innerHTML : "";
         document.getElementById("fieldSchemaInput").value = JSON.stringify(fieldSchema);
+
+        const form = document.getElementById("templateSaveForm");
+
+        if (!form || form.dataset.onlyofficeTemplateSave !== "1") {
+            return true;
+        }
+
+        if (event) {
+            event.preventDefault();
+        }
+
+        saveOnlyOfficeTemplate(form);
+        return false;
+    }
+
+    async function saveOnlyOfficeTemplate(form) {
+        const status = document.getElementById("templateSaveStatus");
+        const submitButton = document.querySelector('[form="templateSaveForm"][type="submit"]');
+
+        if (status) {
+            status.innerText = "{% trans 'Saving...' %}";
+        }
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.ok) {
+                throw new Error(data.message || "{% trans 'Template could not be saved.' %}");
+            }
+
+            if (status) {
+                status.innerText = "{% trans 'Save requested' %}";
+            }
+        } catch (error) {
+            if (status) {
+                status.innerText = "{% trans 'Save failed' %}";
+            }
+
+            alert(error.message);
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -548,4 +633,49 @@
     renderGroups();
 </script>
 
+{% if template_onlyoffice_config %}
+    {{ template_onlyoffice_config|json_script:"template-onlyoffice-config" }}
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+    {% if template_onlyoffice_config %}
+        <script src="{{ onlyoffice_server_url }}/web-apps/apps/api/documents/api.js"></script>
+        <script>
+            (function () {
+                "use strict";
+
+                const configElement = document.getElementById("template-onlyoffice-config");
+
+                if (!configElement || !window.DocsAPI) {
+                    return;
+                }
+
+                const config = JSON.parse(configElement.textContent);
+                const frame = document.querySelector(".q-onlyoffice-template-frame");
+
+                if (frame) {
+                    const rect = frame.getBoundingClientRect();
+                    config.width = Math.max(900, Math.floor(rect.width)) + "px";
+                    config.height = Math.max(656, Math.floor(rect.height)) + "px";
+                }
+
+                window.qolqoyuTemplateOnlyOfficeEditor = new DocsAPI.DocEditor("templateOnlyOfficeEditor", config);
+
+                window.setTimeout(function () {
+                    const iframe = document.querySelector("#templateOnlyOfficeEditor iframe");
+
+                    if (iframe) {
+                        iframe.style.width = "100%";
+                        iframe.style.minWidth = "900px";
+                        iframe.style.height = "100%";
+                        iframe.style.minHeight = "656px";
+                    }
+
+                    window.dispatchEvent(new Event("resize"));
+                }, 300);
+            }());
+        </script>
+    {% endif %}
 {% endblock %}

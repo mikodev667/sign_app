@@ -126,6 +126,13 @@
                         <strong>{{ signer.phone }}</strong>
                     </div>
 
+                    {% if signer.email %}
+                        <div class="q-confirm-info-item">
+                            <span>{% trans "Email" %}</span>
+                            <strong>{{ signer.email }}</strong>
+                        </div>
+                    {% endif %}
+
                     <div class="q-confirm-info-item">
                         <span>{% trans "Signing method" %}</span>
                         <strong>{{ signer.get_signing_method_display }}</strong>

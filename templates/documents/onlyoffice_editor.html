@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit document" %} | QolQoyu{% endblock %}
+{% block body_class %}onlyoffice-body{% endblock %}
+
+{% block content %}
+
+<section class="onlyoffice-page">
+    <header class="onlyoffice-page__bar">
+        <div>
+            <div class="onlyoffice-page__kicker">{% trans "Documents" %} / {{ document.title }}</div>
+            <h1>{% trans "Document editor" %}</h1>
+        </div>
+
+        <div class="onlyoffice-page__actions">
+            <a href="{% url 'documents:document_list' %}" class="btn btn-secondary">
+                {% trans "Back" %}
+            </a>
+            <a href="{% url 'signing:document_signers' document.pk %}" class="btn btn-primary">
+                {% trans "Continue to signers" %}
+            </a>
+        </div>
+    </header>
+
+    <div class="onlyoffice-page__editor">
+        <div id="onlyofficeEditor"></div>
+    </div>
+</section>
+
+{{ editor_config|json_script:"onlyoffice-config" }}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ onlyoffice_server_url }}/web-apps/apps/api/documents/api.js"></script>
+    <script>
+        (function () {
+            "use strict";
+
+            const configElement = document.getElementById("onlyoffice-config");
+
+            if (!configElement || !window.DocsAPI) {
+                return;
+            }
+
+            const config = JSON.parse(configElement.textContent);
+            window.qolqoyuOnlyOfficeEditor = new DocsAPI.DocEditor("onlyofficeEditor", config);
+        }());
+    </script>
+{% endblock %}

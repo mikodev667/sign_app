@@ -34,6 +34,7 @@ class Signer(models.Model):
     full_name = models.CharField(max_length=255)
     iin = models.CharField(max_length=12, db_index=True)
     phone = models.CharField(max_length=30)
+    email = models.EmailField(blank=True)
 
     signing_order = models.PositiveIntegerField(default=1)
 

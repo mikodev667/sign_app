@@ -232,6 +232,7 @@ class EvidenceBundleService:
                 "signer_id": signature.signer_id,
                 "signer_full_name": signature.signer.full_name,
                 "signer_iin": signature.signer.iin,
+                "signer_email": signature.signer.email,
                 "signing_session_id": signature.signing_session_id,
                 "provider": signature.provider,
                 "certificate_iin": signature.certificate_iin,

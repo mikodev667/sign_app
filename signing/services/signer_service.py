@@ -1,5 +1,8 @@
 import re
+import socket
 
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from django.db import transaction
 
 from documents.models import Document
@@ -9,6 +12,7 @@ from signing.services.audit_log_service import SigningAuditLogService
 
 class SignerService:
     IIN_PATTERN = re.compile(r"^\d{12}$")
+    EMAIL_VALIDATOR = EmailValidator()
 
     @classmethod
     def validate_iin(cls, iin: str) -> None:
@@ -38,6 +42,56 @@ class SignerService:
             raise ValueError("Телефон должен быть корректным номером Казахстана, например +77071234567.")
 
     @classmethod
+    def validate_email(cls, email: str) -> None:
+        if not email:
+            return
+
+        try:
+            cls.EMAIL_VALIDATOR(email)
+        except ValidationError:
+            raise ValueError("Email must be a valid email address.")
+
+        domain = email.rsplit("@", 1)[1]
+
+        if not cls.email_domain_exists(domain):
+            raise ValueError("Email domain could not be verified.")
+
+    @staticmethod
+    def email_domain_exists(domain: str) -> bool:
+        domain = (domain or "").strip().rstrip(".")
+
+        if not domain:
+            return False
+
+        try:
+            ascii_domain = domain.encode("idna").decode("ascii")
+        except UnicodeError:
+            return False
+
+        try:
+            import dns.resolver
+        except ImportError:
+            try:
+                socket.getaddrinfo(ascii_domain, None)
+            except socket.gaierror:
+                return False
+
+            return True
+
+        resolver = dns.resolver.Resolver()
+        resolver.lifetime = 3
+        resolver.timeout = 3
+
+        for record_type in ("MX", "A", "AAAA"):
+            try:
+                if resolver.resolve(ascii_domain, record_type):
+                    return True
+            except Exception:
+                continue
+
+        return False
+
+    @classmethod
     def validate_signing_order(cls, signing_order: int) -> None:
         if signing_order < 1:
             raise ValueError("Порядок подписания должен быть не меньше 1.")
@@ -46,7 +100,7 @@ class SignerService:
     def ensure_document_can_be_edited(cls, document: Document) -> None:
         if hasattr(document, "can_be_edited"):
             if not document.can_be_edited():
-                raise ValueError("Signers can be edited only before signer invitation.")
+                raise ValueError("Signers can be edited only before the first signature.")
             return
 
         if document.status != Document.Status.DRAFT:
@@ -61,6 +115,7 @@ class SignerService:
         full_name: str,
         iin: str,
         phone: str,
+        email: str = "",
         signing_order: int = 1,
         signing_method: str = Signer.SigningMethod.EGOV_MOBILE,
         template_party=None,
@@ -72,6 +127,7 @@ class SignerService:
         full_name = full_name.strip() if full_name else ""
         iin = iin.strip() if iin else ""
         phone = phone.strip() if phone else ""
+        email = email.strip() if email else ""
         role_title = role_title.strip() if role_title else ""
 
         if not full_name:
@@ -84,6 +140,7 @@ class SignerService:
 
         cls.validate_iin(iin)
         cls.validate_phone(phone)
+        cls.validate_email(email)
         cls.validate_signing_order(signing_order)
 
         normalized_phone = cls.normalize_phone(phone)
@@ -104,6 +161,7 @@ class SignerService:
             full_name=full_name,
             iin=iin,
             phone=normalized_phone,
+            email=email,
             signing_order=signing_order,
             signing_method=signing_method,
             status=Signer.Status.PENDING,
@@ -118,6 +176,7 @@ class SignerService:
             metadata={
                 "signing_order": signer.signing_order,
                 "signing_method": signer.signing_method,
+                "email": signer.email,
                 "template_party_id": signer.template_party_id,
                 "role_title": signer.role_title,
             },
@@ -144,6 +203,7 @@ class SignerService:
                 full_name=item.get("full_name", ""),
                 iin=item.get("iin", ""),
                 phone=item.get("phone", ""),
+                email=item.get("email", ""),
                 signing_order=item.get("signing_order", 1),
                 signing_method=item.get(
                     "signing_method",

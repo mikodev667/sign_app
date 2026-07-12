@@ -27,12 +27,20 @@ SYSTEM_PARTY_FIELDS = [
         "order": 3,
     },
     {
+        "label": "Email",
+        "variable_name": "email",
+        "field_type": "email",
+        "is_required": False,
+        "is_system": True,
+        "order": 4,
+    },
+    {
         "label": "Signing method",
         "variable_name": "signing_method",
         "field_type": "signing_method",
         "is_required": True,
         "is_system": True,
-        "order": 4,
+        "order": 5,
     },
 ]
 

@@ -177,6 +177,7 @@ class EcpSigningService:
             confirmation_text=(
                 f"Document '{document.title}' was signed using ECP via NCALayer. "
                 f"Signer: {signer.full_name}, IIN: {signer.iin}. "
+                f"{'Email: ' + signer.email + '. ' if signer.email else ''}"
                 f"Document hash: {document.content_hash}. "
                 f"Backend validation result: {'valid' if is_valid else 'invalid'}."
             ),

@@ -53,6 +53,28 @@ services:
       mc retention set --default COMPLIANCE $${MINIO_DEFAULT_RETENTION_DAYS}d local/$$MINIO_BUCKET
       "
 
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: sign_app_onlyoffice
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:-sign-app-onlyoffice-secret}
+      JWT_HEADER: ${ONLYOFFICE_JWT_HEADER:-Authorization}
+      JWT_IN_BODY: "true"
+    ports:
+      - "${ONLYOFFICE_PORT:-8082}:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - onlyoffice_data:/var/www/onlyoffice/Data
+      - onlyoffice_logs:/var/log/onlyoffice
+      - onlyoffice_lib:/var/lib/onlyoffice
+      - onlyoffice_db:/var/lib/postgresql
+
 volumes:
   postgres_data:
   minio_data:
+  onlyoffice_data:
+  onlyoffice_logs:
+  onlyoffice_lib:
+  onlyoffice_db:
