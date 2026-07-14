@@ -353,6 +353,92 @@ class DocumentLawVisionReport(models.Model):
         return self.status == self.Status.SUCCESS
 
 
+class DocumentLedgerRecord(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pending"
+        SUBMITTED = "submitted", "Submitted"
+        FAILED = "failed", "Failed"
+
+    class VerificationStatus(models.TextChoices):
+        PASSED = "passed", "Passed"
+        FAILED = "failed", "Failed"
+        ERROR = "error", "Error"
+
+    document = models.ForeignKey(
+        Document,
+        on_delete=models.CASCADE,
+        related_name="ledger_records",
+    )
+
+    requested_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="ledger_records",
+        blank=True,
+        null=True,
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+        db_index=True,
+    )
+
+    actor = models.CharField(max_length=100, default="sign_app")
+    external_id = models.CharField(max_length=100, unique=True, db_index=True)
+    source_filename = models.CharField(max_length=255, blank=True)
+    ledger_pdf_object = models.ForeignKey(
+        "documents.StoredObject",
+        on_delete=models.SET_NULL,
+        related_name="ledger_records",
+        blank=True,
+        null=True,
+    )
+
+    ledger_id = models.CharField(max_length=100, blank=True, db_index=True)
+    document_token = models.CharField(max_length=255, blank=True, db_index=True)
+    document_hash = models.CharField(max_length=64, blank=True, db_index=True)
+    size_bytes = models.PositiveBigIntegerField(blank=True, null=True)
+
+    sequence = models.PositiveBigIntegerField(blank=True, null=True, db_index=True)
+    entry_hash = models.CharField(max_length=128, blank=True, db_index=True)
+    previous_hash = models.CharField(max_length=128, blank=True)
+    server_signature_b64 = models.TextField(blank=True)
+    server_key_id = models.CharField(max_length=255, blank=True)
+    ledger_created_at = models.DateTimeField(blank=True, null=True)
+
+    request_metadata = models.JSONField(default=dict, blank=True)
+    raw_response = models.JSONField(default=dict, blank=True)
+    error_code = models.CharField(max_length=100, blank=True)
+    error_message = models.TextField(blank=True)
+
+    last_verified_at = models.DateTimeField(blank=True, null=True)
+    last_verification_status = models.CharField(
+        max_length=20,
+        choices=VerificationStatus.choices,
+        blank=True,
+        db_index=True,
+    )
+    last_verification_result = models.JSONField(default=dict, blank=True)
+    last_verification_error = models.TextField(blank=True)
+
+    submitted_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Document ledger record")
+        verbose_name_plural = _("Document ledger records")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Ledger record for {self.document_id} ({self.status})"
+
+    def is_successful(self):
+        return self.status == self.Status.SUBMITTED
+
+
 class DocumentFieldValue(models.Model):
     document = models.ForeignKey(
         Document,
@@ -480,6 +566,7 @@ class StoredObject(models.Model):
     class ObjectType(models.TextChoices):
         FINAL_PDF = "final_pdf", _("Final PDF")
         FINAL_DOCX = "final_docx", _("Final DOCX")
+        LEDGER_PDF = "ledger_pdf", _("Ledger PDF")
         SIGNATURE = "signature", _("Signature")
         EVIDENCE_BUNDLE = "evidence_bundle", _("Evidence bundle")
         OTHER = "other", _("Other")

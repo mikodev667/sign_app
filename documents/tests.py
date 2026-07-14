@@ -1,3 +1,4 @@
+import hashlib
 import json
 from io import BytesIO
 from pathlib import Path
@@ -10,6 +11,7 @@ from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 from docx import Document as WordDocument
 from docx.shared import Cm
 from docx.shared import RGBColor
@@ -18,6 +20,7 @@ from documents.forms import DocumentTemplateUploadForm
 from documents.models import (
     Document,
     DocumentFieldValue,
+    DocumentLedgerRecord,
     DocumentTemplate,
     StoredObject,
     TemplateParty,
@@ -27,6 +30,8 @@ from documents.services.object_storage_service import ObjectStorageService
 from documents.services.docx_template_service import DocxTemplateService
 from documents.services.docx_preview_service import DocxPreviewService
 from documents.services.onlyoffice_service import OnlyOfficeService
+from documents.services.document_ledger_service import DocumentLedgerError, DocumentLedgerService
+from documents.services.pdf_export_service import ExportedPdf
 from documents.services.template_file_service import TemplateFileService
 from organizations.models import Organization, OrganizationMember
 from signing.models import Signer
@@ -490,6 +495,198 @@ class ObjectStorageServiceTests(TestCase):
         return user, organization
 
 
+class DocumentLedgerServiceTests(TestCase):
+    @override_settings(
+        LEDGER_ENABLED=True,
+        LEDGER_ACTOR="sign_app",
+        LEDGER_EXTERNAL_ID_PREFIX="contract",
+    )
+    def test_submit_document_exports_pdf_and_stores_ledger_proof(self):
+        user, organization = self.create_user_and_organization()
+        document = self.create_signed_document(user, organization)
+        pdf = ExportedPdf(
+            filename="signed_contract.pdf",
+            content=b"%PDF-1.4 test",
+        )
+        ledger_payload = {
+            "id": "6642429a-7964-4a43-b32f-540dc4f55c25",
+            "external_id": f"contract-{document.signed_at.year}-{document.pk:06d}",
+            "document_hash": "d6b5ca52a83a74b695346d7936488a09b15274a075b468da490dad0e212b352a",
+            "document_token": "document-token-123",
+            "size_bytes": len(pdf.content),
+            "created_at": "2026-07-10T12:00:25.318942Z",
+            "ledger_proof": {
+                "sequence": 1,
+                "entry_hash": "e217d2d8cdaf7d0dc1e31fc3ee99",
+                "previous_hash": "0" * 64,
+                "server_signature_b64": "C0r4W",
+                "server_key_id": "ed25519:2b0b31cae49ac85f4e849126",
+                "created_at": "2026-07-10T12:00:25.318942Z",
+            },
+        }
+        stored_pdf = self.create_stored_ledger_pdf(document, pdf.content)
+
+        with patch(
+            "documents.services.document_ledger_service.OnlyOfficePdfExportService.export_document_pdf",
+            return_value=pdf,
+        ) as export_document_pdf, patch(
+            "documents.services.document_ledger_service.ObjectStorageService.store_bytes",
+            return_value=stored_pdf,
+        ) as store_bytes, patch(
+            "documents.services.document_ledger_service.LedgerClient.submit_document",
+            return_value=ledger_payload,
+        ) as submit_document:
+            record, cached = DocumentLedgerService.submit_document(
+                document=document,
+                requested_by=user,
+            )
+
+        self.assertFalse(cached)
+        export_document_pdf.assert_called_once_with(document)
+        store_bytes.assert_called_once()
+        submit_document.assert_called_once()
+
+        _, storage_kwargs = store_bytes.call_args
+        self.assertEqual(storage_kwargs["document"], document)
+        self.assertEqual(storage_kwargs["data"], pdf.content)
+        self.assertEqual(storage_kwargs["filename"], pdf.filename)
+        self.assertEqual(storage_kwargs["content_type"], "application/pdf")
+        self.assertEqual(storage_kwargs["object_type"], StoredObject.ObjectType.LEDGER_PDF)
+
+        _, kwargs = submit_document.call_args
+        self.assertEqual(kwargs["filename"], "signed_contract.pdf")
+        self.assertEqual(kwargs["content"], pdf.content)
+        self.assertEqual(kwargs["actor"], "sign_app")
+        self.assertEqual(kwargs["external_id"], ledger_payload["external_id"])
+        metadata = json.loads(kwargs["metadata_json"])
+        self.assertEqual(metadata["document_id"], document.pk)
+        self.assertEqual(metadata["status"], Document.Status.SIGNED)
+
+        record.refresh_from_db()
+        self.assertEqual(record.status, DocumentLedgerRecord.Status.SUBMITTED)
+        self.assertEqual(record.ledger_id, ledger_payload["id"])
+        self.assertEqual(record.document_token, ledger_payload["document_token"])
+        self.assertEqual(record.document_hash, ledger_payload["document_hash"])
+        self.assertEqual(record.ledger_pdf_object, stored_pdf)
+        self.assertEqual(record.sequence, 1)
+        self.assertEqual(record.entry_hash, "e217d2d8cdaf7d0dc1e31fc3ee99")
+
+    @override_settings(LEDGER_ENABLED=False)
+    def test_submit_document_fails_before_pdf_export_when_ledger_disabled(self):
+        user, organization = self.create_user_and_organization()
+        document = self.create_signed_document(user, organization)
+
+        with patch(
+            "documents.services.document_ledger_service.OnlyOfficePdfExportService.export_document_pdf",
+        ) as export_document_pdf:
+            with self.assertRaises(DocumentLedgerError):
+                DocumentLedgerService.submit_document(document=document, requested_by=user)
+
+        export_document_pdf.assert_not_called()
+        self.assertFalse(DocumentLedgerRecord.objects.exists())
+
+    def test_document_list_links_to_ledger_proof_for_submitted_document(self):
+        user, organization = self.create_user_and_organization()
+        document = self.create_signed_document(user, organization)
+        DocumentLedgerRecord.objects.create(
+            document=document,
+            status=DocumentLedgerRecord.Status.SUBMITTED,
+            actor="sign_app",
+            external_id=f"contract-{document.signed_at.year}-{document.pk:06d}",
+            ledger_id="ledger-id",
+            sequence=1,
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_list"))
+
+        self.assertContains(
+            response,
+            reverse("documents:document_ledger_proof", args=[document.pk]),
+        )
+        self.assertContains(response, "Integrity check")
+        self.assertNotContains(response, "Send to ledger")
+
+    def test_verify_record_checks_stored_pdf_hash_and_ledger_chain(self):
+        user, organization = self.create_user_and_organization()
+        document = self.create_signed_document(user, organization)
+        pdf_content = b"%PDF-1.4 verified"
+        pdf_hash = hashlib.sha256(pdf_content).hexdigest()
+        stored_pdf = self.create_stored_ledger_pdf(document, pdf_content)
+        record = DocumentLedgerRecord.objects.create(
+            document=document,
+            status=DocumentLedgerRecord.Status.SUBMITTED,
+            actor="sign_app",
+            external_id=f"contract-{document.signed_at.year}-{document.pk:06d}",
+            ledger_id="ledger-id",
+            document_hash=pdf_hash,
+            ledger_pdf_object=stored_pdf,
+            document_token="token",
+        )
+
+        with patch(
+            "documents.services.document_ledger_service.ObjectStorageService.get_stored_object_bytes",
+            return_value=pdf_content,
+        ) as get_stored_object_bytes, patch(
+            "documents.services.document_ledger_service.LedgerClient.verify",
+            return_value={"ok": True, "deep": True},
+        ) as verify_ledger:
+            result = DocumentLedgerService.verify_record(record)
+
+        get_stored_object_bytes.assert_called_once_with(stored_pdf)
+        verify_ledger.assert_called_once_with(deep=True)
+        self.assertTrue(result["hash_matches"])
+        self.assertTrue(result["ledger_chain_ok"])
+
+        record.refresh_from_db()
+        self.assertEqual(
+            record.last_verification_status,
+            DocumentLedgerRecord.VerificationStatus.PASSED,
+        )
+
+    @staticmethod
+    def create_signed_document(user, organization):
+        return Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Signed ledger document",
+            status=Document.Status.SIGNED,
+            signed_at=timezone.now(),
+            content_hash="a" * 64,
+        )
+
+    @staticmethod
+    def create_stored_ledger_pdf(document, content):
+        sha256 = hashlib.sha256(content).hexdigest()
+        return StoredObject.objects.create(
+            document=document,
+            object_type=StoredObject.ObjectType.LEDGER_PDF,
+            bucket="test-bucket",
+            object_key=f"documents/{document.pk}/ledger_pdf/{sha256}-signed_contract.pdf",
+            version_id="version-1",
+            sha256=sha256,
+            content_type="application/pdf",
+            size_bytes=len(content),
+        )
+
+    @staticmethod
+    def create_user_and_organization():
+        user = get_user_model().objects.create_user(
+            username="ledger-owner",
+            password="password",
+        )
+        organization = Organization.objects.create(
+            name="Ledger Test Organization",
+            created_by=user,
+        )
+        OrganizationMember.objects.create(
+            organization=organization,
+            user=user,
+            role=OrganizationMember.Role.OWNER,
+        )
+        return user, organization
+
+
 class DocumentDraftEditingTests(TestCase):
     def test_create_document_from_uploaded_docx_without_template(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
@@ -606,6 +803,13 @@ class DocumentDraftEditingTests(TestCase):
             self.assertContains(response, "DocsAPI.DocEditor")
             self.assertContains(response, "http://django.test/documents/")
             self.assertContains(response, '"documentType": "word"')
+
+    @override_settings(ONLYOFFICE_COMMAND_SERVICE_URL="http://127.0.0.1:8082/command")
+    def test_onlyoffice_convert_service_url_uses_modern_converter_endpoint(self):
+        self.assertEqual(
+            OnlyOfficeService.convert_service_url("convert-key"),
+            "http://127.0.0.1:8082/converter?shardkey=convert-key",
+        )
 
     def test_document_list_shows_edit_link_for_uploaded_draft_document(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):

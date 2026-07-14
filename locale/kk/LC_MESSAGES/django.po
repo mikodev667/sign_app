@@ -1,4 +1,4 @@
-﻿msgid ""
+msgid ""
 msgstr ""
 "Project-Id-Version: QolQoyu\n"
 "Report-Msgid-Bugs-To: \n"
@@ -1110,6 +1110,111 @@ msgstr "#%(object_id)s сақталған объектісін тексеру с
 msgid "Stored object hash mismatch: object=%(object_id)s expected=%(expected)s actual=%(actual)s"
 msgstr "Сақталған объект хеші сәйкес емес: объект=%(object_id)s күтілген=%(expected)s нақты=%(actual)s"
 
+msgid "Integrity check"
+msgstr "Тұтастықты тексеру"
+
+msgid "Integrity failed"
+msgstr "Тұтастық тексеруі өтпеді"
+
+msgid "Integrity pending"
+msgstr "Тұтастық тексеруі күтілуде"
+
+msgid "Integrity after signing"
+msgstr "Тұтастықты қол қоюдан кейін тексеру"
+
+msgid "Integrity check | QolQoyu"
+msgstr "Тұтастықты тексеру | QolQoyu"
+
+msgid "Blockchain integrity"
+msgstr "Блокчейндегі тұтастық"
+
+msgid "Verify integrity"
+msgstr "Тұтастықты тексеру"
+
+msgid "Submission"
+msgstr "Жіберу"
+
+msgid "External ID"
+msgstr "Сыртқы ID"
+
+msgid "Ledger ID"
+msgstr "Ledger ID"
+
+msgid "Document token"
+msgstr "Құжат токені"
+
+msgid "Document SHA-256"
+msgstr "Құжат SHA-256"
+
+msgid "Sequence"
+msgstr "Жазба нөмірі"
+
+msgid "Size"
+msgstr "Өлшемі"
+
+msgid "Server key"
+msgstr "Сервер кілті"
+
+msgid "Submitted at"
+msgstr "Жіберілген уақыты"
+
+msgid "Verification"
+msgstr "Тексеру"
+
+msgid "Not checked"
+msgstr "Тексерілмеген"
+
+msgid "Stored PDF hash"
+msgstr "Сақталған PDF хеші"
+
+msgid "Matches"
+msgstr "Сәйкес келеді"
+
+msgid "Not verified"
+msgstr "Тексерілмеген"
+
+msgid "Ledger chain"
+msgstr "Ledger тізбегі"
+
+msgid "Verified"
+msgstr "Тексерілді"
+
+msgid "Ledger verify response"
+msgstr "Ledger тексеру жауабы"
+
+msgid "Ledger record is not available for this document yet."
+msgstr "Бұл құжат үшін ledger жазбасы әзірге қолжетімді емес."
+
+msgid "Ledger verification failed: %(error)s"
+msgstr "Ledger тексеруі сәтсіз аяқталды: %(error)s"
+
+msgid "Document integrity is verified."
+msgstr "Құжат тұтастығы расталды."
+
+msgid "Document hash does not match the ledger record."
+msgstr "Құжат хеші ledger жазбасымен сәйкес емес."
+
+msgid "Document ledger record"
+msgstr "Құжаттың ledger жазбасы"
+
+msgid "Document ledger records"
+msgstr "Құжаттардың ledger жазбалары"
+
+msgid "Ledger PDF"
+msgstr "Ledger PDF"
+
+msgid "Passed"
+msgstr "Өтті"
+
+msgid "Error"
+msgstr "Қате"
+
+msgid "Pending"
+msgstr "Күтілуде"
+
+msgid "Submitted"
+msgstr "Жіберілді"
+
 msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
 msgstr "'minio' пакеті қажет. Орындаңыз: pip install -r requirements.txt"
 
@@ -1293,9 +1398,6 @@ msgstr "Жетіспейтін ережелер"
 msgid "No missing clauses returned by LawVision."
 msgstr "LawVision жетіспейтін ережелерді қайтармады."
 
-msgid "Compliance"
-msgstr "Сәйкестік"
-
 msgid "No compliance notes returned by LawVision."
 msgstr "LawVision сәйкестік бойынша ескертпелерді қайтармады."
 
@@ -1325,9 +1427,6 @@ msgstr "Модель"
 
 msgid "Text length"
 msgstr "Мәтін ұзындығы"
-
-msgid "Document hash"
-msgstr "Құжат хеші"
 
 msgid "This report is for reference only and does not replace advice from a qualified lawyer."
 msgstr "Бұл есеп тек анықтамалық сипатта және білікті заңгердің кеңесін алмастырмайды."
@@ -1377,9 +1476,6 @@ msgstr "Сәйкес"
 msgid "Success"
 msgstr "Сәтті"
 
-msgid "Failed"
-msgstr "Қате"
-
 msgid "Processing"
 msgstr "Өңделуде"
 
@@ -1391,9 +1487,6 @@ msgstr "Белгісіз"
 
 msgid "Missing"
 msgstr "Жоқ"
-
-msgid "Required"
-msgstr "Міндетті"
 
 msgid "Minor"
 msgstr "Кіші"

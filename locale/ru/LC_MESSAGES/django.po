@@ -1,4 +1,4 @@
-﻿msgid ""
+msgid ""
 msgstr ""
 "Project-Id-Version: QolQoyu\n"
 "Report-Msgid-Bugs-To: \n"
@@ -1111,6 +1111,111 @@ msgstr "Проверка сохраненного объекта #%(object_id)s 
 msgid "Stored object hash mismatch: object=%(object_id)s expected=%(expected)s actual=%(actual)s"
 msgstr "Хеш сохраненного объекта не совпадает: объект=%(object_id)s ожидалось=%(expected)s фактически=%(actual)s"
 
+msgid "Integrity check"
+msgstr "Проверка целостности"
+
+msgid "Integrity failed"
+msgstr "Проверка не прошла"
+
+msgid "Integrity pending"
+msgstr "Проверка ожидается"
+
+msgid "Integrity after signing"
+msgstr "Проверка после подписания"
+
+msgid "Integrity check | QolQoyu"
+msgstr "Проверка целостности | QolQoyu"
+
+msgid "Blockchain integrity"
+msgstr "Целостность в блокчейне"
+
+msgid "Verify integrity"
+msgstr "Проверить целостность"
+
+msgid "Submission"
+msgstr "Отправка"
+
+msgid "External ID"
+msgstr "Внешний ID"
+
+msgid "Ledger ID"
+msgstr "ID в ledger"
+
+msgid "Document token"
+msgstr "Токен документа"
+
+msgid "Document SHA-256"
+msgstr "SHA-256 документа"
+
+msgid "Sequence"
+msgstr "Номер записи"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Server key"
+msgstr "Ключ сервера"
+
+msgid "Submitted at"
+msgstr "Отправлено"
+
+msgid "Verification"
+msgstr "Проверка"
+
+msgid "Not checked"
+msgstr "Не проверено"
+
+msgid "Stored PDF hash"
+msgstr "Хеш сохраненного PDF"
+
+msgid "Matches"
+msgstr "Совпадает"
+
+msgid "Not verified"
+msgstr "Не проверено"
+
+msgid "Ledger chain"
+msgstr "Цепочка ledger"
+
+msgid "Verified"
+msgstr "Проверено"
+
+msgid "Ledger verify response"
+msgstr "Ответ проверки ledger"
+
+msgid "Ledger record is not available for this document yet."
+msgstr "Запись ledger для этого документа пока недоступна."
+
+msgid "Ledger verification failed: %(error)s"
+msgstr "Проверка ledger не прошла: %(error)s"
+
+msgid "Document integrity is verified."
+msgstr "Целостность документа подтверждена."
+
+msgid "Document hash does not match the ledger record."
+msgstr "Хеш документа не совпадает с записью ledger."
+
+msgid "Document ledger record"
+msgstr "Запись документа в ledger"
+
+msgid "Document ledger records"
+msgstr "Записи документов в ledger"
+
+msgid "Ledger PDF"
+msgstr "PDF для ledger"
+
+msgid "Passed"
+msgstr "Пройдено"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Pending"
+msgstr "Ожидает"
+
+msgid "Submitted"
+msgstr "Отправлено"
+
 msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
 msgstr "Требуется пакет 'minio'. Выполните: pip install -r requirements.txt"
 
@@ -1294,9 +1399,6 @@ msgstr "Недостающие положения"
 msgid "No missing clauses returned by LawVision."
 msgstr "LawVision не вернул недостающие положения."
 
-msgid "Compliance"
-msgstr "Соответствие"
-
 msgid "No compliance notes returned by LawVision."
 msgstr "LawVision не вернул замечания по соответствию."
 
@@ -1326,9 +1428,6 @@ msgstr "Модель"
 
 msgid "Text length"
 msgstr "Длина текста"
-
-msgid "Document hash"
-msgstr "Хеш документа"
 
 msgid "This report is for reference only and does not replace advice from a qualified lawyer."
 msgstr "Этот отчет носит справочный характер и не заменяет консультацию квалифицированного юриста."
@@ -1378,9 +1477,6 @@ msgstr "Соответствует"
 msgid "Success"
 msgstr "Успешно"
 
-msgid "Failed"
-msgstr "Ошибка"
-
 msgid "Processing"
 msgstr "В обработке"
 
@@ -1392,9 +1488,6 @@ msgstr "Неизвестно"
 
 msgid "Missing"
 msgstr "Отсутствует"
-
-msgid "Required"
-msgstr "Обязательно"
 
 msgid "Minor"
 msgstr "Незначительный"

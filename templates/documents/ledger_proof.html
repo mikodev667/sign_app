@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Integrity check | QolQoyu" %}{% endblock %}
+
+{% block content %}
+
+<section class="q-ledger-page">
+    <header class="q-ledger-hero">
+        <div>
+            <span class="q-signers-kicker">{% trans "Blockchain integrity" %}</span>
+            <h1>{% trans "Integrity check" %}</h1>
+            <p>{{ document.title }}</p>
+        </div>
+
+        <div class="q-ledger-actions">
+            <a href="{% url 'documents:document_list' %}" class="q-editor-btn q-editor-btn--secondary">
+                {% trans "Back" %}
+            </a>
+
+            {% if record.status == "submitted" %}
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="q-editor-btn q-editor-btn--primary">
+                        {% trans "Verify integrity" %}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="q-ledger-layout">
+        <section class="q-ledger-panel">
+            <div class="q-ledger-section-head">
+                <span>{% trans "Submission" %}</span>
+                <strong>{{ record.get_status_display }}</strong>
+            </div>
+
+            <dl class="q-ledger-grid">
+                <div>
+                    <dt>{% trans "External ID" %}</dt>
+                    <dd><code>{{ record.external_id }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Ledger ID" %}</dt>
+                    <dd><code>{{ record.ledger_id|default:"-" }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Document token" %}</dt>
+                    <dd><code>{{ record.document_token|default:"-" }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Document SHA-256" %}</dt>
+                    <dd><code>{{ record.document_hash|default:"-" }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Sequence" %}</dt>
+                    <dd>{{ record.sequence|default:"-" }}</dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Size" %}</dt>
+                    <dd>{{ record.size_bytes|default:"-" }}</dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Server key" %}</dt>
+                    <dd><code>{{ record.server_key_id|default:"-" }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Submitted at" %}</dt>
+                    <dd>{{ record.submitted_at|default:"-" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="q-ledger-panel">
+            <div class="q-ledger-section-head">
+                <span>{% trans "Verification" %}</span>
+                <strong>
+                    {% if record.last_verification_status %}
+                        {{ record.get_last_verification_status_display }}
+                    {% else %}
+                        {% trans "Not checked" %}
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="q-ledger-checks">
+                <div class="q-ledger-check{% if verification.hash_matches %} q-ledger-check--ok{% endif %}">
+                    <span>{% trans "Stored PDF hash" %}</span>
+                    <strong>
+                        {% if verification.hash_matches %}
+                            {% trans "Matches" %}
+                        {% else %}
+                            {% trans "Not verified" %}
+                        {% endif %}
+                    </strong>
+                    {% if verification.local_hash %}
+                        <code>{{ verification.local_hash }}</code>
+                    {% endif %}
+                </div>
+
+                <div class="q-ledger-check{% if verification.ledger_chain_ok %} q-ledger-check--ok{% endif %}">
+                    <span>{% trans "Ledger chain" %}</span>
+                    <strong>
+                        {% if verification.ledger_chain_ok %}
+                            {% trans "Verified" %}
+                        {% else %}
+                            {% trans "Not verified" %}
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+
+            {% if record.last_verification_error %}
+                <div class="q-ledger-error">
+                    {{ record.last_verification_error }}
+                </div>
+            {% endif %}
+
+            {% if verification.ledger_verify_response %}
+                <details class="q-ledger-raw">
+                    <summary>{% trans "Ledger verify response" %}</summary>
+                    <pre>{{ verification.ledger_verify_response|pprint }}</pre>
+                </details>
+            {% endif %}
+        </section>
+    </div>
+</section>
+
+{% endblock %}

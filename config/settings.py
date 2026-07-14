@@ -30,6 +30,17 @@ LAWVISION_API_KEY = os.getenv("LAWVISION_API_KEY", "")
 LAWVISION_API_URL = os.getenv("LAWVISION_API_URL", "https://lawvision.kz/api/v1")
 LAWVISION_TIMEOUT_SECONDS = int(os.getenv("LAWVISION_TIMEOUT_SECONDS", "90"))
 
+# Sign ledger integration
+LEDGER_ENABLED = os.getenv("LEDGER_ENABLED", "False").lower() in {"1", "true", "yes", "on"}
+LEDGER_API_URL = os.getenv("LEDGER_API_URL", "https://ledger.internal/v1")
+LEDGER_API_KEY_FILE = os.getenv("LEDGER_API_KEY_FILE", "/etc/sign-ledger-client/api-key")
+LEDGER_CA_CERT_FILE = os.getenv("LEDGER_CA_CERT_FILE", "/etc/sign-ledger-client/ca.crt")
+LEDGER_CLIENT_CERT_FILE = os.getenv("LEDGER_CLIENT_CERT_FILE", "/etc/sign-ledger-client/client.crt")
+LEDGER_CLIENT_KEY_FILE = os.getenv("LEDGER_CLIENT_KEY_FILE", "/etc/sign-ledger-client/client.key")
+LEDGER_TIMEOUT_SECONDS = int(os.getenv("LEDGER_TIMEOUT_SECONDS", "60"))
+LEDGER_ACTOR = os.getenv("LEDGER_ACTOR", "sign_app")
+LEDGER_EXTERNAL_ID_PREFIX = os.getenv("LEDGER_EXTERNAL_ID_PREFIX", "contract")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

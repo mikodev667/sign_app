@@ -6,6 +6,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from documents.models import Document
+from documents.services.document_ledger_service import DocumentLedgerService
 from signing.models import Signer, SigningSession, Signature, SigningAuditLog
 from signing.services.sms_gateway_service import SmsGatewayService
 
@@ -457,6 +458,7 @@ class SmsSigningService:
         signer.save(update_fields=["status", "signed_at", "updated_at"])
 
         cls.recalculate_document_status(document=document)
+        DocumentLedgerService.submit_document_after_commit(document_id=document.id)
 
         cls.create_audit_log(
             signer=signer,

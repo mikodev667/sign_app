@@ -138,6 +138,26 @@
                             </a>
                         {% endif %}
 
+                        {% if document.ledger_record %}
+                            <a href="{% url 'documents:document_ledger_proof' document.pk %}" class="document-action document-action--ledger{% if document.ledger_record.status == 'failed' %} document-action--ledger-failed{% endif %}">
+                                {% if document.ledger_record.status == "submitted" %}
+                                    {% trans "Integrity check" %}
+                                {% elif document.ledger_record.status == "failed" %}
+                                    {% trans "Integrity failed" %}
+                                {% else %}
+                                    {% trans "Integrity pending" %}
+                                {% endif %}
+                            </a>
+                        {% elif document.status == "signed" %}
+                            <span class="document-action document-action--disabled">
+                                {% trans "Integrity pending" %}
+                            </span>
+                        {% else %}
+                            <span class="document-action document-action--disabled">
+                                {% trans "Integrity after signing" %}
+                            </span>
+                        {% endif %}
+
                         {% if document.can_be_edited %}
                             {% if document.template %}
                                 <a href="{% url 'documents:document_fill' document.pk %}" class="document-action document-action--edit">

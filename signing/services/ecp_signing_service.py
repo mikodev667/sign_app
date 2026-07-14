@@ -6,7 +6,8 @@ from django.utils import timezone
 import base64
 import binascii
 
-from documents.models import StoredObject
+from documents.models import Document, StoredObject
+from documents.services.document_ledger_service import DocumentLedgerService
 from documents.services.object_storage_service import ObjectStorageService
 from signing.models import (
     Signer,
@@ -200,6 +201,8 @@ class EcpSigningService:
         if is_valid:
             signer.mark_signed()
             session.mark_signed()
+            cls.recalculate_document_status(document=document)
+            DocumentLedgerService.submit_document_after_commit(document_id=document.id)
         else:
             signer.status = Signer.Status.FAILED
             signer.save(update_fields=["status", "updated_at"])
@@ -252,6 +255,24 @@ class EcpSigningService:
         )
 
         return signature
+
+    @classmethod
+    def recalculate_document_status(cls, *, document: Document) -> Document:
+        total_signers = document.signers.count()
+        signed_signers = document.signers.filter(status=Signer.Status.SIGNED).count()
+
+        if total_signers > 0 and total_signers == signed_signers:
+            document.status = Document.Status.SIGNED
+            document.signed_at = timezone.now()
+            document.save(update_fields=["status", "signed_at", "updated_at"])
+        elif signed_signers > 0:
+            document.status = Document.Status.PARTIALLY_SIGNED
+            document.save(update_fields=["status", "updated_at"])
+        else:
+            document.status = Document.Status.WAITING_FOR_SIGNERS
+            document.save(update_fields=["status", "updated_at"])
+
+        return document
 
     @staticmethod
     def serialize_stored_cms_object(stored_object):

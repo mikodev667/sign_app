@@ -42,9 +42,11 @@ from .models import (
     Document,
     DocumentFieldValue,
     DocumentLawVisionReport,
+    DocumentLedgerRecord,
     TemplateParty,
     TemplatePartyField,
 )
+from .services.document_ledger_service import DocumentLedgerError, DocumentLedgerService
 from .services.lawvision_service import LawVisionError, LawVisionService
 from .services.evidence_bundle_service import (
     EvidenceBundleError,
@@ -115,6 +117,26 @@ def attach_lawvision_reports(documents):
         document.lawvision_report = report_by_key.get(
             (document.id, document.content_hash)
         )
+
+    return documents
+
+
+def attach_ledger_records(documents):
+    documents = list(documents)
+    document_ids = [document.id for document in documents]
+
+    records = (
+        DocumentLedgerRecord.objects
+        .filter(document_id__in=document_ids)
+        .order_by("-created_at")
+    )
+
+    record_by_document = {}
+    for record in records:
+        record_by_document.setdefault(record.document_id, record)
+
+    for document in documents:
+        document.ledger_record = record_by_document.get(document.id)
 
     return documents
 
@@ -392,7 +414,7 @@ def template_upload(request):
 
 @login_required
 def document_list(request):
-    documents = attach_lawvision_reports(
+    documents = attach_ledger_records(attach_lawvision_reports(
         get_managed_documents_queryset(request.user)
         .prefetch_related(
             "stored_objects",
@@ -402,7 +424,7 @@ def document_list(request):
             ),
         )
         .order_by("-created_at")
-    )
+    ))
 
     for document in documents:
         document.has_evidence_objects = any(
@@ -413,6 +435,61 @@ def document_list(request):
     return render(request, "documents/document_list.html", {
         "documents": documents,
     })
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def document_ledger_proof(request, pk):
+    document = get_object_or_404(
+        get_managed_documents_queryset(request.user).prefetch_related("ledger_records"),
+        pk=pk,
+    )
+
+    record = (
+        document.ledger_records
+        .select_related("ledger_pdf_object")
+        .order_by("-created_at")
+        .first()
+    )
+
+    if not record:
+        messages.info(
+            request,
+            _("Ledger record is not available for this document yet."),
+        )
+        return redirect("documents:document_list")
+
+    verification = record.last_verification_result or {}
+
+    if request.method == "POST":
+        try:
+            verification = DocumentLedgerService.verify_record(record)
+        except DocumentLedgerError as exc:
+            record.refresh_from_db()
+            verification = record.last_verification_result or verification
+            messages.error(
+                request,
+                _("Ledger verification failed: %(error)s") % {"error": exc},
+            )
+        else:
+            record.refresh_from_db()
+            if record.last_verification_status == DocumentLedgerRecord.VerificationStatus.PASSED:
+                messages.success(request, _("Document integrity is verified."))
+            else:
+                messages.warning(
+                    request,
+                    _("Document hash does not match the ledger record."),
+                )
+
+    return render(
+        request,
+        "documents/ledger_proof.html",
+        {
+            "document": document,
+            "record": record,
+            "verification": verification,
+        },
+    )
 
 
 @login_required

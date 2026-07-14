@@ -1904,10 +1904,227 @@ tbody tr:last-child td {
     background: #bbf7d0;
 }
 
+.document-action--ledger {
+    color: #312e81;
+    background: #ede9fe;
+}
+
+.document-action--ledger:hover {
+    background: #ddd6fe;
+}
+
+.document-action--ledger-failed {
+    color: #991b1b;
+    background: #fee2e2;
+}
+
+.document-action--ledger-failed:hover {
+    background: #fecaca;
+}
+
 .document-action--disabled {
     color: #94a3b8;
     background: #f1f5f9;
     cursor: not-allowed;
+}
+
+/* =========================
+   LEDGER PROOF
+========================= */
+
+.q-ledger-page {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 18px;
+    padding: 36px 0 70px;
+}
+
+.q-ledger-hero,
+.q-ledger-panel {
+    border: 1px solid rgba(226, 232, 240, 0.92);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+}
+
+.q-ledger-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 24px;
+}
+
+.q-ledger-hero h1 {
+    margin: 8px 0 4px;
+    color: #0f172a;
+    font-size: 32px;
+    line-height: 1.1;
+}
+
+.q-ledger-hero p {
+    margin: 0;
+    color: #64748b;
+    font-weight: 800;
+}
+
+.q-ledger-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.q-ledger-actions form {
+    margin: 0;
+}
+
+.q-ledger-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+    gap: 18px;
+}
+
+.q-ledger-panel {
+    padding: 22px;
+}
+
+.q-ledger-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.q-ledger-section-head span {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.q-ledger-section-head strong {
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: #3730a3;
+    background: #ede9fe;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.q-ledger-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.q-ledger-grid div,
+.q-ledger-check {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #dbe4f0;
+    border-radius: 16px;
+    background: #f8fafc;
+}
+
+.q-ledger-grid dt,
+.q-ledger-check span {
+    margin: 0 0 7px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.q-ledger-grid dd {
+    margin: 0;
+    color: #0f172a;
+    font-weight: 850;
+}
+
+.q-ledger-grid code,
+.q-ledger-check code {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    color: #1d4ed8;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.q-ledger-checks {
+    display: grid;
+    gap: 12px;
+}
+
+.q-ledger-check {
+    display: grid;
+    gap: 7px;
+}
+
+.q-ledger-check strong {
+    color: #991b1b;
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.q-ledger-check--ok {
+    border-color: #99f6e4;
+    background: #ecfdf5;
+}
+
+.q-ledger-check--ok strong {
+    color: #0f766e;
+}
+
+.q-ledger-error {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: #991b1b;
+    background: #fee2e2;
+    font-weight: 850;
+}
+
+.q-ledger-raw {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid #dbe4f0;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.q-ledger-raw summary {
+    cursor: pointer;
+    color: #334155;
+    font-weight: 900;
+}
+
+.q-ledger-raw pre {
+    max-height: 360px;
+    overflow: auto;
+    margin: 12px 0 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #0f172a;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+    .q-ledger-hero,
+    .q-ledger-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .q-ledger-layout,
+    .q-ledger-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* =========================

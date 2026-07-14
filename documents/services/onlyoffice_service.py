@@ -16,22 +16,26 @@ class OnlyOfficeTokenError(ValueError):
 
 class OnlyOfficeService:
     @classmethod
-    def build_editor_config(cls, *, document, user, request=None):
+    def build_document_file_url(cls, document):
         access_token = cls.encode_token({
             "document_id": document.pk,
             "action": "download",
             "exp": int(time.time()) + settings.ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS,
         })
+        return cls.build_internal_url(
+            reverse("documents:document_onlyoffice_file", args=[document.pk]),
+            {"token": access_token},
+        )
+
+    @classmethod
+    def build_editor_config(cls, *, document, user, request=None):
         callback_token = cls.encode_token({
             "document_id": document.pk,
             "action": "callback",
             "exp": int(time.time()) + settings.ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS,
         })
 
-        file_url = cls.build_internal_url(
-            reverse("documents:document_onlyoffice_file", args=[document.pk]),
-            {"token": access_token},
-        )
+        file_url = cls.build_document_file_url(document)
         callback_url = cls.build_internal_url(
             reverse("documents:document_onlyoffice_callback", args=[document.pk]),
             {"token": callback_token},
@@ -156,6 +160,26 @@ class OnlyOfficeService:
         )
         response.raise_for_status()
         return response.json()
+
+    @classmethod
+    def get_server_internal_url(cls, url):
+        public_base = settings.ONLYOFFICE_SERVER_URL.rstrip("/")
+        command_base = settings.ONLYOFFICE_COMMAND_SERVICE_URL.rstrip("/")
+        internal_base = command_base.rsplit("/", 1)[0]
+
+        if url and url.startswith(public_base):
+            return internal_base + url[len(public_base):]
+
+        return url
+
+    @classmethod
+    def convert_service_url(cls, key=None):
+        base_url = f"{settings.ONLYOFFICE_COMMAND_SERVICE_URL.rstrip('/').rsplit('/', 1)[0]}/converter"
+
+        if key:
+            return f"{base_url}?{urlencode({'shardkey': key})}"
+
+        return base_url
 
     @classmethod
     def build_internal_url(cls, path, params=None):

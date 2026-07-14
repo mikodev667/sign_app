@@ -8,6 +8,7 @@ from .models import (
     Document,
     DocumentFieldValue,
     DocumentLawVisionReport,
+    DocumentLedgerRecord,
     StoredObject,
     TemplateParty,
     TemplatePartyField,
@@ -211,6 +212,69 @@ class DocumentLawVisionReportAdmin(admin.ModelAdmin):
         "analysis",
         "metadata",
         "raw_response",
+    )
+
+
+@admin.register(DocumentLedgerRecord)
+class DocumentLedgerRecordAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "document",
+        "status",
+        "external_id",
+        "ledger_id",
+        "document_token",
+        "sequence",
+        "last_verification_status",
+        "submitted_at",
+        "created_at",
+    )
+    list_filter = (
+        "status",
+        "last_verification_status",
+        "actor",
+        "created_at",
+        "submitted_at",
+    )
+    search_fields = (
+        "document__title",
+        "external_id",
+        "ledger_id",
+        "document_token",
+        "document_hash",
+        "entry_hash",
+        "error_code",
+        "error_message",
+    )
+    readonly_fields = (
+        "document",
+        "requested_by",
+        "status",
+        "actor",
+        "external_id",
+        "source_filename",
+        "ledger_pdf_object",
+        "ledger_id",
+        "document_token",
+        "document_hash",
+        "size_bytes",
+        "sequence",
+        "entry_hash",
+        "previous_hash",
+        "server_signature_b64",
+        "server_key_id",
+        "ledger_created_at",
+        "request_metadata",
+        "raw_response",
+        "error_code",
+        "error_message",
+        "last_verified_at",
+        "last_verification_status",
+        "last_verification_result",
+        "last_verification_error",
+        "submitted_at",
+        "created_at",
+        "updated_at",
     )
 
 

@@ -18,6 +18,7 @@ urlpatterns = [
     path("documents/<int:pk>/fill/", views.document_fill, name="document_fill"),
     path("documents/<int:pk>/render/", views.document_render_docx, name="document_render_docx"),
     path("documents/<int:pk>/lawvision/", views.document_lawvision_report, name="document_lawvision_report"),
+    path("documents/<int:pk>/ledger/", views.document_ledger_proof, name="document_ledger_proof"),
     path("documents/<int:pk>/evidence-bundle/", views.document_evidence_bundle, name="document_evidence_bundle"),
 
     path("templates/<int:pk>/edit/", views.template_edit, name="template_edit"),

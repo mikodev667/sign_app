@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from documents.models import Document
+from documents.services.document_ledger_service import DocumentLedgerService
 from signing.models import Signer, SigningSession, Signature
 
 
@@ -206,6 +207,7 @@ class EgovMobileSigningService:
             document.status = Document.Status.SIGNED
             document.signed_at = timezone.now()
             document.save(update_fields=["status", "signed_at", "updated_at"])
+            DocumentLedgerService.submit_document_after_commit(document_id=document.id)
         else:
             document.status = Document.Status.PARTIALLY_SIGNED
             document.save(update_fields=["status", "updated_at"])
