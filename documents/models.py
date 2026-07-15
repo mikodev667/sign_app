@@ -64,6 +64,210 @@ class DocumentTemplate(models.Model):
 
 
 class Document(models.Model):
+    SYSTEM_CONTRACT_NUMBER = "contract_number"
+    SYSTEM_CONTRACT_DATE = "contract_date"
+    SYSTEM_DATE = "date"
+    SYSTEM_CONTRACT_YEAR = "contract_year"
+
+    SYSTEM_UNIVERSITY_NAME_RU = "university_name_ru"
+    SYSTEM_UNIVERSITY_NAME_KK = "university_name_kk"
+    SYSTEM_UNIVERSITY_SHORT_NAME_RU = "university_short_name_ru"
+    SYSTEM_UNIVERSITY_SHORT_NAME_KK = "university_short_name_kk"
+    SYSTEM_UNIVERSITY_BIN = "university_bin"
+    SYSTEM_UNIVERSITY_LICENSE_NUMBER = "university_license_number"
+    SYSTEM_UNIVERSITY_LICENSE_DATE_RU = "university_license_date_ru"
+    SYSTEM_UNIVERSITY_LICENSE_DATE_KK = "university_license_date_kk"
+    SYSTEM_UNIVERSITY_LICENSE_ISSUER_RU = "university_license_issuer_ru"
+    SYSTEM_UNIVERSITY_LICENSE_ISSUER_KK = "university_license_issuer_kk"
+    SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_RU = "university_representative_position_ru"
+    SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_KK = "university_representative_position_kk"
+    SYSTEM_UNIVERSITY_ADDRESS_RU = "university_address_ru"
+    SYSTEM_UNIVERSITY_ADDRESS_KK = "university_address_kk"
+    SYSTEM_UNIVERSITY_BANK_NAME_RU = "university_bank_name_ru"
+    SYSTEM_UNIVERSITY_BANK_NAME_KK = "university_bank_name_kk"
+    SYSTEM_UNIVERSITY_ACCOUNT = "university_account"
+    SYSTEM_UNIVERSITY_BIC = "university_bic"
+    SYSTEM_UNIVERSITY_KBE = "university_kbe"
+
+    CONTRACT_SYSTEM_FIELD_NAMES = (
+        SYSTEM_CONTRACT_NUMBER,
+        SYSTEM_CONTRACT_DATE,
+        SYSTEM_DATE,
+        SYSTEM_CONTRACT_YEAR,
+    )
+
+    UNIVERSITY_SYSTEM_FIELD_NAMES = (
+        SYSTEM_UNIVERSITY_NAME_RU,
+        SYSTEM_UNIVERSITY_NAME_KK,
+        SYSTEM_UNIVERSITY_SHORT_NAME_RU,
+        SYSTEM_UNIVERSITY_SHORT_NAME_KK,
+        SYSTEM_UNIVERSITY_BIN,
+        SYSTEM_UNIVERSITY_LICENSE_NUMBER,
+        SYSTEM_UNIVERSITY_LICENSE_DATE_RU,
+        SYSTEM_UNIVERSITY_LICENSE_DATE_KK,
+        SYSTEM_UNIVERSITY_LICENSE_ISSUER_RU,
+        SYSTEM_UNIVERSITY_LICENSE_ISSUER_KK,
+        SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_RU,
+        SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_KK,
+        SYSTEM_UNIVERSITY_ADDRESS_RU,
+        SYSTEM_UNIVERSITY_ADDRESS_KK,
+        SYSTEM_UNIVERSITY_BANK_NAME_RU,
+        SYSTEM_UNIVERSITY_BANK_NAME_KK,
+        SYSTEM_UNIVERSITY_ACCOUNT,
+        SYSTEM_UNIVERSITY_BIC,
+        SYSTEM_UNIVERSITY_KBE,
+    )
+
+    SYSTEM_FIELD_NAMES = CONTRACT_SYSTEM_FIELD_NAMES + UNIVERSITY_SYSTEM_FIELD_NAMES
+
+    CONTRACT_SYSTEM_FIELD_LIBRARY = (
+        {
+            "label": _("Contract number"),
+            "variable_name": SYSTEM_CONTRACT_NUMBER,
+        },
+        {
+            "label": _("Contract date"),
+            "variable_name": SYSTEM_CONTRACT_DATE,
+        },
+        {
+            "label": _("Date"),
+            "variable_name": SYSTEM_DATE,
+        },
+        {
+            "label": _("Contract year"),
+            "variable_name": SYSTEM_CONTRACT_YEAR,
+        },
+    )
+    UNIVERSITY_SYSTEM_FIELD_LIBRARY = (
+        {
+            "label": _("University name (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_NAME_RU,
+        },
+        {
+            "label": _("University name (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_NAME_KK,
+        },
+        {
+            "label": _("University short name (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_SHORT_NAME_RU,
+        },
+        {
+            "label": _("University short name (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_SHORT_NAME_KK,
+        },
+        {
+            "label": _("University BIN"),
+            "variable_name": SYSTEM_UNIVERSITY_BIN,
+        },
+        {
+            "label": _("University license number"),
+            "variable_name": SYSTEM_UNIVERSITY_LICENSE_NUMBER,
+        },
+        {
+            "label": _("University license date (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_LICENSE_DATE_RU,
+        },
+        {
+            "label": _("University license date (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_LICENSE_DATE_KK,
+        },
+        {
+            "label": _("University license issuer (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_LICENSE_ISSUER_RU,
+        },
+        {
+            "label": _("University license issuer (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_LICENSE_ISSUER_KK,
+        },
+        {
+            "label": _("University representative position (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_RU,
+        },
+        {
+            "label": _("University representative position (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_KK,
+        },
+        {
+            "label": _("University address (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_ADDRESS_RU,
+        },
+        {
+            "label": _("University address (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_ADDRESS_KK,
+        },
+        {
+            "label": _("University bank name (RU)"),
+            "variable_name": SYSTEM_UNIVERSITY_BANK_NAME_RU,
+        },
+        {
+            "label": _("University bank name (KZ)"),
+            "variable_name": SYSTEM_UNIVERSITY_BANK_NAME_KK,
+        },
+        {
+            "label": _("University account"),
+            "variable_name": SYSTEM_UNIVERSITY_ACCOUNT,
+        },
+        {
+            "label": _("University BIC"),
+            "variable_name": SYSTEM_UNIVERSITY_BIC,
+        },
+        {
+            "label": _("University KBE"),
+            "variable_name": SYSTEM_UNIVERSITY_KBE,
+        },
+    )
+    SYSTEM_FIELD_LIBRARY = CONTRACT_SYSTEM_FIELD_LIBRARY + UNIVERSITY_SYSTEM_FIELD_LIBRARY
+    SYSTEM_FIELD_GROUPS = (
+        {
+            "title": _("Document"),
+            "fields": CONTRACT_SYSTEM_FIELD_LIBRARY,
+        },
+        {
+            "title": _("University"),
+            "fields": UNIVERSITY_SYSTEM_FIELD_LIBRARY,
+        },
+    )
+    UNIVERSITY_SYSTEM_FIELD_DEFAULTS = {
+        SYSTEM_UNIVERSITY_NAME_RU: (
+            "Некоммерческое акционерное общество "
+            "«Казахский национальный университет имени аль-Фараби»"
+        ),
+        SYSTEM_UNIVERSITY_NAME_KK: (
+            "«Әл-Фараби атындағы Қазақ ұлттық университеті» "
+            "коммерциялық емес акционерлік қоғамы"
+        ),
+        SYSTEM_UNIVERSITY_SHORT_NAME_RU: (
+            "НАО «Казахский национальный университет имени аль-Фараби»"
+        ),
+        SYSTEM_UNIVERSITY_SHORT_NAME_KK: "«Әл-Фараби атындағы Қазақ ұлттық университеті» КеАҚ",
+        SYSTEM_UNIVERSITY_BIN: "990140001154",
+        SYSTEM_UNIVERSITY_LICENSE_NUMBER: "KZ89LAM00001798",
+        SYSTEM_UNIVERSITY_LICENSE_DATE_RU: "17 апреля 2025 года",
+        SYSTEM_UNIVERSITY_LICENSE_DATE_KK: "2025 жылғы 17 сәуір",
+        SYSTEM_UNIVERSITY_LICENSE_ISSUER_RU: (
+            "Республиканским государственным учреждением «Комитет по обеспечению "
+            "качества в сфере образования и науки Министерства образования и науки "
+            "Республики Казахстан»"
+        ),
+        SYSTEM_UNIVERSITY_LICENSE_ISSUER_KK: (
+            "«Қазақстан Республикасы Білім және ғылым министрлігінің білім және ғылым "
+            "саласындағы сапаны қамтамасыз ету комитеті» республикалық мемлекеттік мекемесі"
+        ),
+        SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_RU: (
+            "Член Правления - проректор по академическим вопросам"
+        ),
+        SYSTEM_UNIVERSITY_REPRESENTATIVE_POSITION_KK: (
+            "Академиялық мәселелер бойынша Басқарма мүшесі - проректор"
+        ),
+        SYSTEM_UNIVERSITY_ADDRESS_RU: "0500040, г. Алматы, пр. аль-Фараби, 71",
+        SYSTEM_UNIVERSITY_ADDRESS_KK: "0500040, Алматы қ-сы, әл-Фараби даңғылы, 71",
+        SYSTEM_UNIVERSITY_BANK_NAME_RU: "АО «Народный Банк Казахстана», г. Алматы",
+        SYSTEM_UNIVERSITY_BANK_NAME_KK: "«Қазақстан Халық Банкі» АҚ, Алматы қ.",
+        SYSTEM_UNIVERSITY_ACCOUNT: "KZ156010131000194743",
+        SYSTEM_UNIVERSITY_BIC: "HSBKKZKX",
+        SYSTEM_UNIVERSITY_KBE: "16",
+    }
+
     class Status(models.TextChoices):
         DRAFT = "draft", "Draft"
         WAITING_FOR_SIGNERS = "waiting_for_signers", "Waiting for signers"
@@ -93,6 +297,22 @@ class Document(models.Model):
     )
 
     title = models.CharField(max_length=255)
+
+    contract_number = models.CharField(
+        max_length=50,
+        unique=True,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Unique contract number generated when the document is created.",
+    )
+
+    contract_date = models.DateField(
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Contract composition date generated when the document is created.",
+    )
 
     status = models.CharField(
         max_length=30,
@@ -142,6 +362,17 @@ class Document(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        adding = self._state.adding
+        requested_status = self.status
+
+        if not self.contract_date:
+            self.contract_date = timezone.localdate()
+            if kwargs.get("update_fields") is not None:
+                kwargs["update_fields"] = set(kwargs["update_fields"]) | {"contract_date"}
+
+        if adding and requested_status == self.Status.SIGNED and not self.contract_number:
+            self.status = self.Status.DRAFT
+
         if self.pk and not getattr(self, "_allow_final_document_update", False):
             old_status = (
                 Document.objects
@@ -152,7 +383,17 @@ class Document(models.Model):
             if old_status == self.Status.SIGNED:
                 raise ValidationError(_("Signed document is immutable and cannot be updated."))
 
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
+        if not self.contract_number:
+            self.contract_number = self.generate_contract_number()
+            update_values = {"contract_number": self.contract_number}
+
+            if adding and requested_status == self.Status.SIGNED:
+                self.status = requested_status
+                update_values["status"] = requested_status
+
+            Document.objects.filter(pk=self.pk).update(**update_values)
 
     def delete(self, *args, **kwargs):
         if self.status == self.Status.SIGNED:
@@ -270,6 +511,28 @@ class Document(models.Model):
             )
 
         return self
+
+    def generate_contract_number(self):
+        if not self.pk:
+            return ""
+
+        contract_date = self.contract_date or timezone.localdate()
+        return f"{contract_date.year}-{self.pk:06d}"
+
+    def get_contract_date_display(self):
+        contract_date = self.contract_date or timezone.localdate()
+        return contract_date.strftime("%d.%m.%Y")
+
+    def get_contract_system_values(self):
+        contract_date = self.contract_date or timezone.localdate()
+        values = {
+            self.SYSTEM_CONTRACT_NUMBER: self.contract_number or self.generate_contract_number(),
+            self.SYSTEM_CONTRACT_DATE: contract_date.strftime("%d.%m.%Y"),
+            self.SYSTEM_DATE: contract_date.strftime("%d.%m.%Y"),
+            self.SYSTEM_CONTRACT_YEAR: str(contract_date.year),
+        }
+        values.update(self.UNIVERSITY_SYSTEM_FIELD_DEFAULTS)
+        return values
 
 
 class DocumentLawVisionReport(models.Model):

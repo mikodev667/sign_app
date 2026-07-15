@@ -29,6 +29,7 @@ from documents.models import (
 from documents.services.object_storage_service import ObjectStorageService
 from documents.services.docx_template_service import DocxTemplateService
 from documents.services.docx_preview_service import DocxPreviewService
+from documents.services.document_docx_render_service import DocumentDocxRenderService
 from documents.services.onlyoffice_service import OnlyOfficeService
 from documents.services.document_ledger_service import DocumentLedgerError, DocumentLedgerService
 from documents.services.pdf_export_service import ExportedPdf
@@ -402,6 +403,28 @@ class TemplateUploadFlowTests(TestCase):
         self.assertTrue(email_field.is_system)
         self.assertFalse(email_field.is_required)
 
+    def test_template_editor_shows_document_system_fields_without_parties(self):
+        user, organization = self.create_user_and_organization()
+        template = DocumentTemplate.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Template without parties",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:template_edit", args=[template.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "contract_number")
+        self.assertContains(response, "contract_date")
+        self.assertContains(response, "contract_year")
+        self.assertContains(response, "university_name_ru")
+        self.assertContains(response, "university_bin")
+        self.assertContains(response, "university_account")
+        self.assertContains(response, "{{ contract_number }}")
+        self.assertContains(response, "{{ contract_date }}")
+        self.assertContains(response, "{{ university_name_ru }}")
+
     @staticmethod
     def create_docx_bytes(text):
         buffer = BytesIO()
@@ -688,6 +711,172 @@ class DocumentLedgerServiceTests(TestCase):
 
 
 class DocumentDraftEditingTests(TestCase):
+    def test_document_gets_unique_contract_number_and_date(self):
+        user, organization = self.create_user_and_organization()
+
+        first_document = Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="First document",
+        )
+        second_document = Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Second document",
+        )
+
+        self.assertIsNotNone(first_document.contract_date)
+        self.assertRegex(
+            first_document.contract_number,
+            rf"^{first_document.contract_date.year}-\d{{6}}$",
+        )
+        self.assertNotEqual(
+            first_document.contract_number,
+            second_document.contract_number,
+        )
+        self.assertEqual(
+            first_document.get_contract_system_values()["contract_date"],
+            first_document.contract_date.strftime("%d.%m.%Y"),
+        )
+
+    def test_document_fill_uses_contract_system_values_without_editable_fields(self):
+        user, organization = self.create_user_and_organization()
+        template = DocumentTemplate.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Contract identity template",
+            body_template=(
+                "No {{ contract_number }} from {{ contract_date }} "
+                "alias {{ date }} year {{ contract_year }} "
+                "{{ university_name_ru }} {{ university_bin }} for {{ customer_name }}"
+            ),
+            variables=[
+                "contract_number",
+                "contract_date",
+                "date",
+                "contract_year",
+                "university_name_ru",
+                "university_bin",
+                "customer_name",
+            ],
+            field_schema=[
+                {
+                    "title": "Customer",
+                    "fields": [
+                        {
+                            "label": "Customer name",
+                            "key": "customer_name",
+                            "placeholder": "Customer name",
+                        }
+                    ],
+                }
+            ],
+        )
+        document = self.create_document(user, organization, template)
+        customer_field = DocumentFieldValue.objects.create(
+            document=document,
+            field_name="customer_name",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_fill", args=[document.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-variable="contract_number"')
+        self.assertContains(response, f'value="{document.contract_number}"')
+        self.assertNotIn(
+            "contract_number",
+            [field.field_name for field in response.context["fields"]],
+        )
+        self.assertNotIn(
+            "university_name_ru",
+            [field.field_name for field in response.context["fields"]],
+        )
+        self.assertContains(response, "q-fill-system-value")
+        self.assertContains(response, 'key.startsWith("university_")')
+
+        with patch.object(DocumentDocxRenderService, "render", return_value=document):
+            response = self.client.post(
+                reverse("documents:document_fill", args=[document.pk]),
+                {
+                    f"field_{customer_field.id}": "Test Customer",
+                },
+            )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('documents:document_list')}?signers={document.pk}",
+        )
+        document.refresh_from_db()
+        self.assertIn(document.contract_number, document.rendered_html)
+        self.assertIn(document.get_contract_date_display(), document.rendered_html)
+        self.assertIn(str(document.contract_date.year), document.rendered_html)
+        self.assertIn(
+            Document.UNIVERSITY_SYSTEM_FIELD_DEFAULTS["university_name_ru"],
+            document.rendered_html,
+        )
+        self.assertIn(
+            Document.UNIVERSITY_SYSTEM_FIELD_DEFAULTS["university_bin"],
+            document.rendered_html,
+        )
+        self.assertIn("Test Customer", document.rendered_html)
+
+    def test_docx_render_includes_contract_system_values(self):
+        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+            user, organization = self.create_user_and_organization()
+            template = DocumentTemplate.objects.create(
+                organization=organization,
+                created_by=user,
+                title="DOCX contract identity template",
+            )
+            template.template_file.save(
+                "template.docx",
+                ContentFile(self.create_docx_bytes("No {{ contract_number }}")),
+                save=True,
+            )
+            document = self.create_document(user, organization, template)
+            DocumentFieldValue.objects.create(
+                document=document,
+                field_name="customer_name",
+                field_value="Test Customer",
+            )
+            captured_values = {}
+
+            def fake_render_docx(*, template_path, output_path, values):
+                captured_values.update(values)
+                Path(output_path).write_bytes(b"rendered docx")
+
+            with patch(
+                "documents.services.document_docx_render_service.DocxTemplateService.render_docx",
+                side_effect=fake_render_docx,
+            ):
+                DocumentDocxRenderService.render(document)
+
+            self.assertEqual(
+                captured_values["contract_number"],
+                document.contract_number,
+            )
+            self.assertEqual(
+                captured_values["contract_date"],
+                document.get_contract_date_display(),
+            )
+            self.assertEqual(
+                captured_values["date"],
+                document.get_contract_date_display(),
+            )
+            self.assertEqual(
+                captured_values["contract_year"],
+                str(document.contract_date.year),
+            )
+            self.assertEqual(
+                captured_values["university_name_ru"],
+                Document.UNIVERSITY_SYSTEM_FIELD_DEFAULTS["university_name_ru"],
+            )
+            self.assertEqual(
+                captured_values["university_bin"],
+                Document.UNIVERSITY_SYSTEM_FIELD_DEFAULTS["university_bin"],
+            )
+
     def test_create_document_from_uploaded_docx_without_template(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
             user, organization = self.create_user_and_organization()
@@ -1042,6 +1231,23 @@ class DocumentDraftEditingTests(TestCase):
             response,
             reverse("documents:document_fill", args=[signed_document.pk]),
         )
+
+    def test_document_list_shows_contract_number(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        document = self.create_document(
+            user,
+            organization,
+            template,
+            title="Numbered document",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Contract number")
+        self.assertContains(response, document.contract_number)
 
     def test_document_fill_allows_waiting_document_without_signatures(self):
         user, organization = self.create_user_and_organization()

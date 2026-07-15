@@ -547,6 +547,75 @@ msgstr "Email"
 msgid "Date"
 msgstr "Дата"
 
+msgid "Contract number"
+msgstr "Номер договора"
+
+msgid "Contract date"
+msgstr "Дата договора"
+
+msgid "Contract year"
+msgstr "Год договора"
+
+msgid "University"
+msgstr "Университет"
+
+msgid "University name (RU)"
+msgstr "Название университета (RU)"
+
+msgid "University name (KZ)"
+msgstr "Название университета (KZ)"
+
+msgid "University short name (RU)"
+msgstr "Краткое название университета (RU)"
+
+msgid "University short name (KZ)"
+msgstr "Краткое название университета (KZ)"
+
+msgid "University BIN"
+msgstr "БИН университета"
+
+msgid "University license number"
+msgstr "Номер лицензии университета"
+
+msgid "University license date (RU)"
+msgstr "Дата лицензии университета (RU)"
+
+msgid "University license date (KZ)"
+msgstr "Дата лицензии университета (KZ)"
+
+msgid "University license issuer (RU)"
+msgstr "Орган выдачи лицензии (RU)"
+
+msgid "University license issuer (KZ)"
+msgstr "Орган выдачи лицензии (KZ)"
+
+msgid "University representative position (RU)"
+msgstr "Должность представителя университета (RU)"
+
+msgid "University representative position (KZ)"
+msgstr "Должность представителя университета (KZ)"
+
+msgid "University address (RU)"
+msgstr "Адрес университета (RU)"
+
+msgid "University address (KZ)"
+msgstr "Адрес университета (KZ)"
+
+msgid "University bank name (RU)"
+msgstr "Банк университета (RU)"
+
+msgid "University bank name (KZ)"
+msgstr "Банк университета (KZ)"
+
+msgid "University account"
+msgstr "Счет университета"
+
+msgid "University BIC"
+msgstr "БИК университета"
+
+msgid "University KBE"
+msgstr "КБе университета"
+
 msgid "Number"
 msgstr "Число"
 

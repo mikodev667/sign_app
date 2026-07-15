@@ -9,6 +9,9 @@
 
     <form method="post" onsubmit="saveBeforeSubmit()" class="q-fill-form">
         {% csrf_token %}
+        {% for key, value in system_field_values.items %}
+            <input type="hidden" data-variable="{{ key }}" value="{{ value }}">
+        {% endfor %}
 
         <header class="q-fill-topbar">
             <div class="q-fill-brand">
@@ -228,11 +231,14 @@
         Object.keys(values).forEach(key => {
             const value = values[key];
             const regex = new RegExp("\\{\\{\\s*" + key + "\\s*\\}\\}", "g");
+            const valueClass = key.startsWith("university_")
+                ? "q-fill-system-value"
+                : "q-fill-variable-value";
 
             if (value) {
                 html = html.replace(
                     regex,
-                    `<span class="q-fill-variable-value">${escapeHtml(value)}</span>`
+                    `<span class="${valueClass}">${escapeHtml(value)}</span>`
                 );
             } else {
                 const emptyVariableText = "{% templatetag openvariable %} " + key + " {% templatetag closevariable %}";

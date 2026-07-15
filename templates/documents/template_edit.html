@@ -63,6 +63,28 @@
             <div class="q-sidebar-section">
                 <div class="q-sidebar-heading">{% trans "System fields" %}</div>
 
+                {% for group in system_field_groups %}
+                    <div class="q-variable-group">
+                        <button class="q-variable-group-title" type="button">
+                            {{ group.title }}
+                        </button>
+
+                        <div class="q-variable-list">
+                            {% for field in group.fields %}
+                                <button
+                                    type="button"
+                                    class="q-variable-chip"
+                                    data-variable="{{ field.variable_name }}"
+                                    onclick="insertVariable('{{ field.variable_name }}')"
+                                >
+                                    <span>{{ field.label }}</span>
+                                    <small>{{ field.variable_name }}</small>
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
                 {% for party in parties %}
                     <div class="q-variable-group">
                         <button class="q-variable-group-title" type="button">
@@ -190,6 +212,37 @@
                     <div class="q-property-heading">
                         <span>{% trans "Current fields" %}</span>
                     </div>
+
+                    {% for group in system_field_groups %}
+                        <details class="q-field-details" open>
+                            <summary>
+                                <span>{{ group.title }}</span>
+                            </summary>
+
+                            <div class="q-field-details-body">
+                                <div class="q-field-chip-row">
+                                    <span class="q-code-chip q-code-chip--muted">{% trans "system" %}</span>
+                                </div>
+
+                                {% for field in group.fields %}
+                                    <div class="q-current-field">
+                                        <div class="q-current-field__top">
+                                            <strong>{{ field.label }}</strong>
+                                            <span class="q-code-chip q-code-chip--muted">{% trans "system" %}</span>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            class="q-variable-preview"
+                                            onclick="insertVariable('{{ field.variable_name }}')"
+                                        >
+                                            {% templatetag openvariable %} {{ field.variable_name }} {% templatetag closevariable %}
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </details>
+                    {% endfor %}
 
                     {% for party in parties %}
                         <details class="q-field-details" open>

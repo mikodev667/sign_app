@@ -174,11 +174,14 @@ def create_field_values_for_template(document):
     if not document.template:
         return
 
+    sync_document_system_field_values(document)
+    system_values = document.get_contract_system_values()
+
     for variable in document.template.variables or []:
         DocumentFieldValue.objects.get_or_create(
             document=document,
             field_name=variable,
-            defaults={"field_value": ""},
+            defaults={"field_value": system_values.get(variable, "")},
         )
 
     field_schema = document.template.field_schema or []
@@ -191,7 +194,7 @@ def create_field_values_for_template(document):
                 DocumentFieldValue.objects.get_or_create(
                     document=document,
                     field_name=field_key,
-                    defaults={"field_value": ""},
+                    defaults={"field_value": system_values.get(field_key, "")},
                 )
 
     for party in document.template.parties.prefetch_related("fields").all():
@@ -203,6 +206,15 @@ def create_field_values_for_template(document):
                 field_name=field_key,
                 defaults={"field_value": field.default_value or ""},
             )
+
+
+def sync_document_system_field_values(document):
+    for field_name, field_value in document.get_contract_system_values().items():
+        DocumentFieldValue.objects.update_or_create(
+            document=document,
+            field_name=field_name,
+            defaults={"field_value": field_value},
+        )
 
 
 def get_template_preview_html(template):
@@ -1039,11 +1051,17 @@ def document_fill(request, pk):
         messages.info(request, "Uploaded documents do not have template fields.")
         return redirect("signing:document_signers", document_pk=document.pk)
 
-    fields = document.field_values.all().order_by("field_name")
+    sync_document_system_field_values(document)
+    system_field_values = document.get_contract_system_values()
+    fields = (
+        document.field_values
+        .exclude(field_name__in=Document.SYSTEM_FIELD_NAMES)
+        .order_by("field_name")
+    )
     parties = document.template.parties.prefetch_related("fields").all()
 
     if request.method == "POST":
-        values = {}
+        values = dict(system_field_values)
 
         for field in fields:
             value = request.POST.get(f"field_{field.id}", "")
@@ -1090,6 +1108,7 @@ def document_fill(request, pk):
         "document": document,
         "fields": fields,
         "parties": parties,
+        "system_field_values": system_field_values,
         "preview_html": get_template_preview_html(document.template),
         "is_docx_template": bool(document.template and document.template.template_file),
     })
@@ -1108,6 +1127,7 @@ def document_render_docx(request, pk):
 
     if document.template:
         try:
+            sync_document_system_field_values(document)
             DocumentDocxRenderService.render(document)
         except (FileNotFoundError, ValueError) as exc:
             messages.error(request, str(exc))
@@ -1192,6 +1212,8 @@ def template_edit(request, pk):
             else None
         ),
         "field_schema_json": json.dumps(template.field_schema or [], ensure_ascii=False),
+        "document_system_fields": Document.SYSTEM_FIELD_LIBRARY,
+        "system_field_groups": Document.SYSTEM_FIELD_GROUPS,
         "parties": parties,
         "party_form": TemplatePartyForm(),
         "party_field_form": TemplatePartyFieldForm(),

@@ -43,6 +43,7 @@ class DocumentRenderService:
             item.field_name: item.field_value
             for item in document.field_values.all()
         }
+        values.update(document.get_contract_system_values())
 
         rendered_html = cls.render_from_template(
             template_body=document.template.body_template,

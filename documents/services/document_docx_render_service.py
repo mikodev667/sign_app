@@ -17,6 +17,7 @@ class DocumentDocxRenderService:
             field.field_name: field.field_value
             for field in document.field_values.all()
         }
+        values.update(document.get_contract_system_values())
 
         output_dir = os.path.join(settings.MEDIA_ROOT, "documents", "docx")
         os.makedirs(output_dir, exist_ok=True)

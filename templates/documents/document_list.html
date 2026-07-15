@@ -78,6 +78,11 @@
                             {{ document.title }}
                         </h3>
 
+                        <div class="document-card__meta document-card__meta--number">
+                            <span>{% trans "Contract number" %}</span>
+                            <strong>{{ document.contract_number|default:"-" }}</strong>
+                        </div>
+
                         <div class="document-card__meta">
                             <span>{% trans "Template" %}</span>
                             <strong>

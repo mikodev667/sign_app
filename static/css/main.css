@@ -1754,6 +1754,12 @@ tbody tr:last-child td {
     background: rgba(248, 250, 252, 0.72);
 }
 
+.document-card__meta--number {
+    margin-top: 14px;
+    border-color: rgba(37, 99, 235, 0.16);
+    background: rgba(239, 246, 255, 0.78);
+}
+
 .document-card__meta span {
     color: #64748b;
     font-size: 11px;
@@ -5444,6 +5450,13 @@ tbody tr:last-child td {
     color: #0f766e;
     background: #ccfbf1;
     font-weight: 800;
+}
+
+.q-fill-system-value {
+    display: inline;
+    color: #000;
+    background: transparent;
+    font-weight: inherit;
 }
 
 .q-fill-empty-value {

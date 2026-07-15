@@ -546,6 +546,75 @@ msgstr "Email"
 msgid "Date"
 msgstr "Күні"
 
+msgid "Contract number"
+msgstr "Шарт нөмірі"
+
+msgid "Contract date"
+msgstr "Шарт күні"
+
+msgid "Contract year"
+msgstr "Шарт жылы"
+
+msgid "University"
+msgstr "Университет"
+
+msgid "University name (RU)"
+msgstr "Университет атауы (RU)"
+
+msgid "University name (KZ)"
+msgstr "Университет атауы (KZ)"
+
+msgid "University short name (RU)"
+msgstr "Университеттің қысқа атауы (RU)"
+
+msgid "University short name (KZ)"
+msgstr "Университеттің қысқа атауы (KZ)"
+
+msgid "University BIN"
+msgstr "Университет БСН"
+
+msgid "University license number"
+msgstr "Университет лицензиясының нөмірі"
+
+msgid "University license date (RU)"
+msgstr "Университет лицензиясының күні (RU)"
+
+msgid "University license date (KZ)"
+msgstr "Университет лицензиясының күні (KZ)"
+
+msgid "University license issuer (RU)"
+msgstr "Лицензия берген орган (RU)"
+
+msgid "University license issuer (KZ)"
+msgstr "Лицензия берген орган (KZ)"
+
+msgid "University representative position (RU)"
+msgstr "Университет өкілінің лауазымы (RU)"
+
+msgid "University representative position (KZ)"
+msgstr "Университет өкілінің лауазымы (KZ)"
+
+msgid "University address (RU)"
+msgstr "Университет мекенжайы (RU)"
+
+msgid "University address (KZ)"
+msgstr "Университет мекенжайы (KZ)"
+
+msgid "University bank name (RU)"
+msgstr "Университет банкі (RU)"
+
+msgid "University bank name (KZ)"
+msgstr "Университет банкі (KZ)"
+
+msgid "University account"
+msgstr "Университет шоты"
+
+msgid "University BIC"
+msgstr "Университет БСК"
+
+msgid "University KBE"
+msgstr "Университет КБе"
+
 msgid "Number"
 msgstr "Сан"
 

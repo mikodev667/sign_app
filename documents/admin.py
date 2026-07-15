@@ -81,6 +81,8 @@ class DocumentAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "title",
+        "contract_number",
+        "contract_date",
         "organization",
         "template",
         "status",
@@ -91,14 +93,17 @@ class DocumentAdmin(admin.ModelAdmin):
 
     search_fields = (
         "title",
+        "contract_number",
         "organization__name",
         "template__title",
         "content_hash"
     )
 
-    list_filter = ("status", "created_at", "signed_at")
+    list_filter = ("status", "contract_date", "created_at", "signed_at")
 
     readonly_fields = (
+        "contract_number",
+        "contract_date",
         "content_hash",
         "created_at",
         "updated_at",
