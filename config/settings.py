@@ -32,9 +32,9 @@ LAWVISION_TIMEOUT_SECONDS = int(os.getenv("LAWVISION_TIMEOUT_SECONDS", "90"))
 
 # Sign ledger integration
 LEDGER_ENABLED = os.getenv("LEDGER_ENABLED", "False").lower() in {"1", "true", "yes", "on"}
-LEDGER_API_URL = os.getenv("LEDGER_API_URL", "https://ledger.internal/v1")
+LEDGER_API_URL = os.getenv("LEDGER_API_URL", "https://blockchain.kaznu.kz/v1")
 LEDGER_API_KEY_FILE = os.getenv("LEDGER_API_KEY_FILE", "/etc/sign-ledger-client/api-key")
-LEDGER_CA_CERT_FILE = os.getenv("LEDGER_CA_CERT_FILE", "/etc/sign-ledger-client/ca.crt")
+LEDGER_CA_CERT_FILE = os.getenv("LEDGER_CA_CERT_FILE", "")
 LEDGER_CLIENT_CERT_FILE = os.getenv("LEDGER_CLIENT_CERT_FILE", "/etc/sign-ledger-client/client.crt")
 LEDGER_CLIENT_KEY_FILE = os.getenv("LEDGER_CLIENT_KEY_FILE", "/etc/sign-ledger-client/client.key")
 LEDGER_TIMEOUT_SECONDS = int(os.getenv("LEDGER_TIMEOUT_SECONDS", "60"))
@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     "organizations",
     "documents.apps.DocumentsConfig",
     "signing",
+    "admissions.apps.AdmissionsConfig",
     "providers",
     "notifications",
     "audit",
@@ -149,6 +150,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'organizations.context_processors.organization_access',
+                'admissions.context_processors.admissions_access',
             ],
         },
     },
@@ -175,6 +177,43 @@ DATABASES = {
 POSTGRES_SSLMODE = os.getenv("POSTGRES_SSLMODE")
 if POSTGRES_SSLMODE:
     DATABASES["default"]["OPTIONS"] = {"sslmode": POSTGRES_SSLMODE}
+
+ADMISSIONS_MSSQL_ENABLED = os.getenv("ADMISSIONS_MSSQL_ENABLED", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+ADMISSIONS_MSSQL_REQUIRED = os.getenv("ADMISSIONS_MSSQL_REQUIRED", "False").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+ADMISSIONS_ASYNC_RENDER_ENABLED = os.getenv(
+    "ADMISSIONS_ASYNC_RENDER_ENABLED",
+    "False",
+).lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+if ADMISSIONS_MSSQL_ENABLED:
+    DATABASES["admissions_mssql"] = {
+        "ENGINE": os.getenv("ADMISSIONS_MSSQL_ENGINE", "mssql"),
+        "NAME": os.getenv("ADMISSIONS_MSSQL_NAME", ""),
+        "USER": os.getenv("ADMISSIONS_MSSQL_USER", ""),
+        "PASSWORD": os.getenv("ADMISSIONS_MSSQL_PASSWORD", ""),
+        "HOST": os.getenv("ADMISSIONS_MSSQL_HOST", ""),
+        "PORT": os.getenv("ADMISSIONS_MSSQL_PORT", "1433"),
+        "OPTIONS": {
+            "driver": os.getenv("ADMISSIONS_MSSQL_DRIVER", "ODBC Driver 18 for SQL Server"),
+            "extra_params": os.getenv("ADMISSIONS_MSSQL_EXTRA_PARAMS", ""),
+        },
+    }
+
+DATABASE_ROUTERS = ["config.database_routers.AdmissionsMssqlRouter"]
 
 
 # Password validation
@@ -240,6 +279,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 
 LIBREOFFICE_PATH = os.getenv("LIBREOFFICE_PATH", "")
 PDF_OVERLAY_FONT_PATH = os.getenv("PDF_OVERLAY_FONT_PATH", "")
+PUBLIC_SITE_URL = os.getenv("PUBLIC_SITE_URL", "")
 
 
 # Immutable object storage for final legal documents and evidence.
@@ -269,3 +309,53 @@ ONLYOFFICE_DJANGO_URL = os.getenv("ONLYOFFICE_DJANGO_URL", "http://host.docker.i
 ONLYOFFICE_JWT_SECRET = os.getenv("ONLYOFFICE_JWT_SECRET", SECRET_KEY)
 ONLYOFFICE_JWT_HEADER = os.getenv("ONLYOFFICE_JWT_HEADER", "Authorization")
 ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS = int(os.getenv("ONLYOFFICE_ACCESS_TOKEN_TTL_SECONDS", "86400"))
+
+
+DJANGO_LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "INFO").upper()
+ADMISSIONS_LOG_LEVEL = os.getenv("ADMISSIONS_LOG_LEVEL", DJANGO_LOG_LEVEL).upper()
+DJANGO_LOG_FILE = os.getenv("DJANGO_LOG_FILE", "").strip()
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s %(levelname)s [%(name)s] %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": DJANGO_LOG_LEVEL,
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "admissions": {
+            "handlers": ["console"],
+            "level": ADMISSIONS_LOG_LEVEL,
+            "propagate": False,
+        },
+    },
+}
+
+if DJANGO_LOG_FILE:
+    LOGGING["handlers"]["file"] = {
+        "class": "logging.handlers.RotatingFileHandler",
+        "formatter": "standard",
+        "filename": DJANGO_LOG_FILE,
+        "maxBytes": 10 * 1024 * 1024,
+        "backupCount": 5,
+        "encoding": "utf-8",
+    }
+    LOGGING["root"]["handlers"].append("file")
+    for logger_settings in LOGGING["loggers"].values():
+        logger_settings["handlers"].append("file")

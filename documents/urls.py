@@ -10,6 +10,7 @@ urlpatterns = [
 
     path("documents/", views.document_list, name="document_list"),
     path("documents/create/", views.document_create, name="document_create"),
+    path("verify/<str:token>/", views.document_verification, name="document_verification"),
     path("documents/editor-1/", views.editor_one, name="editor_one"),
     path("documents/<int:pk>/editor/", views.document_editor, name="document_editor"),
     path("documents/<int:pk>/onlyoffice/", views.document_onlyoffice_editor, name="document_onlyoffice_editor"),

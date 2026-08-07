@@ -1,8 +1,9 @@
 import hashlib
+import secrets
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import IntegrityError, models, transaction
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -16,6 +17,14 @@ class DocumentTemplate(models.Model):
         "organizations.Organization",
         on_delete=models.CASCADE,
         related_name="document_templates",
+    )
+
+    department = models.ForeignKey(
+        "organizations.Department",
+        on_delete=models.SET_NULL,
+        related_name="document_templates",
+        blank=True,
+        null=True,
     )
 
     created_by = models.ForeignKey(
@@ -59,6 +68,18 @@ class DocumentTemplate(models.Model):
         verbose_name_plural = "Document templates"
         ordering = ["-created_at"]
 
+    def clean(self):
+        super().clean()
+
+        if (
+            self.department_id
+            and self.organization_id
+            and self.department.organization_id != self.organization_id
+        ):
+            raise ValidationError({
+                "department": _("Department must belong to the selected organization."),
+            })
+
     def __str__(self):
         return self.title
 
@@ -66,6 +87,8 @@ class DocumentTemplate(models.Model):
 class Document(models.Model):
     SYSTEM_CONTRACT_NUMBER = "contract_number"
     SYSTEM_CONTRACT_DATE = "contract_date"
+    SYSTEM_CONTRACT_DATE_TEXT_RU = "contract_date_text_ru"
+    SYSTEM_CONTRACT_DATE_TEXT_KK = "contract_date_text_kk"
     SYSTEM_DATE = "date"
     SYSTEM_CONTRACT_YEAR = "contract_year"
 
@@ -92,6 +115,8 @@ class Document(models.Model):
     CONTRACT_SYSTEM_FIELD_NAMES = (
         SYSTEM_CONTRACT_NUMBER,
         SYSTEM_CONTRACT_DATE,
+        SYSTEM_CONTRACT_DATE_TEXT_RU,
+        SYSTEM_CONTRACT_DATE_TEXT_KK,
         SYSTEM_DATE,
         SYSTEM_CONTRACT_YEAR,
     )
@@ -128,6 +153,14 @@ class Document(models.Model):
         {
             "label": _("Contract date"),
             "variable_name": SYSTEM_CONTRACT_DATE,
+        },
+        {
+            "label": _("Contract date text (RU)"),
+            "variable_name": SYSTEM_CONTRACT_DATE_TEXT_RU,
+        },
+        {
+            "label": _("Contract date text (KZ)"),
+            "variable_name": SYSTEM_CONTRACT_DATE_TEXT_KK,
         },
         {
             "label": _("Date"),
@@ -282,6 +315,14 @@ class Document(models.Model):
         related_name="documents",
     )
 
+    department = models.ForeignKey(
+        "organizations.Department",
+        on_delete=models.SET_NULL,
+        related_name="documents",
+        blank=True,
+        null=True,
+    )
+
     template = models.ForeignKey(
         DocumentTemplate,
         on_delete=models.PROTECT,
@@ -312,6 +353,15 @@ class Document(models.Model):
         null=True,
         db_index=True,
         help_text="Contract composition date generated when the document is created.",
+    )
+
+    verification_token = models.CharField(
+        max_length=64,
+        unique=True,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="Public token for document verification page.",
     )
 
     status = models.CharField(
@@ -358,6 +408,18 @@ class Document(models.Model):
         verbose_name_plural = "Documents"
         ordering = ["-created_at"]
 
+    def clean(self):
+        super().clean()
+
+        if (
+            self.department_id
+            and self.organization_id
+            and self.department.organization_id != self.organization_id
+        ):
+            raise ValidationError({
+                "department": _("Department must belong to the selected organization."),
+            })
+
     def __str__(self):
         return self.title
 
@@ -369,6 +431,11 @@ class Document(models.Model):
             self.contract_date = timezone.localdate()
             if kwargs.get("update_fields") is not None:
                 kwargs["update_fields"] = set(kwargs["update_fields"]) | {"contract_date"}
+
+        if not self.verification_token:
+            self.verification_token = self.generate_verification_token()
+            if kwargs.get("update_fields") is not None:
+                kwargs["update_fields"] = set(kwargs["update_fields"]) | {"verification_token"}
 
         if adding and requested_status == self.Status.SIGNED and not self.contract_number:
             self.status = self.Status.DRAFT
@@ -385,15 +452,14 @@ class Document(models.Model):
 
         super().save(*args, **kwargs)
 
-        if not self.contract_number:
-            self.contract_number = self.generate_contract_number()
-            update_values = {"contract_number": self.contract_number}
-
-            if adding and requested_status == self.Status.SIGNED:
-                self.status = requested_status
-                update_values["status"] = requested_status
-
-            Document.objects.filter(pk=self.pk).update(**update_values)
+        if (
+            not self.contract_number
+            and not getattr(self, "_skip_contract_number_generation", False)
+        ):
+            self.assign_generated_contract_number(
+                adding=adding,
+                requested_status=requested_status,
+            )
 
     def delete(self, *args, **kwargs):
         if self.status == self.Status.SIGNED:
@@ -516,18 +582,90 @@ class Document(models.Model):
         if not self.pk:
             return ""
 
-        contract_date = self.contract_date or timezone.localdate()
-        return f"{contract_date.year}-{self.pk:06d}"
+        return str(self.pk)
+
+    def assign_generated_contract_number(self, *, adding=False, requested_status=None):
+        if not self.pk:
+            return
+
+        last_error = None
+        for offset in range(1000):
+            contract_number = str(self.pk + offset)
+            update_values = {"contract_number": contract_number}
+
+            if adding and requested_status == self.Status.SIGNED:
+                update_values["status"] = requested_status
+
+            try:
+                with transaction.atomic():
+                    Document.objects.filter(pk=self.pk).update(**update_values)
+            except IntegrityError as exc:
+                last_error = exc
+                continue
+
+            self.contract_number = contract_number
+            if adding and requested_status == self.Status.SIGNED:
+                self.status = requested_status
+            return
+
+        if last_error:
+            raise last_error
+
+    @classmethod
+    def generate_verification_token(cls):
+        while True:
+            token = secrets.token_urlsafe(24)
+
+            if not cls.objects.filter(verification_token=token).exists():
+                return token
 
     def get_contract_date_display(self):
         contract_date = self.contract_date or timezone.localdate()
         return contract_date.strftime("%d.%m.%Y")
+
+    def get_contract_date_text_ru(self):
+        contract_date = self.contract_date or timezone.localdate()
+        month_names = {
+            1: "января",
+            2: "февраля",
+            3: "марта",
+            4: "апреля",
+            5: "мая",
+            6: "июня",
+            7: "июля",
+            8: "августа",
+            9: "сентября",
+            10: "октября",
+            11: "ноября",
+            12: "декабря",
+        }
+        return f"«{contract_date.day:02d}» {month_names[contract_date.month]} {contract_date.year} г."
+
+    def get_contract_date_text_kk(self):
+        contract_date = self.contract_date or timezone.localdate()
+        month_names = {
+            1: "қаңтар",
+            2: "ақпан",
+            3: "наурыз",
+            4: "сәуір",
+            5: "мамыр",
+            6: "маусым",
+            7: "шілде",
+            8: "тамыз",
+            9: "қыркүйек",
+            10: "қазан",
+            11: "қараша",
+            12: "желтоқсан",
+        }
+        return f"«{contract_date.day:02d}» {month_names[contract_date.month]} {contract_date.year} ж."
 
     def get_contract_system_values(self):
         contract_date = self.contract_date or timezone.localdate()
         values = {
             self.SYSTEM_CONTRACT_NUMBER: self.contract_number or self.generate_contract_number(),
             self.SYSTEM_CONTRACT_DATE: contract_date.strftime("%d.%m.%Y"),
+            self.SYSTEM_CONTRACT_DATE_TEXT_RU: self.get_contract_date_text_ru(),
+            self.SYSTEM_CONTRACT_DATE_TEXT_KK: self.get_contract_date_text_kk(),
             self.SYSTEM_DATE: contract_date.strftime("%d.%m.%Y"),
             self.SYSTEM_CONTRACT_YEAR: str(contract_date.year),
         }
@@ -765,6 +903,7 @@ class TemplatePartyField(models.Model):
         EMAIL = "email", "Email"
         DATE = "date", "Date"
         NUMBER = "number", "Number"
+        MONEY = "money", "Money amount"
 
     class SystemField(models.TextChoices):
         FULL_NAME = "full_name", "Full name"

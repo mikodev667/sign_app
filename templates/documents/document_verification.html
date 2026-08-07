@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Document verification | QolQoyu" %}{% endblock %}
+
+{% block content %}
+
+<section class="q-ledger-page">
+    <header class="q-ledger-hero">
+        <div>
+            <span class="q-signers-kicker">{% trans "Document verification" %}</span>
+            <h1>{% trans "Document integrity" %}</h1>
+            <p>{{ document.title }}</p>
+        </div>
+    </header>
+
+    <div class="q-ledger-layout">
+        <section class="q-ledger-panel">
+            <div class="q-ledger-section-head">
+                <span>{% trans "Document" %}</span>
+                <strong>{{ document.get_status_display }}</strong>
+            </div>
+
+            <dl class="q-ledger-grid">
+                {% if verification_external_id %}
+                    <div>
+                        <dt>{% trans "External ID" %}</dt>
+                        <dd><code>{{ verification_external_id }}</code></dd>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <dt>{% trans "Contract number" %}</dt>
+                    <dd><code>{{ document.contract_number|default:"-" }}</code></dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Contract date" %}</dt>
+                    <dd>{{ document.get_contract_date_display }}</dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Signed at" %}</dt>
+                    <dd>{{ document.signed_at|default:"-" }}</dd>
+                </div>
+
+                <div>
+                    <dt>{% trans "Stored SHA-256" %}</dt>
+                    <dd><code>{{ document.content_hash|default:"-" }}</code></dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="q-ledger-panel">
+            <div class="q-ledger-section-head">
+                <span>{% trans "Integrity" %}</span>
+                <strong>
+                    {% if hash_status == "matched" %}
+                        {% trans "Verified" %}
+                    {% elif hash_status == "mismatched" %}
+                        {% trans "Mismatch" %}
+                    {% else %}
+                        {% trans "Not checked" %}
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="q-ledger-checks">
+                <div class="q-ledger-check{% if hash_status == 'matched' %} q-ledger-check--ok{% endif %}">
+                    <span>{% trans "Current file hash" %}</span>
+                    <strong>
+                        {% if hash_status == "matched" %}
+                            {% trans "Matches" %}
+                        {% elif hash_status == "mismatched" %}
+                            {% trans "Does not match" %}
+                        {% else %}
+                            {% trans "Unavailable" %}
+                        {% endif %}
+                    </strong>
+
+                    {% if current_hash %}
+                        <code>{{ current_hash }}</code>
+                    {% endif %}
+                </div>
+
+                <div class="q-ledger-check{% if record and record.status == 'submitted' %} q-ledger-check--ok{% endif %}">
+                    <span>{% trans "Ledger record" %}</span>
+                    <strong>
+                        {% if record %}
+                            {{ record.get_status_display }}
+                        {% else %}
+                            {% trans "Not available" %}
+                        {% endif %}
+                    </strong>
+
+                    {% if record.document_hash %}
+                        <code>{{ record.document_hash }}</code>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if record %}
+                <dl class="q-ledger-grid q-ledger-grid--compact">
+                    <div>
+                        <dt>{% trans "External ID" %}</dt>
+                        <dd><code>{{ record.external_id }}</code></dd>
+                    </div>
+
+                    <div>
+                        <dt>{% trans "Ledger ID" %}</dt>
+                        <dd><code>{{ record.ledger_id|default:"-" }}</code></dd>
+                    </div>
+
+                    <div>
+                        <dt>{% trans "Last verification" %}</dt>
+                        <dd>
+                            {% if record.last_verification_status %}
+                                {{ record.get_last_verification_status_display }}
+                            {% else %}
+                                {% trans "Not checked" %}
+                            {% endif %}
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>{% trans "Submitted at" %}</dt>
+                        <dd>{{ record.submitted_at|default:"-" }}</dd>
+                    </div>
+                </dl>
+            {% endif %}
+
+            {% if hash_error %}
+                <div class="q-ledger-error">
+                    {{ hash_error }}
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</section>
+
+{% endblock %}

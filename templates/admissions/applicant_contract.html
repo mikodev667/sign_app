@@ -1,0 +1,286 @@
+{% load i18n %}
+{% load static %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Admission contract" %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="admission-public-body">
+    <main class="admission-public-shell">
+        <header class="admission-public-header">
+            <div>
+                <span class="admission-public-kicker">{% trans "Admission document" %}</span>
+                <h1>{{ document.title }}</h1>
+                <p>{% trans "Review the generated documents, correct the data if needed, and sign the contract with ECP." %}</p>
+            </div>
+
+            <span class="admission-public-status admission-public-status--{{ contract.status }}">
+                {{ contract.get_status_display }}
+            </span>
+        </header>
+
+        {% if messages %}
+            <div class="admission-public-messages">
+                {% for message in messages %}
+                    <div class="admission-public-message admission-public-message--{{ message.tags|default:'info' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="admission-public-grid">
+            <div class="admission-public-main">
+                <section class="admission-public-card admission-public-card--preview">
+                    <div class="admission-public-card__head">
+                        <div>
+                            <span>{% trans "Preview" %}</span>
+                            <strong>{% trans "Contract" %}</strong>
+                        </div>
+
+                        <div class="admission-public-tabs">
+                            <a
+                                href="{% url 'admissions:applicant_contract_preview' token %}?kind=contract"
+                                target="admission-preview-frame"
+                                class="admission-public-tab"
+                            >
+                                {% trans "Contract" %}
+                            </a>
+
+                            {% if application_document %}
+                                <a
+                                    href="{% url 'admissions:applicant_contract_preview' token %}?kind=application"
+                                    target="admission-preview-frame"
+                                    class="admission-public-tab"
+                                >
+                                    {% trans "Application" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <iframe
+                        name="admission-preview-frame"
+                        class="admission-public-preview"
+                        src="{% url 'admissions:applicant_contract_preview' token %}?kind=contract"
+                        title="{% trans 'Document preview' %}"
+                        loading="lazy"
+                    ></iframe>
+                </section>
+
+                <section class="admission-public-card">
+                    <div class="admission-public-card__head">
+                        <div>
+                            <span>{% trans "Downloads" %}</span>
+                            <strong>{% trans "Files" %}</strong>
+                        </div>
+                    </div>
+
+                    <div class="admission-public-downloads">
+                        <div class="admission-public-file">
+                            <div>
+                                <strong>{% trans "Contract" %}</strong>
+                                <span>{% trans "The contract is the document that will be signed." %}</span>
+                            </div>
+
+                            <div class="admission-public-actions">
+                                <a class="admission-public-btn admission-public-btn--secondary" href="{% url 'admissions:applicant_contract_download' token 'contract' 'pdf' %}">
+                                    {% trans "Download PDF" %}
+                                </a>
+                                <a class="admission-public-btn admission-public-btn--secondary" href="{% url 'admissions:applicant_contract_download' token 'contract' 'docx' %}">
+                                    {% trans "Download DOCX" %}
+                                </a>
+                            </div>
+                        </div>
+
+                        {% if application_document %}
+                            <div class="admission-public-file">
+                                <div>
+                                    <strong>{% trans "Application" %}</strong>
+                                    <span>{% trans "The application is filled from the same data and does not need signing." %}</span>
+                                </div>
+
+                                <div class="admission-public-actions">
+                                    <a class="admission-public-btn admission-public-btn--secondary" href="{% url 'admissions:applicant_contract_download' token 'application' 'pdf' %}">
+                                        {% trans "Download PDF" %}
+                                    </a>
+                                    <a class="admission-public-btn admission-public-btn--secondary" href="{% url 'admissions:applicant_contract_download' token 'application' 'docx' %}">
+                                        {% trans "Download DOCX" %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+
+            <aside class="admission-public-side">
+                <section class="admission-public-card">
+                    <div class="admission-public-card__head">
+                        <div>
+                            <span>{% trans "Applicant" %}</span>
+                            <strong>{{ contract.applicant_full_name }}</strong>
+                        </div>
+                    </div>
+
+                    <dl class="admission-public-data">
+                        <div>
+                            <dt>{% trans "IIN" %}</dt>
+                            <dd>{{ contract.applicant_iin }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Phone" %}</dt>
+                            <dd>{{ contract.applicant_phone }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Program" %}</dt>
+                            <dd>{{ contract.program_name_ru|default:contract.program_code|default:"-" }}</dd>
+                        </div>
+                        {% if contract.funding_type == "paid" %}
+                            <div>
+                                <dt>{% trans "Tuition amount" %}</dt>
+                                <dd>{{ tuition_amount_display|default:"-" }}</dd>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <dt>{% trans "Contract number" %}</dt>
+                            <dd>{{ document.contract_number|default:"-" }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Contract date" %}</dt>
+                            <dd>{{ document.get_contract_date_display }}</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="admission-public-card">
+                    <div class="admission-public-card__head">
+                        <div>
+                            <span>{% trans "Data" %}</span>
+                            <strong>{% trans "Edit before signing" %}</strong>
+                        </div>
+                    </div>
+
+                    {% if can_edit and editable_fields %}
+                        <form method="post" class="admission-public-form">
+                            {% csrf_token %}
+
+                            {% for field in editable_fields %}
+                                <label class="admission-public-field">
+                                    <span>{{ field.label }}{% if field.required %} *{% endif %}</span>
+                                    <small>{{ field.name }}</small>
+                                    <input
+                                        type="{{ field.input_type }}"
+                                        name="field_{{ field.name }}"
+                                        value="{{ field.value }}"
+                                        {% if field.is_money %}inputmode="decimal" data-money-preview-input{% endif %}
+                                        {% if field.required %}required{% endif %}
+                                    >
+                                    {% if field.is_money %}
+                                        <div class="admission-public-money-preview" data-money-preview>
+                                            <div>
+                                                <strong>RU</strong>
+                                                <span data-money-preview-ru>{{ field.money_full_ru }}</span>
+                                            </div>
+                                            <div>
+                                                <strong>KZ</strong>
+                                                <span data-money-preview-kk>{{ field.money_full_kk }}</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </label>
+                            {% endfor %}
+
+                            <button type="submit" class="admission-public-btn admission-public-btn--secondary admission-public-btn--wide">
+                                {% trans "Save changes" %}
+                            </button>
+                        </form>
+                    {% elif student_signer and student_signer.status == "signed" %}
+                        <div class="admission-public-note admission-public-note--success">
+                            {% trans "The contract is already signed, so the data is locked." %}
+                        </div>
+                    {% else %}
+                        <div class="admission-public-note">
+                            {% trans "There are no editable fields for this contract." %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="admission-public-card admission-public-card--sign">
+                    <div class="admission-public-card__head">
+                        <div>
+                            <span>{% trans "ECP signing" %}</span>
+                            <strong>{% trans "Contract signature" %}</strong>
+                        </div>
+                    </div>
+
+                    {% if student_signer and student_signer.status == "signed" %}
+                        <div class="admission-public-note admission-public-note--success">
+                            {% trans "The contract has been signed successfully." %}
+                        </div>
+
+                        {% if signature %}
+                            <dl class="admission-public-data admission-public-data--compact">
+                                <div>
+                                    <dt>{% trans "Signed at" %}</dt>
+                                    <dd>{{ signature.signed_at }}</dd>
+                                </div>
+                                <div>
+                                    <dt>{% trans "Document hash" %}</dt>
+                                    <dd><code>{{ signature.signed_content_hash }}</code></dd>
+                                </div>
+                            </dl>
+                        {% endif %}
+                    {% elif student_signer %}
+                        <p class="admission-public-help">
+                            {% trans "Make sure NCALayer is installed and running, then choose your ECP key after pressing the button." %}
+                        </p>
+
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                        <button
+                            type="button"
+                            id="admission-ecp-sign-button"
+                            class="admission-public-btn admission-public-btn--primary admission-public-btn--wide"
+                            data-admission-ecp-sign
+                            data-payload-url="{% url 'admissions:applicant_ecp_signing_payload' token %}"
+                            data-complete-url="{% url 'admissions:applicant_ecp_signing_complete' token %}"
+                            data-status-preparing="{% trans 'Preparing signing data...' %}"
+                            data-status-connecting="{% trans 'Connecting to NCALayer...' %}"
+                            data-status-choosing="{% trans 'Choose your ECP key and confirm signing.' %}"
+                            data-status-saving="{% trans 'Saving signature...' %}"
+                            data-status-signed="{% trans 'The contract has been signed successfully.' %}"
+                            data-error-cannot-prepare="{% trans 'Cannot prepare signing payload.' %}"
+                            data-error-empty-cms="{% trans 'NCALayer returned an empty CMS signature.' %}"
+                            data-error-cannot-complete="{% trans 'Cannot complete signing.' %}"
+                            data-error-cannot-connect="{% trans 'Cannot connect to NCALayer.' %}"
+                            data-error-connection-closed="{% trans 'NCALayer connection was closed.' %}"
+                            data-error-websocket-not-connected="{% trans 'NCALayer websocket is not connected.' %}"
+                            data-error-ncalayer-timeout="{% trans 'NCALayer did not respond after signing.' %}"
+                        >
+                            {% trans "Sign with ECP" %}
+                        </button>
+
+                        <p id="admission-ecp-status" class="admission-public-sign-status"></p>
+                    {% else %}
+                        <div class="admission-public-note">
+                            {% trans "Applicant signer is not available." %}
+                        </div>
+                    {% endif %}
+                </section>
+            </aside>
+        </section>
+    </main>
+
+    {% if student_signer and student_signer.status != "signed" %}
+        <script src="{% static 'js/admission_ecp_signing.js' %}?v=2"></script>
+    {% endif %}
+    {% if can_edit and editable_fields %}
+        <script src="{% static 'js/admission_money_preview.js' %}?v=1"></script>
+    {% endif %}
+</body>
+</html>

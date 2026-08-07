@@ -102,6 +102,44 @@
                                     <span>{{ field.display_label }}</span>
                                     <small>{{ party.variable_prefix }}_{{ field.variable_name }}</small>
                                 </button>
+                                {% if field.field_type == "money" %}
+                                    <button
+                                        type="button"
+                                        class="q-variable-chip"
+                                        data-variable="{{ party.variable_prefix }}_{{ field.variable_name }}_words_ru"
+                                        onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_words_ru')"
+                                    >
+                                        <span>{% trans "Amount in words (RU)" %}</span>
+                                        <small>{{ party.variable_prefix }}_{{ field.variable_name }}_words_ru</small>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="q-variable-chip"
+                                        data-variable="{{ party.variable_prefix }}_{{ field.variable_name }}_words_kk"
+                                        onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_words_kk')"
+                                    >
+                                        <span>{% trans "Amount in words (KZ)" %}</span>
+                                        <small>{{ party.variable_prefix }}_{{ field.variable_name }}_words_kk</small>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="q-variable-chip"
+                                        data-variable="{{ party.variable_prefix }}_{{ field.variable_name }}_full_ru"
+                                        onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_full_ru')"
+                                    >
+                                        <span>{% trans "Amount with words (RU)" %}</span>
+                                        <small>{{ party.variable_prefix }}_{{ field.variable_name }}_full_ru</small>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="q-variable-chip"
+                                        data-variable="{{ party.variable_prefix }}_{{ field.variable_name }}_full_kk"
+                                        onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_full_kk')"
+                                    >
+                                        <span>{% trans "Amount with words (KZ)" %}</span>
+                                        <small>{{ party.variable_prefix }}_{{ field.variable_name }}_full_kk</small>
+                                    </button>
+                                {% endif %}
                             {% empty %}
                                 <p class="q-muted-text">{% trans "No fields yet." %}</p>
                             {% endfor %}
@@ -285,6 +323,40 @@
                                             {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }} {% templatetag closevariable %}
                                         </button>
 
+                                        {% if field.field_type == "money" %}
+                                            <button
+                                                type="button"
+                                                class="q-variable-preview q-variable-preview--derived"
+                                                onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_words_ru')"
+                                            >
+                                                {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }}_words_ru {% templatetag closevariable %}
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                class="q-variable-preview q-variable-preview--derived"
+                                                onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_words_kk')"
+                                            >
+                                                {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }}_words_kk {% templatetag closevariable %}
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                class="q-variable-preview q-variable-preview--derived"
+                                                onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_full_ru')"
+                                            >
+                                                {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }}_full_ru {% templatetag closevariable %}
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                class="q-variable-preview q-variable-preview--derived"
+                                                onclick="insertVariable('{{ party.variable_prefix }}_{{ field.variable_name }}_full_kk')"
+                                            >
+                                                {% templatetag openvariable %} {{ party.variable_prefix }}_{{ field.variable_name }}_full_kk {% templatetag closevariable %}
+                                            </button>
+                                        {% endif %}
+
                                         {% if not field.is_system %}
                                             <form method="post" action="{% url 'documents:template_party_field_delete' template.pk party.pk field.pk %}">
                                                 {% csrf_token %}
@@ -329,6 +401,7 @@
                                                 <option value="email">{% trans "Email" %}</option>
                                                 <option value="date">{% trans "Date" %}</option>
                                                 <option value="number">{% trans "Number" %}</option>
+                                                <option value="money">{% trans "Money amount" %}</option>
                                             </select>
 
                                             <input
@@ -398,6 +471,7 @@
     const textUntitledGroup = "{% trans 'Untitled group' %}";
     const textDelete = "{% trans 'Delete' %}";
     const textFieldLabel = "{% trans 'Field label' %}";
+    const textFieldType = "{% trans 'Field type' %}";
     const textVariable = "{% trans 'Variable' %}";
     const textFieldLabelPlaceholder = "{% trans 'Field label, example: Contract number' %}";
     const textVariableKeyPlaceholder = "{% trans 'Variable key, example: contract_number' %}";
@@ -406,6 +480,12 @@
     const textEnterFieldLabel = "{% trans 'Enter field label' %}";
     const textEnterValidVariableKey = "{% trans 'Enter valid variable key' %}";
     const textVariableKeyIsEmpty = "{% trans 'Variable key is empty' %}";
+    const textTextField = "{% trans 'Text' %}";
+    const textMoneyAmount = "{% trans 'Money amount' %}";
+    const textAmountInWordsRu = "{% trans 'Amount in words (RU)' %}";
+    const textAmountInWordsKk = "{% trans 'Amount in words (KZ)' %}";
+    const textAmountWithWordsRu = "{% trans 'Amount with words (RU)' %}";
+    const textAmountWithWordsKk = "{% trans 'Amount with words (KZ)' %}";
 
     function normalizeKey(text) {
         return text
@@ -413,6 +493,38 @@
             .trim()
             .replaceAll(" ", "_")
             .replace(/[^a-zA-Z0-9_]/g, "");
+    }
+
+    function fieldTypeOptions(selectedType) {
+        const type = selectedType || "text";
+
+        return `
+            <option value="text" ${type === "text" ? "selected" : ""}>${textTextField}</option>
+            <option value="money" ${type === "money" ? "selected" : ""}>${textMoneyAmount}</option>
+        `;
+    }
+
+    function moneyDerivedVariables(baseKey) {
+        if (!baseKey) {
+            return [];
+        }
+
+        return [
+            { key: `${baseKey}_words_ru`, label: textAmountInWordsRu },
+            { key: `${baseKey}_words_kk`, label: textAmountInWordsKk },
+            { key: `${baseKey}_full_ru`, label: textAmountWithWordsRu },
+            { key: `${baseKey}_full_kk`, label: textAmountWithWordsKk },
+        ];
+    }
+
+    function variablePreviewHtml(variableKey, extraClass = "") {
+        const variablePreview = "{% templatetag openvariable %} " + (variableKey || "variable") + " {% templatetag closevariable %}";
+
+        return `
+            <button class="q-variable-preview ${extraClass}" type="button" onclick="insertVariable('${variableKey}')">
+                ${variablePreview}
+            </button>
+        `;
     }
 
     function renderGroups() {
@@ -436,6 +548,9 @@
                     <div class="q-field-grid">
                         <input id="fieldLabel_${groupIndex}" type="text" placeholder="${textFieldLabelPlaceholder}">
                         <input id="fieldKey_${groupIndex}" type="text" placeholder="${textVariableKeyPlaceholder}">
+                        <select id="fieldType_${groupIndex}">
+                            ${fieldTypeOptions("text")}
+                        </select>
                         <button class="q-editor-btn q-editor-btn--secondary q-editor-btn--full" type="button" onclick="addField(${groupIndex})">
                             ${textAddField}
                         </button>
@@ -453,7 +568,12 @@
                 const fieldRow = document.createElement("div");
                 fieldRow.className = "q-current-field";
 
-                const variablePreview = "{% templatetag openvariable %} " + (field.key || "variable") + " {% templatetag closevariable %}";
+                const fieldType = field.type || "text";
+                const derivedPreviews = fieldType === "money"
+                    ? moneyDerivedVariables(field.key)
+                        .map(item => variablePreviewHtml(item.key, "q-variable-preview--derived"))
+                        .join("")
+                    : "";
 
                 fieldRow.innerHTML = `
                     <label>${textFieldLabel}</label>
@@ -462,9 +582,13 @@
                     <label>${textVariable}</label>
                     <input value="${field.key || ""}" onchange="updateFieldKey(${groupIndex}, ${fieldIndex}, this.value)">
 
-                    <button class="q-variable-preview" type="button" onclick="insertVariable('${field.key}')">
-                        ${variablePreview}
-                    </button>
+                    <label>${textFieldType}</label>
+                    <select onchange="updateFieldType(${groupIndex}, ${fieldIndex}, this.value)">
+                        ${fieldTypeOptions(fieldType)}
+                    </select>
+
+                    ${variablePreviewHtml(field.key)}
+                    ${derivedPreviews}
 
                     <button class="q-mini-danger" type="button" onclick="removeField(${groupIndex}, ${fieldIndex})">
                         ${textDelete}
@@ -502,9 +626,11 @@
     function addField(groupIndex) {
         const labelInput = document.getElementById(`fieldLabel_${groupIndex}`);
         const keyInput = document.getElementById(`fieldKey_${groupIndex}`);
+        const typeInput = document.getElementById(`fieldType_${groupIndex}`);
 
         const label = labelInput.value.trim();
         let key = keyInput.value.trim();
+        const fieldType = typeInput ? typeInput.value : "text";
 
         if (!label) {
             alert(textEnterFieldLabel);
@@ -523,11 +649,15 @@
         fieldSchema[groupIndex].fields.push({
             label: label,
             key: key,
+            type: fieldType,
             placeholder: label
         });
 
         labelInput.value = "";
         keyInput.value = "";
+        if (typeInput) {
+            typeInput.value = "text";
+        }
 
         renderGroups();
     }
@@ -543,6 +673,11 @@
 
     function updateFieldKey(groupIndex, fieldIndex, value) {
         fieldSchema[groupIndex].fields[fieldIndex].key = normalizeKey(value);
+        renderGroups();
+    }
+
+    function updateFieldType(groupIndex, fieldIndex, value) {
+        fieldSchema[groupIndex].fields[fieldIndex].type = value || "text";
         renderGroups();
     }
 

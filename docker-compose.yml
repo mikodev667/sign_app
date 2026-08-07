@@ -71,6 +71,21 @@ services:
       - onlyoffice_lib:/var/lib/onlyoffice
       - onlyoffice_db:/var/lib/postgresql
 
+  admissions-mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sign_app_admissions_mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: ${MSSQL_PID:-Express}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-ChangeMe_Mssql2026!}
+      MSSQL_DB: ${ADMISSIONS_MSSQL_NAME:-sign_app_admissions}
+      MSSQL_USER: ${ADMISSIONS_MSSQL_USER:-sign_app_admissions}
+      MSSQL_PASSWORD: ${ADMISSIONS_MSSQL_PASSWORD:-ChangeMe_Mssql2026!}
+    ports:
+      - "127.0.0.1:${MSSQL_HOST_PORT:-14330}:1433"
+    volumes:
+      - admissions_mssql_data:/var/opt/mssql
+
 volumes:
   postgres_data:
   minio_data:
@@ -78,3 +93,4 @@ volumes:
   onlyoffice_logs:
   onlyoffice_lib:
   onlyoffice_db:
+  admissions_mssql_data:

@@ -19,8 +19,11 @@ typing_extensions==4.15.0
 tzdata==2026.2
 polib==1.2.0
 python-dotenv==1.2.2
+qrcode[pil]==8.2
 certifi==2026.5.20
 charset_normalizer==3.4.7
 idna==3.17
 requests==2.34.2
 urllib3==2.7.0
+mssql-django
+pyodbc

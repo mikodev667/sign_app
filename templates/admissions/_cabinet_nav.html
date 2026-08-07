@@ -1,0 +1,28 @@
+{% load i18n %}
+
+<nav class="admission-cabinet-nav" aria-label="{% trans 'Admissions navigation' %}">
+    <a
+        href="{% url 'admissions:dashboard' %}"
+        class="admission-cabinet-nav__link {% if active_admission_nav == 'dashboard' %}admission-cabinet-nav__link--active{% endif %}"
+    >
+        {% trans "Cabinets" %}
+    </a>
+
+    {% if commission_profile %}
+        <a
+            href="{% url 'admissions:commission_dashboard' %}"
+            class="admission-cabinet-nav__link {% if active_admission_nav == 'commission' %}admission-cabinet-nav__link--active{% endif %}"
+        >
+            {% trans "Admission commission" %}
+        </a>
+    {% endif %}
+
+    {% if vice_rector_profile %}
+        <a
+            href="{% url 'admissions:vice_rector_dashboard' %}"
+            class="admission-cabinet-nav__link {% if active_admission_nav == 'vice_rector' %}admission-cabinet-nav__link--active{% endif %}"
+        >
+            {% trans "Vice rector" %}
+        </a>
+    {% endif %}
+</nav>

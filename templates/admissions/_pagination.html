@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% if page_obj and page_obj.has_other_pages %}
+    <nav class="admission-pagination" aria-label="{% trans 'Pagination' %}">
+        {% if page_obj.has_previous %}
+            <a class="admission-pagination__link" href="?{{ page_query_prefix }}page={{ page_obj.previous_page_number }}">
+                {% trans "Previous" %}
+            </a>
+        {% else %}
+            <span class="admission-pagination__link admission-pagination__link--disabled">
+                {% trans "Previous" %}
+            </span>
+        {% endif %}
+
+        <span class="admission-pagination__current">
+            {% blocktrans with current=page_obj.number total=page_obj.paginator.num_pages %}Page {{ current }} of {{ total }}{% endblocktrans %}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="admission-pagination__link" href="?{{ page_query_prefix }}page={{ page_obj.next_page_number }}">
+                {% trans "Next" %}
+            </a>
+        {% else %}
+            <span class="admission-pagination__link admission-pagination__link--disabled">
+                {% trans "Next" %}
+            </span>
+        {% endif %}
+    </nav>
+{% endif %}

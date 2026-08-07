@@ -57,6 +57,14 @@
                         <span>{% trans "Templates" %}</span>
                     </a>
 
+                    {% if has_admission_vice_rector_profile %}
+                        <a href="{% url 'admissions:vice_rector_dashboard' %}"
+                           class="app-nav__link {% if request.resolver_match.app_name == 'admissions' and request.resolver_match.url_name == 'vice_rector_dashboard' %}app-nav__link--active{% endif %}">
+
+                            <span>{% trans "Admissions" %}</span>
+                        </a>
+                    {% endif %}
+
                     {% if has_managed_organizations %}
                         <a href="{% url 'organizations:organization_list' %}"
                            class="app-nav__link {% if request.resolver_match.app_name == 'organizations' %}app-nav__link--active{% endif %}">
@@ -89,6 +97,13 @@
 
                                 <span>{% trans "Upload template" %}</span>
                             </a>
+
+                            {% if has_admission_vice_rector_profile %}
+                                <a href="{% url 'admissions:vice_rector_dashboard' %}" class="app-user-dropdown__item">
+
+                                    <span>{% trans "Vice rector cabinet" %}</span>
+                                </a>
+                            {% endif %}
 
                             {% if has_managed_organizations %}
                                 <a href="{% url 'organizations:organization_list' %}" class="app-user-dropdown__item">

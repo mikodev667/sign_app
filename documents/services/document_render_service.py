@@ -2,6 +2,7 @@ import hashlib
 import html
 
 from documents.models import Document, DocumentFieldValue
+from documents.services.money_amount_service import MoneyAmountService
 from documents.services.template_service import TemplateService
 
 
@@ -44,6 +45,7 @@ class DocumentRenderService:
             for item in document.field_values.all()
         }
         values.update(document.get_contract_system_values())
+        values = MoneyAmountService.expand_template_values(document.template, values)
 
         rendered_html = cls.render_from_template(
             template_body=document.template.body_template,

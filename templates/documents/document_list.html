@@ -84,6 +84,17 @@
                         </div>
 
                         <div class="document-card__meta">
+                            <span>{% trans "Department" %}</span>
+                            <strong>
+                                {% if document.department %}
+                                    {{ document.department.display_name }}
+                                {% else %}
+                                    {% trans "No department" %}
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        <div class="document-card__meta">
                             <span>{% trans "Template" %}</span>
                             <strong>
                                 {% if document.template %}
@@ -140,6 +151,12 @@
                         {% if document.has_evidence_objects %}
                             <a href="{% url 'documents:document_evidence_bundle' document.pk %}" class="document-action document-action--download">
                                 {% trans "Evidence bundle" %}
+                            </a>
+                        {% endif %}
+
+                        {% if document.verification_token %}
+                            <a href="{% url 'documents:document_verification' document.verification_token %}" class="document-action document-action--verification">
+                                {% trans "Verification page" %}
                             </a>
                         {% endif %}
 

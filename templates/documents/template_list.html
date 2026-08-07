@@ -100,7 +100,11 @@
                             </div>
 
                             <div class="template-row__status">
-                                {% trans "Template" %}
+                                {% if item.department %}
+                                    {{ item.department.display_name }}
+                                {% else %}
+                                    {% trans "Template" %}
+                                {% endif %}
                             </div>
                         </div>
 

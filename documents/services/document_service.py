@@ -46,6 +46,7 @@ class DocumentService:
 
         document = Document.objects.create(
             organization=template.organization,
+            department=template.department,
             template=template,
             created_by=created_by,
             title=title,

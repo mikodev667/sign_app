@@ -24,8 +24,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_http_methods
 
 from organizations.services import (
-    get_default_managed_organization,
-    get_user_managed_organizations,
+    ensure_default_department,
+    get_default_accessible_organization,
+    get_department_access_filter,
 )
 from signing.models import Signer
 from signing.services.signer_service import SignerService
@@ -47,12 +48,14 @@ from .models import (
     TemplatePartyField,
 )
 from .services.document_ledger_service import DocumentLedgerError, DocumentLedgerService
+from .services.document_verification_appendix_service import DocumentVerificationAppendixService
 from .services.lawvision_service import LawVisionError, LawVisionService
 from .services.evidence_bundle_service import (
     EvidenceBundleError,
     EvidenceBundleService,
 )
 from .services.docx_preview_service import DocxPreviewService
+from .services.money_amount_service import MoneyAmountService
 from .services.onlyoffice_service import OnlyOfficeService, OnlyOfficeTokenError
 from .services.template_file_service import TemplateFileService
 
@@ -63,8 +66,8 @@ VARIABLE_PATTERN = re.compile(r"{{\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*}}")
 def get_managed_templates_queryset(user):
     return (
         DocumentTemplate.objects
-        .filter(organization__in=get_user_managed_organizations(user))
-        .select_related("organization", "created_by")
+        .filter(get_department_access_filter(user))
+        .select_related("organization", "department", "created_by")
         .distinct()
     )
 
@@ -72,8 +75,8 @@ def get_managed_templates_queryset(user):
 def get_managed_documents_queryset(user):
     return (
         Document.objects
-        .filter(organization__in=get_user_managed_organizations(user))
-        .select_related("template", "organization", "created_by")
+        .filter(get_department_access_filter(user))
+        .select_related("template", "organization", "department", "created_by")
         .distinct()
     )
 
@@ -176,8 +179,12 @@ def create_field_values_for_template(document):
 
     sync_document_system_field_values(document)
     system_values = document.get_contract_system_values()
+    money_field_names = MoneyAmountService.get_template_money_field_names(document.template)
 
     for variable in document.template.variables or []:
+        if MoneyAmountService.is_derived_field_name(variable, money_field_names):
+            continue
+
         DocumentFieldValue.objects.get_or_create(
             document=document,
             field_name=variable,
@@ -255,7 +262,12 @@ def collect_field_schema_variables(field_schema):
         for field in group.get("fields", []):
             key = field.get("key", "").strip()
             if key:
-                variables.append(key)
+                variables.extend(
+                    MoneyAmountService.variable_names_for_field(
+                        key,
+                        field.get("type", "text"),
+                    )
+                )
 
     return variables
 
@@ -265,7 +277,12 @@ def collect_party_variables(template):
 
     for party in template.parties.prefetch_related("fields").all():
         for field in party.fields.all():
-            variables.append(f"{party.variable_prefix}_{field.variable_name}")
+            variables.extend(
+                MoneyAmountService.variable_names_for_field(
+                    f"{party.variable_prefix}_{field.variable_name}",
+                    field.field_type,
+                )
+            )
 
     return variables
 
@@ -324,7 +341,7 @@ def get_status_after_edit(document):
     return Document.Status.DRAFT
 
 
-def normalize_uploaded_document_to_docx(document):
+def normalize_uploaded_document_to_docx(document, *, request=None):
     if not document.rendered_docx_file:
         return document
 
@@ -332,6 +349,11 @@ def normalize_uploaded_document_to_docx(document):
     extension = TemplateFileService.get_extension(file_path)
 
     if extension == ".docx":
+        DocumentVerificationAppendixService.finalize_docx(
+            document=document,
+            file_path=file_path,
+            request=request,
+        )
         document.update_content_hash(save=True)
         return document
 
@@ -356,6 +378,12 @@ def normalize_uploaded_document_to_docx(document):
                 File(converted_file),
                 save=False,
             )
+
+    DocumentVerificationAppendixService.finalize_docx(
+        document=document,
+        file_path=document.rendered_docx_file.path,
+        request=request,
+    )
 
     if old_file_name and old_file_name != document.rendered_docx_file.name:
         default_storage.delete(old_file_name)
@@ -383,7 +411,7 @@ def template_list(request):
 
 @login_required
 def template_upload(request):
-    organization = get_default_managed_organization(request.user)
+    organization = get_default_accessible_organization(request.user)
 
     if not organization:
         messages.error(
@@ -392,12 +420,20 @@ def template_upload(request):
         )
         return redirect("accounts:profile")
 
+    ensure_default_department(organization)
+
     if request.method == "POST":
-        form = DocumentTemplateUploadForm(request.POST, request.FILES)
+        form = DocumentTemplateUploadForm(
+            request.POST,
+            request.FILES,
+            user=request.user,
+            organization=organization,
+        )
 
         if form.is_valid():
             template = form.save(commit=False)
-            template.organization = organization
+            template.department = form.cleaned_data["department"]
+            template.organization = template.department.organization
             template.created_by = request.user
             template.save()
 
@@ -416,7 +452,7 @@ def template_upload(request):
             messages.success(request, "DOCX template uploaded successfully.")
             return redirect("documents:template_list")
     else:
-        form = DocumentTemplateUploadForm()
+        form = DocumentTemplateUploadForm(user=request.user, organization=organization)
 
     return render(request, "documents/template_upload.html", {
         "form": form,
@@ -504,6 +540,52 @@ def document_ledger_proof(request, pk):
     )
 
 
+@require_GET
+def document_verification(request, token):
+    document = get_object_or_404(
+        Document.objects.select_related("template", "organization"),
+        verification_token=token,
+    )
+    record = (
+        DocumentLedgerRecord.objects
+        .filter(document=document)
+        .select_related("ledger_pdf_object")
+        .order_by("-created_at")
+        .first()
+    )
+    current_hash = ""
+    hash_matches = None
+    hash_error = ""
+
+    if document.content_hash:
+        try:
+            current_hash = document.calculate_content_hash()
+            hash_matches = current_hash == document.content_hash
+        except Exception:
+            hash_error = _("Current file hash could not be calculated.")
+
+    if hash_matches is True:
+        hash_status = "matched"
+    elif hash_matches is False:
+        hash_status = "mismatched"
+    else:
+        hash_status = "unknown"
+
+    return render(
+        request,
+        "documents/document_verification.html",
+        {
+            "document": document,
+            "verification_external_id": DocumentVerificationAppendixService.get_external_reference(document),
+            "record": record,
+            "current_hash": current_hash,
+            "hash_matches": hash_matches,
+            "hash_status": hash_status,
+            "hash_error": hash_error,
+        },
+    )
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def document_lawvision_report(request, pk):
@@ -569,7 +651,7 @@ def document_evidence_bundle(request, pk):
 
 @login_required
 def document_create(request):
-    organization = get_default_managed_organization(request.user)
+    organization = get_default_accessible_organization(request.user)
 
     if not organization:
         messages.error(
@@ -578,16 +660,21 @@ def document_create(request):
         )
         return redirect("accounts:profile")
 
+    ensure_default_department(organization)
+
     if request.method == "POST":
         form = DocumentCreateForm(request.POST, request.FILES, user=request.user)
 
         if form.is_valid():
             document_file = form.cleaned_data.get("document_file")
+            department = form.cleaned_data.get("department")
             document = form.save(commit=False)
             if document.template:
                 document.organization = document.template.organization
+                document.department = document.template.department
             else:
-                document.organization = organization
+                document.department = department
+                document.organization = department.organization if department else organization
             document.created_by = request.user
             document.status = Document.Status.DRAFT
             document.save()
@@ -600,7 +687,7 @@ def document_create(request):
                 )
 
                 try:
-                    normalize_uploaded_document_to_docx(document)
+                    normalize_uploaded_document_to_docx(document, request=request)
                 except ValueError as exc:
                     document.delete()
                     form.add_error("document_file", str(exc))
@@ -747,10 +834,18 @@ def document_onlyoffice_callback(request, pk):
     except requests.RequestException:
         return JsonResponse({"error": 1})
 
+    try:
+        finalized_content = DocumentVerificationAppendixService.finalize_docx_bytes(
+            document=document,
+            content=saved_response.content,
+        )
+    except Exception:
+        return JsonResponse({"error": 1})
+
     filename = f"document_{document.pk}_{uuid4().hex}.docx"
     document.rendered_docx_file.save(
         filename,
-        ContentFile(saved_response.content),
+        ContentFile(finalized_content),
         save=False,
     )
     document.rendered_html = ""
@@ -944,7 +1039,7 @@ def document_editor(request, pk):
         ])
 
         try:
-            DocumentDocxRenderService.render(document)
+            DocumentDocxRenderService.render(document, request=request)
         except (FileNotFoundError, ValueError) as exc:
             messages.error(request, str(exc))
             return redirect("documents:document_editor", pk=document.pk)
@@ -1053,9 +1148,16 @@ def document_fill(request, pk):
 
     sync_document_system_field_values(document)
     system_field_values = document.get_contract_system_values()
+    money_field_names = MoneyAmountService.get_template_money_field_names(document.template)
+    money_derived_field_names = MoneyAmountService.derived_field_names_for_fields(
+        money_field_names
+    )
+    field_type_map = MoneyAmountService.get_template_field_type_map(document.template)
     fields = (
         document.field_values
-        .exclude(field_name__in=Document.SYSTEM_FIELD_NAMES)
+        .exclude(field_name__in=(
+            list(Document.SYSTEM_FIELD_NAMES) + money_derived_field_names
+        ))
         .order_by("field_name")
     )
     parties = document.template.parties.prefetch_related("fields").all()
@@ -1065,9 +1167,24 @@ def document_fill(request, pk):
 
         for field in fields:
             value = request.POST.get(f"field_{field.id}", "")
+
+            if (
+                field_type_map.get(field.field_name) == MoneyAmountService.FIELD_TYPE_MONEY
+                and not MoneyAmountService.is_valid_amount(value)
+            ):
+                messages.error(
+                    request,
+                    _("Enter a valid whole amount for %(field)s.") % {
+                        "field": field.field_name,
+                    },
+                )
+                return redirect("documents:document_fill", pk=document.pk)
+
             field.field_value = value
             field.save(update_fields=["field_value"])
             values[field.field_name] = value
+
+        values = MoneyAmountService.expand_template_values(document.template, values)
 
         try:
             create_signers_from_template_parties(document, values, request=request)
@@ -1096,7 +1213,7 @@ def document_fill(request, pk):
         ])
 
         try:
-            DocumentDocxRenderService.render(document)
+            DocumentDocxRenderService.render(document, request=request)
         except (FileNotFoundError, ValueError) as exc:
             messages.error(request, str(exc))
             return redirect("documents:document_fill", pk=document.pk)
@@ -1109,6 +1226,7 @@ def document_fill(request, pk):
         "fields": fields,
         "parties": parties,
         "system_field_values": system_field_values,
+        "money_field_names": money_field_names,
         "preview_html": get_template_preview_html(document.template),
         "is_docx_template": bool(document.template and document.template.template_file),
     })
@@ -1128,7 +1246,7 @@ def document_render_docx(request, pk):
     if document.template:
         try:
             sync_document_system_field_values(document)
-            DocumentDocxRenderService.render(document)
+            DocumentDocxRenderService.render(document, request=request)
         except (FileNotFoundError, ValueError) as exc:
             messages.error(request, str(exc))
             return redirect("documents:document_fill", pk=document.pk)
@@ -1234,6 +1352,7 @@ def document_create_from_template(request, template_pk):
             document = form.save(commit=False)
             document.template = template
             document.organization = template.organization
+            document.department = template.department
             document.created_by = request.user
             document.status = Document.Status.DRAFT
             document.save()

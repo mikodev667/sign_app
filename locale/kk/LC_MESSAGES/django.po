@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: QolQoyu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-10 00:00+0000\n"
+"POT-Creation-Date: 2026-07-16 17:38+0500\n"
 "PO-Revision-Date: 2026-06-10 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Kazakh\n"
@@ -12,1556 +13,4338 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-msgid "Digital document signing"
-msgstr "Құжаттарға цифрлық қол қою"
-
-msgid "QolQoyu means “to sign”"
-msgstr "QolQoyu «қол қою» дегенді білдіреді"
-
-msgid "Digital signing without confusion."
-msgstr "Түсінікті цифрлық қол қою."
-
-msgid "Create documents, invite signers and track every signature step in one secure workspace."
-msgstr "Құжаттар жасаңыз, қол қоюшыларды шақырыңыз және әр қол қою кезеңін бір қауіпсіз жұмыс кеңістігінде бақылаңыз."
-
-msgid "Create document"
-msgstr "Құжат жасау"
-
-msgid "Open templates"
-msgstr "Шаблондарды ашу"
-
-msgid "Start now"
-msgstr "Қазір бастау"
-
-msgid "Login"
-msgstr "Кіру"
-
-msgid "signing flow"
-msgstr "қол қою процесі"
-
-msgid "validation ready"
-msgstr "валидация дайын"
-
-msgid "document integrity"
-msgstr "құжат тұтастығы"
-
-msgid "Document"
-msgstr "Құжат"
-
-msgid "Service agreement"
-msgstr "Қызмет көрсету шарты"
-
-msgid "Waiting for signers"
-msgstr "Қол қоюшыларды күтуде"
-
-msgid "Signed"
-msgstr "Қол қойылды"
-
-msgid "Customer verified"
-msgstr "Клиент расталды"
-
-msgid "Hash fixed"
-msgstr "Хэш бекітілді"
-
-msgid "No silent edits"
-msgstr "Жасырын өзгерістер жоқ"
-
-msgid "Template selected"
-msgstr "Шаблон таңдалды"
-
-msgid "SMS code confirmed"
-msgstr "SMS коды расталды"
-
-msgid "Audit log updated"
-msgstr "Аудит журналы жаңартылды"
-
-msgid "Workspace"
-msgstr "Жұмыс кеңістігі"
-
-msgid "Everything around the document is connected."
-msgstr "Құжатқа қатысты барлық нәрсе өзара байланысқан."
-
-msgid "QolQoyu is not only a signature button. It controls templates, signers, document state, signing method and audit history."
-msgstr "QolQoyu — тек қол қою батырмасы емес. Жүйе шаблондарды, қол қоюшыларды, құжат күйін, қол қою әдісін және аудит тарихын басқарады."
-
-msgid "Templates"
-msgstr "Шаблондар"
-
-msgid "Reusable document templates"
-msgstr "Қайта қолданылатын құжат шаблондары"
-
-msgid "Prepare variables once and generate clean documents without rewriting the same contract again."
-msgstr "Айнымалыларды бір рет дайындап, бір шартты қайта жазбай-ақ дайын құжаттар жасаңыз."
-
-msgid "Signing"
-msgstr "Қол қою"
-
-msgid "SMS and ECP flows"
-msgstr "SMS және ЭЦҚ арқылы қол қою"
-
-msgid "Support different signing scenarios depending on the signer and document type."
-msgstr "Қол қоюшыға және құжат түріне байланысты әртүрлі қол қою сценарийлерін қолдаңыз."
-
-msgid "Integrity"
-msgstr "Тұтастық"
-
-msgid "Document hash control"
-msgstr "Құжат хэшін бақылау"
-
-msgid "The system can fix the file hash at signing time to detect changes later."
-msgstr "Жүйе кейін өзгерістерді анықтау үшін қол қою кезінде файл хэшін бекіте алады."
-
-msgid "Audit"
-msgstr "Аудит"
-
-msgid "Every action is visible"
-msgstr "Әр әрекет көрінеді"
-
-msgid "Signing events, attempts, confirmation and status changes are stored in the audit trail."
-msgstr "Қол қою оқиғалары, әрекеттер, растаулар және мәртебе өзгерістері аудит журналында сақталады."
-
-msgid "Documents"
-msgstr "Құжаттар"
-
-msgid "One place for agreements"
-msgstr "Келісімдерге арналған бір орын"
-
-msgid "Flow"
-msgstr "Процесс"
-
-msgid "From template to signed document."
-msgstr "Шаблоннан қол қойылған құжатқа дейін."
-
-msgid "The signing process is built as a clear sequence, so users always understand what is happening."
-msgstr "Қол қою процесі нақты ретпен құрылған, сондықтан пайдаланушылар не болып жатқанын әрдайым түсінеді."
-
-msgid "Create template"
-msgstr "Шаблон жасау"
-
-msgid "Upload or prepare a reusable document structure with variables."
-msgstr "Айнымалылары бар қайта қолданылатын құжат құрылымын жүктеңіз немесе дайындаңыз."
-
-msgid "Fill document"
-msgstr "Құжатты толтыру"
-
-msgid "Enter values, signer data and signing method before sending."
-msgstr "Жібермес бұрын мәндерді, қол қоюшы деректерін және қол қою әдісін енгізіңіз."
-
-msgid "Invite signers"
-msgstr "Қол қоюшыларды шақыру"
-
-msgid "Send secure access links and control signing order."
-msgstr "Қауіпсіз кіру сілтемелерін жіберіп, қол қою ретін бақылаңыз."
-
-msgid "Store proof"
-msgstr "Растауды сақтау"
-
-msgid "Keep the signature, hash, confirmation text and audit log."
-msgstr "Қолтаңбаны, хэшті, растау мәтінін және аудит журналын сақтаңыз."
-
-msgid "Ready"
-msgstr "Дайын"
-
-msgid "Prepare your first document for signing."
-msgstr "Бірінші құжатыңызды қол қоюға дайындаңыз."
-
-msgid "Start with a template, create a document, add signers and test the full signing route."
-msgstr "Шаблоннан бастаңыз, құжат жасаңыз, қол қоюшыларды қосыңыз және толық қол қою бағытын тексеріңіз."
-
-msgid "Upload template"
-msgstr "Шаблон жүктеу"
-
-msgid "View documents"
-msgstr "Құжаттарды көру"
-
-msgid "Create account"
-msgstr "Аккаунт жасау"
-
-msgid "Document signing workspace"
-msgstr "Құжаттарға қол қою жұмыс кеңістігі"
-
-msgid "Business documents"
-msgstr "Іскерлік құжаттар"
-
-msgid "Documents | QolQoyu"
-msgstr "Құжаттар | QolQoyu"
-
-msgid "Document workspace"
-msgstr "Құжаттар жұмыс кеңістігі"
-
-msgid "Manage generated documents, download rendered files and prepare every agreement for online signing."
-msgstr "Жасалған құжаттарды басқарыңыз, дайын файлдарды жүктеп алыңыз және әр келісімді онлайн қол қоюға дайындаңыз."
-
-msgid "Total documents"
-msgstr "Барлық құжаттар"
-
-msgid "Created in workspace"
-msgstr "Жұмыс кеңістігінде жасалған"
-
-msgid "Signing flow"
-msgstr "Қол қою процесі"
-
-msgid "Available methods"
-msgstr "Қолжетімді әдістер"
-
-msgid "Document control"
-msgstr "Құжатты бақылау"
-
-msgid "Generated documents"
-msgstr "Жасалған құжаттар"
-
-msgid "Open signing settings, download files or continue preparing documents."
-msgstr "Қол қою баптауларын ашыңыз, файлдарды жүктеп алыңыз немесе құжаттарды дайындауды жалғастырыңыз."
-
-msgid "Template"
-msgstr "Шаблон"
-
-msgid "Download DOCX"
-msgstr "DOCX жүктеу"
-
-msgid "Not rendered"
-msgstr "Қалыптастырылмаған"
-
-msgid "Signers"
-msgstr "Қол қоюшылар"
-
-msgid "Start here"
-msgstr "Осы жерден бастаңыз"
-
-msgid "No documents yet"
-msgstr "Әзірге құжаттар жоқ"
-
-msgid "Create your first document from a template and prepare it for online signing."
-msgstr "Алғашқы құжатыңызды шаблоннан жасап, оны онлайн қол қоюға дайындаңыз."
-
-msgid "DOCX Templates | QolQoyu"
-msgstr "DOCX шаблондары | QolQoyu"
-
-msgid "Template studio"
-msgstr "Шаблондар студиясы"
-
-msgid "DOCX Templates"
-msgstr "DOCX шаблондары"
-
-msgid "Build reusable DOCX structures, manage variables and create ready-to-sign documents faster."
-msgstr "Қайта қолданылатын DOCX құрылымдарын жасаңыз, айнымалыларды басқарыңыз және қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
-
-msgid "Reusable templates"
-msgstr "Қайта қолданылатын шаблондар"
-
-msgid "Variables, parties and document generation in one place."
-msgstr "Айнымалылар, тараптар және құжат генерациясы бір жерде."
-
-msgid "Upload new template"
-msgstr "Жаңа шаблон жүктеу"
-
-msgid "Total templates"
-msgstr "Барлық шаблондар"
-
-msgid "Uploaded DOCX structures available for document generation."
-msgstr "Құжат генерациясына қолжетімді жүктелген DOCX құрылымдары."
-
-msgid "Variables"
-msgstr "Айнымалылар"
-
-msgid "Use variables to personalize documents."
-msgstr "Құжаттарды жекелендіру үшін айнымалыларды пайдаланыңыз."
-
-msgid "Generation"
-msgstr "Қалыптастыру"
-
-msgid "Create documents directly from templates."
-msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
-
-msgid "Template library"
-msgstr "Шаблондар кітапханасы"
-
-msgid "Edit structure, review variables or create a document from a selected template."
-msgstr "Құрылымды өңдеңіз, айнымалыларды қараңыз немесе таңдалған шаблоннан құжат жасаңыз."
-
-msgid "Created"
-msgstr "Жасалған"
-
-msgid "No variables added yet"
-msgstr "Айнымалылар әлі қосылмаған"
-
-msgid "Edit"
-msgstr "Өңдеу"
-
-msgid "Upload DOCX"
-msgstr "DOCX жүктеу"
-
-msgid "No templates yet"
-msgstr "Әзірге шаблондар жоқ"
-
-msgid "Upload your first DOCX template with variables and start generating documents from it."
-msgstr "Айнымалылары бар алғашқы DOCX шаблоныңызды жүктеп, одан құжаттар жасауды бастаңыз."
-
-msgid "Create Document | QolQoyu"
-msgstr "Құжат жасау | QolQoyu"
-
-msgid "New document"
-msgstr "Жаңа құжат"
-
-msgid "Create Document"
-msgstr "Құжат жасау"
-
-msgid "Select a template, enter document details and prepare a clean file for the signing process."
-msgstr "Шаблонды таңдаңыз, құжат деректерін енгізіңіз және қол қою процесіне дайын файл дайындаңыз."
-
-msgid "Status"
-msgstr "Мәртебе"
-
-msgid "Draft"
-msgstr "Жоба"
-
-msgid "Document setup"
-msgstr "Құжатты баптау"
-
-msgid "This step creates the base document before signers are invited."
-msgstr "Бұл қадамда қол қоюшылар шақырылмас бұрын негізгі құжат жасалады."
-
-msgid "Choose template"
-msgstr "Шаблон таңдау"
-
-msgid "Use an uploaded DOCX template as the document base."
-msgstr "Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз."
-
-msgid "Fill details"
-msgstr "Деректерді толтыру"
-
-msgid "Enter title and required document information."
-msgstr "Атауын және қажетті құжат ақпаратын енгізіңіз."
-
-msgid "Prepare signing"
-msgstr "Қол қоюды дайындау"
-
-msgid "After creation, you can add signers and signing methods."
-msgstr "Құжат жасалғаннан кейін қол қоюшыларды және қол қою әдістерін қоса аласыз."
-
-msgid "Tip"
-msgstr "Кеңес"
-
-msgid "Use clear document names so it is easier to track them later in the signing workspace."
-msgstr "Құжаттарды кейін қол қою жұмыс кеңістігінде оңай бақылау үшін түсінікті атауларды пайдаланыңыз."
-
-msgid "Form"
-msgstr "Форма"
-
-msgid "Document information"
-msgstr "Құжат туралы ақпарат"
-
-msgid "Cancel"
-msgstr "Болдырмау"
-
-msgid "Upload DOCX Template | QolQoyu"
-msgstr "DOCX шаблонын жүктеу | QolQoyu"
-
-msgid "DOCX upload"
-msgstr "DOCX жүктеу"
-
-msgid "Upload DOCX Template"
-msgstr "DOCX шаблонын жүктеу"
-
-msgid "Upload a DOCX file with variables and turn it into a reusable document template."
-msgstr "Айнымалылары бар DOCX файлын жүктеп, оны қайта қолданылатын құжат шаблонына айналдырыңыз."
-
-msgid "Before uploading"
-msgstr "Жүктемес бұрын"
-
-msgid "Make sure your DOCX template is prepared correctly."
-msgstr "DOCX шаблоныңыз дұрыс дайындалғанына көз жеткізіңіз."
-
-msgid "Use DOCX format"
-msgstr "DOCX форматын пайдаланыңыз"
-
-msgid "Only DOCX files should be uploaded as templates."
-msgstr "Шаблон ретінде тек DOCX файлдарын жүктеу керек."
-
-msgid "Add variables"
-msgstr "Айнымалылар қосыңыз"
-
-msgid "Use variables like"
-msgstr "Мынадай айнымалыларды пайдаланыңыз:"
-
-msgid "inside the document."
-msgstr "құжаттың ішінде."
-
-msgid "Keep names clear"
-msgstr "Атауларды түсінікті етіңіз"
-
-msgid "Use readable variable names so the document can be filled easily."
-msgstr "Құжатты оңай толтыру үшін айнымалыларға түсінікті атаулар беріңіз."
-
-msgid "Example"
-msgstr "Мысал"
-
-msgid "Upload form"
-msgstr "Жүктеу формасы"
-
-msgid "Template file"
-msgstr "Шаблон файлы"
-
-msgid "Fill document | QolQoyu"
-msgstr "Құжатты толтыру | QolQoyu"
-
-msgid "Fill"
-msgstr "Толтыру"
-
-msgid "Back"
-msgstr "Артқа"
-
-msgid "Confirm and invite parties"
-msgstr "Растау және тараптарды шақыру"
-
-msgid "Document preview"
-msgstr "Құжатты алдын ала қарау"
-
-msgid "Live filled document"
-msgstr "Нақты уақытта толтырылған құжат"
-
-msgid "Fields"
-msgstr "Өрістер"
-
-msgid "Parties"
-msgstr "Тараптар"
-
-msgid "Search fields"
-msgstr "Өрістерді іздеу"
-
-msgid "SMS confirmation"
-msgstr "SMS арқылы растау"
-
-msgid "Custom"
-msgstr "Жеке"
-
-msgid "No fields schema found"
-msgstr "Өрістер схемасы табылмады"
-
-msgid "This document template does not contain fillable fields yet."
-msgstr "Бұл құжат шаблонында әзірге толтырылатын өрістер жоқ."
-
-msgid "Edit template | QolQoyu"
-msgstr "Шаблонды өңдеу | QolQoyu"
-
-msgid "Template editor"
-msgstr "Шаблон редакторы"
-
-msgid "Save"
-msgstr "Сақтау"
-
-msgid "Variable library"
-msgstr "Айнымалылар кітапханасы"
-
-msgid "Search variables"
-msgstr "Айнымалыларды іздеу"
-
-msgid "System fields"
-msgstr "Жүйелік өрістер"
-
-msgid "No fields yet."
-msgstr "Әзірге өрістер жоқ."
-
-msgid "No parties yet. Create a party from the properties panel."
-msgstr "Әзірге тараптар жоқ. Тарапты қасиеттер панелінен жасаңыз."
-
-msgid "Normal fields"
-msgstr "Қарапайым өрістер"
-
-msgid "Normal groups will appear here after you create them on the right."
-msgstr "Қарапайым топтар оларды оң жақта жасағаннан кейін осында пайда болады."
-
-msgid "Centered A4 paper"
-msgstr "Ортасында орналасқан A4 парағы"
-
-msgid "Settings"
-msgstr "Баптаулар"
-
-msgid "Add new party"
-msgstr "Жаңа тарап қосу"
-
-msgid "Party title, example: Customer"
-msgstr "Тарап атауы, мысалы: Тапсырыс беруші"
-
-msgid "Variable prefix, example: customer"
-msgstr "Айнымалы префиксі, мысалы: customer"
-
-msgid "Individual"
-msgstr "Жеке тұлға"
-
-msgid "Company"
-msgstr "Компания"
-
-msgid "Signing order"
-msgstr "Қол қою реті"
-
-msgid "Create signer from this party"
-msgstr "Осы тараптан қол қоюшы жасау"
-
-msgid "Add party"
-msgstr "Тарап қосу"
-
-msgid "Current fields"
-msgstr "Ағымдағы өрістер"
-
-msgid "Delete"
-msgstr "Жою"
-
-msgid "signer"
-msgstr "қол қоюшы"
-
-msgid "system"
-msgstr "жүйелік"
-
-msgid "Delete field"
-msgstr "Өрісті жою"
-
-msgid "No fields in this party yet."
-msgstr "Бұл тарапта әзірге өрістер жоқ."
-
-msgid "Add field to"
-msgstr "Өріс қосу:"
-
-msgid "Field label, example: Address"
-msgstr "Өріс атауы, мысалы: Мекенжай"
-
-msgid "Variable name, example: address"
-msgstr "Айнымалы атауы, мысалы: address"
-
-msgid "Text"
-msgstr "Мәтін"
-
-msgid "Phone"
-msgstr "Телефон"
-
-msgid "IIN / BIN"
-msgstr "ЖСН / БСН"
-
-msgid "Signing method"
-msgstr "Қол қою әдісі"
-
-msgid "Email"
-msgstr "Email"
-
-msgid "Date"
-msgstr "Күні"
-
-msgid "Contract number"
-msgstr "Шарт нөмірі"
-
-msgid "Contract date"
-msgstr "Шарт күні"
-
-msgid "Contract year"
-msgstr "Шарт жылы"
-
-msgid "University"
-msgstr "Университет"
-
-msgid "University name (RU)"
-msgstr "Университет атауы (RU)"
-
-msgid "University name (KZ)"
-msgstr "Университет атауы (KZ)"
-
-msgid "University short name (RU)"
-msgstr "Университеттің қысқа атауы (RU)"
-
-msgid "University short name (KZ)"
-msgstr "Университеттің қысқа атауы (KZ)"
-
-msgid "University BIN"
-msgstr "Университет БСН"
-
-msgid "University license number"
-msgstr "Университет лицензиясының нөмірі"
-
-msgid "University license date (RU)"
-msgstr "Университет лицензиясының күні (RU)"
-
-msgid "University license date (KZ)"
-msgstr "Университет лицензиясының күні (KZ)"
-
-msgid "University license issuer (RU)"
-msgstr "Лицензия берген орган (RU)"
-
-msgid "University license issuer (KZ)"
-msgstr "Лицензия берген орган (KZ)"
-
-msgid "University representative position (RU)"
-msgstr "Университет өкілінің лауазымы (RU)"
-
-msgid "University representative position (KZ)"
-msgstr "Университет өкілінің лауазымы (KZ)"
-
-msgid "University address (RU)"
-msgstr "Университет мекенжайы (RU)"
-
-msgid "University address (KZ)"
-msgstr "Университет мекенжайы (KZ)"
-
-msgid "University bank name (RU)"
-msgstr "Университет банкі (RU)"
-
-msgid "University bank name (KZ)"
-msgstr "Университет банкі (KZ)"
-
-msgid "University account"
-msgstr "Университет шоты"
-
-msgid "University BIC"
-msgstr "Университет БСК"
-
-msgid "University KBE"
-msgstr "Университет КБе"
-
-msgid "Number"
-msgstr "Сан"
-
-msgid "Default value, optional"
-msgstr "Әдепкі мән, міндетті емес"
-
-msgid "Order"
-msgstr "Реті"
-
-msgid "Required"
-msgstr "Міндетті"
-
-msgid "Add custom field"
-msgstr "Пайдаланушы өрісін қосу"
-
-msgid "No parties yet"
-msgstr "Әзірге тараптар жоқ"
-
-msgid "Create Customer, Contractor, Director, or another signer party."
-msgstr "Тапсырыс беруші, Орындаушы, Директор немесе басқа қол қоюшы тарапты жасаңыз."
-
-msgid "Group title, example: Contract data"
-msgstr "Топ атауы, мысалы: Шарт деректері"
-
-msgid "Add normal group"
-msgstr "Қарапайым топ қосу"
-
-msgid "Untitled group"
-msgstr "Атаусыз топ"
-
-msgid "Field label"
-msgstr "Өріс атауы"
-
-msgid "Variable"
-msgstr "Айнымалы"
-
-msgid "Insert"
-msgstr "Кірістіру"
-
-msgid "Field label, example: Contract number"
-msgstr "Өріс атауы, мысалы: Шарт нөмірі"
-
-msgid "Variable key, example: contract_number"
-msgstr "Айнымалы кілті, мысалы: contract_number"
-
-msgid "Add field"
-msgstr "Өріс қосу"
-
-msgid "Enter group title"
-msgstr "Топ атауын енгізіңіз"
-
-msgid "Enter field label"
-msgstr "Өріс атауын енгізіңіз"
-
-msgid "Enter valid variable key"
-msgstr "Дұрыс айнымалы кілтін енгізіңіз"
-
-msgid "Variable key is empty"
-msgstr "Айнымалы кілті бос"
-
-msgid "Sign document | QolQoyu"
-msgstr "Құжатқа қол қою | QolQoyu"
-
-msgid "Secure signing"
-msgstr "Қауіпсіз қол қою"
-
-msgid "Document signing"
-msgstr "Құжатқа қол қою"
-
-msgid "Review the document, check your details and complete signing using the selected method."
-msgstr "Құжатты қарап шығыңыз, деректеріңізді тексеріңіз және таңдалған әдіспен қол қоюды аяқтаңыз."
-
-msgid "Signing status"
-msgstr "Қол қою мәртебесі"
-
-msgid "Open PDF"
-msgstr "PDF ашу"
-
-msgid "Please make sure the document content is correct before confirming the signature."
-msgstr "Қолтаңбаны растау алдында құжат мазмұны дұрыс екеніне көз жеткізіңіз."
-
-msgid "Document file is not rendered yet."
-msgstr "Құжат файлы әлі қалыптастырылмаған."
-
-msgid "Document hash"
-msgstr "Құжат хэші"
-
-msgid "Signer"
-msgstr "Қол қоюшы"
-
-msgid "IIN"
-msgstr "ЖСН"
-
-msgid "Document already signed"
-msgstr "Құжатқа қол қойылған"
-
-msgid "This document has already been signed."
-msgstr "Бұл құжатқа бұрын қол қойылған."
-
-msgid "Signed at"
-msgstr "Қол қойылған уақыты"
-
-msgid "Provider"
-msgstr "Провайдер"
-
-msgid "Certificate IIN"
-msgstr "Сертификат ЖСН"
-
-msgid "Signed content hash"
-msgstr "Қол қойылған мазмұн хэші"
-
-msgid "Signature is valid."
-msgstr "Қолтаңба жарамды."
-
-msgid "Validation note"
-msgstr "Валидация ескертпесі"
-
-msgid "View confirmation sheet"
-msgstr "Растау парағын көру"
-
-msgid "eGov Mobile session"
-msgstr "eGov Mobile сессиясы"
-
-msgid "Open eGov Mobile"
-msgstr "eGov Mobile ашу"
-
-msgid "QR payload"
-msgstr "QR деректері"
-
-msgid "API №1 URL"
-msgstr "API №1 URL"
-
-msgid "Mock complete signing"
-msgstr "Тестілік қол қоюды аяқтау"
-
-msgid "Selected method"
-msgstr "Таңдалған әдіс"
-
-msgid "Continue signing in eGov Mobile. You may need to confirm the signing request in the mobile app."
-msgstr "Қол қоюды eGov Mobile арқылы жалғастырыңыз. Мобильді қосымшада қол қою сұрауын растау қажет болуы мүмкін."
-
-msgid "Sign with eGov Mobile"
-msgstr "eGov Mobile арқылы қол қою"
-
-msgid "SMS code has been sent to your phone number."
-msgstr "SMS коды телефон нөміріңізге жіберілді."
-
-msgid "Session status"
-msgstr "Сессия мәртебесі"
-
-msgid "Code expires at"
-msgstr "Кодтың жарамдылық мерзімі"
-
-msgid "Attempts"
-msgstr "Әрекеттер"
-
-msgid "If the code is incorrect, wait before trying again."
-msgstr "Код қате болса, қайта әрекет жасамас бұрын күтіңіз."
-
-msgid "Confirm that you reviewed the document and request an SMS verification code."
-msgstr "Құжатты қарап шыққаныңызды растаңыз және SMS растау кодын сұраңыз."
-
-msgid "I confirm that I have reviewed the document, agree with its content, and confirm signing this document using an SMS verification code."
-msgstr "Мен құжатты қарап шыққанымды, оның мазмұнымен келісетінімді және осы құжатқа SMS растау коды арқылы қол қоюды растаймын."
-
-msgid "Send SMS code"
-msgstr "SMS код жіберу"
-
-msgid "To sign this document using ECP, make sure NCALayer is installed and running on your computer."
-msgstr "Бұл құжатқа ЭЦҚ арқылы қол қою үшін NCALayer компьютеріңізде орнатылғанына және іске қосылғанына көз жеткізіңіз."
-
-msgid "After clicking the button, choose your ECP key and confirm signing in NCALayer."
-msgstr "Батырманы басқаннан кейін ЭЦҚ кілтін таңдап, NCALayer ішінде қол қоюды растаңыз."
-
-msgid "Sign with ECP"
-msgstr "ЭЦҚ арқылы қол қою"
-
-msgid "Enter code"
-msgstr "Кодты енгізіңіз"
-
-msgid "Enter the code sent to your phone number."
-msgstr "Телефон нөміріңізге жіберілген кодты енгізіңіз."
-
-msgid "SMS code"
-msgstr "SMS коды"
-
-msgid "Confirm and sign"
-msgstr "Растау және қол қою"
-
-msgid "Document signers | QolQoyu"
-msgstr "Құжат қол қоюшылары | QolQoyu"
-
-msgid "Signing control"
-msgstr "Қол қоюды басқару"
-
-msgid "Document signers"
-msgstr "Құжат қол қоюшылары"
-
-msgid "Document status"
-msgstr "Құжат мәртебесі"
-
-msgid "Back to documents"
-msgstr "Құжаттарға қайту"
-
-msgid "Total signers"
-msgstr "Барлық қол қоюшылар"
-
-msgid "Generated from document parties"
-msgstr "Құжат тараптарынан жасалған"
-
-msgid "Signing methods"
-msgstr "Қол қою әдістері"
-
-msgid "Available for invited signers"
-msgstr "Шақырылған қол қоюшыларға қолжетімді"
-
-msgid "Access links"
-msgstr "Кіру сілтемелері"
-
-msgid "Secure"
-msgstr "Қорғалған"
-
-msgid "Each signer receives a personal link"
-msgstr "Әр қол қоюшы жеке сілтеме алады"
-
-msgid "Signing route"
-msgstr "Қол қою бағыты"
-
-msgid "These signers were created automatically from the document data."
-msgstr "Бұл қол қоюшылар құжат деректерінен автоматты түрде жасалды."
-
-msgid "Create SMS link"
-msgstr "SMS сілтеме жасау"
-
-msgid "Already signed"
-msgstr "Қол қойылған"
-
-msgid "No generated signers"
-msgstr "Жасалған қол қоюшылар жоқ"
-
-msgid "No signers were created from this document"
-msgstr "Бұл құжаттан қол қоюшылар жасалмады"
-
-msgid "Go back to the document filling step and make sure the template has signer parties with full name, IIN/BIN, phone and signing method fields."
-msgstr "Құжатты толтыру кезеңіне қайтып, шаблонда аты-жөні, ЖСН/БСН, телефон және қол қою әдісі өрістері бар қол қоюшы тараптар бар екеніне көз жеткізіңіз."
-
-msgid "Signing confirmation | QolQoyu"
-msgstr "Қол қоюды растау | QolQoyu"
-
-msgid "Confirmation sheet"
-msgstr "Растау парағы"
-
-msgid "Signing confirmation"
-msgstr "Қол қоюды растау"
-
-msgid "This page confirms that the document was signed electronically and records the signing evidence."
-msgstr "Бұл бет құжаттың электронды түрде қол қойылғанын растайды және қол қою дәлелдерін тіркейді."
-
-msgid "Valid signature"
-msgstr "Жарамды қолтаңба"
-
-msgid "Signature saved"
-msgstr "Қолтаңба сақталды"
-
-msgid "Recorded"
-msgstr "Тіркелді"
-
-msgid "Document details"
-msgstr "Құжат деректері"
-
-msgid "Title"
-msgstr "Атауы"
-
-msgid "Document ID"
-msgstr "Құжат ID"
-
-msgid "Signer identity"
-msgstr "Қол қоюшы деректері"
-
-msgid "Full name"
-msgstr "Аты-жөні"
-
-msgid "Signing evidence"
-msgstr "Қол қою дәлелдері"
-
-msgid "ECP confirmation"
-msgstr "ЭЦҚ растауы"
-
-msgid "eGov Mobile confirmation"
-msgstr "eGov Mobile растауы"
-
-msgid "Electronic signing confirmation"
-msgstr "Электронды қол қоюды растау"
-
-msgid "Session ID"
-msgstr "Сессия ID"
-
-msgid "Certificate serial"
-msgstr "Сертификаттың сериялық нөмірі"
-
-msgid "Signature valid"
-msgstr "Қолтаңба жарамды"
-
-msgid "Yes"
-msgstr "Иә"
-
-msgid "No"
-msgstr "Жоқ"
-
-msgid "Backend validation"
-msgstr "Серверлік валидация"
-
-msgid "Not implemented yet"
-msgstr "Әзірге іске асырылмаған"
-
-msgid "Certificate subject"
-msgstr "Сертификат субъектісі"
-
-msgid "Consent"
-msgstr "Келісім"
-
-msgid "Consent text"
-msgstr "Келісім мәтіні"
-
-msgid "Technical confirmation"
-msgstr "Техникалық растау"
-
-msgid "Confirmation text"
-msgstr "Растау мәтіні"
-
-msgid "Signing record created"
-msgstr "Қол қою жазбасы жасалды"
-
-msgid "The signing event was saved with document hash, signer data and technical metadata."
-msgstr "Қол қою оқиғасы құжат хэшімен, қол қоюшы деректерімен және техникалық метадеректермен сақталды."
-
-msgid "Technical data"
-msgstr "Техникалық деректер"
-
-msgid "IP address"
-msgstr "IP мекенжайы"
-
-msgid "User agent"
-msgstr "User agent"
-
-msgid "Created at"
-msgstr "Жасалған уақыты"
-
-msgid "Login | QolQoyu"
-msgstr "Кіру | QolQoyu"
-
-msgid "QolQoyu workspace"
-msgstr "QolQoyu жұмыс кеңістігі"
-
-msgid "Sign documents online with confidence."
-msgstr "Құжаттарға онлайн түрде сенімді қол қойыңыз."
-
-msgid "Create templates, prepare documents, invite signers and keep confirmation sheets in one secure workspace."
-msgstr "Шаблондар жасаңыз, құжаттарды дайындаңыз, қол қоюшыларды шақырыңыз және растау парақтарын бір қауіпсіз жұмыс кеңістігінде сақтаңыз."
-
-msgid "Reusable DOCX structures"
-msgstr "Қайта қолданылатын DOCX құрылымдары"
-
-msgid "SMS, ECP and eGov Mobile flows"
-msgstr "SMS, ЭЦҚ және eGov Mobile арқылы қол қою"
-
-msgid "Hash and confirmation tracking"
-msgstr "Хэш пен растауларды бақылау"
-
-msgid "Welcome back"
-msgstr "Қайта қош келдіңіз"
-
-msgid "Sign in"
-msgstr "Кіру"
-
-msgid "Access your document signing workspace."
-msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
-
-msgid "Don’t have an account?"
-msgstr "Аккаунтыңыз жоқ па?"
-
-msgid "Profile | QolQoyu"
-msgstr "Профиль | QolQoyu"
-
-msgid "Account workspace"
-msgstr "Аккаунт жұмыс кеңістігі"
-
-msgid "Profile"
-msgstr "Профиль"
-
-msgid "Manage your account and access your document signing workspace."
-msgstr "Аккаунтыңызды басқарып, құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
-
-msgid "Signed in as"
-msgstr "Кірген аккаунт"
-
-msgid "No email added"
-msgstr "Email қосылмаған"
-
-msgid "Username"
-msgstr "Пайдаланушы аты"
-
-msgid "Not specified"
-msgstr "Көрсетілмеген"
-
-msgid "Date joined"
-msgstr "Тіркелген күні"
-
-msgid "Last login"
-msgstr "Соңғы кіру"
-
-msgid "Never"
-msgstr "Ешқашан"
-
-msgid "Quick actions"
-msgstr "Жылдам әрекеттер"
-
-msgid "Workspace actions"
-msgstr "Жұмыс кеңістігі әрекеттері"
-
-msgid "Quickly open your templates, documents or create a new document for signing."
-msgstr "Шаблондарыңызды, құжаттарыңызды тез ашыңыз немесе қол қою үшін жаңа құжат жасаңыз."
-
-msgid "Create"
-msgstr "Жасау"
-
-msgid "View templates"
-msgstr "Шаблондарды көру"
-
-msgid "Document signing environment"
-msgstr "Құжаттарға қол қою ортасы"
-
-msgid "Your account gives access to template management, document creation, signer routing and confirmation sheets."
-msgstr "Аккаунтыңыз шаблондарды басқаруға, құжат жасауға, қол қоюшылар бағытын реттеуге және растау парақтарына қол жеткізуге мүмкіндік береді."
-
-msgid "Templates → Documents → Signers"
-msgstr "Шаблондар → Құжаттар → Қол қоюшылар"
-
-msgid "Prepare reusable templates, create documents from them and send secure signing links to signers."
-msgstr "Қайта қолданылатын шаблондарды дайындаңыз, олардан құжаттар жасаңыз және қол қоюшыларға қауіпсіз қол қою сілтемелерін жіберіңіз."
-
-msgid "Register | QolQoyu"
-msgstr "Тіркелу | QolQoyu"
-
-msgid "New workspace"
-msgstr "Жаңа жұмыс кеңістігі"
-
-msgid "Create your workspace account to upload templates and manage documents."
-msgstr "Шаблондарды жүктеу және құжаттарды басқару үшін жұмыс кеңістігі аккаунтын жасаңыз."
-
-msgid "Already have an account?"
-msgstr "Аккаунтыңыз бар ма?"
-
-msgid "QolQoyu setup"
-msgstr "QolQoyu баптауы"
-
-msgid "Start your signing workspace in minutes."
-msgstr "Қол қою жұмыс кеңістігін бірнеше минутта іске қосыңыз."
-
-msgid "After registration, you can upload DOCX templates, create documents and invite signers through secure signing links."
-msgstr "Тіркелгеннен кейін DOCX шаблондарын жүктеп, құжаттар жасап, қол қоюшыларды қауіпсіз қол қою сілтемелері арқылы шақыра аласыз."
-
-msgid "Upload templates"
-msgstr "Шаблондарды жүктеу"
-
-msgid "Prepare reusable DOCX templates with variables."
-msgstr "Айнымалылары бар қайта қолданылатын DOCX шаблондарын дайындаңыз."
-
-msgid "Send for signing"
-msgstr "Қол қоюға жіберу"
-
-msgid "Create documents and invite signers by SMS, ECP or eGov Mobile."
-msgstr "Құжаттар жасап, қол қоюшыларды SMS, ЭЦҚ немесе eGov Mobile арқылы шақырыңыз."
-
-msgid "What you get"
-msgstr "Сіз не аласыз"
-
-msgid "Templates, document generation, signer routing, signing status tracking and confirmation sheets."
-msgstr "Шаблондар, құжат генерациясы, қол қоюшылар бағыты, қол қою мәртебесін бақылау және растау парақтары."
-
-msgid "Set up your personal access to the workspace."
-msgstr "Жұмыс кеңістігіне жеке қолжетімділікті баптаңыз."
-
+#: .\documents\admin.py:156
 msgid "Download evidence bundle for selected document"
 msgstr "Таңдалған құжат үшін дәлелдер пакетін жүктеу"
 
+#: .\documents\admin.py:161
 msgid "Select exactly one document to download an evidence bundle."
 msgstr "Дәлелдер пакетін жүктеу үшін дәл бір құжатты таңдаңыз."
 
+#: .\documents\admin.py:177 .\documents\views.py:626
+#, python-format
 msgid "Evidence bundle could not be generated: %(error)s"
 msgstr "Дәлелдер пакетін қалыптастыру мүмкін болмады: %(error)s"
 
-msgid "Evidence bundle"
-msgstr "Дәлелдер пакеті"
+#: .\documents\forms.py:24 .\documents\forms.py:81 .\organizations\forms.py:41
+#: .\organizations\models.py:49 .\templates\documents\document_list.html:87
+msgid "Department"
+msgstr "Бөлім"
 
-msgid "Temporary console code:"
-msgstr "Консольдегі уақытша код:"
+#: .\documents\forms.py:74 .\organizations\forms.py:69
+#| msgid "Choose template"
+msgid "Choose a department."
+msgstr "Бөлімді таңдаңыз."
 
-msgid "Signing invitation SMS was printed to console. Link: %(link)s"
-msgstr "Қол қоюға шақыру SMS-і консольге шығарылды. Сілтеме: %(link)s"
+#: .\documents\forms.py:89
+msgid "Ready DOC/DOCX file"
+msgstr "Дайын DOC/DOCX файлы"
 
-msgid "SMS confirmation code was printed to console. Code: %(code)s"
-msgstr "SMS растау коды консольге шығарылды. Код: %(code)s"
+#: .\documents\forms.py:90
+msgid "Upload a prepared DOC or DOCX document instead of choosing a template."
+msgstr "Шаблон таңдаудың орнына дайындалған DOC немесе DOCX құжатын жүктеңіз."
 
-msgid "Signing invitation SMS was sent successfully."
-msgstr "Қол қоюға шақыру SMS-і сәтті жіберілді."
+#: .\documents\forms.py:102
+msgid "Без шаблона"
+msgstr ""
 
-msgid "SMS confirmation code was sent to your phone."
-msgstr "SMS растау коды телефоныңызға жіберілді."
+#: .\documents\forms.py:104 .\templates\documents\document_create.html:27
+#: .\templates\documents\document_create_from_template.html:18
+#: .\templates\documents\document_list.html:98
+#: .\templates\documents\template_list.html:106
+msgid "Template"
+msgstr "Шаблон"
 
+#: .\documents\forms.py:105
+msgid "No template"
+msgstr "Шаблонсыз"
+
+#: .\documents\forms.py:106
+msgid "Document title"
+msgstr "Құжат атауы"
+
+#: .\documents\forms.py:138
+msgid "Choose a template or upload a ready DOC/DOCX file."
+msgstr "Шаблонды таңдаңыз немесе дайын DOC/DOCX файлын жүктеңіз."
+
+#: .\documents\forms.py:150
+#| msgid "Choose a template or upload a ready DOC/DOCX file."
+msgid "Choose a department for the uploaded document."
+msgstr "Жүктелген құжат үшін бөлімді таңдаңыз."
+
+#: .\documents\forms.py:164
+msgid "Example: Employment Agreement with John Smith"
+msgstr "Мысалы: Иван Ивановпен еңбек шарты"
+
+#: .\documents\models.py:80 .\documents\models.py:420
+#: .\organizations\models.py:128
+#| msgid "This user already belongs to another organization."
+msgid "Department must belong to the selected organization."
+msgstr "Бөлім таңдалған ұйымға тиесілі болуы керек."
+
+#: .\documents\models.py:150 .\templates\documents\document_list.html:82
+#: .\templates\documents\document_verification.html:26
+msgid "Contract number"
+msgstr "Шарт нөмірі"
+
+#: .\documents\models.py:154
+#: .\templates\documents\document_verification.html:31
+msgid "Contract date"
+msgstr "Шарт күні"
+
+#: .\documents\models.py:158
+msgid "Contract date text (RU)"
+msgstr "Шарт күні мәтінмен (RU)"
+
+#: .\documents\models.py:162
+msgid "Contract date text (KZ)"
+msgstr "Шарт күні мәтінмен (KZ)"
+
+#: .\documents\models.py:166 .\templates\documents\template_edit.html:330
+msgid "Date"
+msgstr "Күні"
+
+#: .\documents\models.py:170
+msgid "Contract year"
+msgstr "Шарт жылы"
+
+#: .\documents\models.py:176
+msgid "University name (RU)"
+msgstr "Университет атауы (RU)"
+
+#: .\documents\models.py:180
+msgid "University name (KZ)"
+msgstr "Университет атауы (KZ)"
+
+#: .\documents\models.py:184
+msgid "University short name (RU)"
+msgstr "Университеттің қысқа атауы (RU)"
+
+#: .\documents\models.py:188
+msgid "University short name (KZ)"
+msgstr "Университеттің қысқа атауы (KZ)"
+
+#: .\documents\models.py:192
+msgid "University BIN"
+msgstr "Университет БСН"
+
+#: .\documents\models.py:196
+msgid "University license number"
+msgstr "Университет лицензиясының нөмірі"
+
+#: .\documents\models.py:200
+msgid "University license date (RU)"
+msgstr "Университет лицензиясының күні (RU)"
+
+#: .\documents\models.py:204
+msgid "University license date (KZ)"
+msgstr "Университет лицензиясының күні (KZ)"
+
+#: .\documents\models.py:208
+msgid "University license issuer (RU)"
+msgstr "Лицензия берген орган (RU)"
+
+#: .\documents\models.py:212
+msgid "University license issuer (KZ)"
+msgstr "Лицензия берген орган (KZ)"
+
+#: .\documents\models.py:216
+msgid "University representative position (RU)"
+msgstr "Университет өкілінің лауазымы (RU)"
+
+#: .\documents\models.py:220
+msgid "University representative position (KZ)"
+msgstr "Университет өкілінің лауазымы (KZ)"
+
+#: .\documents\models.py:224
+msgid "University address (RU)"
+msgstr "Университет мекенжайы (RU)"
+
+#: .\documents\models.py:228
+msgid "University address (KZ)"
+msgstr "Университет мекенжайы (KZ)"
+
+#: .\documents\models.py:232
+msgid "University bank name (RU)"
+msgstr "Университет банкі (RU)"
+
+#: .\documents\models.py:236
+msgid "University bank name (KZ)"
+msgstr "Университет банкі (KZ)"
+
+#: .\documents\models.py:240
+msgid "University account"
+msgstr "Университет шоты"
+
+#: .\documents\models.py:244
+msgid "University BIC"
+msgstr "Университет БСК"
+
+#: .\documents\models.py:248
+msgid "University KBE"
+msgstr "Университет КБе"
+
+#: .\documents\models.py:255
+#: .\templates\documents\document_verification.html:20
+#: .\templates\documents\editor_one.html:218 .\templates\home.html:83
+#: .\templates\signing\signature_confirmation.html:46
+#: .\templates\signing\signature_confirmation.html:72
+#: .\templates\signing\signer_public_page.html:37
+msgid "Document"
+msgstr "Құжат"
+
+#: .\documents\models.py:259
+msgid "University"
+msgstr "Университет"
+
+#: .\documents\models.py:451
 msgid "Signed document is immutable and cannot be updated."
 msgstr "Қол қойылған құжат өзгермейді және оны жаңарту мүмкін емес."
 
+#: .\documents\models.py:467
 msgid "Signed document is immutable and cannot be deleted."
 msgstr "Қол қойылған құжат өзгермейді және оны жою мүмкін емес."
 
-msgid "Signature is immutable and cannot be updated."
-msgstr "Қолтаңба өзгермейді және оны жаңарту мүмкін емес."
-
-msgid "Signature is immutable and cannot be deleted."
-msgstr "Қолтаңба өзгермейді және оны жою мүмкін емес."
-
-msgid "Signing audit log is append-only and cannot be updated."
-msgstr "Қол қою аудит журналына тек жаңа жазба қосылады, оны жаңарту мүмкін емес."
-
-msgid "Signing audit log is append-only and cannot be deleted."
-msgstr "Қол қою аудит журналына тек жаңа жазба қосылады, оны жою мүмкін емес."
-
-msgid "Final PDF"
-msgstr "Финалдық PDF"
-
-msgid "Final DOCX"
-msgstr "Финалдық DOCX"
-
-msgid "Stored object"
-msgstr "Сақталған объект"
-
-msgid "Stored objects"
-msgstr "Сақталған объектілер"
-
-msgid "Compliance"
-msgstr "Талаптарға сәйкестік"
-
-msgid "Governance"
-msgstr "Басқарылатын режим"
-
-msgid "None"
-msgstr "Жоқ"
-
-msgid "Stored"
-msgstr "Сақталды"
-
-msgid "Failed"
-msgstr "Қате"
-
-msgid "No final stored PDF/DOCX objects found for this document."
-msgstr "Бұл құжат үшін сақталған финалдық PDF/DOCX объектілері табылмады."
-
-msgid "Stored object verification failed for #%(object_id)s: %(error)s"
-msgstr "#%(object_id)s сақталған объектісін тексеру сәтсіз аяқталды: %(error)s"
-
-msgid "Stored object hash mismatch: object=%(object_id)s expected=%(expected)s actual=%(actual)s"
-msgstr "Сақталған объект хеші сәйкес емес: объект=%(object_id)s күтілген=%(expected)s нақты=%(actual)s"
-
-msgid "Integrity check"
-msgstr "Тұтастықты тексеру"
-
-msgid "Integrity failed"
-msgstr "Тұтастық тексеруі өтпеді"
-
-msgid "Integrity pending"
-msgstr "Тұтастық тексеруі күтілуде"
-
-msgid "Integrity after signing"
-msgstr "Тұтастықты қол қоюдан кейін тексеру"
-
-msgid "Integrity check | QolQoyu"
-msgstr "Тұтастықты тексеру | QolQoyu"
-
-msgid "Blockchain integrity"
-msgstr "Блокчейндегі тұтастық"
-
-msgid "Verify integrity"
-msgstr "Тұтастықты тексеру"
-
-msgid "Submission"
-msgstr "Жіберу"
-
-msgid "External ID"
-msgstr "Сыртқы ID"
-
-msgid "Ledger ID"
-msgstr "Ledger ID"
-
-msgid "Document token"
-msgstr "Құжат токені"
-
-msgid "Document SHA-256"
-msgstr "Құжат SHA-256"
-
-msgid "Sequence"
-msgstr "Жазба нөмірі"
-
-msgid "Size"
-msgstr "Өлшемі"
-
-msgid "Server key"
-msgstr "Сервер кілті"
-
-msgid "Submitted at"
-msgstr "Жіберілген уақыты"
-
-msgid "Verification"
-msgstr "Тексеру"
-
-msgid "Not checked"
-msgstr "Тексерілмеген"
-
-msgid "Stored PDF hash"
-msgstr "Сақталған PDF хеші"
-
-msgid "Matches"
-msgstr "Сәйкес келеді"
-
-msgid "Not verified"
-msgstr "Тексерілмеген"
-
-msgid "Ledger chain"
-msgstr "Ledger тізбегі"
-
-msgid "Verified"
-msgstr "Тексерілді"
-
-msgid "Ledger verify response"
-msgstr "Ledger тексеру жауабы"
-
-msgid "Ledger record is not available for this document yet."
-msgstr "Бұл құжат үшін ledger жазбасы әзірге қолжетімді емес."
-
-msgid "Ledger verification failed: %(error)s"
-msgstr "Ledger тексеруі сәтсіз аяқталды: %(error)s"
-
-msgid "Document integrity is verified."
-msgstr "Құжат тұтастығы расталды."
-
-msgid "Document hash does not match the ledger record."
-msgstr "Құжат хеші ledger жазбасымен сәйкес емес."
-
-msgid "Document ledger record"
-msgstr "Құжаттың ledger жазбасы"
-
-msgid "Document ledger records"
-msgstr "Құжаттардың ledger жазбалары"
-
-msgid "Ledger PDF"
-msgstr "Ledger PDF"
-
-msgid "Passed"
-msgstr "Өтті"
-
-msgid "Error"
-msgstr "Қате"
-
-msgid "Pending"
-msgstr "Күтілуде"
-
-msgid "Submitted"
-msgstr "Жіберілді"
-
-msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
-msgstr "'minio' пакеті қажет. Орындаңыз: pip install -r requirements.txt"
-
-msgid "Audit chain break at log #%(log_id)s: previous_hash mismatch."
-msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: previous_hash сәйкес емес."
-
-msgid "Audit chain break at log #%(log_id)s: payload_hash mismatch."
-msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: payload_hash сәйкес емес."
-
-msgid "Audit chain break at log #%(log_id)s: entry_hash mismatch."
-msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: entry_hash сәйкес емес."
-
-msgid "No audit log entries found."
-msgstr "Аудит журналы жазбалары табылмады."
-
+#: .\documents\models.py:709 .\templates\documents\document_list.html:136
+#: .\templates\signing\signer_public_page.html:180
+#: .\templates\signing\signer_public_page.html:193
 msgid "LawVision report"
 msgstr "LawVision есебі"
 
+#: .\documents\models.py:710
 msgid "LawVision reports"
 msgstr "LawVision есептері"
 
-msgid "LawVision report | QolQoyu"
-msgstr "LawVision есебі | QolQoyu"
+#: .\documents\models.py:807
+msgid "Document ledger record"
+msgstr "Құжаттың ledger жазбасы"
 
-msgid "Analyze LawVision"
-msgstr "LawVision талдауы"
+#: .\documents\models.py:808
+msgid "Document ledger records"
+msgstr "Құжаттардың ledger жазбалары"
 
+#: .\documents\models.py:931
+#: .\templates\signing\signature_confirmation.html:115
+msgid "Full name"
+msgstr "Аты-жөні"
+
+#: .\documents\models.py:932 .\templates\documents\template_edit.html:327
+msgid "IIN / BIN"
+msgstr "ЖСН / БСН"
+
+#: .\documents\models.py:933 .\templates\documents\template_edit.html:326
+#: .\templates\signing\signature_confirmation.html:125
+#: .\templates\signing\signer_public_page.html:152
+msgid "Phone"
+msgstr "Телефон"
+
+#: .\documents\models.py:934 .\templates\accounts\profile.html:58
+#: .\templates\documents\template_edit.html:329
+#: .\templates\signing\signature_confirmation.html:131
+#: .\templates\signing\signer_public_page.html:158
+msgid "Email"
+msgstr "Email"
+
+#: .\documents\models.py:935 .\templates\documents\document_list.html:286
+#: .\templates\documents\template_edit.html:328
+#: .\templates\signing\document_signers.html:155
+#: .\templates\signing\signature_confirmation.html:137
+#: .\templates\signing\signer_public_page.html:165
+#: .\templates\signing\signer_public_page.html:286
+msgid "Signing method"
+msgstr "Қол қою әдісі"
+
+#: .\documents\models.py:943
+msgid "Final PDF"
+msgstr "Финалдық PDF"
+
+#: .\documents\models.py:944
+msgid "Final DOCX"
+msgstr "Финалдық DOCX"
+
+#: .\documents\models.py:945
+msgid "Ledger PDF"
+msgstr "Ledger PDF"
+
+#: .\documents\models.py:946
+#, fuzzy
+#| msgid "Signature saved"
+msgid "Signature"
+msgstr "Қолтаңба сақталды"
+
+#: .\documents\models.py:947 .\templates\documents\document_list.html:153
+msgid "Evidence bundle"
+msgstr "Дәлелдер пакеті"
+
+#: .\documents\models.py:948
+msgid "Other"
+msgstr "Басқа"
+
+#: .\documents\models.py:951 .\templates\documents\lawvision_report.html:133
+#: .\templates\signing\signer_public_page.html:210
+msgid "Compliance"
+msgstr "Талаптарға сәйкестік"
+
+#: .\documents\models.py:952
+msgid "Governance"
+msgstr "Басқарылатын режим"
+
+#: .\documents\models.py:953
+msgid "None"
+msgstr "Жоқ"
+
+#: .\documents\models.py:956
+msgid "Stored"
+msgstr "Сақталды"
+
+#: .\documents\models.py:957
+msgid "Failed"
+msgstr "Қате"
+
+#: .\documents\models.py:1005
+msgid "Stored object"
+msgstr "Сақталған объект"
+
+#: .\documents\models.py:1006
+msgid "Stored objects"
+msgstr "Сақталған объектілер"
+
+#: .\documents\services\evidence_bundle_service.py:46
+msgid "No final stored PDF/DOCX objects found for this document."
+msgstr "Бұл құжат үшін сақталған финалдық PDF/DOCX объектілері табылмады."
+
+#: .\documents\services\evidence_bundle_service.py:138
+#, python-format
+msgid "Stored object verification failed for #%(object_id)s: %(error)s"
+msgstr ""
+"#%(object_id)s сақталған объектісін тексеру сәтсіз аяқталды: %(error)s"
+
+#: .\documents\services\object_storage_service.py:110
+#, python-format
+msgid ""
+"Stored object hash mismatch: object=%(object_id)s expected=%(expected)s "
+"actual=%(actual)s"
+msgstr ""
+"Сақталған объект хеші сәйкес емес: объект=%(object_id)s "
+"күтілген=%(expected)s нақты=%(actual)s"
+
+#: .\documents\services\object_storage_service.py:266
+#: .\documents\services\object_storage_service.py:291
+msgid "The 'minio' package is required. Run: pip install -r requirements.txt"
+msgstr "'minio' пакеті қажет. Орындаңыз: pip install -r requirements.txt"
+
+#: .\documents\views.py:491
+msgid "Ledger record is not available for this document yet."
+msgstr "Бұл құжат үшін ledger жазбасы әзірге қолжетімді емес."
+
+#: .\documents\views.py:505
+#, python-format
+msgid "Ledger verification failed: %(error)s"
+msgstr "Ledger тексеруі сәтсіз аяқталды: %(error)s"
+
+#: .\documents\views.py:510
+msgid "Document integrity is verified."
+msgstr "Құжат тұтастығы расталды."
+
+#: .\documents\views.py:514
+msgid "Document hash does not match the ledger record."
+msgstr "Құжат хеші ledger жазбасымен сәйкес емес."
+
+#: .\documents\views.py:550
+msgid "Current file hash could not be calculated."
+msgstr "Ағымдағы файл хэшін есептеу мүмкін болмады."
+
+#: .\documents\views.py:593 .\signing\views.py:427
+#, python-format
 msgid "LawVision analysis failed: %(error)s"
 msgstr "LawVision талдауы орындалмады: %(error)s"
 
+#: .\documents\views.py:596 .\signing\views.py:430
 msgid "Using saved LawVision report for this document."
 msgstr "Бұл құжат үшін сақталған LawVision есебі қолданылды."
 
+#: .\documents\views.py:598 .\signing\views.py:432
 msgid "LawVision report is ready."
 msgstr "LawVision есебі дайын."
 
-msgid "Organization"
-msgstr "Ұйым"
+#: .\documents\views.py:739 .\documents\views.py:767
+#, fuzzy
+#| msgid "Document file is not rendered yet."
+msgid "Document DOCX file is not available."
+msgstr "Құжат файлы әлі қалыптастырылмаған."
 
-msgid "Organizations"
-msgstr "Ұйымдар"
+#: .\documents\views.py:764
+msgid "Document access token is invalid."
+msgstr ""
 
-msgid "Organization member"
-msgstr "Ұйым мүшесі"
+#: .\documents\views.py:861
+msgid "Template access token is invalid."
+msgstr ""
 
-msgid "Organization members"
-msgstr "Ұйым мүшелері"
+#: .\documents\views.py:864 .\documents\views.py:947
+msgid "Template DOCX file is not available."
+msgstr ""
 
-msgid "Organizations | QolQoyu"
-msgstr "Ұйымдар | QolQoyu"
+#: .\documents\views.py:971
+#, fuzzy, python-format
+#| msgid "Ledger verification failed: %(error)s"
+msgid "OnlyOffice save command failed: %(error)s"
+msgstr "Ledger тексеруі сәтсіз аяқталды: %(error)s"
 
-msgid "Organization members | QolQoyu"
-msgstr "Ұйым мүшелері | QolQoyu"
+#: .\documents\views.py:976
+#, python-format
+msgid "OnlyOffice returned an invalid save response: %(error)s"
+msgstr ""
 
-msgid "Managed organizations"
-msgstr "Басқарылатын ұйымдар"
+#: .\documents\views.py:984
+#, python-format
+msgid "OnlyOffice save command returned error %(error)s."
+msgstr ""
 
-msgid "Open an organization to add registered users and manage their access."
-msgstr "Тіркелген пайдаланушыларды қосу және олардың қолжетімділігін басқару үшін ұйымды ашыңыз."
+#: .\documents\views.py:990
+msgid "Save requested. OnlyOffice will update the DOCX shortly."
+msgstr ""
 
-msgid "Manager"
-msgstr "Менеджер"
+#: .\documents\views.py:1066
+#, python-format
+msgid ""
+"Заполните данные подписанта для группы '%(party)s': ФИО, ИИН/БИН и телефон "
+"обязательны."
+msgstr ""
 
-msgid "BIN"
-msgstr "БСН"
+#: .\documents\views.py:1072
+#, python-format
+msgid "Некорректный способ подписания для группы '%(party)s'."
+msgstr ""
 
-msgid "BIN is not specified"
-msgstr "БСН көрсетілмеген"
+#: .\organizations\forms.py:17
+msgid "Example: Admissions department"
+msgstr "Мысалы: Қабылдау бөлімі"
 
-msgid "Members"
-msgstr "Мүшелер"
-
-msgid "Manage members"
-msgstr "Мүшелерді басқару"
-
-msgid "No managed organizations"
-msgstr "Басқарылатын ұйымдар жоқ"
-
-msgid "A site admin must create an organization and add you as owner or admin first."
-msgstr "Сайт әкімшісі алдымен ұйым құрып, сізді иесі немесе әкімші ретінде қосуы керек."
-
-msgid "Add registered users to this organization and manage their role."
-msgstr "Бұл ұйымға тіркелген пайдаланушыларды қосып, олардың рөлін басқарыңыз."
-
-msgid "Back to organizations"
-msgstr "Ұйымдарға қайту"
-
-msgid "Current members"
-msgstr "Қазіргі мүшелер"
-
-msgid "No email"
-msgstr "Email көрсетілмеген"
-
-msgid "No members have been added yet."
-msgstr "Әзірге мүшелер қосылмаған."
-
-msgid "Add user"
-msgstr "Пайдаланушы қосу"
-
-msgid "Invite existing account"
-msgstr "Бар аккаунтты шақыру"
-
-msgid "Add member"
-msgstr "Мүше қосу"
-
+#: .\organizations\forms.py:24
 msgid "Username or email"
 msgstr "Пайдаланушы аты немесе email"
 
+#: .\organizations\forms.py:27
 msgid "Registered username or email"
 msgstr "Тіркелген аккаунттың пайдаланушы аты немесе email"
 
+#: .\organizations\forms.py:32
 msgid "Role"
 msgstr "Рөл"
 
-msgid "Owner"
-msgstr "Иесі"
-
-msgid "Admin"
-msgstr "Әкімші"
-
-msgid "Member"
-msgstr "Мүше"
-
+#: .\organizations\forms.py:82
 msgid "Registered user was not found."
 msgstr "Тіркелген пайдаланушы табылмады."
 
+#: .\organizations\forms.py:90
 msgid "This user is already a member of the organization."
 msgstr "Бұл пайдаланушы осы ұйымның мүшесі."
 
+#: .\organizations\forms.py:102 .\organizations\models.py:119
 msgid "This user already belongs to another organization."
 msgstr "Бұл пайдаланушы басқа ұйымға тіркелген."
 
+#: .\organizations\models.py:13
+#: .\templates\organizations\organization_list.html:37
+msgid "BIN"
+msgstr "БСН"
+
+#: .\organizations\models.py:26
+#: .\templates\documents\document_create_from_template.html:23
+#: .\templates\documents\template_upload.html:116
+#: .\templates\organizations\member_list.html:13
+msgid "Organization"
+msgstr "Ұйым"
+
+#: .\organizations\models.py:27 .\templates\accounts\profile.html:87
+#: .\templates\base.html:64 .\templates\base.html:96
+#: .\templates\organizations\organization_list.html:13
+msgid "Organizations"
+msgstr "Ұйымдар"
+
+#: .\organizations\models.py:50 .\templates\organizations\member_list.html:68
+#: .\templates\organizations\organization_list.html:48
+#| msgid "Documents"
+msgid "Departments"
+msgstr "Бөлімдер"
+
+#: .\organizations\models.py:57
+#| msgid "No parties yet"
+msgid "General department"
+msgstr "Жалпы бөлім"
+
+#: .\organizations\models.py:67
+msgid "Owner"
+msgstr "Иесі"
+
+#: .\organizations\models.py:68
+msgid "Admin"
+msgstr "Әкімші"
+
+#: .\organizations\models.py:69
+msgid "Member"
+msgstr "Мүше"
+
+#: .\organizations\models.py:100
+msgid "Organization member"
+msgstr "Ұйым мүшесі"
+
+#: .\organizations\models.py:101
+msgid "Organization members"
+msgstr "Ұйым мүшелері"
+
+#: .\organizations\views.py:47
 msgid "Organization member added."
 msgstr "Ұйым мүшесі қосылды."
 
-msgid "Secure digital document signing."
+#: .\organizations\views.py:61
+msgid "Department added."
+msgstr "Бөлім қосылды."
+
+#: .\signing\management\commands\verify_audit_chain.py:34
+msgid "No audit log entries found."
+msgstr "Аудит журналы жазбалары табылмады."
+
+#: .\signing\models.py:359
+msgid "Signature is immutable and cannot be updated."
+msgstr "Қолтаңба өзгермейді және оны жаңарту мүмкін емес."
+
+#: .\signing\models.py:364
+msgid "Signature is immutable and cannot be deleted."
+msgstr "Қолтаңба өзгермейді және оны жою мүмкін емес."
+
+#: .\signing\models.py:467
+msgid "Signing audit log is append-only and cannot be updated."
+msgstr ""
+"Қол қою аудит журналына тек жаңа жазба қосылады, оны жаңарту мүмкін емес."
+
+#: .\signing\models.py:488
+msgid "Signing audit log is append-only and cannot be deleted."
+msgstr "Қол қою аудит журналына тек жаңа жазба қосылады, оны жою мүмкін емес."
+
+#: .\signing\services\audit_chain_service.py:24
+#, python-format
+msgid "Audit chain break at log #%(log_id)s: previous_hash mismatch."
+msgstr ""
+"Аудит тізбегі #%(log_id)s жазбасында үзілді: previous_hash сәйкес емес."
+
+#: .\signing\services\audit_chain_service.py:31
+#, python-format
+msgid "Audit chain break at log #%(log_id)s: payload_hash mismatch."
+msgstr ""
+"Аудит тізбегі #%(log_id)s жазбасында үзілді: payload_hash сәйкес емес."
+
+#: .\signing\services\audit_chain_service.py:38
+#, python-format
+msgid "Audit chain break at log #%(log_id)s: entry_hash mismatch."
+msgstr "Аудит тізбегі #%(log_id)s жазбасында үзілді: entry_hash сәйкес емес."
+
+#: .\signing\views.py:299
+#, python-format
+msgid "Signing invitation SMS was printed to console. Link: %(link)s"
+msgstr "Қол қоюға шақыру SMS-і консольге шығарылды. Сілтеме: %(link)s"
+
+#: .\signing\views.py:306
+msgid "Signing invitation SMS was sent successfully."
+msgstr "Қол қоюға шақыру SMS-і сәтті жіберілді."
+
+#: .\signing\views.py:377
+msgid "Signing link is invalid or expired."
+msgstr ""
+
+#: .\signing\views.py:392 .\templates\signing\signer_public_page.html:84
+#, fuzzy
+#| msgid "Document preview"
+msgid "Document preview is not available."
+msgstr "Құжатты алдын ала қарау"
+
+#: .\signing\views.py:453 .\templates\signing\signer_public_page.html:229
+msgid "This document has already been signed."
+msgstr "Бұл құжатқа бұрын қол қойылған."
+
+#: .\signing\views.py:459
+msgid "Choose a valid signing method."
+msgstr ""
+
+#: .\signing\views.py:481
+#, fuzzy
+#| msgid "Signing methods"
+msgid "Signing method selected."
+msgstr "Қол қою әдістері"
+
+#: .\signing\views.py:688
+#, python-format
+msgid "SMS confirmation code was printed to console. Code: %(code)s"
+msgstr "SMS растау коды консольге шығарылды. Код: %(code)s"
+
+#: .\signing\views.py:695
+msgid "SMS confirmation code was sent to your phone."
+msgstr "SMS растау коды телефоныңызға жіберілді."
+
+#: .\signing\views.py:810
+msgid "CMS file is not available."
+msgstr ""
+
+#: .\templates\accounts\login.html:4
+msgid "Login | QolQoyu"
+msgstr "Кіру | QolQoyu"
+
+#: .\templates\accounts\login.html:15 .\templates\accounts\profile.html:160
+msgid "QolQoyu workspace"
+msgstr "QolQoyu жұмыс кеңістігі"
+
+#: .\templates\accounts\login.html:16
+msgid "Sign documents online with confidence."
+msgstr "Құжаттарға онлайн түрде сенімді қол қойыңыз."
+
+#: .\templates\accounts\login.html:18
+msgid ""
+"Create templates, prepare documents, invite signers and keep confirmation "
+"sheets in one secure workspace."
+msgstr ""
+"Шаблондар жасаңыз, құжаттарды дайындаңыз, қол қоюшыларды шақырыңыз және "
+"растау парақтарын бір қауіпсіз жұмыс кеңістігінде сақтаңыз."
+
+#: .\templates\accounts\login.html:25 .\templates\accounts\profile.html:135
+#: .\templates\base.html:57 .\templates\documents\template_edit.html:32
+msgid "Templates"
+msgstr "Шаблондар"
+
+#: .\templates\accounts\login.html:26
+msgid "Reusable DOCX structures"
+msgstr "Қайта қолданылатын DOCX құрылымдары"
+
+#: .\templates\accounts\login.html:30
+msgid "Signing"
+msgstr "Қол қою"
+
+#: .\templates\accounts\login.html:31
+msgid "SMS, ECP and eGov Mobile flows"
+msgstr "SMS, ЭЦҚ және eGov Mobile арқылы қол қою"
+
+#: .\templates\accounts\login.html:35
+msgid "Audit"
+msgstr "Аудит"
+
+#: .\templates\accounts\login.html:36
+msgid "Hash and confirmation tracking"
+msgstr "Хэш пен растауларды бақылау"
+
+#: .\templates\accounts\login.html:44
+msgid "Welcome back"
+msgstr "Қайта қош келдіңіз"
+
+#: .\templates\accounts\login.html:47 .\templates\accounts\login.html:84
+#: .\templates\accounts\register.html:67
+msgid "Sign in"
+msgstr "Кіру"
+
+#: .\templates\accounts\login.html:50
+msgid "Access your document signing workspace."
+msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+#: .\templates\accounts\login.html:89
+msgid "Don’t have an account?"
+msgstr "Аккаунтыңыз жоқ па?"
+
+#: .\templates\accounts\login.html:92 .\templates\accounts\register.html:16
+#: .\templates\accounts\register.html:59 .\templates\accounts\register.html:90
+#: .\templates\home.html:199
+msgid "Create account"
+msgstr "Аккаунт жасау"
+
+#: .\templates\accounts\profile.html:4
+msgid "Profile | QolQoyu"
+msgstr "Профиль | QolQoyu"
+
+#: .\templates\accounts\profile.html:13
+msgid "Account workspace"
+msgstr "Аккаунт жұмыс кеңістігі"
+
+#: .\templates\accounts\profile.html:16 .\templates\base.html:85
+msgid "Profile"
+msgstr "Профиль"
+
+#: .\templates\accounts\profile.html:19
+msgid "Manage your account and access your document signing workspace."
+msgstr "Аккаунтыңызды басқарып, құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+#: .\templates\accounts\profile.html:25 .\templates\accounts\profile.html:126
+#: .\templates\documents\document_create.html:144
+#: .\templates\documents\document_create_from_template.html:9
+#: .\templates\documents\document_list.html:28
+#: .\templates\documents\document_list.html:362
+#: .\templates\documents\template_list.html:138 .\templates\home.html:36
+msgid "Create document"
+msgstr "Құжат жасау"
+
+#: .\templates\accounts\profile.html:39
+msgid "Signed in as"
+msgstr "Кірген аккаунт"
+
+#: .\templates\accounts\profile.html:46
+msgid "No email added"
+msgstr "Email қосылмаған"
+
+#: .\templates\accounts\profile.html:53
+msgid "Username"
+msgstr "Пайдаланушы аты"
+
+#: .\templates\accounts\profile.html:63
+msgid "Not specified"
+msgstr "Көрсетілмеген"
+
+#: .\templates\accounts\profile.html:69
+msgid "Date joined"
+msgstr "Тіркелген күні"
+
+#: .\templates\accounts\profile.html:74
+msgid "Last login"
+msgstr "Соңғы кіру"
+
+#: .\templates\accounts\profile.html:79
+msgid "Never"
+msgstr "Ешқашан"
+
+#: .\templates\accounts\profile.html:88
+#, fuzzy
+#| msgid "Success"
+msgid "Your access"
+msgstr "Сәтті"
+
+#: .\templates\accounts\profile.html:101
+#: .\templates\organizations\member_list.html:30
+#: .\templates\organizations\organization_list.html:43
+msgid "Members"
+msgstr "Мүшелер"
+
+#: .\templates\accounts\profile.html:108
+#, fuzzy
+#| msgid "This user is already a member of the organization."
+msgid "You are not a member of any organization yet."
+msgstr "Бұл пайдаланушы осы ұйымның мүшесі."
+
+#: .\templates\accounts\profile.html:116
+msgid "Quick actions"
+msgstr "Жылдам әрекеттер"
+
+#: .\templates\accounts\profile.html:117
+msgid "Workspace actions"
+msgstr "Жұмыс кеңістігі әрекеттері"
+
+#: .\templates\accounts\profile.html:119
+msgid ""
+"Quickly open your templates, documents or create a new document for signing."
+msgstr ""
+"Шаблондарыңызды, құжаттарыңызды тез ашыңыз немесе қол қою үшін жаңа құжат "
+"жасаңыз."
+
+#: .\templates\accounts\profile.html:125
+msgid "Create"
+msgstr "Жасау"
+
+#: .\templates\accounts\profile.html:130 .\templates\base.html:51
+#: .\templates\documents\document_fill.html:22
+#: .\templates\documents\document_list.html:17
+#: .\templates\documents\editor_one.html:45
+#: .\templates\documents\editor_one.html:47
+#: .\templates\documents\onlyoffice_editor.html:12
+msgid "Documents"
+msgstr "Құжаттар"
+
+#: .\templates\accounts\profile.html:131 .\templates\home.html:195
+msgid "View documents"
+msgstr "Құжаттарды көру"
+
+#: .\templates\accounts\profile.html:136
+msgid "View templates"
+msgstr "Шаблондарды көру"
+
+#: .\templates\accounts\profile.html:140
+msgid "DOCX"
+msgstr ""
+
+#: .\templates\accounts\profile.html:141 .\templates\base.html:90
+#: .\templates\documents\template_list.html:170
+#: .\templates\documents\template_upload.html:160 .\templates\home.html:191
+msgid "Upload template"
+msgstr "Шаблон жүктеу"
+
+#: .\templates\accounts\profile.html:146
+msgid "Team"
+msgstr ""
+
+#: .\templates\accounts\profile.html:161
+msgid "Document signing environment"
+msgstr "Құжаттарға қол қою ортасы"
+
+#: .\templates\accounts\profile.html:163
+msgid ""
+"Your account gives access to template management, document creation, signer "
+"routing and confirmation sheets."
+msgstr ""
+"Аккаунтыңыз шаблондарды басқаруға, құжат жасауға, қол қоюшылар бағытын "
+"реттеуге және растау парақтарына қол жеткізуге мүмкіндік береді."
+
+#: .\templates\accounts\profile.html:172
+#: .\templates\documents\document_list.html:41
+msgid "Signing flow"
+msgstr "Қол қою процесі"
+
+#: .\templates\accounts\profile.html:173
+msgid "Templates → Documents → Signers"
+msgstr "Шаблондар → Құжаттар → Қол қоюшылар"
+
+#: .\templates\accounts\profile.html:175
+msgid ""
+"Prepare reusable templates, create documents from them and send secure "
+"signing links to signers."
+msgstr ""
+"Қайта қолданылатын шаблондарды дайындаңыз, олардан құжаттар жасаңыз және қол"
+" қоюшыларға қауіпсіз қол қою сілтемелерін жіберіңіз."
+
+#: .\templates\accounts\register.html:4
+msgid "Register | QolQoyu"
+msgstr "Тіркелу | QolQoyu"
+
+#: .\templates\accounts\register.html:13
+#, fuzzy
+#| msgid "Create account"
+msgid "New account"
+msgstr "Аккаунт жасау"
+
+#: .\templates\accounts\register.html:19
+msgid ""
+"Create your account. A site admin or organization manager can add you to an "
+"organization after registration."
+msgstr ""
+
+#: .\templates\accounts\register.html:64
+msgid "Already have an account?"
+msgstr "Аккаунтыңыз бар ма?"
+
+#: .\templates\accounts\register.html:77
+msgid "QolQoyu setup"
+msgstr "QolQoyu баптауы"
+
+#: .\templates\accounts\register.html:78
+#, fuzzy
+#| msgid "Access your document signing workspace."
+msgid "Get access to your signing workspace."
+msgstr "Құжаттарға қол қою жұмыс кеңістігіне кіріңіз."
+
+#: .\templates\accounts\register.html:80
+msgid ""
+"Organizations are created by site admins. Managers can then add registered "
+"users to their organization."
+msgstr ""
+
+#: .\templates\accounts\register.html:91
+#, fuzzy
+#| msgid "Set up your personal access to the workspace."
+msgid "Set up your personal login for QolQoyu."
+msgstr "Жұмыс кеңістігіне жеке қолжетімділікті баптаңыз."
+
+#: .\templates\accounts\register.html:99
+#, fuzzy
+#| msgid "Organization"
+msgid "Join organization"
+msgstr "Ұйым"
+
+#: .\templates\accounts\register.html:100
+msgid "An admin or manager adds your account to an organization."
+msgstr ""
+
+#: .\templates\accounts\register.html:108
+#, fuzzy
+#| msgid "Start now"
+msgid "Start working"
+msgstr "Қазір бастау"
+
+#: .\templates\accounts\register.html:109
+#, fuzzy
+#| msgid ""
+#| "After registration, you can upload DOCX templates, create documents and "
+#| "invite signers through secure signing links."
+msgid "Managers can upload templates, create documents and invite signers."
+msgstr ""
+"Тіркелгеннен кейін DOCX шаблондарын жүктеп, құжаттар жасап, қол қоюшыларды "
+"қауіпсіз қол қою сілтемелері арқылы шақыра аласыз."
+
+#: .\templates\accounts\register.html:115
+msgid "What you get"
+msgstr "Сіз не аласыз"
+
+#: .\templates\accounts\register.html:117
+msgid ""
+"Templates, document generation, signer routing, signing status tracking and "
+"confirmation sheets."
+msgstr ""
+"Шаблондар, құжат генерациясы, қол қоюшылар бағыты, қол қою мәртебесін "
+"бақылау және растау парақтары."
+
+#: .\templates\base.html:30
+#, fuzzy
+#| msgid "Document signing"
+msgid "Document signing platform"
+msgstr "Құжатқа қол қою"
+
+#: .\templates\base.html:44
+msgid "Home"
+msgstr ""
+
+#: .\templates\base.html:76
+msgid "Account"
+msgstr ""
+
+#: .\templates\base.html:106
+msgid "Logout"
+msgstr ""
+
+#: .\templates\base.html:114 .\templates\home.html:48
+msgid "Login"
+msgstr "Кіру"
+
+#: .\templates\base.html:119
+#, fuzzy
+#| msgid "Register | QolQoyu"
+msgid "Register"
+msgstr "Тіркелу | QolQoyu"
+
+#: .\templates\base.html:152 .\templates\documents\document_list.html:223
+msgid "Close"
+msgstr ""
+
+#: .\templates\base.html:171
+#, fuzzy
+#| msgid "Secure digital document signing."
+msgid "Secure online document signing"
 msgstr "Құжаттарды қауіпсіз цифрлық қол қою."
 
+#: .\templates\documents\document_create.html:4
+msgid "Create Document | QolQoyu"
+msgstr "Құжат жасау | QolQoyu"
+
+#: .\templates\documents\document_create.html:13
+#: .\templates\documents\editor_one.html:264
+msgid "New document"
+msgstr "Жаңа құжат"
+
+#: .\templates\documents\document_create.html:17
+msgid "Create Document"
+msgstr "Құжат жасау"
+
+#: .\templates\documents\document_create.html:21
+msgid ""
+"Select a template or upload a ready DOC/DOCX file for the signing process."
+msgstr ""
+"Қол қою процесі үшін шаблонды таңдаңыз немесе дайын DOC/DOCX файлын "
+"жүктеңіз."
+
+#: .\templates\documents\document_create.html:32
+#: .\templates\documents\document_list.html:291
+#: .\templates\signing\document_signers.html:164
+#: .\templates\signing\signer_public_page.html:171
+msgid "Status"
+msgstr "Мәртебе"
+
+#: .\templates\documents\document_create.html:33
+#: .\templates\documents\document_fill.html:30
+#: .\templates\documents\template_edit.html:40
+msgid "Draft"
+msgstr "Жоба"
+
+#: .\templates\documents\document_create.html:47
+msgid "Document setup"
+msgstr "Құжатты баптау"
+
+#: .\templates\documents\document_create.html:48
+msgid "This step creates the base document before signers are invited."
+msgstr "Бұл қадамда қол қоюшылар шақырылмас бұрын негізгі құжат жасалады."
+
+#: .\templates\documents\document_create.html:56
+msgid "Choose template"
+msgstr "Шаблон таңдау"
+
+#: .\templates\documents\document_create.html:57
+msgid ""
+"Use an uploaded DOCX template as the document base, or upload a ready file."
+msgstr ""
+"Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз немесе дайын "
+"файлды жүктеңіз."
+
+#: .\templates\documents\document_create.html:64
+msgid "Fill details"
+msgstr "Деректерді толтыру"
+
+#: .\templates\documents\document_create.html:65
+msgid "Enter title and required document information."
+msgstr "Атауын және қажетті құжат ақпаратын енгізіңіз."
+
+#: .\templates\documents\document_create.html:72
+msgid "Prepare signing"
+msgstr "Қол қоюды дайындау"
+
+#: .\templates\documents\document_create.html:73
+msgid "After creation, you can add signers and signing methods."
+msgstr ""
+"Құжат жасалғаннан кейін қол қоюшыларды және қол қою әдістерін қоса аласыз."
+
+#: .\templates\documents\document_create.html:79
+msgid "Tip"
+msgstr "Кеңес"
+
+#: .\templates\documents\document_create.html:81
+msgid ""
+"Use clear document names so it is easier to track them later in the signing "
+"workspace."
+msgstr ""
+"Құжаттарды кейін қол қою жұмыс кеңістігінде оңай бақылау үшін түсінікті "
+"атауларды пайдаланыңыз."
+
+#: .\templates\documents\document_create.html:89
+msgid "Form"
+msgstr "Форма"
+
+#: .\templates\documents\document_create.html:90
+msgid "Document information"
+msgstr "Құжат туралы ақпарат"
+
+#: .\templates\documents\document_create.html:140
+#: .\templates\documents\document_create_from_template.html:65
+#: .\templates\documents\editor_one.html:295
+#: .\templates\documents\editor_one.html:331
+#: .\templates\documents\editor_one.html:367
+#: .\templates\documents\template_upload.html:156
+msgid "Cancel"
+msgstr "Болдырмау"
+
+#: .\templates\documents\document_create_from_template.html:4
+#, fuzzy
+#| msgid "Create documents directly from templates."
+msgid "Create Document From Template | Sign-App"
+msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
+
+#: .\templates\documents\document_create_from_template.html:11
+#, fuzzy
+#| msgid "Create documents directly from templates."
+msgid "Create a new document from the selected DOCX template."
+msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
+
+#: .\templates\documents\document_create_from_template.html:69
+#, fuzzy
+#| msgid "Create document"
+msgid "Create and fill document"
+msgstr "Құжат жасау"
+
+#: .\templates\documents\document_fill.html:4
+msgid "Fill document | QolQoyu"
+msgstr "Құжатты толтыру | QolQoyu"
+
+#: .\templates\documents\document_fill.html:22
+msgid "Fill"
+msgstr "Толтыру"
+
+#: .\templates\documents\document_fill.html:25 .\templates\home.html:163
+msgid "Fill document"
+msgstr "Құжатты толтыру"
+
+#: .\templates\documents\document_fill.html:33
+#: .\templates\documents\editor_one.html:70
+#: .\templates\documents\lawvision_report.html:17
+#: .\templates\documents\ledger_proof.html:18
+#: .\templates\documents\onlyoffice_editor.html:18
+#: .\templates\documents\template_edit.html:43
+msgid "Back"
+msgstr "Артқа"
+
+#: .\templates\documents\document_fill.html:37
+#: .\templates\documents\document_fill.html:197
+msgid "Confirm and invite parties"
+msgstr "Растау және тараптарды шақыру"
+
+#: .\templates\documents\document_fill.html:47
+#: .\templates\signing\signer_public_page.html:62
+#: .\templates\signing\signer_public_page.html:70
+#: .\templates\signing\signer_public_page.html:79
+msgid "Document preview"
+msgstr "Құжатты алдын ала қарау"
+
+#: .\templates\documents\document_fill.html:48
+msgid "Live filled document"
+msgstr "Нақты уақытта толтырылған құжат"
+
+#: .\templates\documents\document_fill.html:74
+msgid "Fields"
+msgstr "Өрістер"
+
+#: .\templates\documents\document_fill.html:81
+msgid "Search fields"
+msgstr "Өрістерді іздеу"
+
+#: .\templates\documents\document_fill.html:156
+msgid "Custom"
+msgstr "Жеке"
+
+#: .\templates\documents\document_fill.html:187
+msgid "No fields schema found"
+msgstr "Өрістер схемасы табылмады"
+
+#: .\templates\documents\document_fill.html:188
+msgid "This document template does not contain fillable fields yet."
+msgstr "Бұл құжат шаблонында әзірге толтырылатын өрістер жоқ."
+
+#: .\templates\documents\document_list.html:4
+msgid "Documents | QolQoyu"
+msgstr "Құжаттар | QolQoyu"
+
+#: .\templates\documents\document_list.html:13
+msgid "Document workspace"
+msgstr "Құжаттар жұмыс кеңістігі"
+
+#: .\templates\documents\document_list.html:21
+msgid ""
+"Manage generated documents, download rendered files and prepare every "
+"agreement for online signing."
+msgstr ""
+"Жасалған құжаттарды басқарыңыз, дайын файлдарды жүктеп алыңыз және әр "
+"келісімді онлайн қол қоюға дайындаңыз."
+
+#: .\templates\documents\document_list.html:35
+msgid "Total documents"
+msgstr "Барлық құжаттар"
+
+#: .\templates\documents\document_list.html:37
+msgid "Created in workspace"
+msgstr "Жұмыс кеңістігінде жасалған"
+
+#: .\templates\documents\document_list.html:43
+msgid "Available methods"
+msgstr "Қолжетімді әдістер"
+
+#: .\templates\documents\document_list.html:47
+#: .\templates\documents\document_verification.html:49
+msgid "Integrity"
+msgstr "Тұтастық"
+
+#: .\templates\documents\document_list.html:49
+msgid "Document control"
+msgstr "Құжатты бақылау"
+
+#: .\templates\documents\document_list.html:56
+msgid "Generated documents"
+msgstr "Жасалған құжаттар"
+
+#: .\templates\documents\document_list.html:57
+msgid "Open signing settings, download files or continue preparing documents."
+msgstr ""
+"Қол қою баптауларын ашыңыз, файлдарды жүктеп алыңыз немесе құжаттарды "
+"дайындауды жалғастырыңыз."
+
+#: .\templates\documents\document_list.html:92
+#| msgid "No parties yet"
+msgid "No department"
+msgstr "Бөлім жоқ"
+
+#: .\templates\documents\document_list.html:103
+#, fuzzy
+#| msgid "Upload DOCX"
+msgid "Uploaded DOCX"
+msgstr "DOCX жүктеу"
+
+#: .\templates\documents\document_list.html:122
+#| msgid "Download DOCX"
+msgid "Download PDF"
+msgstr "PDF жүктеу"
+
+#: .\templates\documents\document_list.html:126
+#: .\templates\signing\signer_public_page.html:50
+#: .\templates\signing\signer_public_page.html:110
+msgid "Download DOCX"
+msgstr "DOCX жүктеу"
+
+#: .\templates\documents\document_list.html:130
+msgid "Not rendered"
+msgstr "Қалыптастырылмаған"
+
+#: .\templates\documents\document_list.html:142
+msgid "Analyze LawVision"
+msgstr "LawVision талдауы"
+
+#: .\templates\documents\document_list.html:147
+#, fuzzy
+#| msgid "LawVision report"
+msgid "LawVision after render"
+msgstr "LawVision есебі"
+
+#: .\templates\documents\document_list.html:159
+msgid "Verification page"
+msgstr "Тексеру беті"
+
+#: .\templates\documents\document_list.html:166
+#: .\templates\documents\ledger_proof.html:12
+msgid "Integrity check"
+msgstr "Тұтастықты тексеру"
+
+#: .\templates\documents\document_list.html:168
+msgid "Integrity failed"
+msgstr "Тұтастық тексеруі өтпеді"
+
+#: .\templates\documents\document_list.html:170
+#: .\templates\documents\document_list.html:175
+msgid "Integrity pending"
+msgstr "Тұтастық тексеруі күтілуде"
+
+#: .\templates\documents\document_list.html:179
+msgid "Integrity after signing"
+msgstr "Тұтастықты қол қоюдан кейін тексеру"
+
+#: .\templates\documents\document_list.html:186
+#: .\templates\documents\document_list.html:190
+#: .\templates\documents\template_edit.html:32
+#: .\templates\documents\template_list.html:134
+msgid "Edit"
+msgstr "Өңдеу"
+
+#: .\templates\documents\document_list.html:201
+#: .\templates\documents\document_list.html:205
+msgid "Signers"
+msgstr "Қол қоюшылар"
+
+#: .\templates\documents\document_list.html:214
+#: .\templates\signing\document_signers.html:13
+msgid "Signing control"
+msgstr "Қол қоюды басқару"
+
+#: .\templates\documents\document_list.html:215
+#: .\templates\signing\document_signers.html:16
+msgid "Document signers"
+msgstr "Құжат қол қоюшылары"
+
+#: .\templates\documents\document_list.html:231
+#: .\templates\signing\document_signers.html:37
+msgid "Total signers"
+msgstr "Барлық қол қоюшылар"
+
+#: .\templates\documents\document_list.html:233
+#, fuzzy
+#| msgid "Prepare signing"
+msgid "Prepared for signing"
+msgstr "Қол қоюды дайындау"
+
+#: .\templates\documents\document_list.html:237
+#: .\templates\signing\document_signers.html:25
+msgid "Document status"
+msgstr "Құжат мәртебесі"
+
+#: .\templates\documents\document_list.html:239
+#, fuzzy
+#| msgid "Document signing workspace"
+msgid "Current signing state"
+msgstr "Құжаттарға қол қою жұмыс кеңістігі"
+
+#: .\templates\documents\document_list.html:243
+#: .\templates\signing\document_signers.html:55
+msgid "Access links"
+msgstr "Кіру сілтемелері"
+
+#: .\templates\documents\document_list.html:244
+#: .\templates\signing\document_signers.html:56
+msgid "Secure"
+msgstr "Қорғалған"
+
+#: .\templates\documents\document_list.html:245
+#: .\templates\signing\document_signers.html:57
+msgid "Each signer receives a personal link"
+msgstr "Әр қол қоюшы жеке сілтеме алады"
+
+#: .\templates\documents\document_list.html:252
+#: .\templates\signing\document_signers.html:115
+msgid "Signing route"
+msgstr "Қол қою бағыты"
+
+#: .\templates\documents\document_list.html:253
+#, fuzzy
+#| msgid ""
+#| "These signers were created automatically from the document data."
+msgid "These signers are attached to the document."
+msgstr "Бұл қол қоюшылар құжат деректерінен автоматты түрде жасалды."
+
+#: .\templates\documents\document_list.html:261
+#: .\templates\documents\template_edit.html:345
+#: .\templates\signing\document_signers.html:130
+#: .\venv\Lib\site-packages\django\forms\formsets.py:484
+#: .\venv\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr "Реті"
+
+#: .\templates\documents\document_list.html:302
+msgid "Create SMS link"
+msgstr "SMS сілтеме жасау"
+
+#: .\templates\documents\document_list.html:307
+#: .\templates\signing\document_signers.html:180
+msgid "Already signed"
+msgstr "Қол қойылған"
+
+#: .\templates\documents\document_list.html:325
+#: .\templates\signing\document_signers.html:200
+msgid "No generated signers"
+msgstr "Жасалған қол қоюшылар жоқ"
+
+#: .\templates\documents\document_list.html:327
+#: .\templates\signing\document_signers.html:208
+msgid "No signers were created from this document"
+msgstr "Бұл құжаттан қол қоюшылар жасалмады"
+
+#: .\templates\documents\document_list.html:330
+msgid ""
+"Signer management will be available here after manual signer forms are "
+"added."
+msgstr ""
+
+#: .\templates\documents\document_list.html:353
+msgid "Start here"
+msgstr "Осы жерден бастаңыз"
+
+#: .\templates\documents\document_list.html:355
+msgid "No documents yet"
+msgstr "Әзірге құжаттар жоқ"
+
+#: .\templates\documents\document_list.html:358
+msgid ""
+"Create your first document from a template and prepare it for online "
+"signing."
+msgstr "Алғашқы құжатыңызды шаблоннан жасап, оны онлайн қол қоюға дайындаңыз."
+
+#: .\templates\documents\document_verification.html:4
+msgid "Document verification | QolQoyu"
+msgstr "Құжатты тексеру | QolQoyu"
+
+#: .\templates\documents\document_verification.html:11
+msgid "Document verification"
+msgstr "Құжатты тексеру"
+
+#: .\templates\documents\document_verification.html:12
+msgid "Document integrity"
+msgstr "Құжат тұтастығы"
+
+#: .\templates\documents\document_verification.html:36
+#: .\templates\signing\signature_confirmation.html:58
+#: .\templates\signing\signer_public_page.html:235
+msgid "Signed at"
+msgstr "Қол қойылған уақыты"
+
+#: .\templates\documents\document_verification.html:41
+msgid "Stored SHA-256"
+msgstr "Сақталған SHA-256"
+
+#: .\templates\documents\document_verification.html:52
+#: .\templates\documents\ledger_proof.html:113
+msgid "Verified"
+msgstr "Тексерілді"
+
+#: .\templates\documents\document_verification.html:54
+msgid "Mismatch"
+msgstr "Сәйкес емес"
+
+#: .\templates\documents\document_verification.html:56
+#: .\templates\documents\document_verification.html:113
+#: .\templates\documents\ledger_proof.html:89
+msgid "Not checked"
+msgstr "Тексерілмеген"
+
+#: .\templates\documents\document_verification.html:63
+msgid "Current file hash"
+msgstr "Ағымдағы файл хэші"
+
+#: .\templates\documents\document_verification.html:66
+#: .\templates\documents\ledger_proof.html:99
+msgid "Matches"
+msgstr "Сәйкес келеді"
+
+#: .\templates\documents\document_verification.html:68
+msgid "Does not match"
+msgstr "Сәйкес келмейді"
+
+#: .\templates\documents\document_verification.html:70
+msgid "Unavailable"
+msgstr "Қолжетімсіз"
+
+#: .\templates\documents\document_verification.html:80
+msgid "Ledger record"
+msgstr "Ledger жазбасы"
+
+#: .\templates\documents\document_verification.html:85
+msgid "Not available"
+msgstr "Қолжетімсіз"
+
+#: .\templates\documents\document_verification.html:98
+#: .\templates\documents\ledger_proof.html:41
+msgid "External ID"
+msgstr "Сыртқы ID"
+
+#: .\templates\documents\document_verification.html:103
+#: .\templates\documents\ledger_proof.html:46
+msgid "Ledger ID"
+msgstr "Ledger ID"
+
+#: .\templates\documents\document_verification.html:108
+msgid "Last verification"
+msgstr "Соңғы тексеру"
+
+#: .\templates\documents\document_verification.html:119
+#: .\templates\documents\ledger_proof.html:76
+msgid "Submitted at"
+msgstr "Жіберілген уақыты"
+
+#: .\templates\documents\editor_one.html:16
+#: .\templates\documents\editor_one.html:63
+msgid "Original file preserved"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:16
+#: .\templates\documents\editor_one.html:65
+msgid "Saved in this browser"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:17
+#: .\templates\documents\template_edit.html:595
+msgid "Saving..."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:18
+msgid "Clear the editor content?"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:19
+msgid ""
+"Choose a DOCX or PDF file. Old DOC files are supported only when the browser"
+" can read them."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:20
+msgid "File could not be read."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:21
+msgid "Import error"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:74
+msgid "Import"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:79
+#: .\templates\documents\onlyoffice_editor.html:21
+#, fuzzy
+#| msgid "Document signers"
+msgid "Continue to signers"
+msgstr "Құжат қол қоюшылары"
+
+#: .\templates\documents\editor_one.html:88
+#: .\templates\documents\template_edit.html:325
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2446
+msgid "Text"
+msgstr "Мәтін"
+
+#: .\templates\documents\editor_one.html:92
+msgid "Style"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:94
+#, fuzzy
+#| msgid "Normal fields"
+msgid "Normal"
+msgstr "Қарапайым өрістер"
+
+#: .\templates\documents\editor_one.html:95
+#, fuzzy
+#| msgid "Pending"
+msgid "Heading 1"
+msgstr "Күтілуде"
+
+#: .\templates\documents\editor_one.html:96
+#, fuzzy
+#| msgid "Pending"
+msgid "Heading 2"
+msgstr "Күтілуде"
+
+#: .\templates\documents\editor_one.html:97
+#, fuzzy
+#| msgid "Pending"
+msgid "Heading 3"
+msgstr "Күтілуде"
+
+#: .\templates\documents\editor_one.html:102
+msgid "Font"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:113
+#: .\templates\documents\ledger_proof.html:66
+msgid "Size"
+msgstr "Өлшемі"
+
+#: .\templates\documents\editor_one.html:132
+#, fuzzy
+#| msgid "Form"
+msgid "Format"
+msgstr "Форма"
+
+#: .\templates\documents\editor_one.html:135
+msgid "Bold"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:136
+msgid "Italic"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:137
+msgid "Underline"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:138
+msgid "Strikethrough"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:140
+msgid "Text color"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:141
+msgid "Apply text color"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:144
+#, fuzzy
+#| msgid "Choose template"
+msgid "Choose text color"
+msgstr "Шаблон таңдау"
+
+#: .\templates\documents\editor_one.html:150
+#, fuzzy
+#| msgid "High"
+msgid "Highlight"
+msgstr "Жоғары"
+
+#: .\templates\documents\editor_one.html:151
+msgid "Apply highlight"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:154
+msgid "Choose highlight color"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:163
+msgid "Paragraph"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:166
+msgid "Align left"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:169
+msgid "Align center"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:172
+msgid "Align right"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:175
+msgid "Justify"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:178
+msgid "Bulleted list"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:181
+#, fuzzy
+#| msgid "Number"
+msgid "Numbered list"
+msgstr "Сан"
+
+#: .\templates\documents\editor_one.html:184
+msgid "Outdent"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:187
+msgid "Indent"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:194
+#: .\templates\documents\editor_one.html:296
+msgid "Insert"
+msgstr "Кірістіру"
+
+#: .\templates\documents\editor_one.html:198
+msgid "Link"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:201
+#, fuzzy
+#| msgid "Variable"
+msgid "Table"
+msgstr "Айнымалы"
+
+#: .\templates\documents\editor_one.html:204
+msgid "Margins"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:207
+#: .\venv\Lib\site-packages\django\forms\widgets.py:527
+msgid "Clear"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:221
+msgid "Words"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:226
+#, fuzzy
+#| msgid "Contract year"
+msgid "Characters"
+msgstr "Шарт жылы"
+
+#: .\templates\documents\editor_one.html:232
+msgid "Page"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:235
+msgid "Zoom out"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:237
+msgid "Zoom in"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:242
+msgid "Original file is preserved unless you edit the document."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:244
+msgid "Draft is saved locally in this browser."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:263
+#, fuzzy
+#| msgid "Start here"
+msgid "Start writing here..."
+msgstr "Осы жерден бастаңыз"
+
+#: .\templates\documents\editor_one.html:264
+msgid "Start typing here or import a DOCX/PDF file from the toolbar."
+msgstr ""
+
+#: .\templates\documents\editor_one.html:272
+msgid "No AI tools enabled"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:280
+msgid "Link properties"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:285
+msgid "Display text"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:304
+msgid "Table properties"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:310
+msgid "Rows"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:315
+msgid "Columns"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:320
+msgid "Width"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:325
+msgid "Cell padding"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:332
+#, fuzzy
+#| msgid "Insert"
+msgid "Insert table"
+msgstr "Кірістіру"
+
+#: .\templates\documents\editor_one.html:340
+msgid "Page margins"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:346
+#, fuzzy
+#| msgid "Tip"
+msgid "Top"
+msgstr "Кеңес"
+
+#: .\templates\documents\editor_one.html:351
+msgid "Bottom"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:356
+msgid "Left"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:361
+msgid "Right"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:368
+msgid "Apply"
+msgstr ""
+
+#: .\templates\documents\editor_one.html:376
+#, fuzzy
+#| msgid "Create document"
+msgid "Importing document"
+msgstr "Құжат жасау"
+
+#: .\templates\documents\lawvision_report.html:4
+msgid "LawVision report | QolQoyu"
+msgstr "LawVision есебі | QolQoyu"
+
+#: .\templates\documents\lawvision_report.html:12
 msgid "Document legal analysis"
 msgstr "Құжаттың құқықтық талдауы"
 
+#: .\templates\documents\lawvision_report.html:24
 msgid "Control score"
 msgstr "Бақылау бағасы"
 
+#: .\templates\documents\lawvision_report.html:35
 msgid "Risk level"
 msgstr "Тәуекел деңгейі"
 
+#: .\templates\documents\lawvision_report.html:40
 msgid "Contract type"
 msgstr "Шарт түрі"
 
+#: .\templates\documents\lawvision_report.html:45
 msgid "Analyzed at"
 msgstr "Талдау уақыты"
 
-msgid "LawVision truncated the document because it exceeded the analysis length limit."
-msgstr "Құжат талдау ұзындығының шегінен асқандықтан, LawVision оны қысқартты."
+#: .\templates\documents\lawvision_report.html:52
+msgid ""
+"LawVision truncated the document because it exceeded the analysis length "
+"limit."
+msgstr ""
+"Құжат талдау ұзындығының шегінен асқандықтан, LawVision оны қысқартты."
 
+#: .\templates\documents\lawvision_report.html:59
 msgid "Summary"
 msgstr "Қысқаша қорытынды"
 
+#: .\templates\documents\lawvision_report.html:65
+#: .\templates\signing\signer_public_page.html:188
+#: .\templates\signing\signer_public_page.html:208
 msgid "Risks"
 msgstr "Тәуекелдер"
 
+#: .\templates\documents\lawvision_report.html:69
 msgid "High"
 msgstr "Жоғары"
 
+#: .\templates\documents\lawvision_report.html:70
 msgid "Medium"
 msgstr "Орташа"
 
+#: .\templates\documents\lawvision_report.html:71
 msgid "Low"
 msgstr "Төмен"
 
+#: .\templates\documents\lawvision_report.html:90
 msgid "Clause"
 msgstr "Тармақ"
 
+#: .\templates\documents\lawvision_report.html:103
 msgid "No risks returned by LawVision."
 msgstr "LawVision тәуекелдерді қайтармады."
 
+#: .\templates\documents\lawvision_report.html:109
+#: .\templates\signing\signer_public_page.html:209
 msgid "Missing clauses"
 msgstr "Жетіспейтін ережелер"
 
+#: .\templates\documents\lawvision_report.html:127
 msgid "No missing clauses returned by LawVision."
 msgstr "LawVision жетіспейтін ережелерді қайтармады."
 
+#: .\templates\documents\lawvision_report.html:151
 msgid "No compliance notes returned by LawVision."
 msgstr "LawVision сәйкестік бойынша ескертпелерді қайтармады."
 
+#: .\templates\documents\lawvision_report.html:157
+#: .\templates\signing\signer_public_page.html:189
 msgid "Recommendations"
 msgstr "Ұсынымдар"
 
+#: .\templates\documents\lawvision_report.html:175
 msgid "No recommendations returned by LawVision."
 msgstr "LawVision ұсынымдарды қайтармады."
 
+#: .\templates\documents\lawvision_report.html:182
 msgid "Raw analysis"
 msgstr "Бастапқы талдау"
 
+#: .\templates\documents\lawvision_report.html:190
 msgid "Strengths"
 msgstr "Күшті жақтар"
 
+#: .\templates\documents\lawvision_report.html:199
 msgid "No strengths returned by LawVision."
 msgstr "LawVision күшті жақтарды қайтармады."
 
+#: .\templates\documents\lawvision_report.html:204
 msgid "Details"
 msgstr "Мәліметтер"
 
+#: .\templates\documents\lawvision_report.html:208
 msgid "Language"
 msgstr "Тіл"
 
+#: .\templates\documents\lawvision_report.html:213
 msgid "Model"
 msgstr "Модель"
 
+#: .\templates\documents\lawvision_report.html:218
 msgid "Text length"
 msgstr "Мәтін ұзындығы"
 
-msgid "This report is for reference only and does not replace advice from a qualified lawyer."
-msgstr "Бұл есеп тек анықтамалық сипатта және білікті заңгердің кеңесін алмастырмайды."
+#: .\templates\documents\lawvision_report.html:223
+#: .\templates\signing\signature_confirmation.html:91
+#: .\templates\signing\signer_public_page.html:125
+msgid "Document hash"
+msgstr "Құжат хэші"
 
+#: .\templates\documents\lawvision_report.html:231
+msgid ""
+"This report is for reference only and does not replace advice from a "
+"qualified lawyer."
+msgstr ""
+"Бұл есеп тек анықтамалық сипатта және білікті заңгердің кеңесін "
+"алмастырмайды."
+
+#: .\templates\documents\lawvision_report.html:240
 msgid "Run analysis again"
 msgstr "Талдауды қайта іске қосу"
 
+#: .\templates\documents\lawvision_report.html:249
 msgid "Analysis failed"
 msgstr "Талдау орындалмады"
 
+#: .\templates\documents\lawvision_report.html:261
 msgid "Try again"
 msgstr "Қайта көру"
 
+#: .\templates\documents\lawvision_report.html:269
 msgid "No report yet"
 msgstr "Есеп әлі жоқ"
 
-msgid "Start a LawVision check to analyze document risks, missing clauses, compliance and recommendations."
-msgstr "Құжат тәуекелдерін, жетіспейтін ережелерді, сәйкестікті және ұсынымдарды талдау үшін LawVision тексерісін іске қосыңыз."
+#: .\templates\documents\lawvision_report.html:271
+#: .\templates\signing\signer_public_page.html:184
+#: .\templates\signing\signer_public_page.html:204
+msgid ""
+"Start a LawVision check to analyze document risks, missing clauses, "
+"compliance and recommendations."
+msgstr ""
+"Құжат тәуекелдерін, жетіспейтін ережелерді, сәйкестікті және ұсынымдарды "
+"талдау үшін LawVision тексерісін іске қосыңыз."
 
+#: .\templates\documents\lawvision_report.html:278
+#: .\templates\signing\signer_public_page.html:200
+#: .\templates\signing\signer_public_page.html:216
 msgid "Analyze with LawVision"
 msgstr "LawVision арқылы талдау"
 
+#: .\templates\documents\lawvision_report.html:283
 msgid "Render the document before requesting LawVision analysis."
 msgstr "LawVision талдауын сұрамас бұрын құжатты қалыптастырыңыз."
 
-msgid "N/A"
-msgstr "Қ/Ж"
+#: .\templates\documents\ledger_proof.html:4
+msgid "Integrity check | QolQoyu"
+msgstr "Тұтастықты тексеру | QolQoyu"
 
-msgid "Critical"
-msgstr "Критикалық"
+#: .\templates\documents\ledger_proof.html:11
+msgid "Blockchain integrity"
+msgstr "Блокчейндегі тұтастық"
 
-msgid "Violation"
-msgstr "Бұзушылық"
+#: .\templates\documents\ledger_proof.html:25
+msgid "Verify integrity"
+msgstr "Тұтастықты тексеру"
 
-msgid "Warning"
-msgstr "Ескерту"
+#: .\templates\documents\ledger_proof.html:35
+msgid "Submission"
+msgstr "Жіберу"
 
-msgid "Recommended"
-msgstr "Ұсынылады"
+#: .\templates\documents\ledger_proof.html:51
+msgid "Document token"
+msgstr "Құжат токені"
 
-msgid "Optional"
-msgstr "Міндетті емес"
+#: .\templates\documents\ledger_proof.html:56
+msgid "Document SHA-256"
+msgstr "Құжат SHA-256"
 
-msgid "Compliant"
-msgstr "Сәйкес"
+#: .\templates\documents\ledger_proof.html:61
+msgid "Sequence"
+msgstr "Жазба нөмірі"
 
-msgid "Success"
-msgstr "Сәтті"
+#: .\templates\documents\ledger_proof.html:71
+msgid "Server key"
+msgstr "Сервер кілті"
 
-msgid "Processing"
-msgstr "Өңделуде"
+#: .\templates\documents\ledger_proof.html:84
+msgid "Verification"
+msgstr "Тексеру"
 
-msgid "Good"
-msgstr "Жақсы"
+#: .\templates\documents\ledger_proof.html:96
+msgid "Stored PDF hash"
+msgstr "Сақталған PDF хеші"
 
+#: .\templates\documents\ledger_proof.html:101
+#: .\templates\documents\ledger_proof.html:115
+msgid "Not verified"
+msgstr "Тексерілмеген"
+
+#: .\templates\documents\ledger_proof.html:110
+msgid "Ledger chain"
+msgstr "Ledger тізбегі"
+
+#: .\templates\documents\ledger_proof.html:129
+msgid "Ledger verify response"
+msgstr "Ledger тексеру жауабы"
+
+#: .\templates\documents\onlyoffice_editor.html:4
+#, fuzzy
+#| msgid "Fill document"
+msgid "Edit document"
+msgstr "Құжатты толтыру"
+
+#: .\templates\documents\onlyoffice_editor.html:13
+#: .\templates\documents\template_edit.html:128
+#, fuzzy
+#| msgid "Document setup"
+msgid "Document editor"
+msgstr "Құжатты баптау"
+
+#: .\templates\documents\template_edit.html:4
+msgid "Edit template | QolQoyu"
+msgstr "Шаблонды өңдеу | QolQoyu"
+
+#: .\templates\documents\template_edit.html:35
+msgid "Template editor"
+msgstr "Шаблон редакторы"
+
+#: .\templates\documents\template_edit.html:47
+#: .\templates\documents\template_edit.html:387
+msgid "Save"
+msgstr "Сақтау"
+
+#: .\templates\documents\template_edit.html:56
+msgid "Variable library"
+msgstr "Айнымалылар кітапханасы"
+
+#: .\templates\documents\template_edit.html:60
+msgid "Search variables"
+msgstr "Айнымалыларды іздеу"
+
+#: .\templates\documents\template_edit.html:64
+msgid "System fields"
+msgstr "Жүйелік өрістер"
+
+#: .\templates\documents\template_edit.html:106
+msgid "No fields yet."
+msgstr "Әзірге өрістер жоқ."
+
+#: .\templates\documents\template_edit.html:112
+msgid "No parties yet. Create a party from the properties panel."
+msgstr "Әзірге тараптар жоқ. Тарапты қасиеттер панелінен жасаңыз."
+
+#: .\templates\documents\template_edit.html:118
+#: .\templates\documents\template_edit.html:371
+msgid "Normal fields"
+msgstr "Қарапайым өрістер"
+
+#: .\templates\documents\template_edit.html:120
+msgid "Normal groups will appear here after you create them on the right."
+msgstr ""
+"Қарапайым топтар оларды оң жақта жасағаннан кейін осында пайда болады."
+
+#: .\templates\documents\template_edit.html:129
+msgid "Centered A4 paper"
+msgstr "Ортасында орналасқан A4 парағы"
+
+#: .\templates\documents\template_edit.html:164
+#: .\templates\documents\template_list.html:51
+#: .\templates\documents\template_list.html:86
+#: .\templates\documents\template_list.html:114
+msgid "Variables"
+msgstr "Айнымалылар"
+
+#: .\templates\documents\template_edit.html:171
+msgid "Add new party"
+msgstr "Жаңа тарап қосу"
+
+#: .\templates\documents\template_edit.html:181
+msgid "Party title, example: Customer"
+msgstr "Тарап атауы, мысалы: Тапсырыс беруші"
+
+#: .\templates\documents\template_edit.html:188
+msgid "Variable prefix, example: customer"
+msgstr "Айнымалы префиксі, мысалы: customer"
+
+#: .\templates\documents\template_edit.html:193
+msgid "Individual"
+msgstr "Жеке тұлға"
+
+#: .\templates\documents\template_edit.html:194
+msgid "Company"
+msgstr "Компания"
+
+#: .\templates\documents\template_edit.html:201
+msgid "Create signer from this party"
+msgstr "Осы тараптан қол қоюшы жасау"
+
+#: .\templates\documents\template_edit.html:205
+msgid "Add party"
+msgstr "Тарап қосу"
+
+#: .\templates\documents\template_edit.html:213
+msgid "Current fields"
+msgstr "Ағымдағы өрістер"
+
+#: .\templates\documents\template_edit.html:224
+#: .\templates\documents\template_edit.html:231
+#: .\templates\documents\template_edit.html:276
+msgid "system"
+msgstr "жүйелік"
+
+#: .\templates\documents\template_edit.html:255
+#: .\templates\documents\template_edit.html:399
+#: .\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr "Жою"
+
+#: .\templates\documents\template_edit.html:266
+msgid "signer"
+msgstr "қол қоюшы"
+
+#: .\templates\documents\template_edit.html:292
+msgid "Delete field"
+msgstr "Өрісті жою"
+
+#: .\templates\documents\template_edit.html:298
+msgid "No fields in this party yet."
+msgstr "Бұл тарапта әзірге өрістер жоқ."
+
+#: .\templates\documents\template_edit.html:303
+msgid "Add field to"
+msgstr "Өріс қосу:"
+
+#: .\templates\documents\template_edit.html:313
+msgid "Field label, example: Address"
+msgstr "Өріс атауы, мысалы: Мекенжай"
+
+#: .\templates\documents\template_edit.html:320
+msgid "Variable name, example: address"
+msgstr "Айнымалы атауы, мысалы: address"
+
+#: .\templates\documents\template_edit.html:331
+msgid "Number"
+msgstr "Сан"
+
+#: .\templates\documents\template_edit.html:337
+msgid "Default value, optional"
+msgstr "Әдепкі мән, міндетті емес"
+
+#: .\templates\documents\template_edit.html:350
+msgid "Required"
+msgstr "Міндетті"
+
+#: .\templates\documents\template_edit.html:354
+msgid "Add custom field"
+msgstr "Пайдаланушы өрісін қосу"
+
+#: .\templates\documents\template_edit.html:363
+msgid "No parties yet"
+msgstr "Әзірге тараптар жоқ"
+
+#: .\templates\documents\template_edit.html:364
+msgid "Create Customer, Contractor, Director, or another signer party."
+msgstr ""
+"Тапсырыс беруші, Орындаушы, Директор немесе басқа қол қоюшы тарапты жасаңыз."
+
+#: .\templates\documents\template_edit.html:375
+msgid "Group title, example: Contract data"
+msgstr "Топ атауы, мысалы: Шарт деректері"
+
+#: .\templates\documents\template_edit.html:378
+msgid "Add normal group"
+msgstr "Қарапайым топ қосу"
+
+#: .\templates\documents\template_edit.html:398
+msgid "Untitled group"
+msgstr "Атаусыз топ"
+
+#: .\templates\documents\template_edit.html:400
+msgid "Field label"
+msgstr "Өріс атауы"
+
+#: .\templates\documents\template_edit.html:401
+msgid "Variable"
+msgstr "Айнымалы"
+
+#: .\templates\documents\template_edit.html:402
+msgid "Field label, example: Contract number"
+msgstr "Өріс атауы, мысалы: Шарт нөмірі"
+
+#: .\templates\documents\template_edit.html:403
+msgid "Variable key, example: contract_number"
+msgstr "Айнымалы кілті, мысалы: contract_number"
+
+#: .\templates\documents\template_edit.html:404
+msgid "Add field"
+msgstr "Өріс қосу"
+
+#: .\templates\documents\template_edit.html:405
+msgid "Enter group title"
+msgstr "Топ атауын енгізіңіз"
+
+#: .\templates\documents\template_edit.html:406
+msgid "Enter field label"
+msgstr "Өріс атауын енгізіңіз"
+
+#: .\templates\documents\template_edit.html:407
+msgid "Enter valid variable key"
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\templates\documents\template_edit.html:408
+msgid "Variable key is empty"
+msgstr "Айнымалы кілті бос"
+
+#: .\templates\documents\template_edit.html:613
+msgid "Template could not be saved."
+msgstr ""
+
+#: .\templates\documents\template_edit.html:617
+msgid "Save requested"
+msgstr ""
+
+#: .\templates\documents\template_edit.html:621
+#, fuzzy
+#| msgid "Analysis failed"
+msgid "Save failed"
+msgstr "Талдау орындалмады"
+
+#: .\templates\documents\template_list.html:4
+msgid "Document Templates | QolQoyu"
+msgstr "Құжат шаблондары | QolQoyu"
+
+#: .\templates\documents\template_list.html:13
+msgid "Template studio"
+msgstr "Шаблондар студиясы"
+
+#: .\templates\documents\template_list.html:17
+msgid "Document Templates"
+msgstr "Құжат шаблондары"
+
+#: .\templates\documents\template_list.html:21
+msgid ""
+"Build reusable document structures, manage variables and create ready-to-"
+"sign documents faster."
+msgstr ""
+"Қайта қолданылатын құжат құрылымдарын жасаңыз, айнымалыларды басқарыңыз және"
+" қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
+
+#: .\templates\documents\template_list.html:32
+msgid "Reusable templates"
+msgstr "Қайта қолданылатын шаблондар"
+
+#: .\templates\documents\template_list.html:33
+msgid "Variables, parties and document generation in one place."
+msgstr "Айнымалылар, тараптар және құжат генерациясы бір жерде."
+
+#: .\templates\documents\template_list.html:38
+msgid "Upload new template"
+msgstr "Жаңа шаблон жүктеу"
+
+#: .\templates\documents\template_list.html:45
+msgid "Total templates"
+msgstr "Барлық шаблондар"
+
+#: .\templates\documents\template_list.html:47
+msgid "Uploaded document structures available for document generation."
+msgstr "Жүктелген құжат құрылымдары құжат қалыптастыру үшін қолжетімді."
+
+#: .\templates\documents\template_list.html:53
+msgid "Use variables to personalize documents."
+msgstr "Құжаттарды жекелендіру үшін айнымалыларды пайдаланыңыз."
+
+#: .\templates\documents\template_list.html:57
+msgid "Generation"
+msgstr "Қалыптастыру"
+
+#: .\templates\documents\template_list.html:58 .\templates\home.html:183
+msgid "Ready"
+msgstr "Дайын"
+
+#: .\templates\documents\template_list.html:59
+msgid "Create documents directly from templates."
+msgstr "Құжаттарды шаблондардан тікелей жасаңыз."
+
+#: .\templates\documents\template_list.html:66
+msgid "Template library"
+msgstr "Шаблондар кітапханасы"
+
+#: .\templates\documents\template_list.html:67
+msgid ""
+"Edit structure, review variables or create a document from a selected "
+"template."
+msgstr ""
+"Құрылымды өңдеңіз, айнымалыларды қараңыз немесе таңдалған шаблоннан құжат "
+"жасаңыз."
+
+#: .\templates\documents\template_list.html:97
+msgid "Created"
+msgstr "Жасалған"
+
+#: .\templates\documents\template_list.html:126
+msgid "No variables added yet"
+msgstr "Айнымалылар әлі қосылмаған"
+
+#: .\templates\documents\template_list.html:161
+msgid "Upload document"
+msgstr "Құжат жүктеу"
+
+#: .\templates\documents\template_list.html:163
+msgid "No templates yet"
+msgstr "Әзірге шаблондар жоқ"
+
+#: .\templates\documents\template_list.html:166
+msgid ""
+"Upload your first document template with variables and start generating "
+"documents from it."
+msgstr ""
+"Айнымалылары бар алғашқы құжат шаблонын жүктеп, одан құжаттар жасауды "
+"бастаңыз."
+
+#: .\templates\documents\template_upload.html:4
+#, fuzzy
+#| msgid "Upload DOCX Template | QolQoyu"
+msgid "Upload Template | QolQoyu"
+msgstr "DOCX шаблонын жүктеу | QolQoyu"
+
+#: .\templates\documents\template_upload.html:13
+#, fuzzy
+#| msgid "Document setup"
+msgid "Document upload"
+msgstr "Құжатты баптау"
+
+#: .\templates\documents\template_upload.html:17
+#, fuzzy
+#| msgid "Upload template"
+msgid "Upload Template"
+msgstr "Шаблон жүктеу"
+
+#: .\templates\documents\template_upload.html:21
+#, fuzzy
+#| msgid ""
+#| "Upload a DOCX file with variables and turn it into a reusable document "
+#| "template."
+msgid ""
+"Upload a DOCX or DOC file with variables and turn it into a reusable "
+"document template."
+msgstr ""
+"Айнымалылары бар DOCX файлын жүктеп, оны қайта қолданылатын құжат шаблонына "
+"айналдырыңыз."
+
+#: .\templates\documents\template_upload.html:61
+msgid "Before uploading"
+msgstr "Жүктемес бұрын"
+
+#: .\templates\documents\template_upload.html:62
+msgid "Make sure your DOCX template is prepared correctly."
+msgstr "DOCX шаблоныңыз дұрыс дайындалғанына көз жеткізіңіз."
+
+#: .\templates\documents\template_upload.html:70
+#, fuzzy
+#| msgid "Use DOCX format"
+msgid "Use DOCX or DOC format"
+msgstr "DOCX форматын пайдаланыңыз"
+
+#: .\templates\documents\template_upload.html:71
+msgid "DOCX works directly. DOC is converted to DOCX before editing."
+msgstr ""
+
+#: .\templates\documents\template_upload.html:78
+msgid "Add variables"
+msgstr "Айнымалылар қосыңыз"
+
+#: .\templates\documents\template_upload.html:80
+msgid "Use variables like"
+msgstr "Мынадай айнымалыларды пайдаланыңыз:"
+
+#: .\templates\documents\template_upload.html:82
+msgid "inside the document."
+msgstr "құжаттың ішінде."
+
+#: .\templates\documents\template_upload.html:90
+msgid "Keep names clear"
+msgstr "Атауларды түсінікті етіңіз"
+
+#: .\templates\documents\template_upload.html:91
+msgid "Use readable variable names so the document can be filled easily."
+msgstr "Құжатты оңай толтыру үшін айнымалыларға түсінікті атаулар беріңіз."
+
+#: .\templates\documents\template_upload.html:97
+msgid "Example"
+msgstr "Мысал"
+
+#: .\templates\documents\template_upload.html:107
+msgid "Upload form"
+msgstr "Жүктеу формасы"
+
+#: .\templates\documents\template_upload.html:108
+msgid "Template file"
+msgstr "Шаблон файлы"
+
+#: .\templates\home.html:5
+msgid "Digital document signing"
+msgstr "Құжаттарға цифрлық қол қою"
+
+#: .\templates\home.html:22
+msgid "QolQoyu means “to sign”"
+msgstr "QolQoyu «қол қою» дегенді білдіреді"
+
+#: .\templates\home.html:26
+msgid "Secure digital document signing."
+msgstr "Құжаттарды қауіпсіз цифрлық қол қою."
+
+#: .\templates\home.html:30
+msgid ""
+"Create documents, invite signers and track every signature step in one "
+"secure workspace."
+msgstr ""
+"Құжаттар жасаңыз, қол қоюшыларды шақырыңыз және әр қол қою кезеңін бір "
+"қауіпсіз жұмыс кеңістігінде бақылаңыз."
+
+#: .\templates\home.html:40
+msgid "Open templates"
+msgstr "Шаблондарды ашу"
+
+#: .\templates\home.html:44
+msgid "Start now"
+msgstr "Қазір бастау"
+
+#: .\templates\home.html:56
+msgid "signing flow"
+msgstr "қол қою процесі"
+
+#: .\templates\home.html:61
+msgid "validation ready"
+msgstr "валидация дайын"
+
+#: .\templates\home.html:66
+msgid "document integrity"
+msgstr "құжат тұтастығы"
+
+#: .\templates\home.html:84
+msgid "Service agreement"
+msgstr "Қызмет көрсету шарты"
+
+#: .\templates\home.html:87
+msgid "Waiting for signers"
+msgstr "Қол қоюшыларды күтуде"
+
+#: .\templates\home.html:105
+msgid "Signed"
+msgstr "Қол қойылды"
+
+#: .\templates\home.html:106
+msgid "Customer verified"
+msgstr "Клиент расталды"
+
+#: .\templates\home.html:113
+msgid "Hash fixed"
+msgstr "Хэш бекітілді"
+
+#: .\templates\home.html:114
+msgid "No silent edits"
+msgstr "Жасырын өзгерістер жоқ"
+
+#: .\templates\home.html:121
+msgid "Template selected"
+msgstr "Шаблон таңдалды"
+
+#: .\templates\home.html:126
+msgid "SMS code confirmed"
+msgstr "SMS коды расталды"
+
+#: .\templates\home.html:131
+msgid "Audit log updated"
+msgstr "Аудит журналы жаңартылды"
+
+#: .\templates\home.html:149
+msgid "Flow"
+msgstr "Процесс"
+
+#: .\templates\home.html:150
+msgid "From template to signed document."
+msgstr "Шаблоннан қол қойылған құжатқа дейін."
+
+#: .\templates\home.html:151
+msgid ""
+"The signing process is built as a clear sequence, so users always understand"
+" what is happening."
+msgstr ""
+"Қол қою процесі нақты ретпен құрылған, сондықтан пайдаланушылар не болып "
+"жатқанын әрдайым түсінеді."
+
+#: .\templates\home.html:157
+msgid "Create template"
+msgstr "Шаблон жасау"
+
+#: .\templates\home.html:158
+msgid "Upload or prepare a reusable document structure with variables."
+msgstr ""
+"Айнымалылары бар қайта қолданылатын құжат құрылымын жүктеңіз немесе "
+"дайындаңыз."
+
+#: .\templates\home.html:164
+msgid "Enter values, signer data and signing method before sending."
+msgstr ""
+"Жібермес бұрын мәндерді, қол қоюшы деректерін және қол қою әдісін енгізіңіз."
+
+#: .\templates\home.html:169
+msgid "Invite signers"
+msgstr "Қол қоюшыларды шақыру"
+
+#: .\templates\home.html:170
+msgid "Send secure access links and control signing order."
+msgstr "Қауіпсіз кіру сілтемелерін жіберіп, қол қою ретін бақылаңыз."
+
+#: .\templates\home.html:175
+msgid "Store proof"
+msgstr "Растауды сақтау"
+
+#: .\templates\home.html:176
+msgid "Keep the signature, hash, confirmation text and audit log."
+msgstr "Қолтаңбаны, хэшті, растау мәтінін және аудит журналын сақтаңыз."
+
+#: .\templates\home.html:184
+msgid "Prepare your first document for signing."
+msgstr "Бірінші құжатыңызды қол қоюға дайындаңыз."
+
+#: .\templates\home.html:185
+msgid ""
+"Start with a template, create a document, add signers and test the full "
+"signing route."
+msgstr ""
+"Шаблоннан бастаңыз, құжат жасаңыз, қол қоюшыларды қосыңыз және толық қол қою"
+" бағытын тексеріңіз."
+
+#: .\templates\organizations\member_list.html:4
+msgid "Organization members | QolQoyu"
+msgstr "Ұйым мүшелері | QolQoyu"
+
+#: .\templates\organizations\member_list.html:18
+#| msgid ""
+#| "Add registered users to this organization and manage their role."
+msgid ""
+"Add registered users to this organization and assign them to departments."
+msgstr ""
+"Бұл ұйымға тіркелген пайдаланушыларды қосып, оларды бөлімдерге тағайындаңыз."
+
+#: .\templates\organizations\member_list.html:22
+msgid "Back to organizations"
+msgstr "Ұйымдарға қайту"
+
+#: .\templates\organizations\member_list.html:31
+msgid "Current members"
+msgstr "Қазіргі мүшелер"
+
+#: .\templates\organizations\member_list.html:47
+msgid "No email"
+msgstr "Email көрсетілмеген"
+
+#: .\templates\organizations\member_list.html:60
+msgid "No members have been added yet."
+msgstr "Әзірге мүшелер қосылмаған."
+
+#: .\templates\organizations\member_list.html:69
+#| msgid "Organization members"
+msgid "Organization departments"
+msgstr "Ұйым бөлімдері"
+
+#: .\templates\organizations\member_list.html:77
+#, python-format
+msgid ""
+"\n"
+"                                %(count)s member\n"
+"                            "
+msgid_plural ""
+"\n"
+"                                %(count)s members\n"
+"                            "
+msgstr[0] ""
+"\n"
+"                                %(count)s мүше\n"
+"                            "
+
+#: .\templates\organizations\member_list.html:110
+#| msgid "Add party"
+msgid "Add department"
+msgstr "Бөлім қосу"
+
+#: .\templates\organizations\member_list.html:115
+msgid "Add user"
+msgstr "Пайдаланушы қосу"
+
+#: .\templates\organizations\member_list.html:116
+msgid "Invite existing account"
+msgstr "Бар аккаунтты шақыру"
+
+#: .\templates\organizations\member_list.html:142
+msgid "Add member"
+msgstr "Мүше қосу"
+
+#: .\templates\organizations\organization_list.html:4
+msgid "Organizations | QolQoyu"
+msgstr "Ұйымдар | QolQoyu"
+
+#: .\templates\organizations\organization_list.html:16
+msgid "Managed organizations"
+msgstr "Басқарылатын ұйымдар"
+
+#: .\templates\organizations\organization_list.html:18
+msgid "Open an organization to add registered users and manage their access."
+msgstr ""
+"Тіркелген пайдаланушыларды қосу және олардың қолжетімділігін басқару үшін "
+"ұйымды ашыңыз."
+
+#: .\templates\organizations\organization_list.html:31
+msgid "Manager"
+msgstr "Менеджер"
+
+#: .\templates\organizations\organization_list.html:39
+msgid "BIN is not specified"
+msgstr "БСН көрсетілмеген"
+
+#: .\templates\organizations\organization_list.html:53
+#| msgid "Manage members"
+msgid "Manage members and departments"
+msgstr "Мүшелер мен бөлімдерді басқару"
+
+#: .\templates\organizations\organization_list.html:60
+msgid "No managed organizations"
+msgstr "Басқарылатын ұйымдар жоқ"
+
+#: .\templates\organizations\organization_list.html:61
+msgid ""
+"A site admin must create an organization and add you as owner or admin "
+"first."
+msgstr ""
+"Сайт әкімшісі алдымен ұйым құрып, сізді иесі немесе әкімші ретінде қосуы "
+"керек."
+
+#: .\templates\signing\document_signers.html:4
+msgid "Document signers | QolQoyu"
+msgstr "Құжат қол қоюшылары | QolQoyu"
+
+#: .\templates\signing\document_signers.html:30
+#: .\templates\signing\document_signers.html:223
+msgid "Back to documents"
+msgstr "Құжаттарға қайту"
+
+#: .\templates\signing\document_signers.html:41
+msgid "Generated from document parties"
+msgstr "Құжат тараптарынан жасалған"
+
+#: .\templates\signing\document_signers.html:43
+msgid "Added manually"
+msgstr ""
+
+#: .\templates\signing\document_signers.html:49
+msgid "Signing methods"
+msgstr "Қол қою әдістері"
+
+#: .\templates\signing\document_signers.html:51
+msgid "Selected by each signer"
+msgstr ""
+
+#: .\templates\signing\document_signers.html:65
+#: .\templates\signing\document_signers.html:105
+#, fuzzy
+#| msgid "Add user"
+msgid "Add signer"
+msgstr "Пайдаланушы қосу"
+
+#: .\templates\signing\document_signers.html:66
+#, fuzzy
+#| msgid "Enter values, signer data and signing method before sending."
+msgid "Enter signer details and choose the signing method."
+msgstr ""
+"Жібермес бұрын мәндерді, қол қоюшы деректерін және қол қою әдісін енгізіңіз."
+
+#: .\templates\signing\document_signers.html:118
+msgid "These signers were created automatically from the document data."
+msgstr "Бұл қол қоюшылар құжат деректерінен автоматты түрде жасалды."
+
+#: .\templates\signing\document_signers.html:120
+#, fuzzy
+#| msgid ""
+#| "These signers were created automatically from the document data."
+msgid "These signers were added manually."
+msgstr "Бұл қол қоюшылар құжат деректерінен автоматты түрде жасалды."
+
+#: .\templates\signing\document_signers.html:157
+#, fuzzy
+#| msgid "No generated signers"
+msgid "Selected by signer"
+msgstr "Жасалған қол қоюшылар жоқ"
+
+#: .\templates\signing\document_signers.html:175
+#, fuzzy
+#| msgid "Prepare signing"
+msgid "Create signing link"
+msgstr "Қол қоюды дайындау"
+
+#: .\templates\signing\document_signers.html:202
+#, fuzzy
+#| msgid "Total signers"
+msgid "No manual signers"
+msgstr "Барлық қол қоюшылар"
+
+#: .\templates\signing\document_signers.html:210
+#, fuzzy
+#| msgid "No variables added yet"
+msgid "No signers were added yet"
+msgstr "Айнымалылар әлі қосылмаған"
+
+#: .\templates\signing\document_signers.html:216
+#, fuzzy
+#| msgid ""
+#| "Go back to the document filling step and make sure the template has signer "
+#| "parties with full name, IIN/BIN, phone and signing method fields."
+msgid ""
+"Go back to the document filling step and make sure the template has signer "
+"parties with full name, IIN/BIN and phone fields."
+msgstr ""
+"Құжатты толтыру кезеңіне қайтып, шаблонда аты-жөні, ЖСН/БСН, телефон және "
+"қол қою әдісі өрістері бар қол қоюшы тараптар бар екеніне көз жеткізіңіз."
+
+#: .\templates\signing\document_signers.html:218
+msgid "Use the form above to add the signer details manually."
+msgstr ""
+
+#: .\templates\signing\signature_confirmation.html:4
+msgid "Signing confirmation | QolQoyu"
+msgstr "Қол қоюды растау | QolQoyu"
+
+#: .\templates\signing\signature_confirmation.html:13
+msgid "Confirmation sheet"
+msgstr "Растау парағы"
+
+#: .\templates\signing\signature_confirmation.html:16
+msgid "Signing confirmation"
+msgstr "Қол қоюды растау"
+
+#: .\templates\signing\signature_confirmation.html:19
+msgid ""
+"This page confirms that the document was signed electronically and records "
+"the signing evidence."
+msgstr ""
+"Бұл бет құжаттың электронды түрде қол қойылғанын растайды және қол қою "
+"дәлелдерін тіркейді."
+
+#: .\templates\signing\signature_confirmation.html:34
+msgid "Valid signature"
+msgstr "Жарамды қолтаңба"
+
+#: .\templates\signing\signature_confirmation.html:36
+#: .\templates\signing\signature_confirmation.html:201
+msgid "Signature saved"
+msgstr "Қолтаңба сақталды"
+
+#: .\templates\signing\signature_confirmation.html:38
+msgid "Recorded"
+msgstr "Тіркелді"
+
+#: .\templates\signing\signature_confirmation.html:52
+#: .\templates\signing\signature_confirmation.html:105
+#: .\templates\signing\signer_public_page.html:140
+msgid "Signer"
+msgstr "Қол қоюшы"
+
+#: .\templates\signing\signature_confirmation.html:71
+msgid "Document details"
+msgstr "Құжат деректері"
+
+#: .\templates\signing\signature_confirmation.html:80
+msgid "Title"
+msgstr "Атауы"
+
+#: .\templates\signing\signature_confirmation.html:85
+msgid "Document ID"
+msgstr "Құжат ID"
+
+#: .\templates\signing\signature_confirmation.html:96
+#: .\templates\signing\signer_public_page.html:252
+msgid "Signed content hash"
+msgstr "Қол қойылған мазмұн хэші"
+
+#: .\templates\signing\signature_confirmation.html:104
+msgid "Signer identity"
+msgstr "Қол қоюшы деректері"
+
+#: .\templates\signing\signature_confirmation.html:120
+#: .\templates\signing\signer_public_page.html:147
+msgid "IIN"
+msgstr "ЖСН"
+
+#: .\templates\signing\signature_confirmation.html:146
+msgid "Signing evidence"
+msgstr "Қол қою дәлелдері"
+
+#: .\templates\signing\signature_confirmation.html:149
+#: .\templates\signing\signer_public_page.html:308
+#: .\templates\signing\signer_public_page.html:466
+msgid "SMS confirmation"
+msgstr "SMS арқылы растау"
+
+#: .\templates\signing\signature_confirmation.html:151
+msgid "ECP confirmation"
+msgstr "ЭЦҚ растауы"
+
+#: .\templates\signing\signature_confirmation.html:153
+msgid "eGov Mobile confirmation"
+msgstr "eGov Mobile растауы"
+
+#: .\templates\signing\signature_confirmation.html:155
+msgid "Electronic signing confirmation"
+msgstr "Электронды қол қоюды растау"
+
+#: .\templates\signing\signature_confirmation.html:166
+#: .\templates\signing\signer_public_page.html:240
+msgid "Provider"
+msgstr "Провайдер"
+
+#: .\templates\signing\signature_confirmation.html:172
+msgid "Session ID"
+msgstr "Сессия ID"
+
+#: .\templates\signing\signature_confirmation.html:177
+#: .\templates\signing\signer_public_page.html:389
+msgid "Session status"
+msgstr "Сессия мәртебесі"
+
+#: .\templates\signing\signature_confirmation.html:184
+#: .\templates\signing\signer_public_page.html:246
+msgid "Certificate IIN"
+msgstr "Сертификат ЖСН"
+
+#: .\templates\signing\signature_confirmation.html:191
+msgid "Certificate serial"
+msgstr "Сертификаттың сериялық нөмірі"
+
+#: .\templates\signing\signature_confirmation.html:199
+#: .\templates\signing\signature_confirmation.html:203
+msgid "Signature valid"
+msgstr "Қолтаңба жарамды"
+
+#: .\templates\signing\signature_confirmation.html:209
+#: .\templates\signing\signature_confirmation.html:211
+#: .\venv\Lib\site-packages\django\forms\widgets.py:867
+msgid "Yes"
+msgstr "Иә"
+
+#: .\templates\signing\signature_confirmation.html:213
+#: .\venv\Lib\site-packages\django\forms\widgets.py:868
+msgid "No"
+msgstr "Жоқ"
+
+#: .\templates\signing\signature_confirmation.html:220
+msgid "Backend validation"
+msgstr "Серверлік валидация"
+
+#: .\templates\signing\signature_confirmation.html:221
+msgid "Not implemented yet"
+msgstr "Әзірге іске асырылмаған"
+
+#: .\templates\signing\signature_confirmation.html:228
+msgid "Certificate subject"
+msgstr "Сертификат субъектісі"
+
+#: .\templates\signing\signature_confirmation.html:242
+#: .\templates\signing\signer_public_page.html:275
+#, fuzzy
+#| msgid "Download DOCX"
+msgid "Download CMS file"
+msgstr "DOCX жүктеу"
+
+#: .\templates\signing\signature_confirmation.html:252
+msgid "Consent"
+msgstr "Келісім"
+
+#: .\templates\signing\signature_confirmation.html:253
+msgid "Consent text"
+msgstr "Келісім мәтіні"
+
+#: .\templates\signing\signature_confirmation.html:267
+msgid "Technical confirmation"
+msgstr "Техникалық растау"
+
+#: .\templates\signing\signature_confirmation.html:268
+msgid "Confirmation text"
+msgstr "Растау мәтіні"
+
+#: .\templates\signing\signature_confirmation.html:284
+msgid "Signing record created"
+msgstr "Қол қою жазбасы жасалды"
+
+#: .\templates\signing\signature_confirmation.html:287
+msgid ""
+"The signing event was saved with document hash, signer data and technical "
+"metadata."
+msgstr ""
+"Қол қою оқиғасы құжат хэшімен, қол қоюшы деректерімен және техникалық "
+"метадеректермен сақталды."
+
+#: .\templates\signing\signature_confirmation.html:292
+msgid "Technical data"
+msgstr "Техникалық деректер"
+
+#: .\templates\signing\signature_confirmation.html:297
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2219
+msgid "IP address"
+msgstr "IP мекенжайы"
+
+#: .\templates\signing\signature_confirmation.html:304
+msgid "User agent"
+msgstr "User agent"
+
+#: .\templates\signing\signature_confirmation.html:310
+msgid "Created at"
+msgstr "Жасалған уақыты"
+
+#: .\templates\signing\signer_link_invalid.html:4
+msgid "Invalid signing link"
+msgstr ""
+
+#: .\templates\signing\signer_link_invalid.html:9
+msgid "Invalid or expired signing link"
+msgstr ""
+
+#: .\templates\signing\signer_link_invalid.html:12
+msgid "The signing link is invalid, expired, or has been disabled."
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:5
+msgid "Sign document | QolQoyu"
+msgstr "Құжатқа қол қою | QolQoyu"
+
+#: .\templates\signing\signer_public_page.html:14
+msgid "Secure signing"
+msgstr "Қауіпсіз қол қою"
+
+#: .\templates\signing\signer_public_page.html:17
+msgid "Document signing"
+msgstr "Құжатқа қол қою"
+
+#: .\templates\signing\signer_public_page.html:20
+msgid ""
+"Review the document, check your details and complete signing using the "
+"selected method."
+msgstr ""
+"Құжатты қарап шығыңыз, деректеріңізді тексеріңіз және таңдалған әдіспен қол "
+"қоюды аяқтаңыз."
+
+#: .\templates\signing\signer_public_page.html:26
+msgid "Signing status"
+msgstr "Қол қою мәртебесі"
+
+#: .\templates\signing\signer_public_page.html:44
+#: .\templates\signing\signer_public_page.html:104
+msgid "Open PDF"
+msgstr "PDF ашу"
+
+#: .\templates\signing\signer_public_page.html:85
+msgid "You can continue once the document file is rendered."
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:98
+msgid ""
+"Please make sure the document content is correct before confirming the "
+"signature."
+msgstr "Қолтаңбаны растау алдында құжат мазмұны дұрыс екеніне көз жеткізіңіз."
+
+#: .\templates\signing\signer_public_page.html:116
+msgid "Document file is not rendered yet."
+msgstr "Құжат файлы әлі жасалмаған."
+
+#: .\templates\signing\signer_public_page.html:226
+msgid "Document already signed"
+msgstr "Құжатқа қол қойылған"
+
+#: .\templates\signing\signer_public_page.html:259
+msgid "Signature is valid."
+msgstr "Қолтаңба жарамды."
+
+#: .\templates\signing\signer_public_page.html:263
+msgid "Validation note"
+msgstr "Валидация ескертпесі"
+
+#: .\templates\signing\signer_public_page.html:269
+msgid "View confirmation sheet"
+msgstr "Растау парағын көру"
+
+#: .\templates\signing\signer_public_page.html:287
+msgid "Choose how to sign"
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:291
+msgid "Select the signing method you want to use for this document."
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:299
+#, fuzzy
+#| msgid "Open eGov Mobile"
+msgid "eGov Mobile"
+msgstr "eGov Mobile ашу"
+
+#: .\templates\signing\signer_public_page.html:300
+#, fuzzy
+#| msgid "Sign with eGov Mobile"
+msgid "Sign through the mobile app"
+msgstr "eGov Mobile арқылы қол қою"
+
+#: .\templates\signing\signer_public_page.html:309
+msgid "Receive and enter a code"
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:317
+msgid "ECP"
+msgstr ""
+
+#: .\templates\signing\signer_public_page.html:318
+#, fuzzy
+#| msgid "Sign with ECP"
+msgid "Sign with NCALayer"
+msgstr "ЭЦҚ арқылы қол қою"
+
+#: .\templates\signing\signer_public_page.html:328
+msgid "eGov Mobile session"
+msgstr "eGov Mobile сессиясы"
+
+#: .\templates\signing\signer_public_page.html:334
+msgid "Open eGov Mobile"
+msgstr "eGov Mobile ашу"
+
+#: .\templates\signing\signer_public_page.html:340
+msgid "QR payload"
+msgstr "QR деректері"
+
+#: .\templates\signing\signer_public_page.html:347
+msgid "API №1 URL"
+msgstr "API №1 URL"
+
+#: .\templates\signing\signer_public_page.html:355
+msgid "Mock complete signing"
+msgstr "Тестілік қол қоюды аяқтау"
+
+#: .\templates\signing\signer_public_page.html:364
+msgid "Selected method"
+msgstr "Таңдалған әдіс"
+
+#: .\templates\signing\signer_public_page.html:370
+msgid ""
+"Continue signing in eGov Mobile. You may need to confirm the signing request"
+" in the mobile app."
+msgstr ""
+"Қол қоюды eGov Mobile арқылы жалғастырыңыз. Мобильді қосымшада қол қою "
+"сұрауын растау қажет болуы мүмкін."
+
+#: .\templates\signing\signer_public_page.html:376
+msgid "Sign with eGov Mobile"
+msgstr "eGov Mobile арқылы қол қою"
+
+#: .\templates\signing\signer_public_page.html:384
+msgid "SMS code has been sent to your phone number."
+msgstr "SMS коды телефон нөміріңізге жіберілді."
+
+#: .\templates\signing\signer_public_page.html:395
+msgid "Code expires at"
+msgstr "Кодтың жарамдылық мерзімі"
+
+#: .\templates\signing\signer_public_page.html:401
+msgid "Attempts"
+msgstr "Әрекеттер"
+
+#: .\templates\signing\signer_public_page.html:408
+msgid "If the code is incorrect, wait before trying again."
+msgstr "Код қате болса, қайта әрекет жасамас бұрын күтіңіз."
+
+#: .\templates\signing\signer_public_page.html:413
+msgid ""
+"Confirm that you reviewed the document and request an SMS verification code."
+msgstr "Құжатты қарап шыққаныңызды растаңыз және SMS растау кодын сұраңыз."
+
+#: .\templates\signing\signer_public_page.html:423
+msgid ""
+"I confirm that I have reviewed the document, agree with its content, and "
+"confirm signing this document using an SMS verification code."
+msgstr ""
+"Мен құжатты қарап шыққанымды, оның мазмұнымен келісетінімді және осы құжатқа"
+" SMS растау коды арқылы қол қоюды растаймын."
+
+#: .\templates\signing\signer_public_page.html:428
+msgid "Send SMS code"
+msgstr "SMS код жіберу"
+
+#: .\templates\signing\signer_public_page.html:436
+msgid ""
+"To sign this document using ECP, make sure NCALayer is installed and running"
+" on your computer."
+msgstr ""
+"Бұл құжатқа ЭЦҚ арқылы қол қою үшін NCALayer компьютеріңізде орнатылғанына "
+"және іске қосылғанына көз жеткізіңіз."
+
+#: .\templates\signing\signer_public_page.html:440
+msgid ""
+"After clicking the button, choose your ECP key and confirm signing in "
+"NCALayer."
+msgstr ""
+"Батырманы басқаннан кейін ЭЦҚ кілтін таңдап, NCALayer ішінде қол қоюды "
+"растаңыз."
+
+#: .\templates\signing\signer_public_page.html:454
+msgid "Sign with ECP"
+msgstr "ЭЦҚ арқылы қол қою"
+
+#: .\templates\signing\signer_public_page.html:467
+msgid "Enter code"
+msgstr "Кодты енгізіңіз"
+
+#: .\templates\signing\signer_public_page.html:471
+msgid "Enter the code sent to your phone number."
+msgstr "Телефон нөміріңізге жіберілген кодты енгізіңіз."
+
+#: .\templates\signing\signer_public_page.html:477
+msgid "SMS code"
+msgstr "SMS коды"
+
+#: .\templates\signing\signer_public_page.html:491
+msgid "Confirm and sign"
+msgstr "Растау және қол қою"
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
+msgid "Messages"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+#, fuzzy
+#| msgid "Verification"
+msgid "Syndication"
+msgstr "Тексеру"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:32
+msgid "That page number is not an integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:33
+msgid "That page number is less than 1"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:34
+msgid "That page contains no results"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid value."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:70
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid domain name."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:153
+#: .\venv\Lib\site-packages\django\forms\fields.py:774
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:200
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid integer."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:211
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid email address."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:318
+#: .\venv\Lib\site-packages\django\core\validators.py:332
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:311
+msgid "IPv4"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:320
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:43
+msgid "IPv6"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:334
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:473
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:514
+#: .\venv\Lib\site-packages\django\forms\fields.py:365
+#: .\venv\Lib\site-packages\django\forms\fields.py:404
+#, fuzzy
+#| msgid "Contract number"
+msgid "Enter a number."
+msgstr "Шарт нөмірі"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:516
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:521
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:526
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:597
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:659
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1600
+#: .\venv\Lib\site-packages\django\forms\models.py:908
+msgid "and"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1602
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1162
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1163
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1165
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1215
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1217
+msgid "String (unlimited)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1326
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1427
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1431
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1566
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1435
+msgid "Date (without time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1562
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1570
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1575
+msgid "Date (with time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1702
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1704
+msgid "Decimal number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1864
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1868
+#, fuzzy
+#| msgid "Generation"
+msgid "Duration"
+msgstr "Қалыптастыру"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1920
+#, fuzzy
+#| msgid "IP address"
+msgid "Email address"
+msgstr "IP мекенжайы"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1945
+msgid "File path"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2023
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2025
+msgid "Floating point number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2065
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2067
+#, fuzzy
+#| msgid "Integrity"
+msgid "Integer"
+msgstr "Тұтастық"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2163
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2180
+msgid "Small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2188
+#, fuzzy
+#| msgid "IP address"
+msgid "IPv4 address"
+msgstr "IP мекенжайы"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2310
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2311
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2313
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2364
+msgid "Positive big integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2379
+msgid "Positive integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2394
+msgid "Positive small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2410
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2526
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2530
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2534
+msgid "Time"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2642
+msgid "URL"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2666
+msgid "Raw binary data"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2731
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2733
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:244
+msgid "File"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:420
+msgid "Image"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:24
+#, fuzzy
+#| msgid "Stored object"
+msgid "A JSON object"
+msgstr "Сақталған объект"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:979
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:982
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1276
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1333
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1335
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1383
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the
+#. label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:94
+msgid "This field is required."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:314
+#, fuzzy
+#| msgid "Contract number"
+msgid "Enter a whole number."
+msgstr "Шарт нөмірі"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:485
+#: .\venv\Lib\site-packages\django\forms\fields.py:1257
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid date."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:508
+#: .\venv\Lib\site-packages\django\forms\fields.py:1258
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid time."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:535
+#, fuzzy
+#| msgid "Enter valid variable key"
+msgid "Enter a valid date/time."
+msgstr "Дұрыс айнымалы кілтін енгізіңіз"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:569
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:570
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:639
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:640
+msgid "No file was submitted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:641
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:643
+#, python-format
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:648
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:716
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:879
+#: .\venv\Lib\site-packages\django\forms\fields.py:965
+#: .\venv\Lib\site-packages\django\forms\models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:967
+#: .\venv\Lib\site-packages\django\forms\fields.py:1086
+#: .\venv\Lib\site-packages\django\forms\models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1087
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1329
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1359
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:97
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:239
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1450
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:229
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:528
+#, fuzzy
+#| msgid "Current fields"
+msgid "Currently"
+msgstr "Ағымдағы өрістер"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:529
+msgid "Change"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:866
 msgid "Unknown"
 msgstr "Белгісіз"
 
-msgid "Missing"
-msgstr "Жоқ"
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
 
-msgid "Minor"
-msgstr "Кіші"
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:903
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
 
-msgid "Major"
-msgstr "Маңызды"
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:21
+#, fuzzy
+#| msgid "Status"
+msgid "Sat"
+msgstr "Мәртебе"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+#, fuzzy
+#| msgid "Member"
+msgid "September"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:35
+#, fuzzy
+#| msgid "Member"
+msgid "November"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:36
+#, fuzzy
+#| msgid "Member"
+msgid "December"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+#, fuzzy
+#| msgid "Summary"
+msgid "mar"
+msgstr "Қысқаша қорытынды"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+#, fuzzy
+#| msgid "Company"
+msgid "may"
+msgstr "Компания"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:75
+#, fuzzy
+#| msgid "Member"
+msgctxt "alt. month"
+msgid "September"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:77
+#, fuzzy
+#| msgid "Member"
+msgctxt "alt. month"
+msgid "November"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:78
+#, fuzzy
+#| msgid "Member"
+msgctxt "alt. month"
+msgid "December"
+msgstr "Мүше"
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:76
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:282
+#, fuzzy
+#| msgid "Form"
+msgid "or"
+msgstr "Форма"
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:301
+#: .\venv\Lib\site-packages\django\utils\timesince.py:135
+msgid ", "
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:30
+#, fuzzy
+#| msgid "Ledger verification failed: %(error)s"
+msgid "CSRF verification failed. Request aborted."
+msgstr "Ledger тексеруі сәтсіз аяқталды: %(error)s"
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:44
+#, fuzzy
+#| msgid "Not specified"
+msgid "No year specified"
+msgstr "Көрсетілмеген"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:64
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:115
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:94
+#, fuzzy
+#| msgid "Not specified"
+msgid "No month specified"
+msgstr "Көрсетілмеген"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:147
+#, fuzzy
+#| msgid "Not specified"
+msgid "No day specified"
+msgstr "Көрсетілмеген"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:194
+#, fuzzy
+#| msgid "Not specified"
+msgid "No week specified"
+msgstr "Көрсетілмеген"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:353
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:384
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:680
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:720
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:173
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:68
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:8
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:217
+#, fuzzy
+#| msgid "Document information"
+msgid "Django Documentation"
+msgstr "Құжат туралы ақпарат"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+msgid "Field type"
+msgstr "Өріс түрі"
+
+msgid "Money amount"
+msgstr "Сома"
+
+msgid "Amount in words (RU)"
+msgstr "Сома жазбаша (RU)"
+
+msgid "Amount in words (KZ)"
+msgstr "Сома жазбаша (KZ)"
+
+msgid "Amount with words (RU)"
+msgstr "Сома және жазбаша мәтін (RU)"
+
+msgid "Amount with words (KZ)"
+msgstr "Сома және жазбаша мәтін (KZ)"
+
+msgid "Enter a valid whole amount for %(field)s."
+msgstr "%(field)s өрісі үшін дұрыс бүтін соманы енгізіңіз."
+
+msgid "Admission API client"
+msgstr "Қабылдау API клиенті"
+
+msgid "Admission API clients"
+msgstr "Қабылдау API клиенттері"
+
+msgid "Admission vice rector profile"
+msgstr "Қабылдау проректорының профилі"
+
+msgid "Admission vice rector profiles"
+msgstr "Қабылдау проректорларының профильдері"
+
+msgid "Admission commission profile"
+msgstr "Қабылдау комиссиясының профилі"
+
+msgid "Admission commission profiles"
+msgstr "Қабылдау комиссиясының профильдері"
+
+msgid "Bachelor"
+msgstr "Бакалавриат"
+
+msgid "Master"
+msgstr "Магистратура"
+
+msgid "Doctoral"
+msgstr "Докторантура"
+
+msgid "Paid"
+msgstr "Ақылы"
+
+msgid "Grant"
+msgstr "Грант"
 
 msgid "Russian"
 msgstr "Орыс тілі"
@@ -1572,59 +4355,943 @@ msgstr "Қазақ тілі"
 msgid "English"
 msgstr "Ағылшын тілі"
 
-msgid "LawVision API key is not configured."
-msgstr "LawVision API кілті бапталмаған."
+msgid "Any"
+msgstr "Кез келген"
 
-msgid "Document text is shorter than LawVision minimum of 50 characters."
-msgstr "Құжат мәтіні LawVision үшін қажет ең аз 50 таңбадан қысқа."
+msgid "Admission template rule"
+msgstr "Қабылдау шаблонының ережесі"
 
-msgid "Could not connect to LawVision: %(error)s"
-msgstr "LawVision қызметіне қосылу мүмкін болмады: %(error)s"
+msgid "Admission template rules"
+msgstr "Қабылдау шаблондарының ережелері"
 
-msgid "LawVision returned a non-JSON response."
-msgstr "LawVision JSON емес жауап қайтарды."
+msgid "Received"
+msgstr "Қабылданды"
 
-msgid "LawVision analysis failed."
-msgstr "LawVision талдауы орындалмады."
+msgid "Document created"
+msgstr "Құжат жасалды"
 
-msgid "Document Templates | QolQoyu"
-msgstr "Құжат шаблондары | QolQoyu"
+msgid "Waiting for student signature"
+msgstr "Талапкердің қолын күтуде"
 
-msgid "Document Templates"
-msgstr "Құжат шаблондары"
+msgid "Student signed"
+msgstr "Талапкер қол қойды"
 
-msgid "Build reusable document structures, manage variables and create ready-to-sign documents faster."
-msgstr "Қайта қолданылатын құжат құрылымдарын жасаңыз, айнымалыларды басқарыңыз және қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
+msgid "Waiting for vice rector"
+msgstr "Проректорды күтуде"
 
-msgid "Uploaded document structures available for document generation."
-msgstr "Жүктелген құжат құрылымдары құжат қалыптастыру үшін қолжетімді."
+msgid "Vice rector signed"
+msgstr "Проректор қол қойды"
 
-msgid "Upload document"
-msgstr "Құжат жүктеу"
+msgid "Completed"
+msgstr "Аяқталды"
 
-msgid "Upload your first document template with variables and start generating documents from it."
-msgstr "Айнымалылары бар алғашқы құжат шаблонын жүктеп, одан құжаттар жасауды бастаңыз."
+msgid "Admission contract"
+msgstr "Талапкер шарты"
 
-msgid "Select a template or upload a ready DOC/DOCX file for the signing process."
-msgstr "Қол қою процесі үшін шаблонды таңдаңыз немесе дайын DOC/DOCX файлын жүктеңіз."
+msgid "Admission contracts"
+msgstr "Талапкерлер шарттары"
 
-msgid "Use an uploaded DOCX template as the document base, or upload a ready file."
-msgstr "Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз немесе дайын файлды жүктеңіз."
+msgid "Admission contract | QolQoyu"
+msgstr "Талапкер шарты | QolQoyu"
 
-msgid "Ready DOC/DOCX file"
-msgstr "Дайын DOC/DOCX файлы"
+msgid ""
+"Review the generated contract, download it if needed, then sign it using "
+"ECP."
+msgstr ""
+"???????? ?????? ??????????, ????? ????? ?????? ?????? ???? ??? ?????? ??? "
+"???????."
 
-msgid "Upload a prepared DOC or DOCX document instead of choosing a template."
-msgstr "Шаблон таңдаудың орнына дайындалған DOC немесе DOCX құжатын жүктеңіз."
+msgid "Ready for review"
+msgstr "Тексеруге дайын"
 
-msgid "No template"
-msgstr "Шаблонсыз"
+msgid "Program"
+msgstr "Бағдарлама"
 
-msgid "Document title"
-msgstr "Құжат атауы"
+msgid "Generated file"
+msgstr "Жасалған файл"
 
-msgid "Choose a template or upload a ready DOC/DOCX file."
-msgstr "Шаблонды таңдаңыз немесе дайын DOC/DOCX файлын жүктеңіз."
+msgid ""
+"The contract has been filled using the data received from the university."
+msgstr "Шарт университеттен алынған деректер бойынша толтырылды."
 
-msgid "Example: Employment Agreement with John Smith"
-msgstr "Мысалы: Иван Ивановпен еңбек шарты"
+msgid ""
+"You have signed this document. It is now waiting for the next signing step."
+msgstr "Сіз бұл құжатқа қол қойдыңыз. Енді ол келесі қол қою кезеңін күтуде."
+
+msgid "Applicant"
+msgstr "Талапкер"
+
+msgid "Education level"
+msgstr "Білім деңгейі"
+
+msgid "Funding type"
+msgstr "Қаржыландыру түрі"
+
+msgid "Tuition amount"
+msgstr "Оқу ақысы"
+
+msgid "Contract link is unavailable | QolQoyu"
+msgstr "Шарт сілтемесі қолжетімсіз | QolQoyu"
+
+msgid "Contract link is unavailable"
+msgstr "Шарт сілтемесі қолжетімсіз"
+
+msgid "The link is invalid, expired, or the contract is no longer available."
+msgstr "Сілтеме жарамсыз, мерзімі өткен немесе шарт енді қолжетімсіз."
+
+msgid "Vice rector cabinet | QolQoyu"
+msgstr "Проректор кабинеті | QolQoyu"
+
+msgid "Admissions"
+msgstr "Қабылдау"
+
+msgid "Vice rector cabinet"
+msgstr "Проректор кабинеті"
+
+msgid "Admission commission cabinet"
+msgstr "Қабылдау комиссиясының кабинеті"
+
+msgid "Admissions cabinets"
+msgstr "Қабылдау кабинеттері"
+
+msgid "Admissions sign in"
+msgstr "Қабылдау кабинеттеріне кіру"
+
+msgid "Admissions registration"
+msgstr "Қабылдау кабинеттеріне тіркелу"
+
+msgid "Choose an available workspace."
+msgstr "Қолжетімді кабинетті таңдаңыз."
+
+msgid "Sign in to open the admissions workspace available for your role."
+msgstr "Рөліңізге қолжетімді қабылдау кабинетін ашу үшін жүйеге кіріңіз."
+
+msgid "Create an account. An administrator must assign an admissions role before the cabinet becomes available."
+msgstr "Есептік жазба жасаңыз. Кабинет қолжетімді болуы үшін әкімші қабылдау рөлін тағайындауы керек."
+
+msgid "Do not have an account?"
+msgstr "Есептік жазбаңыз жоқ па?"
+
+msgid "Admissions navigation"
+msgstr "Қабылдау навигациясы"
+
+msgid "Cabinets"
+msgstr "Кабинеттер"
+
+msgid "Admission commission"
+msgstr "Қабылдау комиссиясы"
+
+msgid "Vice rector"
+msgstr "Проректор"
+
+msgid "Waiting for applicant"
+msgstr "Талапкерді күтуде"
+
+msgid "No contracts"
+msgstr "Шарттар жоқ"
+
+msgid "There are no admission contracts yet."
+msgstr "Қабылдау шарттары әзірге жоқ."
+
+msgid ""
+"New contracts will appear here after the university sends applicant data."
+msgstr ""
+"Университет талапкер деректерін жібергеннен кейін жаңа шарттар осы жерде "
+"пайда болады."
+
+msgid "Review and download"
+msgstr "Қарау және жүктеу"
+
+msgid "Open applicant contracts, review statuses, and download generated files."
+msgstr "Талапкерлер шарттарын ашыңыз, мәртебелерді тексеріңіз және жасалған файлдарды жүктеңіз."
+
+msgid "Open cabinet"
+msgstr "Кабинетті ашу"
+
+msgid "Review contracts that are ready for vice rector signature and sign them with ECP."
+msgstr "Проректор қол қоюға дайын шарттарды тексеріп, оларға ЭЦҚ арқылы қол қойыңыз."
+
+msgid "No access"
+msgstr "Қолжетімділік жоқ"
+
+msgid "No admissions cabinet is available for this account."
+msgstr "Бұл есептік жазба үшін қабылдау кабинеті қолжетімсіз."
+
+msgid "Ask an administrator to assign the admission commission or vice rector role."
+msgstr "Әкімшіден қабылдау комиссиясы немесе проректор рөлін тағайындауды сұраңыз."
+
+msgid "Applicant signer is not available."
+msgstr "Талапкер қол қоюшысы қолжетімсіз."
+
+msgid "You have already signed this document."
+msgstr "??? ??? ??????? ??? ?????????."
+
+msgid "Vice rector cabinet is not available for this account."
+msgstr "Бұл есептік жазба үшін проректор кабинеті қолжетімсіз."
+
+msgid "Admission commission cabinet is not available for this account."
+msgstr "Бұл есептік жазба үшін қабылдау комиссиясының кабинеті қолжетімсіз."
+
+msgid "Admission contract is not available."
+msgstr "Қабылдау шарты қолжетімсіз."
+
+msgid "Vice rector signer is not available."
+msgstr "Проректор қол қоюшысы қолжетімсіз."
+
+msgid "This document is already signed by the vice rector."
+msgstr "Бұл құжатқа проректор қол қойып қойған."
+
+msgid "Admission MSSQL contract record"
+msgstr "Admissions шартының MSSQL жазбасы"
+
+msgid "Admission MSSQL contract records"
+msgstr "Admissions шарттарының MSSQL жазбалары"
+
+msgid "Admission document"
+msgstr "Талапкер құжаты"
+
+msgid ""
+"Review the generated documents, correct the data if needed, and sign the "
+"contract with ECP."
+msgstr ""
+"Жасалған құжаттарды тексеріңіз, қажет болса деректерді түзетіңіз және шартқа"
+" ЭЦҚ арқылы қол қойыңыз."
+
+msgid "Preview"
+msgstr "Алдын ала қарау"
+
+msgid "Contract"
+msgstr "Шарт"
+
+msgid "Application"
+msgstr "Өтініш"
+
+msgid "Application PDF"
+msgstr "Өтініш PDF"
+
+msgid "Application DOCX"
+msgstr "Өтініш DOCX"
+
+msgid "Contract PDF"
+msgstr "Шарт PDF"
+
+msgid "Contract DOCX"
+msgstr "Шарт DOCX"
+
+msgid "Downloads"
+msgstr "Жүктеу"
+
+msgid "Files"
+msgstr "Файлдар"
+
+msgid "The contract is the document that will be signed."
+msgstr "Шарт қол қойылатын негізгі құжат болып табылады."
+
+msgid ""
+"The application is filled from the same data and does not need signing."
+msgstr "Өтініш сол деректер бойынша толтырылады және қол қоюды қажет етпейді."
+
+msgid "Data"
+msgstr "Деректер"
+
+msgid "Edit before signing"
+msgstr "Қол қоюға дейін түзету"
+
+msgid "Save changes"
+msgstr "Өзгерістерді сақтау"
+
+msgid "The contract is already signed, so the data is locked."
+msgstr "Шартқа қол қойылған, сондықтан деректер бұғатталған."
+
+msgid "There are no editable fields for this contract."
+msgstr "Бұл шартта түзетуге болатын өрістер жоқ."
+
+msgid "ECP signing"
+msgstr "ЭЦҚ арқылы қол қою"
+
+msgid "Contract signature"
+msgstr "Шартқа қол қою"
+
+msgid "The contract has been signed successfully."
+msgstr "Шартқа сәтті қол қойылды."
+
+msgid ""
+"Make sure NCALayer is installed and running, then choose your ECP key after "
+"pressing the button."
+msgstr ""
+"NCALayer орнатылып, іске қосылғанына көз жеткізіңіз, содан кейін батырманы "
+"басқаннан кейін ЭЦҚ кілтін таңдаңыз."
+
+msgid "Preparing signing data..."
+msgstr "Қол қою деректері дайындалуда..."
+
+msgid "Connecting to NCALayer..."
+msgstr "NCALayer-ге қосылуда..."
+
+msgid "Choose your ECP key and confirm signing."
+msgstr "ЭЦҚ кілтін таңдап, қол қоюды растаңыз."
+
+msgid "Saving signature..."
+msgstr "Қолтаңба сақталуда..."
+
+msgid "Download application PDF"
+msgstr "Өтініш PDF жүктеу"
+
+msgid "Download application DOCX"
+msgstr "Өтініш DOCX жүктеу"
+
+msgid "Download contract PDF"
+msgstr "Шарт PDF жүктеу"
+
+msgid "Download contract DOCX"
+msgstr "Шарт DOCX жүктеу"
+
+msgid "Signer already signed."
+msgstr "Қол қоюшы құжатқа қол қойып қойған."
+
+msgid "Final document could not be stored: %(error)s"
+msgstr "Соңғы құжатты сақтау мүмкін болмады: %(error)s"
+
+msgid "Final document has no rendered file to store."
+msgstr "Сақтау үшін соңғы құжаттың жасалған файлы жоқ."
+
+msgid "Invalid JSON."
+msgstr "JSON дұрыс емес."
+
+msgid "CMS signature is required."
+msgstr "CMS қолтаңбасы міндетті."
+
+msgid "The applicant must sign the contract first."
+msgstr "Алдымен шартқа талапкер қол қоюы керек."
+
+msgid "ECP signing is ready on this page."
+msgstr "ЭЦҚ арқылы қол қою осы бетте дайын."
+
+msgid "ECP signing is ready in the vice rector cabinet."
+msgstr "ЭЦҚ арқылы қол қою проректор кабинетінде дайын."
+
+msgid "Contract data was updated. Review the document before signing."
+msgstr "Шарт деректері жаңартылды. Қол қою алдында құжатты тексеріңіз."
+
+msgid "The contract cannot be edited after it has been signed."
+msgstr "Қол қойылғаннан кейін шартты түзетуге болмайды."
+
+msgid "Document is not available."
+msgstr "Құжат қолжетімсіз."
+
+msgid "Document preview is not available: %(error)s"
+msgstr "Құжатты алдын ала қарау қолжетімсіз: %(error)s"
+
+msgid "PDF export is not available: %(error)s"
+msgstr "PDF экспорты қолжетімсіз: %(error)s"
+
+msgid "DOCX file is not available."
+msgstr "DOCX файлы қолжетімсіз."
+
+msgid "Unsupported file format."
+msgstr "Файл форматы қолдау көрсетілмейді."
+
+msgid "Cannot prepare signing payload."
+msgstr "Қол қою деректерін дайындау мүмкін болмады."
+
+msgid "NCALayer returned an empty CMS signature."
+msgstr "NCALayer бос CMS қолтаңбасын қайтарды."
+
+msgid "Cannot complete signing."
+msgstr "Қол қоюды аяқтау мүмкін болмады."
+
+msgid "Cannot connect to NCALayer."
+msgstr "NCALayer-ге қосылу мүмкін болмады."
+
+msgid "NCALayer connection was closed."
+msgstr "NCALayer қосылымы жабылды."
+
+msgid "NCALayer websocket is not connected."
+msgstr "NCALayer WebSocket қосылмаған."
+
+msgid "NCALayer did not respond after signing."
+msgstr "Қол қойғаннан кейін NCALayer жауап бермеді."
+
+msgid "Full name in genitive case"
+msgstr "Аты-жөні ілік септігінде"
+
+msgid "Program code"
+msgstr "Бағдарлама коды"
+
+msgid "Program name (RU)"
+msgstr "Бағдарлама атауы (RU)"
+
+msgid "Program name (KZ)"
+msgstr "Бағдарлама атауы (KZ)"
+
+msgid "Program group code"
+msgstr "Бағдарламалар тобының коды"
+
+msgid "Program group (RU)"
+msgstr "Бағдарламалар тобы (RU)"
+
+msgid "Program group (KZ)"
+msgstr "Бағдарламалар тобы (KZ)"
+
+msgid "Faculty (RU)"
+msgstr "Факультет (RU)"
+
+msgid "Faculty (KZ)"
+msgstr "Факультет (KZ)"
+
+msgid "Faculty"
+msgstr "Факультет"
+
+msgid "Address"
+msgstr "Мекенжай"
+
+msgid "Address in Almaty"
+msgstr "Алматыдағы мекенжай"
+
+msgid "Identity document number"
+msgstr "Жеке куәлік нөмірі"
+
+msgid "Identity document series"
+msgstr "Жеке куәлік сериясы"
+
+msgid "Identity document issue date (RU)"
+msgstr "Жеке куәлік берілген күні (RU)"
+
+msgid "Identity document issue date (KZ)"
+msgstr "Жеке куәлік берілген күні (KZ)"
+
+msgid "Identity document issuer (RU)"
+msgstr "Жеке куәлікті берген орган (RU)"
+
+msgid "Identity document issuer (KZ)"
+msgstr "Жеке куәлікті берген орган (KZ)"
+
+msgid "Birth date (RU)"
+msgstr "Туған күні (RU)"
+
+msgid "Birth date (KZ)"
+msgstr "Туған күні (KZ)"
+
+msgid "Gender (RU)"
+msgstr "Жынысы (RU)"
+
+msgid "Gender (KZ)"
+msgstr "Жынысы (KZ)"
+
+msgid "Citizenship (RU)"
+msgstr "Азаматтығы (RU)"
+
+msgid "Citizenship (KZ)"
+msgstr "Азаматтығы (KZ)"
+
+msgid "Nationality (RU)"
+msgstr "Ұлты (RU)"
+
+msgid "Nationality (KZ)"
+msgstr "Ұлты (KZ)"
+
+msgid "Previous education (RU)"
+msgstr "Алдыңғы білім (RU)"
+
+msgid "Previous education (KZ)"
+msgstr "Алдыңғы білім (KZ)"
+
+msgid "Graduation year"
+msgstr "Бітірген жылы"
+
+msgid "Education document type (RU)"
+msgstr "Білім туралы құжат түрі (RU)"
+
+msgid "Education document type (KZ)"
+msgstr "Білім туралы құжат түрі (KZ)"
+
+msgid "Education document series"
+msgstr "Білім туралы құжат сериясы"
+
+msgid "Education document number"
+msgstr "Білім туралы құжат нөмірі"
+
+msgid "Education document issue date"
+msgstr "Білім туралы құжат берілген күні"
+
+msgid "Certificate score"
+msgstr "Сертификат балы"
+
+msgid "Average grade"
+msgstr "Орташа баға"
+
+msgid "Admission quota (RU)"
+msgstr "Қабылдау квотасы (RU)"
+
+msgid "Admission quota (KZ)"
+msgstr "Қабылдау квотасы (KZ)"
+
+msgid "Father full name"
+msgstr "Әкесінің аты-жөні"
+
+msgid "Father phone"
+msgstr "Әкесінің телефоны"
+
+msgid "Father workplace"
+msgstr "Әкесінің жұмыс орны"
+
+msgid "Father position"
+msgstr "Әкесінің лауазымы"
+
+msgid "Mother full name"
+msgstr "Анасының аты-жөні"
+
+msgid "Mother phone"
+msgstr "Анасының телефоны"
+
+msgid "Mother workplace"
+msgstr "Анасының жұмыс орны"
+
+msgid "Mother position"
+msgstr "Анасының лауазымы"
+
+msgid "Parent or legal representative"
+msgstr "Ата-ана немесе заңды өкіл"
+
+msgid "Parent IIN"
+msgstr "Ата-ананың ЖСН"
+
+msgid "Parent phone"
+msgstr "Ата-ананың телефоны"
+
+msgid "Parent address"
+msgstr "Ата-ананың мекенжайы"
+
+msgid "Foreign language (RU)"
+msgstr "Шет тілі (RU)"
+
+msgid "Foreign language (KZ)"
+msgstr "Шет тілі (KZ)"
+
+msgid "Dormitory choice (RU)"
+msgstr "Жатақхана таңдауы (RU)"
+
+msgid "Dormitory choice (KZ)"
+msgstr "Жатақхана таңдауы (KZ)"
+
+msgid "Applicant signature full name"
+msgstr "Талапкер қолы үшін аты-жөні"
+
+msgid "Student signature full name"
+msgstr "Білім алушы қолы үшін аты-жөні"
+
+msgid "Technical secretary full name"
+msgstr "Техникалық хатшының аты-жөні"
+
+msgid "Dean full name"
+msgstr "Деканның аты-жөні"
+
+msgid "Contract link is unavailable."
+msgstr "Шарт сілтемесі қолжетімсіз."
+
+msgid "Tuition amount is required before signing."
+msgstr "Қол қою алдында оқу ақысын көрсету қажет."
+
+msgid "%(field)s is required."
+msgstr "«%(field)s» өрісі міндетті."
+
+msgid "Account created successfully."
+msgstr "Есептік жазба жасалды."
+
+msgid "Filters"
+msgstr "Сүзгілер"
+
+msgid "Showing %(count)s of %(total)s contracts"
+msgstr "%(total)s шарттың %(count)s көрсетілді"
+
+msgid "Search"
+msgstr "Іздеу"
+
+msgid "Applicant, IIN, ID, contract number"
+msgstr "Талапкер, ЖСН, ID, шарт нөмірі"
+
+msgid "Signature status"
+msgstr "Қол қою мәртебесі"
+
+msgid "All signatures"
+msgstr "Барлық қол қоюлар"
+
+msgid "Ready for vice rector"
+msgstr "Проректорға дайын"
+
+msgid "Fully signed"
+msgstr "Толық қол қойылды"
+
+msgid "Signed by vice rector"
+msgstr "Проректор қол қойған"
+
+msgid "Contract status"
+msgstr "Шарт мәртебесі"
+
+msgid "Contract created"
+msgstr "Шарт жасалды"
+
+msgid "Both sides signed"
+msgstr "Екі тарап қол қойды"
+
+msgid "All statuses"
+msgstr "Барлық мәртебелер"
+
+msgid "Date from"
+msgstr "Күні бастап"
+
+msgid "Date to"
+msgstr "Күні дейін"
+
+msgid "All levels"
+msgstr "Барлық деңгейлер"
+
+msgid "All funding types"
+msgstr "Қаржыландырудың барлық түрлері"
+
+msgid "Apply filters"
+msgstr "Қолдану"
+
+msgid "Reset"
+msgstr "Тазалау"
+
+msgid "No matches"
+msgstr "Сәйкестік жоқ"
+
+msgid "No contracts match the selected filters."
+msgstr "Таңдалған сүзгілер бойынша шарттар табылмады."
+
+msgid "Change the filters or reset them to see all available contracts."
+msgstr "Барлық шарттарды көру үшін сүзгілерді өзгертіңіз немесе тазалаңыз."
+
+#~ msgid "Digital signing without confusion."
+#~ msgstr "Түсінікті цифрлық қол қою."
+
+#~ msgid "Workspace"
+#~ msgstr "Жұмыс кеңістігі"
+
+#~ msgid "Everything around the document is connected."
+#~ msgstr "Құжатқа қатысты барлық нәрсе өзара байланысқан."
+
+#~ msgid ""
+#~ "QolQoyu is not only a signature button. It controls templates, signers, "
+#~ "document state, signing method and audit history."
+#~ msgstr ""
+#~ "QolQoyu — тек қол қою батырмасы емес. Жүйе шаблондарды, қол қоюшыларды, "
+#~ "құжат күйін, қол қою әдісін және аудит тарихын басқарады."
+
+#~ msgid "Reusable document templates"
+#~ msgstr "Қайта қолданылатын құжат шаблондары"
+
+#~ msgid ""
+#~ "Prepare variables once and generate clean documents without rewriting the "
+#~ "same contract again."
+#~ msgstr ""
+#~ "Айнымалыларды бір рет дайындап, бір шартты қайта жазбай-ақ дайын құжаттар "
+#~ "жасаңыз."
+
+#~ msgid "SMS and ECP flows"
+#~ msgstr "SMS және ЭЦҚ арқылы қол қою"
+
+#~ msgid ""
+#~ "Support different signing scenarios depending on the signer and document "
+#~ "type."
+#~ msgstr ""
+#~ "Қол қоюшыға және құжат түріне байланысты әртүрлі қол қою сценарийлерін "
+#~ "қолдаңыз."
+
+#~ msgid "Document hash control"
+#~ msgstr "Құжат хэшін бақылау"
+
+#~ msgid ""
+#~ "The system can fix the file hash at signing time to detect changes later."
+#~ msgstr ""
+#~ "Жүйе кейін өзгерістерді анықтау үшін қол қою кезінде файл хэшін бекіте "
+#~ "алады."
+
+#~ msgid "Every action is visible"
+#~ msgstr "Әр әрекет көрінеді"
+
+#~ msgid ""
+#~ "Signing events, attempts, confirmation and status changes are stored in the "
+#~ "audit trail."
+#~ msgstr ""
+#~ "Қол қою оқиғалары, әрекеттер, растаулар және мәртебе өзгерістері аудит "
+#~ "журналында сақталады."
+
+#~ msgid "One place for agreements"
+#~ msgstr "Келісімдерге арналған бір орын"
+
+#~ msgid "Business documents"
+#~ msgstr "Іскерлік құжаттар"
+
+#~ msgid "DOCX Templates | QolQoyu"
+#~ msgstr "DOCX шаблондары | QolQoyu"
+
+#~ msgid "DOCX Templates"
+#~ msgstr "DOCX шаблондары"
+
+#~ msgid ""
+#~ "Build reusable DOCX structures, manage variables and create ready-to-sign "
+#~ "documents faster."
+#~ msgstr ""
+#~ "Қайта қолданылатын DOCX құрылымдарын жасаңыз, айнымалыларды басқарыңыз және "
+#~ "қол қоюға дайын құжаттарды тезірек қалыптастырыңыз."
+
+#~ msgid "Uploaded DOCX structures available for document generation."
+#~ msgstr "Құжат генерациясына қолжетімді жүктелген DOCX құрылымдары."
+
+#~ msgid ""
+#~ "Upload your first DOCX template with variables and start generating "
+#~ "documents from it."
+#~ msgstr ""
+#~ "Айнымалылары бар алғашқы DOCX шаблоныңызды жүктеп, одан құжаттар жасауды "
+#~ "бастаңыз."
+
+#~ msgid ""
+#~ "Select a template, enter document details and prepare a clean file for the "
+#~ "signing process."
+#~ msgstr ""
+#~ "Шаблонды таңдаңыз, құжат деректерін енгізіңіз және қол қою процесіне дайын "
+#~ "файл дайындаңыз."
+
+#~ msgid "Use an uploaded DOCX template as the document base."
+#~ msgstr "Жүктелген DOCX шаблонын құжат негізі ретінде пайдаланыңыз."
+
+#~ msgid "DOCX upload"
+#~ msgstr "DOCX жүктеу"
+
+#~ msgid "Upload DOCX Template"
+#~ msgstr "DOCX шаблонын жүктеу"
+
+#~ msgid "Only DOCX files should be uploaded as templates."
+#~ msgstr "Шаблон ретінде тек DOCX файлдарын жүктеу керек."
+
+#~ msgid "Parties"
+#~ msgstr "Тараптар"
+
+#~ msgid "Settings"
+#~ msgstr "Баптаулар"
+
+#~ msgid "Signing order"
+#~ msgstr "Қол қою реті"
+
+#~ msgid "Available for invited signers"
+#~ msgstr "Шақырылған қол қоюшыларға қолжетімді"
+
+#~ msgid "New workspace"
+#~ msgstr "Жаңа жұмыс кеңістігі"
+
+#~ msgid ""
+#~ "Create your workspace account to upload templates and manage documents."
+#~ msgstr ""
+#~ "Шаблондарды жүктеу және құжаттарды басқару үшін жұмыс кеңістігі аккаунтын "
+#~ "жасаңыз."
+
+#~ msgid "Start your signing workspace in minutes."
+#~ msgstr "Қол қою жұмыс кеңістігін бірнеше минутта іске қосыңыз."
+
+#~ msgid "Upload templates"
+#~ msgstr "Шаблондарды жүктеу"
+
+#~ msgid "Prepare reusable DOCX templates with variables."
+#~ msgstr "Айнымалылары бар қайта қолданылатын DOCX шаблондарын дайындаңыз."
+
+#~ msgid "Send for signing"
+#~ msgstr "Қол қоюға жіберу"
+
+#~ msgid "Create documents and invite signers by SMS, ECP or eGov Mobile."
+#~ msgstr ""
+#~ "Құжаттар жасап, қол қоюшыларды SMS, ЭЦҚ немесе eGov Mobile арқылы шақырыңыз."
+
+#~ msgid "Temporary console code:"
+#~ msgstr "Консольдегі уақытша код:"
+
+#~ msgid "Passed"
+#~ msgstr "Өтті"
+
+#~ msgid "Error"
+#~ msgstr "Қате"
+
+#~ msgid "Submitted"
+#~ msgstr "Жіберілді"
+
+#~ msgid "N/A"
+#~ msgstr "Қ/Ж"
+
+#~ msgid "Critical"
+#~ msgstr "Критикалық"
+
+#~ msgid "Violation"
+#~ msgstr "Бұзушылық"
+
+#~ msgid "Warning"
+#~ msgstr "Ескерту"
+
+#~ msgid "Recommended"
+#~ msgstr "Ұсынылады"
+
+#~ msgid "Optional"
+#~ msgstr "Міндетті емес"
+
+#~ msgid "Compliant"
+#~ msgstr "Сәйкес"
+
+#~ msgid "Processing"
+#~ msgstr "Өңделуде"
+
+#~ msgid "Good"
+#~ msgstr "Жақсы"
+
+#~ msgid "Missing"
+#~ msgstr "Жоқ"
+
+#~ msgid "Minor"
+#~ msgstr "Кіші"
+
+#~ msgid "Major"
+#~ msgstr "Маңызды"
+
+#~ msgid "Russian (obsolete)"
+#~ msgstr "Орыс тілі"
+
+#~ msgid "Kazakh (obsolete)"
+#~ msgstr "Қазақ тілі"
+
+#~ msgid "English (obsolete)"
+#~ msgstr "Ағылшын тілі"
+
+#~ msgid "LawVision API key is not configured."
+#~ msgstr "LawVision API кілті бапталмаған."
+
+#~ msgid "Document text is shorter than LawVision minimum of 50 characters."
+#~ msgstr "Құжат мәтіні LawVision үшін қажет ең аз 50 таңбадан қысқа."
+
+#~ msgid "Could not connect to LawVision: %(error)s"
+#~ msgstr "LawVision қызметіне қосылу мүмкін болмады: %(error)s"
+
+#~ msgid "LawVision returned a non-JSON response."
+#~ msgstr "LawVision JSON емес жауап қайтарды."
+
+#~ msgid "LawVision analysis failed."
+#~ msgstr "LawVision талдауы орындалмады."
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Applicant contract link"
+msgstr "Талапкер шартының сілтемесі"
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Use this public link to open the applicant contract page."
+msgstr "Талапкер шартының бетін ашу үшін осы ашық сілтемені пайдаланыңыз."
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Public link"
+msgstr "Ашық сілтеме"
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Applicant page"
+msgstr "Талапкер беті"
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Contract URL"
+msgstr "Шарт сілтемесі"
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Copy link"
+msgstr "Сілтемені көшіру"
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Link copied."
+msgstr "Сілтеме көшірілді."
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Could not copy the link. Select and copy it manually."
+msgstr "Сілтемені көшіру мүмкін болмады. Оны белгілеп, қолмен көшіріңіз."
+
+#: .\templates\admissions\protected_contract_link.html
+msgid "Open applicant page"
+msgstr "Талапкер бетін ашу"
+#: .\admissions\views.py
+msgid "Applicant %(external_id)s and related documents were deleted."
+msgstr "Талапкер %(external_id)s және байланысты құжаттар жойылды."
+
+#: .\admissions\views.py .\templates\admissions\commission_dashboard.html
+msgid "The applicant cannot be deleted after the vice rector has signed."
+msgstr "Проректор қол қойғаннан кейін талапкерді жоюға болмайды."
+
+#: .\templates\admissions\commission_dashboard.html
+msgid "Delete this applicant and all related documents?"
+msgstr "Осы талапкерді және барлық байланысты құжаттарды жою керек пе?"
+
+#: .\templates\admissions\commission_dashboard.html
+msgid "Deletion locked"
+msgstr "Жою бұғатталған"
+
+#: .\templates\admissions\commission_dashboard.html
+msgid "University link"
+msgstr "Университетке арналған сілтеме"
+
+#: .\templates\admissions\commission_dashboard.html
+msgid "Protected URL is not saved yet"
+msgstr "Қорғалған сілтеме әлі сақталмаған"
+
+#: .\templates\admissions\_pagination.html
+msgid "Pagination"
+msgstr "Беттер"
+
+#: .\templates\admissions\_pagination.html
+msgid "Previous"
+msgstr "Артқа"
+
+#: .\templates\admissions\_pagination.html
+msgid "Next"
+msgstr "Алға"
+
+#: .\templates\admissions\_pagination.html
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "%(current)s / %(total)s бет"
+
+#: .\admissions\models.py
+msgid "Queued"
+msgstr "Кезекте"
+
+#: .\admissions\models.py
+msgid "Done"
+msgstr "Дайын"
+
+#: .\admissions\models.py
+msgid "Admission render job"
+msgstr "Қабылдау құжаттарын қалыптастыру тапсырмасы"
+
+#: .\admissions\models.py
+msgid "Admission render jobs"
+msgstr "Қабылдау құжаттарын қалыптастыру тапсырмалары"
+
+#: .\admissions\views.py
+msgid "Documents are still being prepared. Please try again in a moment."
+msgstr "Құжаттар әлі дайындалып жатыр. Бірнеше секундтан кейін қайталап көріңіз."
+
+#: .\admissions\views.py .\templates\admissions\applicant_contract_processing.html
+msgid "Documents are still being prepared."
+msgstr "Құжаттар әлі дайындалып жатыр."
+
+#: .\templates\admissions\applicant_contract_processing.html
+msgid "Documents are being prepared"
+msgstr "Құжаттар дайындалып жатыр"
+
+#: .\templates\admissions\applicant_contract_processing.html
+msgid "Document preparation failed"
+msgstr "Құжаттарды дайындау сәтсіз аяқталды"
+
+#: .\templates\admissions\applicant_contract_processing.html
+msgid "The applicant contract link is saved, but the documents could not be generated. Please contact the admissions office."
+msgstr "Талапкер шартының сілтемесі сақталды, бірақ құжаттарды қалыптастыру мүмкін болмады. Қабылдау комиссиясына хабарласыңыз."
+
+#: .\templates\admissions\applicant_contract_processing.html
+msgid "The contract link is already active. The contract and application files are being generated in the background."
+msgstr "Шарт сілтемесі белсенді. Шарт пен өтініш файлдары фондық режимде қалыптастырылып жатыр."
+
+#: .\templates\admissions\applicant_contract_processing.html
+msgid "This page refreshes automatically."
+msgstr "Бұл бет автоматты түрде жаңартылады."

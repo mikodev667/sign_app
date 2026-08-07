@@ -15,7 +15,7 @@
 
             <h1>{{ organization.name }}</h1>
 
-            <p>{% trans "Add registered users to this organization and manage their role." %}</p>
+            <p>{% trans "Add registered users to this organization and assign them to departments." %}</p>
         </div>
 
         <a href="{% url 'organizations:organization_list' %}" class="btn btn-secondary">
@@ -48,7 +48,12 @@
                             {% endif %}
                         </div>
 
-                        <small>{{ member.get_role_display }}</small>
+                        <small>
+                            {{ member.get_role_display }}
+                            {% if member.department %}
+                                - {{ member.department.display_name }}
+                            {% endif %}
+                        </small>
                     </div>
                 {% empty %}
                     <p class="q-profile-muted">
@@ -60,12 +65,60 @@
 
         <aside class="q-organization-panel">
             <div class="q-organization-panel__header">
+                <span>{% trans "Departments" %}</span>
+                <h2>{% trans "Organization departments" %}</h2>
+            </div>
+
+            <div class="q-organization-departments">
+                {% for department in departments %}
+                    <div class="q-organization-department">
+                        <strong>{{ department.display_name }}</strong>
+                        <span>
+                            {% blocktrans count count=department.members.count %}
+                                {{ count }} member
+                            {% plural %}
+                                {{ count }} members
+                            {% endblocktrans %}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <form method="post" class="app-form q-organization-form q-organization-form--compact">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_department">
+
+                {% for field in department_form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-secondary">
+                    {% trans "Add department" %}
+                </button>
+            </form>
+
+            <div class="q-organization-panel__header q-organization-panel__header--stacked">
                 <span>{% trans "Add user" %}</span>
                 <h2>{% trans "Invite existing account" %}</h2>
             </div>
 
             <form method="post" class="app-form q-organization-form">
                 {% csrf_token %}
+                <input type="hidden" name="action" value="add_member">
 
                 {% for field in form %}
                     <div class="form-group">

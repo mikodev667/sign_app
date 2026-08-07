@@ -81,6 +81,7 @@ class EcpSigningService:
         certificate_serial_number: str = "",
         ip_address: str | None = None,
         user_agent: str = "",
+        skip_key_validation: bool = False,
     ) -> Signature:
         if signer.status == Signer.Status.SIGNED:
             raise ValueError("Signer already signed this document.")
@@ -95,14 +96,29 @@ class EcpSigningService:
 
         certificate_iin = cls.extract_iin_from_subject(certificate_subject)
 
-        if signer.iin and certificate_iin and signer.iin != certificate_iin:
+        if (
+            not skip_key_validation
+            and signer.iin
+            and certificate_iin
+            and signer.iin != certificate_iin
+        ):
             raise ValueError("Certificate IIN does not match signer IIN.")
 
-        validation_result = EcpValidationClient.verify(
-            cms_signature=cms_signature,
-            expected_document_hash=document.content_hash,
-            expected_iin=signer.iin,
-        )
+        if skip_key_validation:
+            validation_result = {
+                "ok": True,
+                "validation_skipped": True,
+                "skip_reason": "ecp_key_validation_disabled_for_admission",
+                "certificate_iin": certificate_iin,
+                "certificate_subject": certificate_subject,
+                "certificate_serial": certificate_serial_number,
+            }
+        else:
+            validation_result = EcpValidationClient.verify(
+                cms_signature=cms_signature,
+                expected_document_hash=document.content_hash,
+                expected_iin=signer.iin,
+            )
 
         is_valid = bool(validation_result.get("ok"))
 
@@ -226,7 +242,7 @@ class EcpSigningService:
                 "certificate_iin": certificate_iin,
                 "certificate_subject": certificate_subject,
                 "certificate_serial_number": certificate_serial_number,
-                "backend_validation": "not_implemented",
+                "backend_validation": "skipped" if skip_key_validation else "completed",
                 "validation_result": validation_result,
                 "stored_cms_object": cls.serialize_stored_cms_object(stored_cms_object),
             },

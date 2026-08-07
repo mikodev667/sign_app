@@ -1,0 +1,92 @@
+{
+  "external_id": "local-test-0006",
+  "education_level": "bachelor",
+  "funding_type": "paid",
+  "language": "kk",
+  "applicant": {
+    "full_name": "Тестов Тест Тестович",
+    "full_name_genitive": "Тестова Теста Тестовича",
+    "iin": "321321321321",
+    "phone": "77015556677",
+    "email": "student@example.com",
+    "gender": "male",
+    "birth_date": "02.07.2026",
+    "citizenship_ru": "КАЗАХСТАН",
+    "citizenship_kk": "КАЗАҚСТАН",
+    "nationality_ru": "казахи",
+    "nationality_kk": "қазақтар"
+  },
+  "identity_document": {
+    "number": "654654654",
+    "series": "",
+    "issuer_ru": "Министерство внутренних дел РК",
+    "issuer_kk": "ҚР Ішкі істер министрлігі",
+    "issue_date": "09.07.2026"
+  },
+  "previous_education": {
+    "name_ru": "Средняя школа № 1",
+    "name_kk": "№ 1 орта мектеп",
+    "graduation_year": "2026",
+    "document_type_ru": "Аттестат об общем среднем образовании",
+    "document_type_kk": "Жалпы орта білім туралы аттестат",
+    "document_series": "FG",
+    "document_number": "6546",
+    "document_issue_date": "02.07.2026"
+  },
+  "program": {
+    "code": "6B06103",
+    "name_ru": "Компьютерная инженерия",
+    "name_kk": "Компьютерлік инженерия",
+    "faculty_ru": "Информационных технологий и искусственного интеллекта",
+    "faculty_kk": "Ақпараттық технологиялар және жасанды интеллект"
+  },
+  "program_group": {
+    "code": "B057",
+    "name_ru": "Информационные технологии",
+    "name_kk": "Ақпараттық технологиялар"
+  },
+  "study": {
+    "form": "очная",
+    "dormitory_need": "yes",
+    "foreign_language_ru": "Английский язык",
+    "foreign_language_kk": "Ағылшын тілі"
+  },
+  "addresses": {
+    "registration": "Западно-Казахстанская область, Акжаикский район, село Бударино",
+    "almaty": "г. Алматы, Алмалинский район, улица Айвазовского, дом 45"
+  },
+  "parents": {
+    "father_full_name": "Тестов Отец Тестович",
+    "father_phone": "77010000001",
+    "father_work_place": "ТОО Test Father",
+    "father_position": "Инженер",
+    "mother_full_name": "Тестова Мать Тестовна",
+    "mother_phone": "77010000002",
+    "mother_work_place": "ТОО Test Mother",
+    "mother_position": "Бухгалтер"
+  },
+  "legal_representative": {
+    "full_name": "",
+    "iin": "",
+    "phone": "77010000003",
+    "address": "г. Алматы, улица Абая, дом 10"
+  },
+  "admission_results": {
+    "certificate_score": "130",
+    "average_grade": "5",
+    "quota_ru": "",
+    "quota_kk": "",
+    "olympiad_subject_ru": "",
+    "olympiad_subject_kk": "",
+    "olympiad_degree_ru": "",
+    "olympiad_degree_kk": "",
+    "distinction_award_ru": "",
+    "distinction_award_kk": ""
+  },
+  "university": {
+    "dean_full_name": "Иманкулов Тимур Сакенович",
+    "technical_secretary_full_name": "Технический Секретарь"
+  },
+  "grant_number": "",
+  "tuition": {}
+}

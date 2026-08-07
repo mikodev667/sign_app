@@ -31,6 +31,37 @@ class Organization(models.Model):
         return self.name
 
 
+class Department(models.Model):
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        related_name="departments",
+    )
+
+    name = models.CharField(max_length=255)
+
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Department")
+        verbose_name_plural = _("Departments")
+        ordering = ["name"]
+        unique_together = ("organization", "name")
+
+    @property
+    def display_name(self):
+        if self.name == "General department":
+            return _("General department")
+
+        return self.name
+
+    def __str__(self):
+        return f"{self.display_name} - {self.organization}"
+
+
 class OrganizationMember(models.Model):
     class Role(models.TextChoices):
         OWNER = "owner", _("Owner")
@@ -53,6 +84,14 @@ class OrganizationMember(models.Model):
         max_length=20,
         choices=Role.choices,
         default=Role.MEMBER
+    )
+
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.SET_NULL,
+        related_name="members",
+        blank=True,
+        null=True,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -78,6 +117,15 @@ class OrganizationMember(models.Model):
         if existing_membership.exists():
             raise ValidationError({
                 "user": _("This user already belongs to another organization."),
+            })
+
+        if (
+            self.department_id
+            and self.organization_id
+            and self.department.organization_id != self.organization_id
+        ):
+            raise ValidationError({
+                "department": _("Department must belong to the selected organization."),
             })
 
     def __str__(self):

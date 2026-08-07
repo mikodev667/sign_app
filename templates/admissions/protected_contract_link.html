@@ -1,0 +1,110 @@
+{% load i18n %}
+{% load static %}
+{% trans "Link copied." as link_copied_text %}
+{% trans "Could not copy the link. Select and copy it manually." as link_copy_error_text %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Applicant contract link" %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="admission-public-body">
+    <main class="admission-public-shell admission-public-link-shell">
+        <section class="admission-link-panel">
+            <header class="admission-link-panel__header">
+                <div>
+                    <span class="admission-public-kicker">{% trans "Admission document" %}</span>
+                    <h1>{% trans "Applicant contract link" %}</h1>
+                    <p>{% trans "Use this public link to open the applicant contract page." %}</p>
+                </div>
+
+                <span class="admission-public-status admission-public-status--{{ contract.status }}">
+                    {{ contract.get_status_display }}
+                </span>
+            </header>
+
+            <div class="admission-link-panel__body">
+                <section class="admission-link-summary" aria-labelledby="admission-link-applicant-title">
+                    <div class="admission-link-summary__head">
+                        <span class="admission-public-kicker">{% trans "Applicant" %}</span>
+                        <strong id="admission-link-applicant-title">{{ contract.applicant_full_name }}</strong>
+                    </div>
+
+                    <dl class="admission-link-data">
+                        <div>
+                            <dt>{% trans "External ID" %}</dt>
+                            <dd>{{ contract.external_id }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "IIN" %}</dt>
+                            <dd>{{ contract.applicant_iin }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Program" %}</dt>
+                            <dd>{{ contract.program_name_ru|default:contract.program_code|default:"-" }}</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="admission-link-share" aria-labelledby="admission-link-public-title">
+                    <div class="admission-link-share__head">
+                        <span class="admission-public-kicker">{% trans "Public link" %}</span>
+                        <strong id="admission-link-public-title">{% trans "Applicant page" %}</strong>
+                    </div>
+
+                    <label class="admission-link-url">
+                        <span>{% trans "Contract URL" %}</span>
+                        <input id="admission-contract-url" type="url" value="{{ contract_url }}" readonly>
+                    </label>
+
+                    <div class="admission-link-actions">
+                        <button class="admission-public-btn admission-public-btn--secondary" type="button" data-copy-contract-url>
+                            {% trans "Copy link" %}
+                        </button>
+                        <a class="admission-public-btn admission-public-btn--primary" href="{{ contract_url }}">
+                            {% trans "Open applicant page" %}
+                        </a>
+                    </div>
+
+                    <p class="admission-link-copy-status" data-copy-contract-status aria-live="polite"></p>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const copyButton = document.querySelector("[data-copy-contract-url]");
+            const urlInput = document.getElementById("admission-contract-url");
+            const status = document.querySelector("[data-copy-contract-status]");
+
+            if (!copyButton || !urlInput) {
+                return;
+            }
+
+            copyButton.addEventListener("click", async () => {
+                const value = urlInput.value;
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(value);
+                    } else {
+                        urlInput.select();
+                        document.execCommand("copy");
+                    }
+
+                    if (status) {
+                        status.textContent = "{{ link_copied_text|escapejs }}";
+                    }
+                } catch (error) {
+                    if (status) {
+                        status.textContent = "{{ link_copy_error_text|escapejs }}";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

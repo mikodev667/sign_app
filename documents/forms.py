@@ -1,7 +1,11 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from organizations.services import get_user_managed_organizations
+from organizations.models import Department
+from organizations.services import (
+    get_department_access_filter,
+    get_user_accessible_departments,
+)
 
 from .models import (
     DocumentTemplate,
@@ -14,9 +18,30 @@ from .services.template_file_service import TemplateFileService
 
 
 class DocumentTemplateUploadForm(forms.ModelForm):
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.none(),
+        required=False,
+        label=_("Department"),
+        widget=forms.Select(attrs={
+            "class": "form-control",
+        }),
+    )
+
+    def __init__(self, *args, user=None, organization=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        departments = Department.objects.none()
+        if user is not None and organization is not None:
+            departments = get_user_accessible_departments(user, organization)
+
+        self.fields["department"].queryset = departments
+
+        if departments.count() == 1:
+            self.fields["department"].initial = departments.first()
+
     class Meta:
         model = DocumentTemplate
-        fields = ["title", "template_file", "status"]
+        fields = ["title", "department", "template_file", "status"]
 
         widgets = {
             "title": forms.TextInput(attrs={
@@ -35,8 +60,30 @@ class DocumentTemplateUploadForm(forms.ModelForm):
     def clean_template_file(self):
         return clean_template_file_field(self.cleaned_data.get("template_file"))
 
+    def clean_department(self):
+        department = self.cleaned_data.get("department")
+
+        if department:
+            return department
+
+        departments = self.fields["department"].queryset
+
+        if departments.count() == 1:
+            return departments.first()
+
+        raise forms.ValidationError(_("Choose a department."))
+
 
 class DocumentCreateForm(forms.ModelForm):
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.none(),
+        required=False,
+        label=_("Department"),
+        widget=forms.Select(attrs={
+            "class": "form-control",
+        }),
+    )
+
     document_file = forms.FileField(
         required=False,
         label=_("Ready DOC/DOCX file"),
@@ -59,11 +106,16 @@ class DocumentCreateForm(forms.ModelForm):
         self.fields["title"].label = _("Document title")
 
         if user is not None:
-            organizations = get_user_managed_organizations(user)
             self.fields["template"].queryset = DocumentTemplate.objects.filter(
-                organization__in=organizations,
+                get_department_access_filter(user),
                 status=DocumentTemplate.Status.ACTIVE,
-            ).order_by("title")
+            ).order_by("title").distinct()
+
+            departments = get_user_accessible_departments(user)
+            self.fields["department"].queryset = departments
+
+            if departments.count() == 1:
+                self.fields["department"].initial = departments.first()
 
     def clean_document_file(self):
         document_file = self.cleaned_data.get("document_file")
@@ -86,11 +138,22 @@ class DocumentCreateForm(forms.ModelForm):
                 _("Choose a template or upload a ready DOC/DOCX file.")
             )
 
+        department = cleaned_data.get("department")
+
+        if not department:
+            departments = self.fields["department"].queryset
+            if departments.count() == 1:
+                department = departments.first()
+                cleaned_data["department"] = department
+
+        if document_file and not department:
+            self.add_error("department", _("Choose a department for the uploaded document."))
+
         return cleaned_data
 
     class Meta:
         model = Document
-        fields = ["template", "title", "document_file"]
+        fields = ["template", "department", "title", "document_file"]
 
         widgets = {
             "template": forms.Select(attrs={

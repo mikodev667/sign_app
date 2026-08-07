@@ -50,3 +50,48 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "password1", "password2"]
+
+
+class AdmissionLoginForm(LoginForm):
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "Введите имя пользователя",
+            "autofocus": True,
+        })
+    )
+
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Введите пароль",
+        })
+    )
+
+
+class AdmissionRegisterForm(RegisterForm):
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "Создайте имя пользователя",
+        })
+    )
+
+    password1 = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Создайте пароль",
+        })
+    )
+
+    password2 = forms.CharField(
+        label="Подтвердите пароль",
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Повторите пароль",
+        })
+    )

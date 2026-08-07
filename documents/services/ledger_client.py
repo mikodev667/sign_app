@@ -36,7 +36,7 @@ class LedgerClient:
             response = requests.post(
                 cls.endpoint(cls.DOCUMENTS_PATH),
                 headers=cls.headers(),
-                verify=settings.LEDGER_CA_CERT_FILE,
+                verify=cls.verify_setting(),
                 cert=(
                     settings.LEDGER_CLIENT_CERT_FILE,
                     settings.LEDGER_CLIENT_KEY_FILE,
@@ -72,7 +72,7 @@ class LedgerClient:
                 cls.endpoint(cls.VERIFY_PATH),
                 params={"deep": "true" if deep else "false"},
                 headers=cls.headers(),
-                verify=settings.LEDGER_CA_CERT_FILE,
+                verify=cls.verify_setting(),
                 cert=(
                     settings.LEDGER_CLIENT_CERT_FILE,
                     settings.LEDGER_CLIENT_KEY_FILE,
@@ -90,6 +90,11 @@ class LedgerClient:
     @classmethod
     def headers(cls):
         return {"X-API-Key": cls.api_key()}
+
+    @staticmethod
+    def verify_setting():
+        ca_cert_file = str(getattr(settings, "LEDGER_CA_CERT_FILE", "") or "").strip()
+        return ca_cert_file or True
 
     @classmethod
     def api_key(cls):

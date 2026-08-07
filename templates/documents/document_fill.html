@@ -134,6 +134,8 @@
                                                             name="field_{{ field.id }}"
                                                             value="{{ field.field_value }}"
                                                             data-variable="{{ field.field_name }}"
+                                                            data-field-type="{{ party_field.field_type }}"
+                                                            {% if party_field.field_type == "money" %}inputmode="decimal"{% endif %}
                                                             placeholder="{{ party_field.display_label }}"
                                                             oninput="updatePreviewVariable(this)"
                                                             {% if party_field.is_required %}required{% endif %}
@@ -172,6 +174,8 @@
                                                     name="field_{{ field.id }}"
                                                     value="{{ field.field_value }}"
                                                     data-variable="{{ field.field_name }}"
+                                                    data-field-type="{{ schema_field.type|default:'text' }}"
+                                                    {% if schema_field.type == "money" %}inputmode="decimal"{% endif %}
                                                     placeholder="{{ schema_field.placeholder }}"
                                                     oninput="updatePreviewVariable(this)"
                                                 >
@@ -213,12 +217,255 @@
             .replaceAll("'", "&#039;");
     }
 
+    const ruHundreds = {
+        1: "сто", 2: "двести", 3: "триста", 4: "четыреста", 5: "пятьсот",
+        6: "шестьсот", 7: "семьсот", 8: "восемьсот", 9: "девятьсот"
+    };
+    const ruTens = {
+        2: "двадцать", 3: "тридцать", 4: "сорок", 5: "пятьдесят",
+        6: "шестьдесят", 7: "семьдесят", 8: "восемьдесят", 9: "девяносто"
+    };
+    const ruTeens = {
+        10: "десять", 11: "одиннадцать", 12: "двенадцать", 13: "тринадцать",
+        14: "четырнадцать", 15: "пятнадцать", 16: "шестнадцать",
+        17: "семнадцать", 18: "восемнадцать", 19: "девятнадцать"
+    };
+    const ruUnitsMasculine = {
+        1: "один", 2: "два", 3: "три", 4: "четыре", 5: "пять",
+        6: "шесть", 7: "семь", 8: "восемь", 9: "девять"
+    };
+    const ruUnitsFeminine = {
+        ...ruUnitsMasculine,
+        1: "одна",
+        2: "две"
+    };
+    const ruScales = [
+        null,
+        ["тысяча", "тысячи", "тысяч"],
+        ["миллион", "миллиона", "миллионов"],
+        ["миллиард", "миллиарда", "миллиардов"],
+        ["триллион", "триллиона", "триллионов"]
+    ];
+
+    const kkUnits = {
+        1: "бір", 2: "екі", 3: "үш", 4: "төрт", 5: "бес",
+        6: "алты", 7: "жеті", 8: "сегіз", 9: "тоғыз"
+    };
+    const kkTens = {
+        1: "он", 2: "жиырма", 3: "отыз", 4: "қырық", 5: "елу",
+        6: "алпыс", 7: "жетпіс", 8: "сексен", 9: "тоқсан"
+    };
+    const kkScales = ["", "мың", "миллион", "миллиард", "триллион"];
+
+    function parseWholeAmount(value) {
+        let normalized = String(value || "")
+            .trim()
+            .replace(/\u00a0/g, "")
+            .replace(/[\s_]/g, "");
+
+        if (!normalized) {
+            return null;
+        }
+
+        if (normalized.includes(",") && !normalized.includes(".")) {
+            normalized = normalized.replace(",", ".");
+        }
+
+        if (!/^\d+(\.\d+)?$/.test(normalized)) {
+            return null;
+        }
+
+        const parts = normalized.split(".");
+        const fraction = parts[1] || "";
+
+        if (fraction && !/^0+$/.test(fraction)) {
+            return null;
+        }
+
+        const amount = Number.parseInt(parts[0], 10);
+
+        if (!Number.isSafeInteger(amount) || amount < 0) {
+            return null;
+        }
+
+        return amount;
+    }
+
+    function formatAmountNumber(amount) {
+        return String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    function pluralFormRu(number, forms) {
+        const lastTwo = number % 100;
+        const last = number % 10;
+
+        if (lastTwo >= 11 && lastTwo <= 14) {
+            return forms[2];
+        }
+
+        if (last === 1) {
+            return forms[0];
+        }
+
+        if (last >= 2 && last <= 4) {
+            return forms[1];
+        }
+
+        return forms[2];
+    }
+
+    function tripletToWordsRu(number, gender) {
+        const words = [];
+        const hundreds = Math.floor(number / 100);
+        const rest = number % 100;
+
+        if (hundreds) {
+            words.push(ruHundreds[hundreds]);
+        }
+
+        if (rest >= 10 && rest <= 19) {
+            words.push(ruTeens[rest]);
+            return words;
+        }
+
+        const tens = Math.floor(rest / 10);
+        const units = rest % 10;
+
+        if (tens) {
+            words.push(ruTens[tens]);
+        }
+
+        if (units) {
+            words.push((gender === "feminine" ? ruUnitsFeminine : ruUnitsMasculine)[units]);
+        }
+
+        return words;
+    }
+
+    function amountToWordsRu(amount) {
+        if (amount === 0) {
+            return "ноль тенге";
+        }
+
+        const parts = [];
+        let groupIndex = 0;
+        let rest = amount;
+
+        while (rest > 0) {
+            const groupValue = rest % 1000;
+
+            if (groupValue) {
+                const gender = groupIndex === 1 ? "feminine" : "masculine";
+                const groupWords = tripletToWordsRu(groupValue, gender);
+                const scaleForms = ruScales[groupIndex];
+
+                if (scaleForms) {
+                    groupWords.push(pluralFormRu(groupValue, scaleForms));
+                }
+
+                parts.unshift(groupWords.join(" "));
+            }
+
+            rest = Math.floor(rest / 1000);
+            groupIndex += 1;
+        }
+
+        parts.push("тенге");
+        return parts.join(" ");
+    }
+
+    function tripletToWordsKk(number) {
+        const words = [];
+        const hundreds = Math.floor(number / 100);
+        const rest = number % 100;
+        const tens = Math.floor(rest / 10);
+        const units = rest % 10;
+
+        if (hundreds) {
+            if (hundreds > 1) {
+                words.push(kkUnits[hundreds]);
+            }
+            words.push("жүз");
+        }
+
+        if (tens) {
+            words.push(kkTens[tens]);
+        }
+
+        if (units) {
+            words.push(kkUnits[units]);
+        }
+
+        return words;
+    }
+
+    function amountToWordsKk(amount) {
+        if (amount === 0) {
+            return "нөл теңге";
+        }
+
+        const parts = [];
+        let groupIndex = 0;
+        let rest = amount;
+
+        while (rest > 0) {
+            const groupValue = rest % 1000;
+
+            if (groupValue) {
+                const groupWords = tripletToWordsKk(groupValue);
+                const scale = kkScales[groupIndex] || "";
+
+                if (scale) {
+                    groupWords.push(scale);
+                }
+
+                parts.unshift(groupWords.join(" "));
+            }
+
+            rest = Math.floor(rest / 1000);
+            groupIndex += 1;
+        }
+
+        parts.push("теңге");
+        return parts.join(" ");
+    }
+
+    function buildMoneyValues(key, rawValue) {
+        const amount = parseWholeAmount(rawValue);
+
+        if (amount === null) {
+            return {
+                [key]: rawValue || "",
+                [`${key}_words_ru`]: "",
+                [`${key}_words_kk`]: "",
+                [`${key}_full_ru`]: "",
+                [`${key}_full_kk`]: ""
+            };
+        }
+
+        const formatted = formatAmountNumber(amount);
+        const wordsRu = amountToWordsRu(amount);
+        const wordsKk = amountToWordsKk(amount);
+
+        return {
+            [key]: formatted,
+            [`${key}_words_ru`]: wordsRu,
+            [`${key}_words_kk`]: wordsKk,
+            [`${key}_full_ru`]: `${formatted} (${wordsRu})`,
+            [`${key}_full_kk`]: `${formatted} (${wordsKk})`
+        };
+    }
+
     function collectValues() {
         const inputs = document.querySelectorAll("[data-variable]");
         const values = {};
 
         inputs.forEach(input => {
-            values[input.dataset.variable] = input.value;
+            if (input.dataset.fieldType === "money") {
+                Object.assign(values, buildMoneyValues(input.dataset.variable, input.value));
+            } else {
+                values[input.dataset.variable] = input.value;
+            }
         });
 
         return values;

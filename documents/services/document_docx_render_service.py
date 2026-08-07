@@ -5,19 +5,22 @@ from django.conf import settings
 from django.core.files import File
 
 from .docx_template_service import DocxTemplateService
+from .document_verification_appendix_service import DocumentVerificationAppendixService
 from .html_to_docx_service import HtmlToDocxService
+from .money_amount_service import MoneyAmountService
 
 
 class DocumentDocxRenderService:
     @classmethod
-    def render(cls, document):
+    def render(cls, document, *, request=None, append_verification_page=True, system_values=None):
         template = document.template
 
         values = {
             field.field_name: field.field_value
             for field in document.field_values.all()
         }
-        values.update(document.get_contract_system_values())
+        values.update(system_values or document.get_contract_system_values())
+        values = MoneyAmountService.expand_template_values(template, values)
 
         output_dir = os.path.join(settings.MEDIA_ROOT, "documents", "docx")
         os.makedirs(output_dir, exist_ok=True)
@@ -30,6 +33,7 @@ class DocumentDocxRenderService:
                 html=document.rendered_html,
                 output_path=output_path,
             )
+            DocxTemplateService.add_page_numbering(output_path)
         else:
             if not template:
                 raise ValueError("Uploaded documents are already rendered.")
@@ -52,6 +56,13 @@ class DocumentDocxRenderService:
                 template_path=template_path,
                 output_path=output_path,
                 values=values,
+            )
+
+        if append_verification_page:
+            DocumentVerificationAppendixService.finalize_docx(
+                document=document,
+                file_path=output_path,
+                request=request,
             )
 
         with open(output_path, "rb") as f:

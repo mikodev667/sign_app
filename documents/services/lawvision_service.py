@@ -125,7 +125,10 @@ class LawVisionService:
             )
 
         url = cls.get_endpoint_url()
-        headers = {"Authorization": f"Bearer {api_key}"}
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Accept": "application/json",
+        }
         data = cls.build_form_data(
             language=language,
             contract_type=contract_type,
@@ -279,8 +282,15 @@ class LawVisionService:
         try:
             payload = response.json()
         except ValueError as exc:
+            content_type = response.headers.get("Content-Type", "") or "unknown"
+            response_text = " ".join((response.text or "").split())
+            response_preview = response_text[:500] if response_text else "<empty response>"
             raise LawVisionError(
-                "LawVision returned a non-JSON response.",
+                (
+                    "LawVision returned a non-JSON response "
+                    f"(HTTP {response.status_code}, Content-Type: {content_type}): "
+                    f"{response_preview}"
+                ),
                 error_code="invalid_json",
                 status_code=response.status_code,
             ) from exc

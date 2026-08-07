@@ -3,7 +3,20 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
-from .models import OrganizationMember
+from .models import Department, OrganizationMember
+
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ["name"]
+
+        widgets = {
+            "name": forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": _("Example: Admissions department"),
+            }),
+        }
 
 
 class OrganizationMemberForm(forms.Form):
@@ -24,10 +37,36 @@ class OrganizationMemberForm(forms.Form):
         }),
     )
 
+    department = forms.ModelChoiceField(
+        label=_("Department"),
+        queryset=Department.objects.none(),
+        required=False,
+        widget=forms.Select(attrs={
+            "class": "form-control",
+        }),
+    )
+
     def __init__(self, *args, organization=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.organization = organization
         self.user = None
+        if organization:
+            self.fields["department"].queryset = organization.departments.filter(
+                is_active=True,
+            ).order_by("name")
+
+    def clean_department(self):
+        department = self.cleaned_data.get("department")
+
+        if department:
+            return department
+
+        departments = self.fields["department"].queryset
+
+        if departments.count() == 1:
+            return departments.first()
+
+        raise forms.ValidationError(_("Choose a department."))
 
     def clean_username_or_email(self):
         value = self.cleaned_data["username_or_email"].strip()

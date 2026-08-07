@@ -120,6 +120,7 @@ class SignerService:
         signing_method: str = Signer.SigningMethod.EGOV_MOBILE,
         template_party=None,
         role_title: str = "",
+        require_phone: bool = True,
         request=None,
     ) -> Signer:
         cls.ensure_document_can_be_edited(document)
@@ -139,11 +140,12 @@ class SignerService:
             raise ValueError("Порядок подписания должен быть числом.")
 
         cls.validate_iin(iin)
-        cls.validate_phone(phone)
+        if require_phone or phone:
+            cls.validate_phone(phone)
         cls.validate_email(email)
         cls.validate_signing_order(signing_order)
 
-        normalized_phone = cls.normalize_phone(phone)
+        normalized_phone = cls.normalize_phone(phone) if phone else ""
 
         if signing_method not in Signer.SigningMethod.values:
             raise ValueError("Некорректный способ подписания.")

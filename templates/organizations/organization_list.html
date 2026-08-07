@@ -44,8 +44,13 @@
                         <strong>{{ organization.members.all|length }}</strong>
                     </div>
 
+                    <div class="q-organization-card__meta">
+                        <span>{% trans "Departments" %}</span>
+                        <strong>{{ organization.departments.all|length }}</strong>
+                    </div>
+
                     <a href="{% url 'organizations:organization_members' organization.pk %}" class="btn btn-primary">
-                        {% trans "Manage members" %}
+                        {% trans "Manage members and departments" %}
                     </a>
                 </article>
             {% endfor %}

@@ -6,6 +6,8 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from requests import Response
+
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -30,12 +32,32 @@ from documents.services.object_storage_service import ObjectStorageService
 from documents.services.docx_template_service import DocxTemplateService
 from documents.services.docx_preview_service import DocxPreviewService
 from documents.services.document_docx_render_service import DocumentDocxRenderService
+from documents.services.document_verification_appendix_service import DocumentVerificationAppendixService
+from documents.services.lawvision_service import LawVisionError, LawVisionService
+from documents.services.money_amount_service import MoneyAmountService
 from documents.services.onlyoffice_service import OnlyOfficeService
 from documents.services.document_ledger_service import DocumentLedgerError, DocumentLedgerService
 from documents.services.pdf_export_service import ExportedPdf
 from documents.services.template_file_service import TemplateFileService
-from organizations.models import Organization, OrganizationMember
+from organizations.models import Department, Organization, OrganizationMember
 from signing.models import Signer
+
+
+class LawVisionServiceTests(SimpleTestCase):
+    def test_parse_response_exposes_non_json_response_details(self):
+        response = Response()
+        response.status_code = 502
+        response.headers["Content-Type"] = "text/html"
+        response._content = b"<html><body>Bad Gateway</body></html>"
+
+        with self.assertRaises(LawVisionError) as context:
+            LawVisionService.parse_response(response)
+
+        self.assertEqual(context.exception.error_code, "invalid_json")
+        self.assertEqual(context.exception.status_code, 502)
+        self.assertIn("HTTP 502", str(context.exception))
+        self.assertIn("text/html", str(context.exception))
+        self.assertIn("Bad Gateway", str(context.exception))
 
 
 class TemplateFileServiceTests(SimpleTestCase):
@@ -121,6 +143,50 @@ class TemplateFileServiceTests(SimpleTestCase):
             self.assertTrue(rendered_runs)
             self.assertEqual(rendered_runs[0].font.color.rgb, RGBColor(0, 0, 0))
 
+    def test_render_docx_uses_fast_replacements_for_plain_variables(self):
+        with TemporaryDirectory() as temp_dir:
+            template_path = Path(temp_dir) / "template.docx"
+            output_path = Path(temp_dir) / "output.docx"
+
+            template = WordDocument()
+            template.add_paragraph("Client: {{ full_name }}")
+            template.add_paragraph("Program: {{ program_name }}")
+            template.save(template_path)
+
+            self.assertTrue(DocxTemplateService.can_render_with_simple_replacements(
+                str(template_path),
+            ))
+
+            DocxTemplateService.render_docx(
+                template_path=str(template_path),
+                output_path=str(output_path),
+                values={
+                    "full_name": "A&B Client",
+                    "program_name": "Law <Digital>",
+                },
+            )
+
+            rendered_text = "\n".join(
+                paragraph.text
+                for paragraph in WordDocument(output_path).paragraphs
+            )
+
+            self.assertIn("A&B Client", rendered_text)
+            self.assertIn("Law <Digital>", rendered_text)
+            self.assertEqual(DocxTemplateService.extract_variables(str(output_path)), [])
+
+    def test_add_page_numbering_adds_word_fields(self):
+        with TemporaryDirectory() as temp_dir:
+            docx_path = Path(temp_dir) / "numbered.docx"
+            docx_path.write_bytes(self.create_docx_bytes("Contract body"))
+
+            DocxTemplateService.add_page_numbering(str(docx_path))
+
+            rendered_document = WordDocument(docx_path)
+            footer_xml = rendered_document.sections[0].footer._element.xml
+            self.assertIn("PAGE", footer_xml)
+            self.assertIn("NUMPAGES", footer_xml)
+
     def test_prepare_editor_html_extracts_body_and_scopes_styles(self):
         html = """<!doctype html>
 <html>
@@ -189,6 +255,36 @@ class TemplateFileServiceTests(SimpleTestCase):
         document.add_paragraph("Document with custom margins")
         document.save(buffer)
         return buffer.getvalue()
+
+
+class MoneyAmountServiceTests(SimpleTestCase):
+    def test_build_value_context_returns_ru_and_kk_words(self):
+        values = MoneyAmountService.build_value_context("tuition_amount", "450000")
+
+        self.assertEqual(values["tuition_amount"], "450 000")
+        self.assertEqual(
+            values["tuition_amount_words_ru"],
+            "четыреста пятьдесят тысяч тенге",
+        )
+        self.assertEqual(
+            values["tuition_amount_words_kk"],
+            "төрт жүз елу мың теңге",
+        )
+        self.assertEqual(
+            values["tuition_amount_full_ru"],
+            "450 000 (четыреста пятьдесят тысяч тенге)",
+        )
+        self.assertEqual(
+            values["tuition_amount_full_kk"],
+            "450 000 (төрт жүз елу мың теңге)",
+        )
+
+    def test_parse_amount_accepts_spaces_and_zero_fraction(self):
+        self.assertEqual(MoneyAmountService.parse_amount("1 200 000,00"), 1200000)
+
+    def test_parse_amount_rejects_fractional_or_non_numeric_values(self):
+        self.assertIsNone(MoneyAmountService.parse_amount("1200.50"))
+        self.assertIsNone(MoneyAmountService.parse_amount("twelve"))
 
 
 class TemplateUploadFlowTests(TestCase):
@@ -726,10 +822,7 @@ class DocumentDraftEditingTests(TestCase):
         )
 
         self.assertIsNotNone(first_document.contract_date)
-        self.assertRegex(
-            first_document.contract_number,
-            rf"^{first_document.contract_date.year}-\d{{6}}$",
-        )
+        self.assertEqual(first_document.contract_number, str(first_document.pk))
         self.assertNotEqual(
             first_document.contract_number,
             second_document.contract_number,
@@ -737,6 +830,45 @@ class DocumentDraftEditingTests(TestCase):
         self.assertEqual(
             first_document.get_contract_system_values()["contract_date"],
             first_document.contract_date.strftime("%d.%m.%Y"),
+        )
+        self.assertRegex(
+            first_document.get_contract_system_values()["contract_date_text_ru"],
+            rf"^«{first_document.contract_date.day:02d}» .+ {first_document.contract_date.year} г\.$",
+        )
+        self.assertRegex(
+            first_document.get_contract_system_values()["contract_date_text_kk"],
+            rf"^«{first_document.contract_date.day:02d}» .+ {first_document.contract_date.year} ж\.$",
+        )
+        self.assertTrue(first_document.verification_token)
+        self.assertNotEqual(
+            first_document.verification_token,
+            second_document.verification_token,
+        )
+
+    def test_document_skips_taken_contract_number(self):
+        user, organization = self.create_user_and_organization()
+
+        first_document = Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="First document",
+        )
+        taken_number = str(first_document.pk + 1)
+        first_document.contract_number = taken_number
+        first_document.save(update_fields=["contract_number"])
+
+        second_document = Document.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Second document",
+        )
+
+        self.assertNotEqual(second_document.contract_number, taken_number)
+        self.assertFalse(
+            Document.objects
+            .exclude(pk=second_document.pk)
+            .filter(contract_number=second_document.contract_number)
+            .exists()
         )
 
     def test_document_fill_uses_contract_system_values_without_editable_fields(self):
@@ -821,6 +953,77 @@ class DocumentDraftEditingTests(TestCase):
         )
         self.assertIn("Test Customer", document.rendered_html)
 
+    def test_document_fill_expands_money_amount_variables(self):
+        user, organization = self.create_user_and_organization()
+        template = DocumentTemplate.objects.create(
+            organization=organization,
+            created_by=user,
+            title="Tuition template",
+            body_template=(
+                "{{ tuition_amount }} "
+                "{{ tuition_amount_full_ru }} "
+                "{{ tuition_amount_full_kk }}"
+            ),
+            variables=[
+                "tuition_amount",
+                "tuition_amount_full_ru",
+                "tuition_amount_full_kk",
+            ],
+            field_schema=[
+                {
+                    "title": "Tuition",
+                    "fields": [
+                        {
+                            "label": "Tuition amount",
+                            "key": "tuition_amount",
+                            "type": "money",
+                            "placeholder": "Tuition amount",
+                        }
+                    ],
+                }
+            ],
+        )
+        document = self.create_document(user, organization, template)
+        amount_field = DocumentFieldValue.objects.create(
+            document=document,
+            field_name="tuition_amount",
+        )
+        DocumentFieldValue.objects.create(
+            document=document,
+            field_name="tuition_amount_full_ru",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_fill", args=[document.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-field-type="money"')
+        self.assertIn(
+            "tuition_amount",
+            [field.field_name for field in response.context["fields"]],
+        )
+        self.assertNotIn(
+            "tuition_amount_full_ru",
+            [field.field_name for field in response.context["fields"]],
+        )
+
+        with patch.object(DocumentDocxRenderService, "render", return_value=document):
+            response = self.client.post(
+                reverse("documents:document_fill", args=[document.pk]),
+                {
+                    f"field_{amount_field.id}": "450000",
+                },
+            )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('documents:document_list')}?signers={document.pk}",
+        )
+        document.refresh_from_db()
+        self.assertIn("450 000", document.rendered_html)
+        self.assertIn("четыреста пятьдесят тысяч тенге", document.rendered_html)
+        self.assertIn("төрт жүз елу мың теңге", document.rendered_html)
+
     def test_docx_render_includes_contract_system_values(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
             user, organization = self.create_user_and_organization()
@@ -849,6 +1052,8 @@ class DocumentDraftEditingTests(TestCase):
             with patch(
                 "documents.services.document_docx_render_service.DocxTemplateService.render_docx",
                 side_effect=fake_render_docx,
+            ), patch(
+                "documents.services.document_docx_render_service.DocumentVerificationAppendixService.finalize_docx"
             ):
                 DocumentDocxRenderService.render(document)
 
@@ -859,6 +1064,14 @@ class DocumentDraftEditingTests(TestCase):
             self.assertEqual(
                 captured_values["contract_date"],
                 document.get_contract_date_display(),
+            )
+            self.assertEqual(
+                captured_values["contract_date_text_ru"],
+                document.get_contract_date_text_ru(),
+            )
+            self.assertEqual(
+                captured_values["contract_date_text_kk"],
+                document.get_contract_date_text_kk(),
             )
             self.assertEqual(
                 captured_values["date"],
@@ -876,6 +1089,111 @@ class DocumentDraftEditingTests(TestCase):
                 captured_values["university_bin"],
                 Document.UNIVERSITY_SYSTEM_FIELD_DEFAULTS["university_bin"],
             )
+
+    def test_docx_render_includes_money_amount_variables(self):
+        with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
+            user, organization = self.create_user_and_organization()
+            template = DocumentTemplate.objects.create(
+                organization=organization,
+                created_by=user,
+                title="Money DOCX template",
+                field_schema=[
+                    {
+                        "title": "Tuition",
+                        "fields": [
+                            {
+                                "label": "Tuition amount",
+                                "key": "tuition_amount",
+                                "type": "money",
+                                "placeholder": "Tuition amount",
+                            }
+                        ],
+                    }
+                ],
+            )
+            template.template_file.save(
+                "template.docx",
+                ContentFile(self.create_docx_bytes("{{ tuition_amount_full_ru }}")),
+                save=True,
+            )
+            document = self.create_document(user, organization, template)
+            DocumentFieldValue.objects.create(
+                document=document,
+                field_name="tuition_amount",
+                field_value="450000",
+            )
+            captured_values = {}
+
+            def fake_render_docx(*, template_path, output_path, values):
+                captured_values.update(values)
+                Path(output_path).write_bytes(b"rendered docx")
+
+            with patch(
+                "documents.services.document_docx_render_service.DocxTemplateService.render_docx",
+                side_effect=fake_render_docx,
+            ), patch(
+                "documents.services.document_docx_render_service.DocumentVerificationAppendixService.finalize_docx"
+            ):
+                DocumentDocxRenderService.render(document)
+
+            self.assertEqual(captured_values["tuition_amount"], "450 000")
+            self.assertEqual(
+                captured_values["tuition_amount_words_ru"],
+                "четыреста пятьдесят тысяч тенге",
+            )
+            self.assertEqual(
+                captured_values["tuition_amount_words_kk"],
+                "төрт жүз елу мың теңге",
+            )
+            self.assertEqual(
+                captured_values["tuition_amount_full_ru"],
+                "450 000 (четыреста пятьдесят тысяч тенге)",
+            )
+            self.assertEqual(
+                captured_values["tuition_amount_full_kk"],
+                "450 000 (төрт жүз елу мың теңге)",
+            )
+
+    def test_verification_appendix_is_added_once_to_docx(self):
+        with TemporaryDirectory() as temp_dir, override_settings(
+            MEDIA_ROOT=temp_dir,
+            PUBLIC_SITE_URL="https://qolqoyu.example.test",
+        ):
+            user, organization = self.create_user_and_organization()
+            template = self.create_template(user, organization)
+            document = self.create_document(
+                user,
+                organization,
+                template,
+                title="Appendix document",
+            )
+            docx_path = Path(temp_dir) / "appendix.docx"
+            docx_path.write_bytes(self.create_docx_bytes("Document body"))
+
+            DocumentVerificationAppendixService.finalize_docx(
+                document=document,
+                file_path=str(docx_path),
+            )
+            DocumentVerificationAppendixService.finalize_docx(
+                document=document,
+                file_path=str(docx_path),
+            )
+
+            rendered_document = WordDocument(docx_path)
+            text_parts = [paragraph.text for paragraph in rendered_document.paragraphs]
+            for table in rendered_document.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        text_parts.append(cell.text)
+            full_text = "\n".join(text_parts)
+
+            self.assertEqual(full_text.count("Проверка документа"), 1)
+            self.assertIn(document.contract_number, full_text)
+            self.assertIn(
+                f"https://qolqoyu.example.test/documents/verify/{document.verification_token}/",
+                full_text,
+            )
+            self.assertIn("QR-код", full_text)
 
     def test_create_document_from_uploaded_docx_without_template(self):
         with TemporaryDirectory() as temp_dir, override_settings(MEDIA_ROOT=temp_dir):
@@ -1099,7 +1417,21 @@ class DocumentDraftEditingTests(TestCase):
             self.assertNotEqual(document.rendered_docx_file.name, original_docx_name)
             self.assertTrue(document.rendered_docx_file.name.endswith(".docx"))
             with document.rendered_docx_file.open("rb") as saved_file:
-                self.assertEqual(saved_file.read(), updated_bytes)
+                saved_bytes = saved_file.read()
+
+            self.assertNotEqual(saved_bytes, updated_bytes)
+            saved_document = WordDocument(BytesIO(saved_bytes))
+            saved_text = "\n".join(
+                [paragraph.text for paragraph in saved_document.paragraphs]
+                + [
+                    cell.text
+                    for table in saved_document.tables
+                    for row in table.rows
+                    for cell in row.cells
+                ]
+            )
+            self.assertIn("Updated document", saved_text)
+            self.assertIn("Проверка документа", saved_text)
 
     def test_onlyoffice_callback_ignores_non_save_status(self):
         with TemporaryDirectory() as temp_dir, override_settings(
@@ -1248,6 +1580,46 @@ class DocumentDraftEditingTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Contract number")
         self.assertContains(response, document.contract_number)
+
+    def test_document_list_links_to_public_verification_page(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        document = self.create_document(
+            user,
+            organization,
+            template,
+            title="Verifiable document",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("documents:document_list"))
+
+        self.assertContains(response, "Verification page")
+        self.assertContains(
+            response,
+            reverse("documents:document_verification", args=[document.verification_token]),
+        )
+
+    def test_document_verification_page_is_public(self):
+        user, organization = self.create_user_and_organization()
+        template = self.create_template(user, organization)
+        document = self.create_document(
+            user,
+            organization,
+            template,
+            title="Public verification document",
+        )
+        document.rendered_html = "Public verification content"
+        document.update_content_hash(save=True)
+
+        response = self.client.get(
+            reverse("documents:document_verification", args=[document.verification_token])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Document integrity")
+        self.assertContains(response, document.contract_number)
+        self.assertContains(response, document.content_hash)
 
     def test_document_fill_allows_waiting_document_without_signatures(self):
         user, organization = self.create_user_and_organization()
@@ -1556,30 +1928,71 @@ class OrganizationAccessTests(TestCase):
             200,
         )
 
-    def test_organization_member_cannot_see_or_access_templates_and_documents(self):
+    def test_organization_member_sees_only_own_department_templates_and_documents(self):
         owner = self.create_user("owner")
         member = self.create_user("member")
         organization = self.create_organization(owner)
+        own_department = Department.objects.create(
+            organization=organization,
+            name="Own department",
+        )
+        other_department = Department.objects.create(
+            organization=organization,
+            name="Other department",
+        )
         OrganizationMember.objects.create(
             organization=organization,
             user=member,
             role=OrganizationMember.Role.MEMBER,
+            department=own_department,
         )
-        template = self.create_template(owner, organization, title="Manager template")
-        document = self.create_document(owner, organization, template, title="Manager document")
+        own_template = self.create_template(
+            owner,
+            organization,
+            department=own_department,
+            title="Own department template",
+        )
+        other_template = self.create_template(
+            owner,
+            organization,
+            department=other_department,
+            title="Other department template",
+        )
+        own_document = self.create_document(
+            owner,
+            organization,
+            own_template,
+            title="Own department document",
+        )
+        other_document = self.create_document(
+            owner,
+            organization,
+            other_template,
+            title="Other department document",
+        )
         self.client.force_login(member)
 
         template_list_response = self.client.get(reverse("documents:template_list"))
         document_list_response = self.client.get(reverse("documents:document_list"))
 
-        self.assertNotContains(template_list_response, "Manager template")
-        self.assertNotContains(document_list_response, "Manager document")
+        self.assertContains(template_list_response, "Own department template")
+        self.assertNotContains(template_list_response, "Other department template")
+        self.assertContains(document_list_response, "Own department document")
+        self.assertNotContains(document_list_response, "Other department document")
         self.assertEqual(
-            self.client.get(reverse("documents:template_edit", args=[template.pk])).status_code,
+            self.client.get(reverse("documents:template_edit", args=[own_template.pk])).status_code,
+            200,
+        )
+        self.assertEqual(
+            self.client.get(reverse("documents:template_edit", args=[other_template.pk])).status_code,
             404,
         )
         self.assertEqual(
-            self.client.get(reverse("documents:document_fill", args=[document.pk])).status_code,
+            self.client.get(reverse("documents:document_fill", args=[own_document.pk])).status_code,
+            200,
+        )
+        self.assertEqual(
+            self.client.get(reverse("documents:document_fill", args=[other_document.pk])).status_code,
             404,
         )
 
@@ -1623,9 +2036,10 @@ class OrganizationAccessTests(TestCase):
         return organization
 
     @staticmethod
-    def create_template(user, organization, title="Access template"):
+    def create_template(user, organization, title="Access template", department=None):
         return DocumentTemplate.objects.create(
             organization=organization,
+            department=department,
             created_by=user,
             title=title,
             body_template="Hello {{ full_name }}",
@@ -1636,6 +2050,7 @@ class OrganizationAccessTests(TestCase):
     def create_document(user, organization, template, title="Access document"):
         return Document.objects.create(
             organization=organization,
+            department=template.department,
             template=template,
             created_by=user,
             title=title,

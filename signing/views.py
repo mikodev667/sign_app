@@ -16,7 +16,7 @@ from documents.models import Document, DocumentLawVisionReport, StoredObject
 from documents.services.lawvision_service import LawVisionError, LawVisionService
 from documents.services.object_storage_service import ObjectStorageService
 from documents.services.template_file_service import TemplateFileService
-from organizations.services import get_user_managed_organizations
+from organizations.services import get_department_access_filter
 from signing.forms import SignerForm
 from signing.services.access_token_service import SignerAccessTokenService
 from signing.services.egov_mobile_service import EgovMobileSigningService
@@ -200,9 +200,10 @@ def render_signer_lawvision_report_page(request, *, token, signer, document, rep
 @login_required
 def document_signers(request, document_pk):
     document = get_object_or_404(
-        Document.objects.select_related("template", "organization"),
+        Document.objects.select_related("template", "organization", "department").filter(
+            get_department_access_filter(request.user),
+        ),
         pk=document_pk,
-        organization__in=get_user_managed_organizations(request.user),
     )
 
     if request.method == "POST":
@@ -241,9 +242,10 @@ def document_signers(request, document_pk):
 @require_POST
 def create_signer_access_link(request, signer_pk):
     signer = get_object_or_404(
-        Signer.objects.select_related("document"),
+        Signer.objects.select_related("document").filter(
+            document__in=Document.objects.filter(get_department_access_filter(request.user)),
+        ),
         pk=signer_pk,
-        document__organization__in=get_user_managed_organizations(request.user),
     )
 
     try:

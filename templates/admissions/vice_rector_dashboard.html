@@ -1,0 +1,229 @@
+{% load i18n %}
+{% load static %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Vice rector cabinet" %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="admission-public-body">
+    <main class="admission-public-shell admission-public-shell--dashboard">
+        <header class="admission-public-header">
+            <div>
+                <span class="admission-public-kicker">{% trans "Admissions" %}</span>
+                <h1>{% trans "Vice rector cabinet" %}</h1>
+                <p>{{ profile.full_name }}</p>
+            </div>
+
+            {% include "admissions/_cabinet_nav.html" with active_admission_nav="vice_rector" %}
+        </header>
+
+        {% if messages %}
+            <div class="admission-public-messages">
+                {% for message in messages %}
+                    <div class="admission-public-message admission-public-message--{{ message.tags|default:'info' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <form method="get" class="admission-dashboard-filters">
+            <div class="admission-dashboard-filters__head">
+                <strong>{% trans "Filters" %}</strong>
+                <span>
+                    {% blocktrans with count=filtered_contracts_count total=total_contracts %}Showing {{ count }} of {{ total }} contracts{% endblocktrans %}
+                </span>
+            </div>
+
+            <div class="admission-dashboard-filters__grid">
+                <label class="admission-filter-field admission-filter-field--search">
+                    <span>{% trans "Search" %}</span>
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ filters.q }}"
+                        placeholder="{% trans 'Applicant, IIN, ID, contract number' %}"
+                    >
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Signature status" %}</span>
+                    <select name="signature_state">
+                        {% for value, label in signature_state_options %}
+                            <option value="{{ value }}" {% if filters.signature_state == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Contract status" %}</span>
+                    <select name="status">
+                        <option value="">{% trans "All statuses" %}</option>
+                        {% for value, label in status_options %}
+                            <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Date from" %}</span>
+                    <input type="date" name="date_from" value="{{ filters.date_from }}">
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Date to" %}</span>
+                    <input type="date" name="date_to" value="{{ filters.date_to }}">
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Education level" %}</span>
+                    <select name="education_level">
+                        <option value="">{% trans "All levels" %}</option>
+                        {% for value, label in education_level_options %}
+                            <option value="{{ value }}" {% if filters.education_level == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label class="admission-filter-field">
+                    <span>{% trans "Funding type" %}</span>
+                    <select name="funding_type">
+                        <option value="">{% trans "All funding types" %}</option>
+                        {% for value, label in funding_type_options %}
+                            <option value="{{ value }}" {% if filters.funding_type == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <div class="admission-dashboard-filters__actions">
+                    <button type="submit" class="admission-btn admission-btn--primary">
+                        {% trans "Apply filters" %}
+                    </button>
+                    <a class="admission-btn admission-btn--secondary" href="{% url 'admissions:vice_rector_dashboard' %}">
+                        {% trans "Reset" %}
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        {% if contracts %}
+            <div class="admission-contract-list">
+                {% for contract in contracts %}
+                    <article class="admission-contract-row">
+                        <div class="admission-contract-row__person">
+                            <div class="admission-contract-row__meta">
+                                <span class="admission-kicker">{{ contract.external_id }}</span>
+                                <span class="admission-status admission-status--{{ contract.status }}">
+                                    {{ contract.get_status_display }}
+                                </span>
+                            </div>
+                            <strong>{{ contract.applicant_full_name }}</strong>
+                            <small>{{ contract.applicant_iin }}</small>
+                        </div>
+
+                        <div class="admission-contract-row__cell admission-contract-row__cell--program">
+                            <span>{% trans "Program" %}</span>
+                            <strong>{{ contract.program_name_ru|default:contract.program_code|default:"-" }}</strong>
+                        </div>
+
+                        <div class="admission-contract-row__cell">
+                            <span>{% trans "Education level" %}</span>
+                            <strong>{{ contract.get_education_level_display }}</strong>
+                        </div>
+
+                        <div class="admission-contract-row__cell">
+                            <span>{% trans "Funding type" %}</span>
+                            <strong>{{ contract.get_funding_type_display }}</strong>
+                        </div>
+
+                        <div class="admission-contract-row__cell">
+                            <span>{% trans "Contract number" %}</span>
+                            <strong>{{ contract.document.contract_number|default:"-" }}</strong>
+                            <small>{{ contract.created_at|date:"d.m.Y H:i" }}</small>
+                        </div>
+
+                        <div class="admission-contract-row__signers">
+                            <span><b>{% trans "Applicant" %}</b> {{ contract.student_signer.get_status_display|default:"-" }}</span>
+                            <span><b>{% trans "Vice rector" %}</b> {{ contract.vice_rector_signer.get_status_display|default:"-" }}</span>
+                        </div>
+
+                        <div class="admission-contract-row__actions">
+                            {% if contract.application_document.rendered_pdf_file %}
+                                <a class="admission-btn admission-btn--secondary" href="{{ contract.application_document.rendered_pdf_file.url }}" target="_blank" title="{% trans 'Download application PDF' %}">
+                                    {% trans "Application" %}
+                                </a>
+                            {% elif contract.application_document.rendered_docx_file %}
+                                <a class="admission-btn admission-btn--secondary" href="{{ contract.application_document.rendered_docx_file.url }}" target="_blank" title="{% trans 'Download application DOCX' %}">
+                                    {% trans "Application" %}
+                                </a>
+                            {% endif %}
+
+                            {% if contract.document.rendered_pdf_file %}
+                                <a class="admission-btn admission-btn--secondary" href="{{ contract.document.rendered_pdf_file.url }}" target="_blank" title="{% trans 'Download contract PDF' %}">
+                                    {% trans "Contract" %}
+                                </a>
+                            {% elif contract.document.rendered_docx_file %}
+                                <a class="admission-btn admission-btn--secondary" href="{{ contract.document.rendered_docx_file.url }}" target="_blank" title="{% trans 'Download contract DOCX' %}">
+                                    {% trans "Contract" %}
+                                </a>
+                            {% endif %}
+
+                            {% if contract.vice_rector_signer and contract.student_signer.status == "signed" and contract.vice_rector_signer.status != "signed" %}
+                                <button
+                                    type="button"
+                                    class="admission-btn admission-btn--primary"
+                                    data-admission-ecp-sign
+                                    data-status-target="admission-ecp-status-{{ contract.pk }}"
+                                    data-payload-url="{% url 'admissions:vice_rector_ecp_signing_payload' contract.pk %}"
+                                    data-complete-url="{% url 'admissions:vice_rector_ecp_signing_complete' contract.pk %}"
+                                    data-status-preparing="{% trans 'Preparing signing data...' %}"
+                                    data-status-connecting="{% trans 'Connecting to NCALayer...' %}"
+                                    data-status-choosing="{% trans 'Choose your ECP key and confirm signing.' %}"
+                                    data-status-saving="{% trans 'Saving signature...' %}"
+                                    data-status-signed="{% trans 'The contract has been signed successfully.' %}"
+                                    data-error-cannot-prepare="{% trans 'Cannot prepare signing payload.' %}"
+                                    data-error-empty-cms="{% trans 'NCALayer returned an empty CMS signature.' %}"
+                                    data-error-cannot-complete="{% trans 'Cannot complete signing.' %}"
+                                    data-error-cannot-connect="{% trans 'Cannot connect to NCALayer.' %}"
+                                    data-error-connection-closed="{% trans 'NCALayer connection was closed.' %}"
+                                    data-error-websocket-not-connected="{% trans 'NCALayer websocket is not connected.' %}"
+                                    data-error-ncalayer-timeout="{% trans 'NCALayer did not respond after signing.' %}"
+                                >
+                                    {% trans "Sign with ECP" %}
+                                </button>
+                            {% elif contract.vice_rector_signer.status == "signed" %}
+                                <span class="admission-btn admission-btn--done">{% trans "Signed" %}</span>
+                            {% else %}
+                                <span class="admission-btn admission-btn--disabled">{% trans "Waiting for applicant" %}</span>
+                            {% endif %}
+                        </div>
+
+                        <p id="admission-ecp-status-{{ contract.pk }}" class="admission-public-sign-status admission-contract-row__sign-status"></p>
+                    </article>
+                {% endfor %}
+            </div>
+            {% include "admissions/_pagination.html" %}
+        {% else %}
+            <section class="admission-public-card admission-public-empty">
+                {% if total_contracts %}
+                    <span class="admission-public-kicker">{% trans "No matches" %}</span>
+                    <h2>{% trans "No contracts match the selected filters." %}</h2>
+                    <p>{% trans "Change the filters or reset them to see all available contracts." %}</p>
+                {% else %}
+                    <span class="admission-public-kicker">{% trans "No contracts" %}</span>
+                    <h2>{% trans "There are no admission contracts yet." %}</h2>
+                    <p>{% trans "New contracts will appear here after the university sends applicant data." %}</p>
+                {% endif %}
+            </section>
+        {% endif %}
+    </main>
+
+    <script src="{% static 'js/admission_ecp_signing.js' %}?v=3"></script>
+</body>
+</html>

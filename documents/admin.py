@@ -27,9 +27,9 @@ class DocumentFieldValueInline(admin.TabularInline):
 
 @admin.register(DocumentTemplate)
 class DocumentTemplateAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "organization", "created_by", "status", "created_at")
-    search_fields = ("title", "organization__name", "body_template")
-    list_filter = ("status", "created_at")
+    list_display = ("id", "title", "organization", "department", "created_by", "status", "created_at")
+    search_fields = ("title", "organization__name", "department__name", "body_template")
+    list_filter = ("status", "department", "created_at")
     readonly_fields = ("variables", "created_at", "updated_at")
 
     def save_model(self, request, obj, form, change):
@@ -84,6 +84,7 @@ class DocumentAdmin(admin.ModelAdmin):
         "contract_number",
         "contract_date",
         "organization",
+        "department",
         "template",
         "status",
         "created_by",
@@ -95,11 +96,12 @@ class DocumentAdmin(admin.ModelAdmin):
         "title",
         "contract_number",
         "organization__name",
+        "department__name",
         "template__title",
         "content_hash"
     )
 
-    list_filter = ("status", "contract_date", "created_at", "signed_at")
+    list_filter = ("status", "department", "contract_date", "created_at", "signed_at")
 
     readonly_fields = (
         "contract_number",
@@ -137,7 +139,7 @@ class DocumentAdmin(admin.ModelAdmin):
 
         for document in queryset:
             try:
-                DocumentDocxRenderService.render(document)
+                DocumentDocxRenderService.render(document, request=request)
                 success_count += 1
             except Exception as e:
                 self.message_user(

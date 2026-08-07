@@ -1,0 +1,69 @@
+{% load i18n %}
+{% load static %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Admissions sign in" %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="admission-public-body admission-auth-body">
+    <main class="admission-auth-shell">
+        <section class="admission-auth-card">
+            <div class="admission-auth-card__header">
+                <span class="admission-public-kicker">{% trans "Admissions" %}</span>
+                <h1>{% trans "Admissions cabinets" %}</h1>
+                <p>{% trans "Sign in to open the admissions workspace available for your role." %}</p>
+            </div>
+
+            {% if messages %}
+                <div class="admission-public-messages">
+                    {% for message in messages %}
+                        <div class="admission-public-message admission-public-message--{{ message.tags|default:'info' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" class="admission-auth-form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors form-errors--global">
+                        {% for error in form.non_field_errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <label class="admission-auth-field" for="{{ field.id_for_label }}">
+                        <span>{{ field.label }}</span>
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {% for error in field.errors %}
+                                    <div class="form-error">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </label>
+                {% endfor %}
+
+                <button type="submit" class="admission-btn admission-btn--primary admission-auth-submit">
+                    {% trans "Sign in" %}
+                </button>
+            </form>
+
+            <div class="admission-auth-footer">
+                <span>{% trans "Do not have an account?" %}</span>
+                <a href="{% url 'accounts:admission_register' %}">{% trans "Create account" %}</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
