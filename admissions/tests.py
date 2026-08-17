@@ -1308,8 +1308,8 @@ class AdmissionsApiTests(TestCase):
         self.assertEqual(values["student_parent_address"], "TestF")
         self.assertEqual(values["student_parent_details_ru"], "тел. 654654, адрес TestF")
         self.assertEqual(values["student_parent_details_kk"], "тел. 654654, мекенжайы TestF")
-        self.assertEqual(values["admission_quota_ru"], "По квоте не поступаю.")
-        self.assertEqual(values["admission_quota_kk"], "Квота бойынша оқуға түспеймін.")
+        self.assertEqual(values["admission_quota_ru"], "")
+        self.assertEqual(values["admission_quota_kk"], "")
         self.assertEqual(values["dean_full_name"], "Иманкулов Тимур Сакенович")
 
     def test_payload_mapper_maps_nested_university_payload_format(self):

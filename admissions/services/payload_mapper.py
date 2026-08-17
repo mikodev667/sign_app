@@ -900,7 +900,7 @@ class AdmissionPayloadMapper:
             "admission_results_quota_ru",
             "quota",
         ):
-            values["admission_quota_ru"] = "По квоте не поступаю."
+            values["admission_quota_ru"] = ""
 
         if not cls.first_non_empty(
             values,
@@ -909,7 +909,7 @@ class AdmissionPayloadMapper:
             "admission_results_quota_kk",
             "quota",
         ):
-            values["admission_quota_kk"] = "Квота бойынша оқуға түспеймін."
+            values["admission_quota_kk"] = ""
 
         cls.add_parent_representative_details(values)
 
